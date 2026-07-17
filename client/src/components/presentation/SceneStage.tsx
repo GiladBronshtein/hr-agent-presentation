@@ -21,9 +21,14 @@ export function useViewportSize() {
   const [size, setSize] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
   useEffect(() => {
     const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
+    // Re-measure after mount: some embedded/WebView contexts report a stale
+    // (or zero) size at first render and do not always fire an initial resize.
+    onResize();
+    const raf = requestAnimationFrame(onResize);
     window.addEventListener('resize', onResize);
     window.addEventListener('orientationchange', onResize);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('orientationchange', onResize);
     };
@@ -32,6 +37,8 @@ export function useViewportSize() {
 }
 
 export function isCompactViewport(w: number, h: number) {
+  // A zero/unknown viewport must never degrade the projector experience
+  if (w <= 0 || h <= 0) return false;
   return w < COMPACT_MAX_WIDTH || h < COMPACT_MAX_HEIGHT;
 }
 
