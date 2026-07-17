@@ -231,10 +231,10 @@ export default function S05_AutomationVsAgent() {
         </div>
       </div>
 
-      {/* Bottom takeaway — placed BELOW the controls bar, never overlapping content */}
+      {/* Bottom takeaway — hugs the slide's bottom edge, clear of the content above */}
       <div style={{
         position: 'absolute',
-        bottom: 'clamp(4.5rem, 7cqw, 6.5rem)',
+        bottom: 'clamp(1.25rem, 2.5cqh, 2rem)',
         left: 0, right: 0,
         display: 'flex', justifyContent: 'center', zIndex: 4,
         opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease 0.9s',

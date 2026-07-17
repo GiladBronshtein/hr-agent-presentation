@@ -1,14 +1,16 @@
 /**
- * SceneStage — mobile-safe rendering surface for scenes.
+ * SceneStage — scale-to-fit rendering surface for scenes.
  *
- * Desktop / projector (>=1024px wide and >=600px tall): a transparent
- * full-size container. Scene cq units resolve against the viewport size,
- * so rendering is pixel-identical to the original design. No transform.
+ * Scenes always render on a fixed 16:9 virtual canvas (a size container, so
+ * cqw/cqh resolve against it) that is scaled to fit the window, letterboxed
+ * on the deck background. The full slide is therefore ALWAYS visible, at any
+ * window size, windowed or fullscreen.
  *
- * Small screens: scenes render on a fixed 1600x900 virtual canvas
- * (a size container, so cqw/cqh resolve against it) that is scaled to fit
- * the screen, letterboxed on the deck background. Every layout, animation
- * and interaction stays exactly as designed, just smaller.
+ * Desktop uses a 1920x1080 canvas: at true fullscreen on a 1080p projector
+ * the scale is exactly 1.0, so the conference rendering is pixel-identical
+ * to the original design. Small screens use a 1600x900 canvas (slightly
+ * larger effective type on phones). Every layout, animation and interaction
+ * stays exactly as designed.
  */
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -42,10 +44,15 @@ export function isCompactViewport(w: number, h: number) {
   return w < COMPACT_MAX_WIDTH || h < COMPACT_MAX_HEIGHT;
 }
 
+export const DESKTOP_STAGE_W = 1920;
+export const DESKTOP_STAGE_H = 1080;
+
 export function SceneStage({ children }: { children: ReactNode }) {
   const { w, h } = useViewportSize();
 
-  if (!isCompactViewport(w, h)) {
+  // Unknown/zero size (first paint in some embedded contexts): render
+  // untransformed until the mount re-measure lands.
+  if (w <= 0 || h <= 0) {
     return (
       <div style={{ width: '100%', height: '100%', containerType: 'size' }}>
         {children}
@@ -53,7 +60,11 @@ export function SceneStage({ children }: { children: ReactNode }) {
     );
   }
 
-  const scale = Math.min(w / STAGE_W, h / STAGE_H);
+  const compact = isCompactViewport(w, h);
+  const stageW = compact ? STAGE_W : DESKTOP_STAGE_W;
+  const stageH = compact ? STAGE_H : DESKTOP_STAGE_H;
+  const scale = Math.min(w / stageW, h / stageH);
+
   return (
     <div
       style={{
@@ -68,8 +79,8 @@ export function SceneStage({ children }: { children: ReactNode }) {
     >
       <div
         style={{
-          width: STAGE_W,
-          height: STAGE_H,
+          width: stageW,
+          height: stageH,
           containerType: 'size',
           transform: `scale(${scale})`,
           transformOrigin: 'center center',
