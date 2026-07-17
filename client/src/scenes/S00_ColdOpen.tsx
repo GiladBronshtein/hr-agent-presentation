@@ -188,7 +188,7 @@ export default function S00_ColdOpen() {
         </div>
 
         {/* CENTER: Network Visualization */}
-        <div className="animate-scale-in stagger-2" style={{ minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+        <div className="animate-scale-in stagger-2" style={{ minHeight: 0, height: '100%', display: 'flex', flexDirection: 'column' }}>
           <div style={{
             width: '100%', flexGrow: 1, minHeight: '300px', borderRadius: '24px',
             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
@@ -257,7 +257,7 @@ export default function S00_ColdOpen() {
         </div>
 
         {/* RIGHT: Activity Feed */}
-        <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', minHeight: 0, overflow: 'hidden' }}>
+        <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minHeight: 0, height: '100%', overflow: 'hidden', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem', flexShrink: 0 }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
             <span style={{ fontSize: 'clamp(1rem, 1.1vw, 1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
