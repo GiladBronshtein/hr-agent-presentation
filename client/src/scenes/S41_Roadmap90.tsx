@@ -31,7 +31,7 @@ export default function S41_Roadmap90() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }}>
           <div>
             <SceneTitle size="md">מפת דרכים 90 יום</SceneTitle>
             <p className="text-white/40 text-3xl mt-1">מהרעיון לאייג׳נט פעיל, בשלושה חודשים</p>

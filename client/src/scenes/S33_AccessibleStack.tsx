@@ -12,7 +12,7 @@ export default function S33_AccessibleStack() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-6xl space-y-8">
+        <div className="w-full max-w-6xl" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)', display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4vw,4rem)' }}>
           <div>
             <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">פרק שלישי: לבנות</p>
             <SceneTitle size="md">הסטאק הנגיש</SceneTitle>

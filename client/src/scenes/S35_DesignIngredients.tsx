@@ -13,12 +13,12 @@ export default function S35_DesignIngredients() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div className="w-full max-w-7xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4vw,4rem)' }}>
           <div>
             <SceneTitle size="md">מרכיבי העיצוב</SceneTitle>
             <p className="text-white/50 mt-2 text-3xl">שישה מרכיבים שכל אייג׳נט HR צריך</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(1.25rem,2.5vw,2.5rem)' }}>
             {INGREDIENTS.map((ing, i) => (
               <GlassCard key={i}>
                 <div className="text-3xl mb-2">{ing.icon}</div>

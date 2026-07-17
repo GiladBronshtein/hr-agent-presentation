@@ -19,7 +19,7 @@ export default function S39_MeasuringValue() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }}>
           <div>
             <SceneTitle size="md">מדידת ערך</SceneTitle>
             <p className="text-white/50 mt-2 text-3xl">מדדים שמשכנעים את ה-CFO</p>
