@@ -162,9 +162,9 @@ export default function S00_ColdOpen() {
                 <span style={{ color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)', fontFamily: "'Heebo', sans-serif" }}>
                   {stat.label}
                 </span>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem' }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.2cqw, 3.25rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', direction: 'ltr', justifyContent: 'flex-end', minWidth: '9.5rem', flexShrink: 0 }}>
                   <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.2cqw, 3.25rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em', minWidth: '2ch', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{stat.value}</span>
                 </div>
               </div>
             ))}
