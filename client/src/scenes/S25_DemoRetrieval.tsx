@@ -27,32 +27,32 @@ export default function S25_DemoRetrieval() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">שלב 2</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 2</p>
             <SceneTitle size="md">איסוף מידע</SceneTitle>
           </div>
           <div className="space-y-2">
             {RETRIEVALS.map((r, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg transition-all duration-500"
+              <div key={i} className="flex items-center gap-5 p-3 rounded-lg transition-all duration-500"
                 style={{
                   opacity: i < visible ? 1 : 0,
                   transform: i < visible ? 'none' : 'translateX(20px)',
                   background: 'rgba(255,255,255,0.03)',
                   border: '1px solid rgba(255,255,255,0.06)',
                 }}>
-                <span className="text-lg">{r.icon}</span>
+                <span className="text-3xl">{r.icon}</span>
                 <div className="flex-1">
-                  <span className="text-white/40 text-xs">{r.source}</span>
-                  <p className="text-white/70 text-sm">{r.data}</p>
+                  <span className="text-white/40 text-3xl">{r.source}</span>
+                  <p className="text-white/70 text-3xl">{r.data}</p>
                 </div>
-                {i < visible && <span style={{ color: '#10B981' }} className="text-sm">✓</span>}
+                {i < visible && <span style={{ color: '#10B981' }} className="text-3xl">✓</span>}
               </div>
             ))}
           </div>
           {visible >= RETRIEVALS.length && (
             <div className="p-3 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-              <p className="text-sm" style={{ color: '#10B981' }}>✓ כל המידע נאסף, מתחיל תכנון</p>
+              <p className="text-3xl" style={{ color: '#10B981' }}>✓ כל המידע נאסף, מתחיל תכנון</p>
             </div>
           )}
         </div>

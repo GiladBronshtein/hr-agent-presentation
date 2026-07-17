@@ -13,18 +13,18 @@ export default function S35_DesignIngredients() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">מרכיבי העיצוב</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">שישה מרכיבים שכל אייג׳נט HR צריך</p>
+            <p className="text-white/50 mt-2 text-3xl">שישה מרכיבים שכל אייג׳נט HR צריך</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {INGREDIENTS.map((ing, i) => (
               <GlassCard key={i}>
-                <div className="text-xl mb-2">{ing.icon}</div>
-                <h3 className="text-white font-bold text-sm mb-1">{ing.title}</h3>
-                <p className="text-white/50 text-xs mb-2 leading-relaxed">{ing.desc}</p>
-                <div className="p-2 rounded-lg text-xs font-mono"
+                <div className="text-3xl mb-2">{ing.icon}</div>
+                <h3 className="text-white font-bold text-3xl mb-1">{ing.title}</h3>
+                <p className="text-white/50 text-3xl mb-2 leading-relaxed">{ing.desc}</p>
+                <div className="p-2 rounded-lg text-3xl font-mono"
                   style={{ background: 'rgba(99,102,241,0.06)', color: 'rgba(99,102,241,0.7)', border: '1px solid rgba(99,102,241,0.12)' }}>
                   {ing.example}
                 </div>

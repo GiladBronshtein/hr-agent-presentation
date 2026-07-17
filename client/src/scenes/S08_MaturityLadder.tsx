@@ -15,15 +15,15 @@ export default function S08_MaturityLadder() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">סולם הבגרות</SceneTitle>
-            <p className="text-white/40 text-sm mt-2">לא כל שימוש ב-AI הוא אייג׳נט</p>
+            <p className="text-white/40 text-3xl mt-2">לא כל שימוש ב-AI הוא אייג׳נט</p>
           </div>
           <div className="space-y-3">
             {LEVELS.map((level, i) => (
               <div key={i}
-                className="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200"
+                className="flex items-center gap-6 p-6 rounded-xl cursor-pointer transition-all duration-200"
                 style={{
                   background: hovered === i ? level.color + '12' : 'rgba(255,255,255,0.03)',
                   border: hovered === i ? `1px solid ${level.color}30` : '1px solid rgba(255,255,255,0.06)',
@@ -32,18 +32,18 @@ export default function S08_MaturityLadder() {
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
               >
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-lg shrink-0"
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-3xl shrink-0"
                   style={{ background: level.color + '20', color: level.color, border: `1px solid ${level.color}30` }}>
                   {level.num}
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-5">
                     <span className="font-bold text-white">{level.label}</span>
-                    <span className="text-white/40 text-sm">{level.desc}</span>
+                    <span className="text-white/40 text-3xl">{level.desc}</span>
                   </div>
                   <div className="flex gap-2 mt-1">
                     {level.examples.map((ex) => (
-                      <span key={ex} className="text-xs px-2 py-0.5 rounded"
+                      <span key={ex} className="text-3xl px-2 py-0.5 rounded"
                         style={{ background: level.color + '10', color: level.color + 'cc', border: `1px solid ${level.color}20` }}>
                         {ex}
                       </span>
@@ -51,7 +51,7 @@ export default function S08_MaturityLadder() {
                   </div>
                 </div>
                 {level.num === 4 && (
-                  <span className="text-xs px-2 py-1 rounded-full font-medium"
+                  <span className="text-3xl px-2 py-1 rounded-full font-medium"
                     style={{ background: 'rgba(99,102,241,0.15)', color: '#6366F1', border: '1px solid rgba(99,102,241,0.3)' }}>
                     ← אנחנו כאן
                   </span>
@@ -59,7 +59,7 @@ export default function S08_MaturityLadder() {
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-sm text-center">
+          <p className="text-white/30 text-3xl text-center">
             הפיילוט הראשון צריך להיות שלב 4, פשוט, מדיד, בסיכון נמוך
           </p>
         </div>

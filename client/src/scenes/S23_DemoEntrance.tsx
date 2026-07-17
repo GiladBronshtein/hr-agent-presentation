@@ -176,7 +176,7 @@ export default function S23_DemoEntrance() {
                 borderRadius: '8px',
                 background: step.color + '0E', border: `1px solid ${step.color}25`,
               }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(0.55rem, 0.75vw, 0.7rem)', color: step.color + '80' }}>{step.num}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.75rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
               </div>
               {i < DEMO_STEPS.length - 1 && (

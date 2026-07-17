@@ -169,7 +169,7 @@ export default function S02_Agenda() {
                   <p
                     style={{
                       color: 'rgba(255,255,255,0.88)',
-                      fontSize: '0.95rem',
+                      fontSize: '1.7rem',
                       fontWeight: 600,
                       lineHeight: 1.45,
                       fontFamily: "'DM Sans', sans-serif",
@@ -202,7 +202,7 @@ export default function S02_Agenda() {
           className="animate-fade-in stagger-9"
           style={{
             color: 'rgba(255,255,255,0.25)',
-            fontSize: '0.8rem',
+            fontSize: '1.15rem',
             textAlign: 'center',
             fontFamily: "'DM Sans', sans-serif",
           }}

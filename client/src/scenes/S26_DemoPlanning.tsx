@@ -23,25 +23,25 @@ export default function S26_DemoPlanning() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">שלב 3</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 3</p>
             <SceneTitle size="md">תכנון</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">האייג׳נט בונה תוכנית קליטה מותאמת</p>
+            <p className="text-white/40 text-3xl mt-1">האייג׳נט בונה תוכנית קליטה מותאמת</p>
           </div>
           <div className="space-y-3">
             {PLAN_STEPS.map((step, i) => (
-              <div key={i} className="p-4 rounded-xl transition-all duration-500"
+              <div key={i} className="p-6 rounded-xl transition-all duration-500"
                 style={{
                   opacity: i < visible ? 1 : 0,
                   transform: i < visible ? 'none' : 'translateY(10px)',
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                 }}>
-                <p className="text-white/60 text-xs font-medium mb-2">{step.day}</p>
+                <p className="text-white/60 text-3xl font-medium mb-2">{step.day}</p>
                 <div className="flex flex-wrap gap-2">
                   {step.tasks.map((task) => (
-                    <span key={task} className="text-xs px-2 py-1 rounded-lg"
+                    <span key={task} className="text-3xl px-2 py-1 rounded-lg"
                       style={{ background: 'rgba(99,102,241,0.1)', color: 'rgba(99,102,241,0.9)', border: '1px solid rgba(99,102,241,0.2)' }}>
                       {task}
                     </span>

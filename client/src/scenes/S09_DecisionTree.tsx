@@ -22,7 +22,7 @@ export default function S09_DecisionTree() {
     <div className="flex gap-2">
       {(['yes', 'no'] as const).map((v) => (
         <button key={v} onClick={() => set(current === v ? null : v)}
-          className="flex-1 py-2 rounded-lg text-sm font-medium transition-all"
+          className="flex-1 py-2 rounded-lg text-3xl font-medium transition-all"
           style={{
             background: current === v ? (v === 'yes' ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)') : 'rgba(255,255,255,0.05)',
             border: current === v ? `1px solid ${v === 'yes' ? 'rgba(16,185,129,0.4)' : 'rgba(244,63,94,0.4)'}` : '1px solid rgba(255,255,255,0.08)',
@@ -37,34 +37,34 @@ export default function S09_DecisionTree() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-2xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">עץ ההחלטות</SceneTitle>
-            <p className="text-white/40 text-sm mt-2">ענו על שלוש שאלות</p>
+            <p className="text-white/40 text-3xl mt-2">ענו על שלוש שאלות</p>
           </div>
-          <div className="space-y-4">
-            <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="text-white/80 text-sm font-medium mb-3">1. האם השלבים תמיד זהים?</p>
+          <div className="space-y-8">
+            <div className="p-6 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <p className="text-white/80 text-3xl font-medium mb-3">1. האם השלבים תמיד זהים?</p>
               <Btn val={q1} current={q1} set={setQ1} yes="כן, תמיד" no="לא, משתנה" />
             </div>
             {q1 === 'no' && (
-              <div className="p-4 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <p className="text-white/80 text-sm font-medium mb-3">2. האם נדרש הקשר מורכב?</p>
+              <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <p className="text-white/80 text-3xl font-medium mb-3">2. האם נדרש הקשר מורכב?</p>
                 <Btn val={q2} current={q2} set={setQ2} yes="כן" no="לא" />
               </div>
             )}
             {q1 === 'no' && q2 === 'yes' && (
-              <div className="p-4 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <p className="text-white/80 text-sm font-medium mb-3">3. האם הפעולה רגישה?</p>
+              <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <p className="text-white/80 text-3xl font-medium mb-3">3. האם הפעולה רגישה?</p>
                 <Btn val={q3} current={q3} set={setQ3} yes="כן, רגישה" no="לא, בסיכון נמוך" />
               </div>
             )}
           </div>
           {rec && (
-            <div className="p-5 rounded-xl animate-fade-in text-center" style={{ background: rec.color + '12', border: `1px solid ${rec.color}30` }}>
-              <div className="text-3xl mb-2">{rec.icon}</div>
-              <h3 className="text-lg font-bold mb-1" style={{ color: rec.color }}>{rec.label}</h3>
-              <p className="text-white/60 text-sm">{rec.desc}</p>
+            <div className="p-7 rounded-xl animate-fade-in text-center" style={{ background: rec.color + '12', border: `1px solid ${rec.color}30` }}>
+              <div className="text-5xl mb-2">{rec.icon}</div>
+              <h3 className="text-3xl font-bold mb-1" style={{ color: rec.color }}>{rec.label}</h3>
+              <p className="text-white/60 text-3xl">{rec.desc}</p>
             </div>
           )}
         </div>

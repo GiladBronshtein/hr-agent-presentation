@@ -26,9 +26,9 @@ export default function S27_DemoTools() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">שלב 4</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 4</p>
             <SceneTitle size="md">שימוש בכלים</SceneTitle>
           </div>
           <div className="terminal-window">
@@ -36,7 +36,7 @@ export default function S27_DemoTools() {
               <div className="terminal-dot" style={{ background: '#F43F5E' }} />
               <div className="terminal-dot" style={{ background: '#F59E0B' }} />
               <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/30 text-xs mr-2">OnboardBot: tool calls</span>
+              <span className="text-white/30 text-3xl mr-2">OnboardBot: tool calls</span>
             </div>
             <div className="terminal-body space-y-3">
               {TOOL_CALLS.map((call, i) => (
@@ -46,7 +46,7 @@ export default function S27_DemoTools() {
                     <span className="terminal-prompt">→</span>
                     <span className="text-blue-300">{call.tool}</span>
                   </div>
-                  <div className="terminal-line mr-4 text-white/40 text-xs">{call.args}</div>
+                  <div className="terminal-line mr-4 text-white/40 text-3xl">{call.args}</div>
                   {i < visible && (
                     <div className="terminal-line mr-4">
                       <span style={{ color: statusColors[call.status as keyof typeof statusColors] }}>
@@ -58,7 +58,7 @@ export default function S27_DemoTools() {
               ))}
             </div>
           </div>
-          <p className="text-white/40 text-xs text-center">
+          <p className="text-white/40 text-3xl text-center">
             כל פעולה מתועדת, מי, מה, מתי, למה
           </p>
         </div>

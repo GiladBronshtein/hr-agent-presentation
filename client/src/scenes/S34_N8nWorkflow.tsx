@@ -24,10 +24,10 @@ export default function S34_N8nWorkflow() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">n8n Workflow</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">ויזואליזציה של זרימת האייג׳נט</p>
+            <p className="text-white/40 text-3xl mt-1">ויזואליזציה של זרימת האייג׳נט</p>
           </div>
           <div className="relative h-48 rounded-2xl overflow-hidden"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -52,7 +52,7 @@ export default function S34_N8nWorkflow() {
                   left: `${node.x}%`, top: `${node.y}%`,
                   transform: 'translate(-50%, -50%)',
                 }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all"
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-3xl transition-all"
                   style={{
                     background: active === node.id ? node.color + '30' : node.color + '15',
                     border: active === node.id ? `2px solid ${node.color}60` : `1px solid ${node.color}30`,
@@ -60,12 +60,12 @@ export default function S34_N8nWorkflow() {
                   }}>
                   {node.icon}
                 </div>
-                <span className="text-xs text-white/50 whitespace-nowrap">{node.label}</span>
+                <span className="text-3xl text-white/50 whitespace-nowrap">{node.label}</span>
               </button>
             ))}
           </div>
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/50 text-sm text-center">
+          <div className="p-6 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <p className="text-white/50 text-3xl text-center">
               n8n מאפשר בניית זרימות ויזואליות, ללא קוד, עם כלים מוכנים לחיבור
             </p>
           </div>

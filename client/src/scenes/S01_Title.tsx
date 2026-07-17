@@ -169,7 +169,7 @@ export default function S01_Title() {
               transform: mounted ? 'translateY(0)' : 'translateY(16px)',
               transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s cubic-bezier(0.23,1,0.32,1) ${0.5 + i * 0.1}s`,
             }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.65rem, 0.9vw, 0.8rem)', fontWeight: 800, color: ch.color, opacity: 0.6, letterSpacing: '0.05em' }}>{ch.num}</span>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', fontWeight: 800, color: ch.color, opacity: 0.6, letterSpacing: '0.05em' }}>{ch.num}</span>
               <div>
                 <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.875rem, 1.4vw, 1.2rem)', fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>{ch.label}</div>
                 <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.7rem, 1vw, 0.875rem)', color: 'rgba(255,255,255,0.38)', marginTop: '1px' }}>{ch.desc}</div>
@@ -182,7 +182,7 @@ export default function S01_Title() {
         <div className="animate-fade-in stagger-9" style={{
           position: 'absolute', bottom: '5.5rem', left: 'clamp(2.5rem, 6vw, 7rem)',
           display: 'flex', alignItems: 'center', gap: '0.75rem',
-          color: 'rgba(255,255,255,0.2)', fontSize: 'clamp(0.75rem, 1vw, 0.9rem)',
+          color: 'rgba(255,255,255,0.2)', fontSize: 'clamp(1.05rem, 1.4vw, 1.3rem)',
           fontFamily: "'Space Grotesk', sans-serif",
         }}>
           <span>לחצו ← להתחלה</span>

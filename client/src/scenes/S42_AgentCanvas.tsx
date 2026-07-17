@@ -16,16 +16,16 @@ export default function S42_AgentCanvas() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">Agent Canvas</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">מלאו את הקנבס לאייג׳נט שלכם</p>
+            <p className="text-white/40 text-3xl mt-1">מלאו את הקנבס לאייג׳נט שלכם</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {FIELDS.map((field) => (
-              <div key={field.id} className="p-4 rounded-xl"
+              <div key={field.id} className="p-6 rounded-xl"
                 style={{ background: field.color + '08', border: `1px solid ${field.color}20` }}>
-                <label className="text-xs font-bold block mb-2" style={{ color: field.color }}>
+                <label className="text-3xl font-bold block mb-2" style={{ color: field.color }}>
                   {field.label}
                 </label>
                 <textarea
@@ -33,7 +33,7 @@ export default function S42_AgentCanvas() {
                   onChange={e => setValues(prev => ({ ...prev, [field.id]: e.target.value }))}
                   placeholder={field.placeholder}
                   rows={3}
-                  className="w-full text-sm resize-none rounded-lg p-2"
+                  className="w-full text-3xl resize-none rounded-lg p-2"
                   style={{
                     background: 'rgba(255,255,255,0.04)',
                     border: '1px solid rgba(255,255,255,0.08)',
@@ -45,7 +45,7 @@ export default function S42_AgentCanvas() {
             ))}
           </div>
           <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/40 text-xs">
+            <p className="text-white/40 text-3xl">
               {Object.values(values).filter(v => v.trim()).length}/6 שדות מולאו
               {Object.values(values).filter(v => v.trim()).length === 6 && ', הקנבס מוכן! 🎉'}
             </p>

@@ -19,23 +19,23 @@ export default function S39_MeasuringValue() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">מדידת ערך</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">מדדים שמשכנעים את ה-CFO</p>
+            <p className="text-white/50 mt-2 text-3xl">מדדים שמשכנעים את ה-CFO</p>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-6">
             {METRICS.map((cat, i) => (
               <GlassCard key={i}>
-                <p className="text-xs font-bold mb-3" style={{ color: cat.color }}>{cat.category}</p>
+                <p className="text-3xl font-bold mb-3" style={{ color: cat.color }}>{cat.category}</p>
                 <div className="space-y-3">
                   {cat.items.map((item) => (
                     <div key={item.name}>
-                      <p className="text-white/40 text-xs mb-1">{item.name}</p>
+                      <p className="text-white/40 text-3xl mb-1">{item.name}</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-white/30 text-sm line-through">{item.before}</span>
+                        <span className="text-white/30 text-3xl line-through">{item.before}</span>
                         <span className="text-white/20">→</span>
-                        <span className="font-bold text-sm" style={{ color: cat.color }}>{item.after}{item.unit}</span>
+                        <span className="font-bold text-3xl" style={{ color: cat.color }}>{item.after}{item.unit}</span>
                       </div>
                     </div>
                   ))}
@@ -43,8 +43,8 @@ export default function S39_MeasuringValue() {
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
-            <p className="text-white/60 text-sm">
+          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
+            <p className="text-white/60 text-3xl">
               מדדו לפני ואחרי, ה-ROI מספר את הסיפור
             </p>
           </div>

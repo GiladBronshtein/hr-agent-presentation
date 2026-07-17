@@ -19,14 +19,14 @@ export function SpeakerNotes() {
         <div className="flex-1 min-w-0">
           {/* Scene title */}
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-white/40 text-xs font-mono">
+            <span className="text-white/40 text-base font-mono">
               {String(currentSceneIndex + 1).padStart(2, '0')}
             </span>
-            <h3 className="text-white font-bold text-base truncate">
+            <h3 className="text-white font-bold text-xl truncate">
               {currentScene?.hebrewTitle}
             </h3>
             {notes && (
-              <div className="flex items-center gap-1 text-white/40 text-xs shrink-0">
+              <div className="flex items-center gap-1 text-white/40 text-base shrink-0">
                 <Clock size={12} />
                 <span>{notes.estimatedMinutes} דקות</span>
               </div>
@@ -34,29 +34,29 @@ export function SpeakerNotes() {
           </div>
 
           {notes ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-lg">
               {/* Main message */}
               <div>
-                <div className="text-xs text-white/40 uppercase tracking-wide mb-1">מסר מרכזי</div>
+                <div className="text-base text-white/40 uppercase tracking-wide mb-1">מסר מרכזי</div>
                 <p className="text-white/90 leading-relaxed">{notes.mainMessage}</p>
               </div>
 
               {/* Explanation */}
               <div>
-                <div className="text-xs text-white/40 uppercase tracking-wide mb-1">הסבר</div>
+                <div className="text-base text-white/40 uppercase tracking-wide mb-1">הסבר</div>
                 <p className="text-white/70 leading-relaxed">{notes.explanation}</p>
               </div>
 
               {/* Example */}
               <div>
-                <div className="text-xs text-white/40 uppercase tracking-wide mb-1">דוגמה</div>
+                <div className="text-base text-white/40 uppercase tracking-wide mb-1">דוגמה</div>
                 <p className="text-white/70 leading-relaxed">{notes.example}</p>
               </div>
 
               {/* Risk/Limitation */}
               {notes.riskOrLimitation && (
                 <div>
-                  <div className="flex items-center gap-1 text-xs text-yellow-400/70 uppercase tracking-wide mb-1">
+                  <div className="flex items-center gap-1 text-base text-yellow-400/70 uppercase tracking-wide mb-1">
                     <AlertTriangle size={10} />
                     <span>סיכון / מגבלה</span>
                   </div>
@@ -67,14 +67,14 @@ export function SpeakerNotes() {
               {/* Audience question */}
               {notes.audienceQuestion && (
                 <div>
-                  <div className="text-xs text-blue-400/70 uppercase tracking-wide mb-1">שאלה לקהל</div>
+                  <div className="text-base text-blue-400/70 uppercase tracking-wide mb-1">שאלה לקהל</div>
                   <p className="text-blue-300/80 leading-relaxed italic">"{notes.audienceQuestion}"</p>
                 </div>
               )}
 
               {/* Transition */}
               <div>
-                <div className="flex items-center gap-1 text-xs text-white/40 uppercase tracking-wide mb-1">
+                <div className="flex items-center gap-1 text-base text-white/40 uppercase tracking-wide mb-1">
                   <ArrowLeft size={10} />
                   <span>מעבר לסצנה הבאה</span>
                 </div>
@@ -82,7 +82,7 @@ export function SpeakerNotes() {
               </div>
             </div>
           ) : (
-            <p className="text-white/40 text-sm">אין הערות לסצנה זו</p>
+            <p className="text-white/40 text-lg">אין הערות לסצנה זו</p>
           )}
         </div>
 

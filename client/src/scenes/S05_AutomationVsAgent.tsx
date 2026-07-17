@@ -88,6 +88,9 @@ export default function S05_AutomationVsAgent() {
         position: 'relative', zIndex: 10,
         width: '100%', height: '100%',
         display: 'grid', gridTemplateColumns: '1fr 1fr',
+        paddingBottom: 'clamp(5rem, 9vw, 8rem)',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
         opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease',
       }}>
 
@@ -136,7 +139,7 @@ export default function S05_AutomationVsAgent() {
                 transform: mounted ? 'translateX(0)' : 'translateX(-20px)',
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
-                <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)', flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontSize: 'clamp(1.5rem, 2.1vw, 2rem)', flexShrink: 0 }}>{t.icon}</span>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)' }}>{t.text}</span>
               </div>
             ))}
@@ -206,7 +209,7 @@ export default function S05_AutomationVsAgent() {
                 transform: mounted ? 'translateX(0)' : 'translateX(20px)',
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
-                <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)', flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontSize: 'clamp(1.5rem, 2.1vw, 2rem)', flexShrink: 0 }}>{t.icon}</span>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.7)' }}>{t.text}</span>
               </div>
             ))}
@@ -227,22 +230,25 @@ export default function S05_AutomationVsAgent() {
         </div>
       </div>
 
-      {/* Bottom takeaway */}
+      {/* Bottom takeaway — placed BELOW the controls bar, never overlapping content */}
       <div style={{
-        position: 'absolute', bottom: 'clamp(3.5rem, 5.5vw, 5.5rem)', left: 0, right: 0,
-        display: 'flex', justifyContent: 'center', zIndex: 10,
+        position: 'absolute',
+        bottom: 'clamp(4.5rem, 7vw, 6.5rem)',
+        left: 0, right: 0,
+        display: 'flex', justifyContent: 'center', zIndex: 4,
         opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease 0.9s',
+        pointerEvents: 'none',
       }}>
         <div style={{
-          padding: 'clamp(0.6rem, 1vw, 0.875rem) clamp(1.5rem, 2.5vw, 2.5rem)',
+          padding: 'clamp(0.5rem, 0.8vw, 0.7rem) clamp(1.25rem, 2vw, 2rem)',
           borderRadius: '100px',
-          background: 'rgba(99,102,241,0.09)',
+          background: 'rgba(10,10,30,0.85)',
           border: '1px solid rgba(99,102,241,0.18)',
           backdropFilter: 'blur(12px)',
         }}>
           <span style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(0.9rem, 1.4vw, 1.3rem)',
+            fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
             color: 'rgba(255,255,255,0.55)',
           }}>
             אוטומציה מבצעת פקודות.{' '}

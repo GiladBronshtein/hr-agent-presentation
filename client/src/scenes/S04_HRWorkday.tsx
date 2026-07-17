@@ -11,22 +11,22 @@ export default function S04_HRWorkday() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">ניתוח תהליכים</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">ניתוח תהליכים</p>
             <SceneTitle size="md">יום העבודה של HR</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">המידע קיים, החיבור עדיין ידני</p>
+            <p className="text-white/50 mt-2 text-3xl">המידע קיים, החיבור עדיין ידני</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {PROCESSES.map((proc, i) => (
               <GlassCard key={i}>
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-white font-bold text-base">{proc.name}</h3>
-                  <span className="text-xs text-white/40">{proc.hours} שעות</span>
+                  <h3 className="text-white font-bold text-3xl">{proc.name}</h3>
+                  <span className="text-3xl text-white/40">{proc.hours} שעות</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {proc.systems.map((sys) => (
-                    <span key={sys} className="text-xs px-2 py-0.5 rounded"
+                    <span key={sys} className="text-3xl px-2 py-0.5 rounded"
                       style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }}>
                       {sys}
                     </span>
@@ -36,13 +36,13 @@ export default function S04_HRWorkday() {
                   <div className="flex-1 h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
                     <div className="h-full rounded-full" style={{ width: `${(proc.steps / 12) * 100}%`, background: 'linear-gradient(90deg, #6366F1, #10B981)' }} />
                   </div>
-                  <span className="text-xs text-white/30">{proc.steps} שלבים</span>
+                  <span className="text-3xl text-white/30">{proc.steps} שלבים</span>
                 </div>
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
-            <p className="text-white/60 text-sm">
+          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
+            <p className="text-white/60 text-3xl">
               ממוצע: <span className="text-white font-bold">6+ מערכות</span> לכל תהליך משמעותי
             </p>
           </div>

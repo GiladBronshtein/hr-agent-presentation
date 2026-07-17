@@ -22,13 +22,13 @@ export default function S37_Permissions() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
             <SceneTitle size="md">מטריצת הרשאות</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">מה האייג׳נט יכול לעשות, ומה אסור</p>
+            <p className="text-white/40 text-3xl mt-1">מה האייג׳נט יכול לעשות, ומה אסור</p>
           </div>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="grid grid-cols-4 p-3 text-xs text-white/40 uppercase tracking-widest"
+            <div className="grid grid-cols-4 p-3 text-3xl text-white/40 uppercase tracking-widest"
               style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <span>פעולה</span>
               <span>סיכון</span>
@@ -38,12 +38,12 @@ export default function S37_Permissions() {
             {MATRIX.map((row, i) => {
               const cfg = RISK_CONFIG[row.risk as keyof typeof RISK_CONFIG];
               return (
-                <div key={i} className="grid grid-cols-4 p-3 text-sm items-center"
+                <div key={i} className="grid grid-cols-4 p-3 text-3xl items-center"
                   style={{ borderBottom: i < MATRIX.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: row.risk === 'blocked' ? 'rgba(255,255,255,0.02)' : undefined }}>
                   <span className="text-white/70">{row.action}</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full w-fit" style={{ background: cfg.color + '15', color: cfg.color }}>{cfg.label}</span>
+                  <span className="text-3xl px-2 py-0.5 rounded-full w-fit" style={{ background: cfg.color + '15', color: cfg.color }}>{cfg.label}</span>
                   <span style={{ color: row.auto ? '#10B981' : 'rgba(255,255,255,0.3)' }}>{row.auto ? '✓' : ' - '}</span>
-                  <span className="text-white/40 text-xs">{row.note}</span>
+                  <span className="text-white/40 text-3xl">{row.note}</span>
                 </div>
               );
             })}

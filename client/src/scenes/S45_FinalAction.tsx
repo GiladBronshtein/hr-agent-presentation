@@ -11,17 +11,17 @@ export default function S45_FinalAction() {
   return (
     <SceneBase variant="chapter-break">
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-8 text-center">
+        <div className="w-full max-w-6xl space-y-8 text-center">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-3">הצעד הבא</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-3">הצעד הבא</p>
             <SceneTitle size="lg">
               מה תעשו<br />
               <span style={{ color: '#10B981' }}>מחר בבוקר?</span>
             </SceneTitle>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {ACTIONS.map((action, i) => (
-              <div key={i} className="p-5 rounded-xl text-center animate-fade-in-up"
+              <div key={i} className="p-7 rounded-xl text-center animate-fade-in-up"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -29,17 +29,17 @@ export default function S45_FinalAction() {
                   animationFillMode: 'both',
                   opacity: 0,
                 }}>
-                <span className="text-3xl block mb-3">{action.icon}</span>
-                <h3 className="text-white font-bold text-sm mb-1">{action.title}</h3>
-                <p className="text-white/40 text-xs mb-3">{action.desc}</p>
-                <span className="text-xs px-2 py-1 rounded-full"
+                <span className="text-5xl block mb-3">{action.icon}</span>
+                <h3 className="text-white font-bold text-3xl mb-1">{action.title}</h3>
+                <p className="text-white/40 text-3xl mb-3">{action.desc}</p>
+                <span className="text-3xl px-2 py-1 rounded-full"
                   style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981', border: '1px solid rgba(16,185,129,0.25)' }}>
                   {action.cta}
                 </span>
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-sm">
+          <p className="text-white/30 text-3xl">
             שאלות? המשאבים בנספחים: System Prompt, Blueprint, Evaluation Framework
           </p>
         </div>

@@ -27,9 +27,9 @@ export default function S46_AppendixSystemInstructions() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">נספח א׳</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">נספח א׳</p>
             <SceneTitle size="md">System Prompt לדוגמה</SceneTitle>
           </div>
           <div className="terminal-window">
@@ -37,10 +37,10 @@ export default function S46_AppendixSystemInstructions() {
               <div className="terminal-dot" style={{ background: '#F43F5E' }} />
               <div className="terminal-dot" style={{ background: '#F59E0B' }} />
               <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/30 text-xs mr-2">system_prompt.txt</span>
+              <span className="text-white/30 text-3xl mr-2">system_prompt.txt</span>
             </div>
             <div className="terminal-body">
-              <pre className="text-white/70 text-xs leading-relaxed whitespace-pre-wrap">{SYSTEM_PROMPT}</pre>
+              <pre className="text-white/70 text-3xl leading-relaxed whitespace-pre-wrap">{SYSTEM_PROMPT}</pre>
             </div>
           </div>
         </div>

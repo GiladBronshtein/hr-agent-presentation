@@ -13,22 +13,22 @@ export default function S11_HRRole() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-8">
+        <div className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">תפקיד HR</SceneTitle>
             <p className="text-white/50 mt-2">HR הוא לא רק לקוח, הוא אחד המעצבים</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {ROLES.map((role, i) => (
               <GlassCard key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s`, animationFillMode: 'both', opacity: 0 }}>
-                <div className="text-2xl mb-3">{role.icon}</div>
-                <h3 className="text-white font-bold text-sm mb-1">{role.title}</h3>
-                <p className="text-white/50 text-xs leading-relaxed">{role.desc}</p>
+                <div className="text-4xl mb-3">{role.icon}</div>
+                <h3 className="text-white font-bold text-3xl mb-1">{role.title}</h3>
+                <p className="text-white/50 text-3xl leading-relaxed">{role.desc}</p>
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-            <p className="text-white/70 text-sm">
+          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
+            <p className="text-white/70 text-3xl">
               <strong className="text-white">IT</strong> מחבר את הכלים.{' '}
               <strong style={{ color: '#6366F1' }}>HR</strong> עוזר להגדיר איך עבודה טובה נראית.
             </p>

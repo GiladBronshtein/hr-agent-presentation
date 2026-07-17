@@ -124,7 +124,14 @@ export function SceneBase({ children, className = '', variant = 'dark', chapterC
 
 export function ContentLayout({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`w-full h-full flex flex-col items-center justify-center px-10 md:px-16 lg:px-24 ${className}`}>
+    <div
+      dir="rtl"
+      className={`w-full h-full flex flex-col justify-center ${className}`}
+      style={{
+        padding: 'clamp(1.5rem, 3vw, 3.5rem) clamp(2.5rem, 6vw, 7rem) clamp(5rem, 8vw, 7rem)',
+        boxSizing: 'border-box',
+      }}
+    >
       {children}
     </div>
   );

@@ -113,7 +113,7 @@ export default function S50_PersonalClosing() {
               marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
             }}>
               <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)' }}>✨</span>
-              <span style={{ fontSize: 'clamp(0.7rem, 0.95vw, 0.85rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
+              <span style={{ fontSize: 'clamp(1rem, 1.35vw, 1.25rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
                 תודה שהייתם כאן
               </span>
             </div>
@@ -193,7 +193,7 @@ export default function S50_PersonalClosing() {
             </div>
             <div>
               <div style={{
-                fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)', fontWeight: 700,
+                fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', fontWeight: 700,
                 color: 'rgba(255,255,255,0.25)', fontFamily: "'Space Grotesk', sans-serif",
                 letterSpacing: '0.1em', marginBottom: '0.4rem', textTransform: 'uppercase',
               }}>סרקו להתחבר</div>
@@ -204,7 +204,7 @@ export default function S50_PersonalClosing() {
               }}>LinkedIn</div>
               <div style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(0.75rem, 1vw, 0.9rem)',
+                fontSize: 'clamp(1.05rem, 1.4vw, 1.3rem)',
                 color: 'rgba(255,255,255,0.35)', marginTop: '2px',
               }}>
                 /in/giladbronshtein
@@ -221,7 +221,7 @@ export default function S50_PersonalClosing() {
                   background: 'rgba(99,102,241,0.12)',
                   border: '1px solid rgba(99,102,241,0.22)',
                   color: '#818CF8',
-                  fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)',
+                  fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
                   fontFamily: "'Space Grotesk', sans-serif",
                   fontWeight: 600,
                   textDecoration: 'none',

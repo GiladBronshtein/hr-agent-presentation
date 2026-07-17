@@ -13,22 +13,22 @@ export default function S36_Governance() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">ממשל ואחריות</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">ששה עקרונות לאייג׳נט אחראי</p>
+            <p className="text-white/50 mt-2 text-3xl">ששה עקרונות לאייג׳נט אחראי</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {PRINCIPLES.map((p, i) => (
               <GlassCard key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s`, animationFillMode: 'both', opacity: 0 }}>
-                <div className="text-2xl mb-2">{p.icon}</div>
-                <h3 className="font-bold text-sm mb-1" style={{ color: p.color }}>{p.title}</h3>
-                <p className="text-white/50 text-xs leading-relaxed">{p.desc}</p>
+                <div className="text-4xl mb-2">{p.icon}</div>
+                <h3 className="font-bold text-3xl mb-1" style={{ color: p.color }}>{p.title}</h3>
+                <p className="text-white/50 text-3xl leading-relaxed">{p.desc}</p>
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
-            <p className="text-white/60 text-sm">
+          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
+            <p className="text-white/60 text-3xl">
               ⚠️ ממשל לא מוריד ערך, הוא מה שמאפשר לסמוך על האייג׳נט
             </p>
           </div>

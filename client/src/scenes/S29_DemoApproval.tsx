@@ -100,10 +100,10 @@ export default function S29_DemoApproval() {
                 <FileText size={20} style={{ color: '#F59E0B' }} />
               </div>
               <div>
-                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.95rem', color: 'white', margin: '0 0 0.25rem' }}>
+                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '1.7rem', color: 'white', margin: '0 0 0.25rem' }}>
                   תוכנית קליטה, יעל כהן
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.8rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.15rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
                   האייג׳נט הכין תוכנית מלאה ומחכה לאישורך לפני שליחה
                 </p>
               </div>
@@ -163,7 +163,7 @@ export default function S29_DemoApproval() {
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   color: 'rgba(255,255,255,0.8)',
-                  fontSize: '0.85rem',
+                  fontSize: '2.1rem',
                   fontFamily: "'DM Sans', sans-serif",
                   resize: 'none',
                   outline: 'none',
@@ -191,7 +191,7 @@ export default function S29_DemoApproval() {
                   background: 'linear-gradient(135deg, #10B981, #059669)',
                   border: 'none',
                   color: 'white',
-                  fontSize: '0.9rem',
+                  fontSize: '1.65rem',
                   fontWeight: 700,
                   fontFamily: "'Space Grotesk', sans-serif",
                   cursor: 'pointer',
@@ -217,7 +217,7 @@ export default function S29_DemoApproval() {
                   background: 'rgba(244,63,94,0.08)',
                   border: '1px solid rgba(244,63,94,0.25)',
                   color: '#FB7185',
-                  fontSize: '0.9rem',
+                  fontSize: '1.65rem',
                   fontWeight: 700,
                   fontFamily: "'Space Grotesk', sans-serif",
                   cursor: 'pointer',
@@ -287,7 +287,7 @@ export default function S29_DemoApproval() {
             }}
           >
             <AlertTriangle size={36} style={{ color: '#F43F5E', margin: '0 auto 1rem', display: 'block' }} />
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.125rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '2.6rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
               נדחה, האייג׳נט ישנה ויחזור
             </h3>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>

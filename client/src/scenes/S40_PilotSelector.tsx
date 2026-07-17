@@ -18,23 +18,23 @@ export default function S40_PilotSelector() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">פרק רביעי: להטמיע</p>
+            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">פרק רביעי: להטמיע</p>
             <SceneTitle size="md">בחרו פיילוט</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">מה הפיילוט הנכון לארגון שלכם?</p>
+            <p className="text-white/40 text-3xl mt-1">מה הפיילוט הנכון לארגון שלכם?</p>
           </div>
           <div className="space-y-2">
             {PILOTS.map((pilot) => (
               <button key={pilot.id} onClick={() => setSelected(selected === pilot.id ? null : pilot.id)}
-                className="w-full flex items-center gap-4 p-4 rounded-xl text-right transition-all duration-200"
+                className="w-full flex items-center gap-6 p-6 rounded-xl text-right transition-all duration-200"
                 style={{
                   background: selected === pilot.id ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.03)',
                   border: selected === pilot.id ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.06)',
                 }}>
-                <span className="text-2xl">{pilot.icon}</span>
-                <span className="flex-1 text-white/80 font-medium text-sm">{pilot.name}</span>
-                <div className="flex gap-3 text-xs">
+                <span className="text-4xl">{pilot.icon}</span>
+                <span className="flex-1 text-white/80 font-medium text-3xl">{pilot.name}</span>
+                <div className="flex gap-5 text-3xl">
                   <div className="text-center">
                     <p className="text-white/30 mb-0.5">סיכון</p>
                     <span style={{ color: COLORS[pilot.risk as keyof typeof COLORS] }}>{LABELS[pilot.risk as keyof typeof LABELS]}</span>
@@ -47,7 +47,7 @@ export default function S40_PilotSelector() {
                     <p className="text-white/30 mb-0.5">ROI</p>
                     <span style={{ color: COLORS[pilot.roi as keyof typeof COLORS] }}>{LABELS[pilot.roi as keyof typeof LABELS]}</span>
                   </div>
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm"
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-3xl"
                     style={{ background: 'rgba(99,102,241,0.15)', color: '#6366F1' }}>
                     {pilot.score}
                   </div>
@@ -56,8 +56,8 @@ export default function S40_PilotSelector() {
             ))}
           </div>
           {selected && (
-            <div className="p-4 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              <p className="text-white/70 text-sm">
+            <div className="p-6 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
+              <p className="text-white/70 text-3xl">
                 ✓ בחרתם: <strong style={{ color: '#6366F1' }}>{PILOTS.find(p => p.id === selected)?.name}</strong>
                 {' '} -  מתאים לפיילוט ראשון
               </p>

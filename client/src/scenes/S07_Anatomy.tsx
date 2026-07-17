@@ -183,7 +183,7 @@ export default function S07_Anatomy() {
                     <h3
                       style={{
                         fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: '1.125rem',
+                        fontSize: '2.6rem',
                         fontWeight: 700,
                         color: selectedComp.color,
                         margin: 0,
@@ -210,7 +210,7 @@ export default function S07_Anatomy() {
                 <p
                   style={{
                     color: 'rgba(255,255,255,0.7)',
-                    fontSize: '0.9rem',
+                    fontSize: '1.65rem',
                     lineHeight: 1.65,
                     fontFamily: "'DM Sans', sans-serif",
                     margin: 0,
@@ -221,7 +221,7 @@ export default function S07_Anatomy() {
               </div>
             ) : (
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif" }}>
+                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '2.1rem', fontFamily: "'DM Sans', sans-serif" }}>
                   בחרו רכיב לפרטים
                 </p>
               </div>

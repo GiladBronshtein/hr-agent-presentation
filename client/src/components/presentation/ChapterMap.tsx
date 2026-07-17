@@ -99,7 +99,7 @@ export function ChapterMap() {
             >
               מפת המצגת
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
               {SCENES.length} סצנות · לחץ לניווט ישיר
             </p>
           </div>
@@ -165,7 +165,7 @@ export function ChapterMap() {
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 700,
-                      fontSize: '0.95rem',
+                      fontSize: '1.7rem',
                       color: chapter.color,
                       letterSpacing: '-0.01em',
                     }}
@@ -214,7 +214,7 @@ export function ChapterMap() {
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem' }}>
+          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '2.6rem' }}>
             לחץ על סצנה לניווט ישיר
           </span>
           <kbd

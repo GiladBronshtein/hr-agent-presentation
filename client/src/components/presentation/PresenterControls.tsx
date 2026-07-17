@@ -1,15 +1,14 @@
 /**
  * PresenterControls — AI-Native UI + Glassmorphism
  * Design: Floating glassmorphic pill, indigo/cyan accents, smooth 200ms transitions
- * Anti-patterns avoided: Heavy chrome, cluttered toolbar
+ * Auto-hide: fades out after 3.5s of inactivity, reappears on any mouse/key/touch
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS, getCurrentChapter } from '../../data/scenes';
 import {
   LayoutGrid, StickyNote, Maximize, Minimize,
   ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff,
-  Keyboard
 } from 'lucide-react';
 
 const CHAPTER_COLORS: Record<string, string> = {
@@ -19,6 +18,8 @@ const CHAPTER_COLORS: Record<string, string> = {
   'להטמיע': '#F59E0B',
   'נספח': '#64748B',
 };
+
+const HIDE_DELAY = 3500;
 
 export function PresenterControls() {
   const {
@@ -39,7 +40,8 @@ export function PresenterControls() {
   } = usePresentationStore();
 
   const [isVisible, setIsVisible] = useState(true);
-  const [hideTimerRef, setHideTimerRef] = useState<ReturnType<typeof setTimeout> | null>(null);
+  // Use a ref for the timer to avoid stale closure issues
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentScene = SCENES[currentSceneIndex];
   const currentChapter = getCurrentChapter(currentSceneIndex);
@@ -47,29 +49,35 @@ export function PresenterControls() {
   const chapterColor = CHAPTER_COLORS[currentChapter] || '#6366F1';
   const progress = totalScenes > 1 ? (currentSceneIndex / (totalScenes - 1)) * 100 : 0;
 
-  const resetHideTimer = useCallback(() => {
+  const scheduleHide = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setIsVisible(false), HIDE_DELAY);
+  }, []);
+
+  const showAndReschedule = useCallback(() => {
     setIsVisible(true);
-    if (hideTimerRef) clearTimeout(hideTimerRef);
-    const t = setTimeout(() => setIsVisible(false), 3500);
-    setHideTimerRef(t);
-  }, [hideTimerRef]);
+    scheduleHide();
+  }, [scheduleHide]);
 
   useEffect(() => {
-    window.addEventListener('mousemove', resetHideTimer);
-    window.addEventListener('keydown', resetHideTimer);
-    window.addEventListener('touchstart', resetHideTimer);
-    const initial = setTimeout(() => setIsVisible(false), 3500);
+    // Start initial hide timer
+    scheduleHide();
+
+    window.addEventListener('mousemove', showAndReschedule);
+    window.addEventListener('keydown', showAndReschedule);
+    window.addEventListener('touchstart', showAndReschedule);
+
     return () => {
-      window.removeEventListener('mousemove', resetHideTimer);
-      window.removeEventListener('keydown', resetHideTimer);
-      window.removeEventListener('touchstart', resetHideTimer);
-      clearTimeout(initial);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      window.removeEventListener('mousemove', showAndReschedule);
+      window.removeEventListener('keydown', showAndReschedule);
+      window.removeEventListener('touchstart', showAndReschedule);
     };
-  }, []);
+  }, [scheduleHide, showAndReschedule]);
 
   return (
     <>
-      {/* ── Top progress bar ── */}
+      {/* ── Top progress bar (always visible) ── */}
       <div
         className="fixed top-0 left-0 right-0 z-50"
         style={{ height: '2px', background: 'rgba(255,255,255,0.06)' }}
@@ -90,7 +98,7 @@ export function PresenterControls() {
         />
       </div>
 
-      {/* ── Chapter + scene counter (top right) ── */}
+      {/* ── Chapter + scene counter (top right, auto-hides) ── */}
       <div
         className="fixed top-4 right-5 z-50 flex items-center gap-2"
         style={{
@@ -120,7 +128,7 @@ export function PresenterControls() {
         </span>
       </div>
 
-      {/* ── Bottom floating controls pill ── */}
+      {/* ── Bottom floating controls pill (auto-hides) ── */}
       <div
         className="fixed bottom-5 left-0 right-0 z-50 flex justify-center"
         style={{
@@ -129,6 +137,8 @@ export function PresenterControls() {
           transition: 'opacity 350ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1)',
           pointerEvents: isVisible ? 'auto' : 'none',
         }}
+        // Hovering the controls bar keeps it visible
+        onMouseEnter={showAndReschedule}
       >
         <div
           dir="rtl"

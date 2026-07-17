@@ -74,7 +74,8 @@ function ParticleField() {
 }
 
 export default function S00_ColdOpen() {
-  const [visibleActivities, setVisibleActivities] = useState<number[]>([]);
+  // currentStep tracks how many steps have been shown total (loops forever)
+  const [currentStep, setCurrentStep] = useState(-1);
   const [activeNodeIdx, setActiveNodeIdx] = useState<number>(-1);
   const [mounted, setMounted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -83,19 +84,25 @@ export default function S00_ColdOpen() {
 
   useEffect(() => {
     if (!mounted) return;
-    let idx = 0;
+    let step = 0;
+    // Loop infinitely: advance one step every 900ms
     intervalRef.current = setInterval(() => {
-      if (idx < ACTIVITIES.length) {
-        setVisibleActivities((prev) => [...prev, idx]);
-        setActiveNodeIdx(idx % TOOLS.length);
-        idx++;
-      } else {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        setActiveNodeIdx(-1);
-      }
-    }, 800);
+      setCurrentStep(step);
+      setActiveNodeIdx(step % TOOLS.length);
+      step++;
+    }, 900);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [mounted]);
+
+  // Which activities are currently "visible" in the sliding window
+  // Show the last 8 activities that have been triggered
+  const visibleSet = new Set<number>();
+  if (currentStep >= 0) {
+    const windowStart = Math.max(0, currentStep - 7);
+    for (let s = windowStart; s <= currentStep; s++) {
+      visibleSet.add(s % ACTIVITIES.length);
+    }
+  }
 
   return (
     <SceneBase>
@@ -121,7 +128,7 @@ export default function S00_ColdOpen() {
             width: 'fit-content',
           }}>
             <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.8rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
+            <span style={{ fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
               יום ראשון, עובד חדש
             </span>
           </div>
@@ -129,13 +136,13 @@ export default function S00_ColdOpen() {
           <div className="animate-fade-in-up stagger-2">
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(2.75rem, 5.5vw, 5rem)',
+              fontSize: 'clamp(4.5rem, 8vw, 8rem)',
               fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
               color: 'white', margin: 0,
             }}>מה קורה</h1>
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(2.75rem, 5.5vw, 5rem)',
+              fontSize: 'clamp(4.5rem, 8vw, 8rem)',
               fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
               margin: '0.05em 0 0',
               background: 'linear-gradient(135deg, #818CF8, #6366F1, #22D3EE)',
@@ -144,7 +151,7 @@ export default function S00_ColdOpen() {
           </div>
 
           <p className="animate-fade-in-up stagger-3" style={{
-            color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
+            color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1.6rem, 2.3vw, 2.2rem)',
             lineHeight: 1.6, fontFamily: "'Heebo', sans-serif", margin: 0,
           }}>
             כל קליטה מפעילה שרשרת פעולות ידניות, חוצת מערכות, אנשים ושעות עבודה.
@@ -157,12 +164,12 @@ export default function S00_ColdOpen() {
                 background: stat.color + '0A', border: `1px solid ${stat.color}22`,
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
-                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)', fontFamily: "'Heebo', sans-serif" }}>
+                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1.15rem, 1.6vw, 1.5rem)', fontFamily: "'Heebo', sans-serif" }}>
                   {stat.label}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.25rem' }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.8rem, 1.1vw, 1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(5rem, 8.5vw, 8.5rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5vw, 1.4rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
                 </div>
               </div>
             ))}
@@ -172,7 +179,7 @@ export default function S00_ColdOpen() {
             padding: '1rem 1.25rem', borderRadius: '14px',
             background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
           }}>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(0.9rem, 1.3vw, 1.15rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.5rem, 2.1vw, 2rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
               מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span>, בלי מגע אנושי?
             </p>
           </div>
@@ -209,7 +216,7 @@ export default function S00_ColdOpen() {
                 animation: 'breathe 3s ease-in-out infinite',
               }}>
                 <span style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}>👤</span>
-                <span style={{ fontSize: 'clamp(0.6rem, 0.9vw, 0.75rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
+                <span style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.15rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
               </div>
               {[0, 1].map((r) => (
                 <div key={r} style={{
@@ -239,7 +246,7 @@ export default function S00_ColdOpen() {
                     transition: 'all 0.3s ease', backdropFilter: 'blur(8px)',
                   }}>
                     <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.625rem)', lineHeight: 1 }}>{tool.icon}</span>
-                    <span style={{ fontSize: 'clamp(0.55rem, 0.75vw, 0.7rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
+                    <span style={{ fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
                   </div>
                 </div>
               );
@@ -251,11 +258,11 @@ export default function S00_ColdOpen() {
         <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
+            <span style={{ fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
           </div>
 
           {ACTIVITIES.map((activity, i) => {
-            const isVisible = visibleActivities.includes(i);
+            const isVisible = visibleSet.has(i);
             return (
               <div key={i} style={{
                 padding: '0.75rem 0.875rem', borderRadius: '12px',
@@ -268,8 +275,8 @@ export default function S00_ColdOpen() {
               }}>
                 <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px' }}>{activity.icon}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
-                  <div style={{ fontSize: 'clamp(0.8rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
+                  <div style={{ fontSize: 'clamp(1.1rem, 1.5vw, 1.4rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
                 </div>
               </div>
             );

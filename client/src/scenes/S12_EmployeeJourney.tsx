@@ -1,78 +1,238 @@
-import { useState } from 'react';
-import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+/**
+ * S12: Employee Journey
+ * Conference Hall Edition — full-screen, RTL arrows, massive cards
+ */
+import { useState, useEffect } from 'react';
+import { SceneBase } from '../components/presentation/SceneBase';
 
 type RiskLevel = 'low' | 'medium' | 'high';
-const STAGES: { id: string; label: string; icon: string; risk: RiskLevel; agents: string[] }[] = [
-  { id: 'attract', label: 'גיוס', icon: '🎯', risk: 'low', agents: ['פתיחת משרה', 'חוויית מועמד'] },
-  { id: 'onboard', label: 'קליטה', icon: '👋', risk: 'medium', agents: ['תוכנית קליטה', 'הכנת מנהל'] },
-  { id: 'develop', label: 'פיתוח', icon: '📈', risk: 'medium', agents: ['למידה', 'מוביליות'] },
-  { id: 'engage', label: 'מעורבות', icon: '💬', risk: 'low', agents: ['שירות עובדים', 'תובנות'] },
-  { id: 'exit', label: 'עזיבה', icon: '🚪', risk: 'high', agents: ['שימור ידע'] },
+
+const STAGES: {
+  id: string; label: string; icon: string; risk: RiskLevel;
+  agents: string[]; description: string; color: string;
+}[] = [
+  {
+    id: 'exit', label: 'עזיבה', icon: '🚪', risk: 'high',
+    agents: ['שימור ידע', 'ראיון יציאה'],
+    description: 'תיעוד ידע, ראיון יציאה, העברת תפקיד',
+    color: '#F43F5E',
+  },
+  {
+    id: 'engage', label: 'מעורבות', icon: '💬', risk: 'low',
+    agents: ['שירות עובדים', 'תובנות'],
+    description: 'סקרי מעורבות, תמיכה שוטפת, פולס-צ׳קים',
+    color: '#10B981',
+  },
+  {
+    id: 'develop', label: 'פיתוח', icon: '📈', risk: 'medium',
+    agents: ['למידה', 'מוביליות'],
+    description: 'תוכניות למידה, מסלולי קריירה, מנטורינג',
+    color: '#F59E0B',
+  },
+  {
+    id: 'onboard', label: 'קליטה', icon: '👋', risk: 'medium',
+    agents: ['תוכנית קליטה', 'הכנת מנהל'],
+    description: 'Onboarding מותאם, ציוד, גישות, הכנת מנהל',
+    color: '#F59E0B',
+  },
+  {
+    id: 'attract', label: 'גיוס', icon: '🎯', risk: 'low',
+    agents: ['פתיחת משרה', 'חוויית מועמד'],
+    description: 'פרסום משרה, סינון קורות חיים, תיאום ראיונות',
+    color: '#10B981',
+  },
 ];
 
-const RISK_COLORS = { low: '#10B981', medium: '#F59E0B', high: '#F43F5E' };
-const RISK_LABELS = { low: 'סיכון נמוך', medium: 'דורש אישור', high: 'החלטה אנושית' };
+const RISK_LABELS: Record<RiskLevel, string> = {
+  low: 'סיכון נמוך',
+  medium: 'דורש אישור',
+  high: 'החלטה אנושית',
+};
 
 export default function S12_EmployeeJourney() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const sel = STAGES.find(s => s.id === selected);
+  const [selected, setSelected] = useState<string>('onboard');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
+  const sel = STAGES.find(s => s.id === selected)!;
 
   return (
-    <SceneBase>
-      <ContentLayout>
-        <div className="w-full max-w-4xl space-y-8">
-          <div className="text-center">
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">פרק שני: לראות</p>
-            <SceneTitle size="md">מסע העובד</SceneTitle>
-            <p className="text-white/40 text-sm mt-2">לחצו על שלב לפרטים</p>
-          </div>
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            {STAGES.map((stage, i) => (
-              <div key={stage.id} className="flex items-center gap-2">
-                <button onClick={() => setSelected(selected === stage.id ? null : stage.id)}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200 min-w-[80px]"
-                  style={{
-                    background: selected === stage.id ? RISK_COLORS[stage.risk] + '15' : 'rgba(255,255,255,0.04)',
-                    border: selected === stage.id ? `2px solid ${RISK_COLORS[stage.risk]}50` : '1px solid rgba(255,255,255,0.08)',
-                    transform: selected === stage.id ? 'scale(1.05)' : undefined,
-                  }}>
-                  <span className="text-2xl">{stage.icon}</span>
-                  <span className="text-xs font-medium text-white/70">{stage.label}</span>
-                  <div className="w-2 h-2 rounded-full" style={{ background: RISK_COLORS[stage.risk] }} />
-                </button>
-                {i < STAGES.length - 1 && <span className="text-white/20 text-lg">→</span>}
-              </div>
-            ))}
-          </div>
-          {sel && (
-            <div className="p-5 rounded-xl animate-fade-in" style={{ background: RISK_COLORS[sel.risk] + '10', border: `1px solid ${RISK_COLORS[sel.risk]}25` }}>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">{sel.icon}</span>
-                <h3 className="font-bold text-white">{sel.label}</h3>
-                <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: RISK_COLORS[sel.risk] + '20', color: RISK_COLORS[sel.risk] }}>
-                  {RISK_LABELS[sel.risk]}
-                </span>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                {sel.agents.map(a => (
-                  <span key={a} className="text-sm px-3 py-1 rounded-lg"
-                    style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    🤖 {a}
-                  </span>
-                ))}
-              </div>
+    <SceneBase noBg>
+      {/* Background */}
+      <div style={{ position: 'absolute', inset: 0, background: '#03030A', zIndex: 0 }} />
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 0,
+        background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(99,102,241,0.07) 0%, transparent 70%)',
+      }} />
+      <div className="grid-overlay" />
+      <div className="noise-overlay" />
+
+      {/* Top accent */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '2px', zIndex: 5,
+        background: 'linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.6) 50%, transparent 100%)',
+      }} />
+
+      <div dir="rtl" style={{
+        position: 'relative', zIndex: 10,
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: 'column',
+        padding: 'clamp(1.5rem, 3vw, 3rem) clamp(2rem, 5vw, 6rem) clamp(5rem, 8vw, 7rem)',
+        boxSizing: 'border-box',
+        gap: 'clamp(1.25rem, 2.5vw, 2.5rem)',
+        opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease',
+      }}>
+
+        {/* Header */}
+        <div style={{ textAlign: 'center' }}>
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
+            color: 'rgba(99,102,241,0.7)', marginBottom: '0.5rem',
+          }}>פרק שני: לראות</p>
+          <h1 style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+            fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1,
+            color: '#fff', margin: 0,
+          }}>מסע העובד</h1>
+          <p style={{
+            fontFamily: "'Heebo', sans-serif",
+            fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
+            color: 'rgba(255,255,255,0.4)', marginTop: '0.5rem',
+          }}>לחצו על שלב לפרטים</p>
+        </div>
+
+        {/* Journey Steps — RTL: right to left = גיוס → קליטה → פיתוח → מעורבות → עזיבה */}
+        <div style={{
+          display: 'flex', alignItems: 'stretch',
+          gap: 'clamp(0.5rem, 1vw, 1rem)',
+          justifyContent: 'center',
+          flex: '0 0 auto',
+        }}>
+          {STAGES.slice().reverse().map((stage, i, arr) => (
+            <div key={stage.id} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 1rem)' }}>
+              <button
+                onClick={() => setSelected(stage.id)}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  gap: 'clamp(0.5rem, 0.8vw, 0.75rem)',
+                  padding: 'clamp(1rem, 1.8vw, 1.75rem) clamp(1.25rem, 2vw, 2rem)',
+                  borderRadius: '16px',
+                  minWidth: 'clamp(100px, 13vw, 160px)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
+                  background: selected === stage.id
+                    ? stage.color + '18'
+                    : 'rgba(255,255,255,0.04)',
+                  border: selected === stage.id
+                    ? `2px solid ${stage.color}60`
+                    : '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: selected === stage.id
+                    ? `0 0 30px ${stage.color}20, 0 8px 32px rgba(0,0,0,0.4)`
+                    : '0 4px 16px rgba(0,0,0,0.3)',
+                  transform: selected === stage.id ? 'translateY(-4px) scale(1.03)' : 'translateY(0) scale(1)',
+                }}
+              >
+                <span style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', lineHeight: 1 }}>{stage.icon}</span>
+                <span style={{
+                  fontFamily: "'Heebo', sans-serif",
+                  fontSize: 'clamp(1rem, 1.5vw, 1.4rem)',
+                  fontWeight: 700,
+                  color: selected === stage.id ? '#fff' : 'rgba(255,255,255,0.6)',
+                }}>{stage.label}</span>
+                <div style={{
+                  width: 'clamp(6px, 0.8vw, 10px)', height: 'clamp(6px, 0.8vw, 10px)',
+                  borderRadius: '50%', background: stage.color,
+                  boxShadow: selected === stage.id ? `0 0 10px ${stage.color}` : 'none',
+                }} />
+              </button>
+              {/* RTL arrow: ← pointing right-to-left */}
+              {i < arr.length - 1 && (
+                <span style={{
+                  color: 'rgba(255,255,255,0.2)',
+                  fontSize: 'clamp(1.2rem, 2vw, 2rem)',
+                  flexShrink: 0,
+                  userSelect: 'none',
+                }}>←</span>
+              )}
             </div>
-          )}
-          <div className="flex gap-4 justify-center text-xs">
-            {Object.entries(RISK_COLORS).map(([k, c]) => (
-              <div key={k} className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full" style={{ background: c }} />
-                <span className="text-white/40">{RISK_LABELS[k as keyof typeof RISK_LABELS]}</span>
-              </div>
+          ))}
+        </div>
+
+        {/* Detail Panel */}
+        <div style={{
+          flex: 1,
+          padding: 'clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.5rem, 3vw, 3rem)',
+          borderRadius: '20px',
+          background: sel.color + '0D',
+          border: `1px solid ${sel.color}30`,
+          boxShadow: `0 0 40px ${sel.color}10`,
+          transition: 'all 0.3s ease',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          gap: 'clamp(1rem, 1.8vw, 1.75rem)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.75rem, 1.2vw, 1.25rem)', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 'clamp(2rem, 3vw, 3rem)' }}>{sel.icon}</span>
+            <h3 style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+              fontWeight: 800, color: '#fff', margin: 0,
+            }}>{sel.label}</h3>
+            <span style={{
+              fontFamily: "'Heebo', sans-serif",
+              fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
+              fontWeight: 600,
+              padding: '0.35rem 1rem', borderRadius: '100px',
+              background: sel.color + '20', color: sel.color,
+              border: `1px solid ${sel.color}40`,
+            }}>{RISK_LABELS[sel.risk]}</span>
+          </div>
+
+          <p style={{
+            fontFamily: "'Heebo', sans-serif",
+            fontSize: 'clamp(1rem, 1.6vw, 1.5rem)',
+            color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6,
+          }}>{sel.description}</p>
+
+          <div style={{ display: 'flex', gap: 'clamp(0.5rem, 0.8vw, 0.75rem)', flexWrap: 'wrap' }}>
+            {sel.agents.map(a => (
+              <span key={a} style={{
+                fontFamily: "'Heebo', sans-serif",
+                fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)',
+                padding: 'clamp(0.4rem, 0.7vw, 0.65rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+                borderRadius: '12px',
+                background: 'rgba(255,255,255,0.06)',
+                color: 'rgba(255,255,255,0.75)',
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}>
+                🤖 {a}
+              </span>
             ))}
           </div>
         </div>
-      </ContentLayout>
+
+        {/* Legend */}
+        <div style={{
+          display: 'flex', gap: 'clamp(1.5rem, 3vw, 3rem)', justifyContent: 'center', flexWrap: 'wrap',
+        }}>
+          {([['low', '#10B981'], ['medium', '#F59E0B'], ['high', '#F43F5E']] as const).map(([k, c]) => (
+            <div key={k} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+              <span style={{
+                fontFamily: "'Heebo', sans-serif",
+                fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
+                color: 'rgba(255,255,255,0.4)',
+              }}>{RISK_LABELS[k]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </SceneBase>
   );
 }
