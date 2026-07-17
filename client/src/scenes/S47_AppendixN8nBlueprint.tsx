@@ -10,7 +10,7 @@ const BLUEPRINT = [
   { step: 7, node: 'Log & Notify', desc: 'מתעד ומעדכן', type: 'process' },
 ];
 
-const TYPE_COLORS = { trigger: '#4F7CFF', process: '#70D6A7', tool: '#FFD166', ai: '#A78BFA', approval: '#FF6B6B' };
+const TYPE_COLORS = { trigger: '#6366F1', process: '#10B981', tool: '#F59E0B', ai: '#A78BFA', approval: '#F43F5E' };
 
 export default function S47_AppendixN8nBlueprint() {
   return (

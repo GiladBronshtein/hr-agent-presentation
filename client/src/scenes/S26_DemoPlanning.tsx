@@ -42,7 +42,7 @@ export default function S26_DemoPlanning() {
                 <div className="flex flex-wrap gap-2">
                   {step.tasks.map((task) => (
                     <span key={task} className="text-xs px-2 py-1 rounded-lg"
-                      style={{ background: 'rgba(79,124,255,0.1)', color: 'rgba(79,124,255,0.9)', border: '1px solid rgba(79,124,255,0.2)' }}>
+                      style={{ background: 'rgba(99,102,241,0.1)', color: 'rgba(99,102,241,0.9)', border: '1px solid rgba(99,102,241,0.2)' }}>
                       {task}
                     </span>
                   ))}

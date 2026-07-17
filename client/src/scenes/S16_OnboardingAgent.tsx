@@ -14,7 +14,7 @@ export default function OnboardingAgent() {
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">לפני</p>
               <p className="text-white/70 text-base leading-relaxed">4-6 שעות עבודה ידנית</p>
             </GlassCard>
-            <GlassCard style={{ background: '#FF6B6B10', border: '1px solid #FF6B6B25' }}>
+            <GlassCard style={{ background: '#F43F5E10', border: '1px solid #F43F5E25' }}>
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">אחרי</p>
               <p className="text-white font-medium text-base leading-relaxed">30 דקות בדיקה ואישור</p>
             </GlassCard>
@@ -22,7 +22,7 @@ export default function OnboardingAgent() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/70 text-sm leading-relaxed">מסלול כניסה מותאם, מלא ומאושר</p>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
             <p className="text-white/60 text-sm">HR מאשר לפני שליחה וביצוע</p>
           </div>

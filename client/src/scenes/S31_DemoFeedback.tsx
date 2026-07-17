@@ -28,9 +28,9 @@ export default function S31_DemoFeedback() {
                     <button key={r} onClick={() => setRatings(prev => { const n = [...prev]; n[qi] = r; return n; })}
                       className="w-8 h-8 rounded-lg text-sm font-medium transition-all"
                       style={{
-                        background: ratings[qi] >= r ? 'rgba(79,124,255,0.2)' : 'rgba(255,255,255,0.05)',
-                        border: ratings[qi] >= r ? '1px solid rgba(79,124,255,0.4)' : '1px solid rgba(255,255,255,0.08)',
-                        color: ratings[qi] >= r ? '#4F7CFF' : 'rgba(255,255,255,0.3)',
+                        background: ratings[qi] >= r ? 'rgba(99,102,241,0.2)' : 'rgba(255,255,255,0.05)',
+                        border: ratings[qi] >= r ? '1px solid rgba(99,102,241,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                        color: ratings[qi] >= r ? '#6366F1' : 'rgba(255,255,255,0.3)',
                       }}>
                       {r}
                     </button>
@@ -39,9 +39,9 @@ export default function S31_DemoFeedback() {
               </div>
             ))}
           </div>
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.15)' }}>
+          <div className="p-4 rounded-xl" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <p className="text-white/60 text-sm">
-              ממוצע: <strong style={{ color: '#4F7CFF' }}>{(ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)}/5</strong>
+              ממוצע: <strong style={{ color: '#6366F1' }}>{(ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)}/5</strong>
               {' '}— המשוב נשמר לשיפור הבא
             </p>
           </div>

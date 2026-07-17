@@ -14,7 +14,7 @@ export default function SkillsMobility() {
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">לפני</p>
               <p className="text-white/70 text-base leading-relaxed">הזדמנויות נסתרות</p>
             </GlassCard>
-            <GlassCard style={{ background: '#70D6A710', border: '1px solid #70D6A725' }}>
+            <GlassCard style={{ background: '#10B98110', border: '1px solid #10B98125' }}>
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">אחרי</p>
               <p className="text-white font-medium text-base leading-relaxed">המלצה מותאמת לפרופיל</p>
             </GlassCard>
@@ -22,7 +22,7 @@ export default function SkillsMobility() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/70 text-sm leading-relaxed">חיבור עובדים להזדמנויות — המלצה בלבד</p>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
             <p className="text-white/60 text-sm">לא מחליט על קידום, שכר או סיום</p>
           </div>

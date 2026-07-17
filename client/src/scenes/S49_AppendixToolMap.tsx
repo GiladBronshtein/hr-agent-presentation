@@ -13,7 +13,7 @@ const TOOLS = [
   ]},
 ];
 
-const LEVEL_COLORS = { beginner: '#70D6A7', advanced: '#FFD166' };
+const LEVEL_COLORS = { beginner: '#10B981', advanced: '#F59E0B' };
 
 export default function S49_AppendixToolMap() {
   return (

@@ -34,13 +34,13 @@ export default function S03_AudienceQuestion() {
                   onClick={() => toggleAudienceSelection(opt.id)}
                   className="p-4 rounded-xl text-center transition-all duration-200 hover:scale-105"
                   style={{
-                    background: isSelected ? 'rgba(79,124,255,0.15)' : 'rgba(255,255,255,0.04)',
-                    border: isSelected ? '1px solid rgba(79,124,255,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    background: isSelected ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.04)',
+                    border: isSelected ? '1px solid rgba(99,102,241,0.4)' : '1px solid rgba(255,255,255,0.08)',
                     transform: isSelected ? 'scale(1.02)' : undefined,
                   }}
                 >
                   <div className="text-2xl mb-2">{opt.icon}</div>
-                  <p className="text-sm font-medium" style={{ color: isSelected ? '#4F7CFF' : 'rgba(255,255,255,0.7)' }}>
+                  <p className="text-sm font-medium" style={{ color: isSelected ? '#6366F1' : 'rgba(255,255,255,0.7)' }}>
                     {opt.label}
                   </p>
                 </button>

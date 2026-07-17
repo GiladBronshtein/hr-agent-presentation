@@ -1,10 +1,10 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
 
 const STACK = [
-  { layer: 'ממשק', tools: ['Slack', 'Teams', 'Web App'], color: '#4F7CFF' },
-  { layer: 'אורקסטרציה', tools: ['n8n', 'Make', 'LangChain'], color: '#70D6A7' },
+  { layer: 'ממשק', tools: ['Slack', 'Teams', 'Web App'], color: '#6366F1' },
+  { layer: 'אורקסטרציה', tools: ['n8n', 'Make', 'LangChain'], color: '#10B981' },
   { layer: 'מודל', tools: ['Claude', 'GPT-4', 'Gemini'], color: '#A78BFA' },
-  { layer: 'כלים', tools: ['Calendar API', 'HRIS API', 'Gmail API'], color: '#FFD166' },
+  { layer: 'כלים', tools: ['Calendar API', 'HRIS API', 'Gmail API'], color: '#F59E0B' },
   { layer: 'זיכרון', tools: ['Notion', 'Pinecone', 'Supabase'], color: '#22D3EE' },
 ];
 

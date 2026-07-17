@@ -10,7 +10,7 @@ const PILOTS = [
 ];
 
 const LABELS = { low: 'נמוך', medium: 'בינוני', high: 'גבוה' };
-const COLORS = { low: '#70D6A7', medium: '#FFD166', high: '#FF6B6B' };
+const COLORS = { low: '#10B981', medium: '#F59E0B', high: '#F43F5E' };
 
 export default function S40_PilotSelector() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -29,8 +29,8 @@ export default function S40_PilotSelector() {
               <button key={pilot.id} onClick={() => setSelected(selected === pilot.id ? null : pilot.id)}
                 className="w-full flex items-center gap-4 p-4 rounded-xl text-right transition-all duration-200"
                 style={{
-                  background: selected === pilot.id ? 'rgba(79,124,255,0.1)' : 'rgba(255,255,255,0.03)',
-                  border: selected === pilot.id ? '1px solid rgba(79,124,255,0.3)' : '1px solid rgba(255,255,255,0.06)',
+                  background: selected === pilot.id ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.03)',
+                  border: selected === pilot.id ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.06)',
                 }}>
                 <span className="text-2xl">{pilot.icon}</span>
                 <span className="flex-1 text-white/80 font-medium text-sm">{pilot.name}</span>
@@ -48,7 +48,7 @@ export default function S40_PilotSelector() {
                     <span style={{ color: COLORS[pilot.roi as keyof typeof COLORS] }}>{LABELS[pilot.roi as keyof typeof LABELS]}</span>
                   </div>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm"
-                    style={{ background: 'rgba(79,124,255,0.15)', color: '#4F7CFF' }}>
+                    style={{ background: 'rgba(99,102,241,0.15)', color: '#6366F1' }}>
                     {pilot.score}
                   </div>
                 </div>
@@ -56,9 +56,9 @@ export default function S40_PilotSelector() {
             ))}
           </div>
           {selected && (
-            <div className="p-4 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.2)' }}>
+            <div className="p-4 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
               <p className="text-white/70 text-sm">
-                ✓ בחרתם: <strong style={{ color: '#4F7CFF' }}>{PILOTS.find(p => p.id === selected)?.name}</strong>
+                ✓ בחרתם: <strong style={{ color: '#6366F1' }}>{PILOTS.find(p => p.id === selected)?.name}</strong>
                 {' '}— מתאים לפיילוט ראשון
               </p>
             </div>

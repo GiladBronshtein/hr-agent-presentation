@@ -46,13 +46,13 @@ export default function S25_DemoRetrieval() {
                   <span className="text-white/40 text-xs">{r.source}</span>
                   <p className="text-white/70 text-sm">{r.data}</p>
                 </div>
-                {i < visible && <span style={{ color: '#70D6A7' }} className="text-sm">✓</span>}
+                {i < visible && <span style={{ color: '#10B981' }} className="text-sm">✓</span>}
               </div>
             ))}
           </div>
           {visible >= RETRIEVALS.length && (
-            <div className="p-3 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(112,214,167,0.08)', border: '1px solid rgba(112,214,167,0.2)' }}>
-              <p className="text-sm" style={{ color: '#70D6A7' }}>✓ כל המידע נאסף — מתחיל תכנון</p>
+            <div className="p-3 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+              <p className="text-sm" style={{ color: '#10B981' }}>✓ כל המידע נאסף — מתחיל תכנון</p>
             </div>
           )}
         </div>

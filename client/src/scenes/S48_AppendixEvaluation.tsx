@@ -18,7 +18,7 @@ export default function S48_AppendixEvaluation() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {CRITERIA.map((cat, i) => {
-              const colors = ['#4F7CFF', '#70D6A7', '#FFD166', '#FF6B6B'];
+              const colors = ['#6366F1', '#10B981', '#F59E0B', '#F43F5E'];
               return (
                 <div key={i} className="p-4 rounded-xl" style={{ background: colors[i] + '08', border: `1px solid ${colors[i]}20` }}>
                   <p className="text-xs font-bold mb-3" style={{ color: colors[i] }}>{cat.category}</p>

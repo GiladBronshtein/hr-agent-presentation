@@ -9,10 +9,10 @@ export default function S09_DecisionTree() {
   const [q3, setQ3] = useState<Answer>(null);
 
   const getRecommendation = () => {
-    if (q1 === 'yes') return { label: 'אוטומציה', color: '#FFD166', icon: '⚙️', desc: 'השלבים תמיד זהים — אוטומציה פשוטה מספיקה ועדיפה.' };
-    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#FF6B6B', icon: '👤', desc: 'ללא הקשר — אדם עם סיוע AI הוא הפתרון הנכון.' };
-    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#4F7CFF', icon: '🤖✋', desc: 'מתאים לאייג׳נט — עם נקודת אישור אנושית חובה.' };
-    if (q1 === 'no' && q2 === 'yes' && q3 === 'no') return { label: 'אייג׳נט', color: '#70D6A7', icon: '🤖', desc: 'מתאים לאייג׳נט עם אישור בנקודות מוגדרות.' };
+    if (q1 === 'yes') return { label: 'אוטומציה', color: '#F59E0B', icon: '⚙️', desc: 'השלבים תמיד זהים — אוטומציה פשוטה מספיקה ועדיפה.' };
+    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#F43F5E', icon: '👤', desc: 'ללא הקשר — אדם עם סיוע AI הוא הפתרון הנכון.' };
+    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#6366F1', icon: '🤖✋', desc: 'מתאים לאייג׳נט — עם נקודת אישור אנושית חובה.' };
+    if (q1 === 'no' && q2 === 'yes' && q3 === 'no') return { label: 'אייג׳נט', color: '#10B981', icon: '🤖', desc: 'מתאים לאייג׳נט עם אישור בנקודות מוגדרות.' };
     return null;
   };
 
@@ -24,9 +24,9 @@ export default function S09_DecisionTree() {
         <button key={v} onClick={() => set(current === v ? null : v)}
           className="flex-1 py-2 rounded-lg text-sm font-medium transition-all"
           style={{
-            background: current === v ? (v === 'yes' ? 'rgba(112,214,167,0.15)' : 'rgba(255,107,107,0.15)') : 'rgba(255,255,255,0.05)',
-            border: current === v ? `1px solid ${v === 'yes' ? 'rgba(112,214,167,0.4)' : 'rgba(255,107,107,0.4)'}` : '1px solid rgba(255,255,255,0.08)',
-            color: current === v ? (v === 'yes' ? '#70D6A7' : '#FF6B6B') : 'rgba(255,255,255,0.5)',
+            background: current === v ? (v === 'yes' ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)') : 'rgba(255,255,255,0.05)',
+            border: current === v ? `1px solid ${v === 'yes' ? 'rgba(16,185,129,0.4)' : 'rgba(244,63,94,0.4)'}` : '1px solid rgba(255,255,255,0.08)',
+            color: current === v ? (v === 'yes' ? '#10B981' : '#F43F5E') : 'rgba(255,255,255,0.5)',
           }}>
           {v === 'yes' ? yes : no}
         </button>

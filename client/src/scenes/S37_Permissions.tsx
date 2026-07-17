@@ -12,9 +12,9 @@ const MATRIX = [
 ];
 
 const RISK_CONFIG = {
-  low: { color: '#70D6A7', label: 'נמוך' },
-  medium: { color: '#FFD166', label: 'בינוני' },
-  high: { color: '#FF6B6B', label: 'גבוה' },
+  low: { color: '#10B981', label: 'נמוך' },
+  medium: { color: '#F59E0B', label: 'בינוני' },
+  high: { color: '#F43F5E', label: 'גבוה' },
   blocked: { color: 'rgba(255,255,255,0.2)', label: 'חסום' },
 };
 
@@ -42,7 +42,7 @@ export default function S37_Permissions() {
                   style={{ borderBottom: i < MATRIX.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: row.risk === 'blocked' ? 'rgba(255,255,255,0.02)' : undefined }}>
                   <span className="text-white/70">{row.action}</span>
                   <span className="text-xs px-2 py-0.5 rounded-full w-fit" style={{ background: cfg.color + '15', color: cfg.color }}>{cfg.label}</span>
-                  <span style={{ color: row.auto ? '#70D6A7' : 'rgba(255,255,255,0.3)' }}>{row.auto ? '✓' : '—'}</span>
+                  <span style={{ color: row.auto ? '#10B981' : 'rgba(255,255,255,0.3)' }}>{row.auto ? '✓' : '—'}</span>
                   <span className="text-white/40 text-xs">{row.note}</span>
                 </div>
               );

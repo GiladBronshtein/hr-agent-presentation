@@ -1,10 +1,24 @@
-import { useState, useEffect } from 'react';
+/**
+ * PresenterControls — AI-Native UI + Glassmorphism
+ * Design: Floating glassmorphic pill, indigo/cyan accents, smooth 200ms transitions
+ * Anti-patterns avoided: Heavy chrome, cluttered toolbar
+ */
+import { useState, useEffect, useCallback } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS, getCurrentChapter } from '../../data/scenes';
 import {
-  Map, StickyNote, Volume2, VolumeX, Maximize, Minimize,
-  ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff
+  LayoutGrid, StickyNote, Maximize, Minimize,
+  ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff,
+  Keyboard
 } from 'lucide-react';
+
+const CHAPTER_COLORS: Record<string, string> = {
+  'להבין': '#6366F1',
+  'לראות': '#0891B2',
+  'לבנות': '#10B981',
+  'להטמיע': '#F59E0B',
+  'נספח': '#64748B',
+};
 
 export function PresenterControls() {
   const {
@@ -12,13 +26,11 @@ export function PresenterControls() {
     totalScenes,
     isChapterMapOpen,
     isPresenterNotesOpen,
-    isSoundEnabled,
     isFullscreen,
     isReducedMotion,
     qualityLevel,
     toggleChapterMap,
     togglePresenterNotes,
-    toggleSound,
     toggleFullscreen,
     toggleReducedMotion,
     setQualityLevel,
@@ -27,45 +39,40 @@ export function PresenterControls() {
   } = usePresentationStore();
 
   const [isVisible, setIsVisible] = useState(true);
-  const [hideTimer, setHideTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const [hideTimerRef, setHideTimerRef] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   const currentScene = SCENES[currentSceneIndex];
   const currentChapter = getCurrentChapter(currentSceneIndex);
   const chapterInfo = CHAPTERS.find((c) => c.id === currentChapter);
-  const progress = (currentSceneIndex / (totalScenes - 1)) * 100;
+  const chapterColor = CHAPTER_COLORS[currentChapter] || '#6366F1';
+  const progress = totalScenes > 1 ? (currentSceneIndex / (totalScenes - 1)) * 100 : 0;
 
-  // Auto-hide controls after inactivity
+  const resetHideTimer = useCallback(() => {
+    setIsVisible(true);
+    if (hideTimerRef) clearTimeout(hideTimerRef);
+    const t = setTimeout(() => setIsVisible(false), 3500);
+    setHideTimerRef(t);
+  }, [hideTimerRef]);
+
   useEffect(() => {
-    const showControls = () => {
-      setIsVisible(true);
-      if (hideTimer) clearTimeout(hideTimer);
-      const timer = setTimeout(() => setIsVisible(false), 3000);
-      setHideTimer(timer);
-    };
-
-    window.addEventListener('mousemove', showControls);
-    window.addEventListener('keydown', showControls);
-    window.addEventListener('touchstart', showControls);
-
-    // Initial hide after 3s
-    const initial = setTimeout(() => setIsVisible(false), 3000);
-    setHideTimer(initial);
-
+    window.addEventListener('mousemove', resetHideTimer);
+    window.addEventListener('keydown', resetHideTimer);
+    window.addEventListener('touchstart', resetHideTimer);
+    const initial = setTimeout(() => setIsVisible(false), 3500);
     return () => {
-      window.removeEventListener('mousemove', showControls);
-      window.removeEventListener('keydown', showControls);
-      window.removeEventListener('touchstart', showControls);
-      if (hideTimer) clearTimeout(hideTimer);
+      window.removeEventListener('mousemove', resetHideTimer);
+      window.removeEventListener('keydown', resetHideTimer);
+      window.removeEventListener('touchstart', resetHideTimer);
       clearTimeout(initial);
     };
   }, []);
 
   return (
     <>
-      {/* Progress bar — always visible */}
+      {/* ── Top progress bar ── */}
       <div
-        className="fixed top-0 left-0 right-0 z-50 h-0.5"
-        style={{ background: 'rgba(255,255,255,0.1)' }}
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{ height: '2px', background: 'rgba(255,255,255,0.06)' }}
         role="progressbar"
         aria-valuenow={currentSceneIndex + 1}
         aria-valuemin={1}
@@ -73,156 +80,242 @@ export function PresenterControls() {
         aria-label={`סצנה ${currentSceneIndex + 1} מתוך ${totalScenes}`}
       >
         <div
-          className="h-full transition-all duration-700"
           style={{
+            height: '100%',
             width: `${progress}%`,
-            background: chapterInfo?.color || '#4F7CFF',
+            background: `linear-gradient(90deg, ${chapterColor}, #22D3EE)`,
+            boxShadow: `0 0 8px ${chapterColor}80`,
+            transition: 'width 500ms cubic-bezier(0.23, 1, 0.32, 1)',
           }}
         />
       </div>
 
-      {/* Chapter indicator — top right, subtle */}
+      {/* ── Chapter + scene counter (top right) ── */}
       <div
-        className={`fixed top-4 right-4 z-50 transition-all duration-500 ${
-          isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className="fixed top-4 right-5 z-50 flex items-center gap-2"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transition: 'opacity 400ms ease',
+          pointerEvents: isVisible ? 'auto' : 'none',
+        }}
         dir="rtl"
       >
-        <div className="flex items-center gap-2">
-          <span
-            className="text-xs font-medium px-2 py-1 rounded-full"
-            style={{
-              background: (chapterInfo?.color || '#4F7CFF') + '20',
-              color: chapterInfo?.color || '#4F7CFF',
-              border: `1px solid ${(chapterInfo?.color || '#4F7CFF')}30`,
-            }}
-          >
-            {currentChapter}
-          </span>
-          <span className="text-xs text-white/40 font-mono">
-            {currentSceneIndex + 1}/{totalScenes}
-          </span>
-        </div>
+        <span
+          className="text-xs font-semibold px-2.5 py-1 rounded-full"
+          style={{
+            background: chapterColor + '18',
+            color: chapterColor,
+            border: `1px solid ${chapterColor}30`,
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: '0.04em',
+          }}
+        >
+          {chapterInfo?.label || currentChapter}
+        </span>
+        <span
+          className="text-xs font-mono"
+          style={{ color: 'rgba(255,255,255,0.3)' }}
+        >
+          {String(currentSceneIndex + 1).padStart(2, '0')}/{String(totalScenes).padStart(2, '0')}
+        </span>
       </div>
 
-      {/* Bottom controls bar */}
+      {/* ── Bottom floating controls pill ── */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full pointer-events-none'
-        }`}
+        className="fixed bottom-5 left-0 right-0 z-50 flex justify-center"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'opacity 350ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1)',
+          pointerEvents: isVisible ? 'auto' : 'none',
+        }}
       >
         <div
-          className="mx-auto max-w-3xl mb-4 px-4"
           dir="rtl"
+          className="flex items-center gap-1 px-3 py-2 rounded-2xl"
+          style={{
+            background: 'rgba(8, 8, 20, 0.88)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255,255,255,0.09)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08)',
+          }}
         >
+          {/* Prev */}
+          <ControlBtn
+            onClick={goPrev}
+            disabled={currentSceneIndex === 0}
+            aria-label="סצנה קודמת (←)"
+            title="קודם (←)"
+          >
+            <ChevronRight size={16} />
+          </ControlBtn>
+
+          {/* Scene title */}
           <div
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl"
+            className="px-3 max-w-[220px] truncate text-sm"
             style={{
-              background: 'rgba(9, 17, 31, 0.85)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'rgba(255,255,255,0.55)',
+              fontFamily: "'DM Sans', sans-serif",
             }}
           >
-            {/* Navigation */}
-            <button
-              onClick={goPrev}
-              disabled={currentSceneIndex === 0}
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-              aria-label="סצנה קודמת"
-            >
-              <ChevronRight size={18} />
-            </button>
-
-            <button
-              onClick={goNext}
-              disabled={currentSceneIndex === totalScenes - 1}
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-              aria-label="סצנה הבאה"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            <div className="w-px h-5 bg-white/15 mx-1" />
-
-            {/* Scene title */}
-            <span className="text-white/70 text-sm flex-1 truncate">
-              {currentScene?.hebrewTitle}
-            </span>
-
-            <div className="w-px h-5 bg-white/15 mx-1" />
-
-            {/* Chapter map */}
-            <button
-              onClick={toggleChapterMap}
-              className={`p-1.5 rounded-lg transition-all ${
-                isChapterMapOpen ? 'text-white bg-white/15' : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-              aria-label="מפת מצגת (Esc)"
-              title="מפת מצגת (Esc)"
-            >
-              <Map size={16} />
-            </button>
-
-            {/* Presenter notes */}
-            <button
-              onClick={togglePresenterNotes}
-              className={`p-1.5 rounded-lg transition-all ${
-                isPresenterNotesOpen ? 'text-white bg-white/15' : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-              aria-label="הערות מציג (P)"
-              title="הערות מציג (P)"
-            >
-              <StickyNote size={16} />
-            </button>
-
-            {/* Sound toggle */}
-            <button
-              onClick={toggleSound}
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              aria-label={isSoundEnabled ? 'השתק (M)' : 'הפעל צליל (M)'}
-              title={isSoundEnabled ? 'השתק (M)' : 'הפעל צליל (M)'}
-            >
-              {isSoundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-            </button>
-
-            {/* Reduced motion */}
-            <button
-              onClick={toggleReducedMotion}
-              className={`p-1.5 rounded-lg transition-all ${
-                isReducedMotion ? 'text-yellow-400 bg-yellow-400/15' : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-              aria-label={isReducedMotion ? 'בטל מצב תנועה מופחתת' : 'הפעל מצב תנועה מופחתת'}
-              title="תנועה מופחתת"
-            >
-              <Accessibility size={16} />
-            </button>
-
-            {/* Quality toggle */}
-            <button
-              onClick={() => {
-                const levels = ['high', 'balanced', 'lightweight'] as const;
-                const current = levels.indexOf(qualityLevel);
-                setQualityLevel(levels[(current + 1) % levels.length]);
-              }}
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              aria-label={`איכות: ${qualityLevel}`}
-              title={`איכות גרפיקה: ${qualityLevel}`}
-            >
-              {qualityLevel === 'lightweight' ? <ZapOff size={16} /> : <Zap size={16} />}
-            </button>
-
-            {/* Fullscreen */}
-            <button
-              onClick={toggleFullscreen}
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              aria-label={isFullscreen ? 'צא ממסך מלא (F)' : 'מסך מלא (F)'}
-              title="מסך מלא (F)"
-            >
-              {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
-            </button>
+            {currentScene?.hebrewTitle || ''}
           </div>
+
+          {/* Next */}
+          <ControlBtn
+            onClick={goNext}
+            disabled={currentSceneIndex === totalScenes - 1}
+            aria-label="סצנה הבאה (→)"
+            title="הבא (→)"
+          >
+            <ChevronLeft size={16} />
+          </ControlBtn>
+
+          <Divider />
+
+          {/* Chapter map */}
+          <ControlBtn
+            onClick={toggleChapterMap}
+            active={isChapterMapOpen}
+            aria-label="מפת פרקים (Esc)"
+            title="מפת פרקים (Esc)"
+          >
+            <LayoutGrid size={15} />
+          </ControlBtn>
+
+          {/* Presenter notes */}
+          <ControlBtn
+            onClick={togglePresenterNotes}
+            active={isPresenterNotesOpen}
+            aria-label="הערות מציג (P)"
+            title="הערות מציג (P)"
+          >
+            <StickyNote size={15} />
+          </ControlBtn>
+
+          <Divider />
+
+          {/* Reduced motion */}
+          <ControlBtn
+            onClick={toggleReducedMotion}
+            active={isReducedMotion}
+            activeColor="#F59E0B"
+            aria-label="תנועה מופחתת"
+            title="תנועה מופחתת"
+          >
+            <Accessibility size={15} />
+          </ControlBtn>
+
+          {/* Quality */}
+          <ControlBtn
+            onClick={() => {
+              const levels = ['high', 'balanced', 'lightweight'] as const;
+              const idx = levels.indexOf(qualityLevel);
+              setQualityLevel(levels[(idx + 1) % levels.length]);
+            }}
+            active={qualityLevel === 'lightweight'}
+            activeColor="#F43F5E"
+            aria-label={`איכות: ${qualityLevel}`}
+            title={`איכות גרפיקה: ${qualityLevel}`}
+          >
+            {qualityLevel === 'lightweight' ? <ZapOff size={15} /> : <Zap size={15} />}
+          </ControlBtn>
+
+          {/* Fullscreen */}
+          <ControlBtn
+            onClick={toggleFullscreen}
+            aria-label={isFullscreen ? 'צא ממסך מלא (F)' : 'מסך מלא (F)'}
+            title="מסך מלא (F)"
+          >
+            {isFullscreen ? <Minimize size={15} /> : <Maximize size={15} />}
+          </ControlBtn>
         </div>
       </div>
     </>
+  );
+}
+
+// ── Sub-components ──────────────────────────────────────────────
+
+function Divider() {
+  return (
+    <div
+      style={{
+        width: '1px',
+        height: '18px',
+        background: 'rgba(255,255,255,0.1)',
+        margin: '0 2px',
+        flexShrink: 0,
+      }}
+    />
+  );
+}
+
+interface ControlBtnProps {
+  onClick: () => void;
+  disabled?: boolean;
+  active?: boolean;
+  activeColor?: string;
+  children: React.ReactNode;
+  'aria-label'?: string;
+  title?: string;
+}
+
+function ControlBtn({
+  onClick,
+  disabled = false,
+  active = false,
+  activeColor = '#6366F1',
+  children,
+  'aria-label': ariaLabel,
+  title,
+}: ControlBtnProps) {
+  const [hovered, setHovered] = useState(false);
+
+  const bg = active
+    ? `${activeColor}22`
+    : hovered
+    ? 'rgba(99,102,241,0.12)'
+    : 'transparent';
+
+  const color = active
+    ? activeColor
+    : hovered
+    ? '#818CF8'
+    : 'rgba(255,255,255,0.45)';
+
+  const border = active
+    ? `1px solid ${activeColor}35`
+    : hovered
+    ? '1px solid rgba(99,102,241,0.25)'
+    : '1px solid transparent';
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      title={title}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '30px',
+        height: '30px',
+        borderRadius: '8px',
+        background: bg,
+        border,
+        color,
+        opacity: disabled ? 0.25 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        transition: 'all 180ms cubic-bezier(0.23, 1, 0.32, 1)',
+        flexShrink: 0,
+      }}
+    >
+      {children}
+    </button>
   );
 }

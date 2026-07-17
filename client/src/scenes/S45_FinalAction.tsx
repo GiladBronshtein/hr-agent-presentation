@@ -16,7 +16,7 @@ export default function S45_FinalAction() {
             <p className="text-white/40 text-xs uppercase tracking-widest mb-3">הצעד הבא</p>
             <SceneTitle size="lg">
               מה תעשו<br />
-              <span style={{ color: '#70D6A7' }}>מחר בבוקר?</span>
+              <span style={{ color: '#10B981' }}>מחר בבוקר?</span>
             </SceneTitle>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -33,7 +33,7 @@ export default function S45_FinalAction() {
                 <h3 className="text-white font-bold text-sm mb-1">{action.title}</h3>
                 <p className="text-white/40 text-xs mb-3">{action.desc}</p>
                 <span className="text-xs px-2 py-1 rounded-full"
-                  style={{ background: 'rgba(112,214,167,0.12)', color: '#70D6A7', border: '1px solid rgba(112,214,167,0.25)' }}>
+                  style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981', border: '1px solid rgba(16,185,129,0.25)' }}>
                   {action.cta}
                 </span>
               </div>

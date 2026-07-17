@@ -1,10 +1,10 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
 
 const PRINCIPLES = [
-  { icon: '👁️', title: 'שקיפות', desc: 'העובד יודע שמדבר עם AI', color: '#4F7CFF' },
-  { icon: '🎯', title: 'מטרה מוגדרת', desc: 'כל אייג׳נט עושה דבר אחד בלבד', color: '#70D6A7' },
-  { icon: '📋', title: 'תיעוד מלא', desc: 'כל פעולה מתועדת עם timestamp', color: '#FFD166' },
-  { icon: '✋', title: 'אישור אנושי', desc: 'פעולות רגישות דורשות אישור', color: '#FF6B6B' },
+  { icon: '👁️', title: 'שקיפות', desc: 'העובד יודע שמדבר עם AI', color: '#6366F1' },
+  { icon: '🎯', title: 'מטרה מוגדרת', desc: 'כל אייג׳נט עושה דבר אחד בלבד', color: '#10B981' },
+  { icon: '📋', title: 'תיעוד מלא', desc: 'כל פעולה מתועדת עם timestamp', color: '#F59E0B' },
+  { icon: '✋', title: 'אישור אנושי', desc: 'פעולות רגישות דורשות אישור', color: '#F43F5E' },
   { icon: '🔒', title: 'הרשאות מינימליות', desc: 'גישה רק למה שנדרש', color: '#A78BFA' },
   { icon: '🔄', title: 'ביקורת תקופתית', desc: 'בדיקה כל רבעון', color: '#22D3EE' },
 ];
@@ -27,7 +27,7 @@ export default function S36_Governance() {
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <p className="text-white/60 text-sm">
               ⚠️ ממשל לא מוריד ערך — הוא מה שמאפשר לסמוך על האייג׳נט
             </p>

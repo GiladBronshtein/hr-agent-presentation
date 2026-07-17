@@ -10,7 +10,7 @@ const STAGES: { id: string; label: string; icon: string; risk: RiskLevel; agents
   { id: 'exit', label: 'עזיבה', icon: '🚪', risk: 'high', agents: ['שימור ידע'] },
 ];
 
-const RISK_COLORS = { low: '#70D6A7', medium: '#FFD166', high: '#FF6B6B' };
+const RISK_COLORS = { low: '#10B981', medium: '#F59E0B', high: '#F43F5E' };
 const RISK_LABELS = { low: 'סיכון נמוך', medium: 'דורש אישור', high: 'החלטה אנושית' };
 
 export default function S12_EmployeeJourney() {

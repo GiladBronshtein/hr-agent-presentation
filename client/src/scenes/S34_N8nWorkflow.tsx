@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 const NODES = [
-  { id: 'trigger', label: 'Slack Trigger', icon: '💬', color: '#4F7CFF', x: 5, y: 40 },
+  { id: 'trigger', label: 'Slack Trigger', icon: '💬', color: '#6366F1', x: 5, y: 40 },
   { id: 'ai', label: 'AI Agent', icon: '🧠', color: '#A78BFA', x: 30, y: 40 },
-  { id: 'calendar', label: 'Calendar', icon: '📅', color: '#70D6A7', x: 55, y: 20 },
-  { id: 'email', label: 'Gmail', icon: '📧', color: '#FFD166', x: 55, y: 60 },
+  { id: 'calendar', label: 'Calendar', icon: '📅', color: '#10B981', x: 55, y: 20 },
+  { id: 'email', label: 'Gmail', icon: '📧', color: '#F59E0B', x: 55, y: 60 },
   { id: 'hris', label: 'HRIS', icon: '🏢', color: '#22D3EE', x: 80, y: 40 },
-  { id: 'notify', label: 'Notify HR', icon: '🔔', color: '#FF6B6B', x: 80, y: 70 },
+  { id: 'notify', label: 'Notify HR', icon: '🔔', color: '#F43F5E', x: 80, y: 70 },
 ];
 
 const EDGES = [

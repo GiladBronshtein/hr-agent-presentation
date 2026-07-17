@@ -1,10 +1,10 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
 
 const LAYERS = [
-  { layer: 'שכבת ממשל', items: ['מדיניות שימוש', 'ועדת AI', 'ביקורת תקופתית'], color: '#4F7CFF' },
+  { layer: 'שכבת ממשל', items: ['מדיניות שימוש', 'ועדת AI', 'ביקורת תקופתית'], color: '#6366F1' },
   { layer: 'שכבת עיצוב', items: ['System Prompt', 'גבולות ברורים', 'Approval Gates'], color: '#A78BFA' },
-  { layer: 'שכבת ביצוע', items: ['תיעוד מלא', 'Audit Log', 'Rollback'], color: '#70D6A7' },
-  { layer: 'שכבת מדידה', items: ['דיוק', 'שביעות רצון', 'חריגות'], color: '#FFD166' },
+  { layer: 'שכבת ביצוע', items: ['תיעוד מלא', 'Audit Log', 'Rollback'], color: '#10B981' },
+  { layer: 'שכבת מדידה', items: ['דיוק', 'שביעות רצון', 'חריגות'], color: '#F59E0B' },
 ];
 
 export default function S38_TrustArchitecture() {

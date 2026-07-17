@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 const USE_CASES = [
-  { id: 'recruiting', icon: '📋', label: 'פתיחת משרה', trigger: 'בקשת מנהל', value: 'חבילה מלאה לאישור', color: '#4F7CFF' },
-  { id: 'candidate', icon: '🎯', label: 'חוויית מועמד', trigger: 'עיכוב בתהליך', value: 'עדכון מותאם', color: '#70D6A7' },
-  { id: 'onboarding', icon: '👋', label: 'קליטת עובד', trigger: 'הצעה אושרה', value: 'תוכנית מאושרת', color: '#FF6B6B' },
-  { id: 'manager', icon: '👔', label: 'הכנת מנהלים', trigger: 'לפני 1:1', value: 'סדר יום מוכן', color: '#FFD166' },
+  { id: 'recruiting', icon: '📋', label: 'פתיחת משרה', trigger: 'בקשת מנהל', value: 'חבילה מלאה לאישור', color: '#6366F1' },
+  { id: 'candidate', icon: '🎯', label: 'חוויית מועמד', trigger: 'עיכוב בתהליך', value: 'עדכון מותאם', color: '#10B981' },
+  { id: 'onboarding', icon: '👋', label: 'קליטת עובד', trigger: 'הצעה אושרה', value: 'תוכנית מאושרת', color: '#F43F5E' },
+  { id: 'manager', icon: '👔', label: 'הכנת מנהלים', trigger: 'לפני 1:1', value: 'סדר יום מוכן', color: '#F59E0B' },
   { id: 'learning', icon: '📚', label: 'למידה', trigger: 'צורך מוגדר', value: 'מסלול מותאם', color: '#A78BFA' },
   { id: 'service', icon: '💬', label: 'שירות עובדים', trigger: 'שאלת עובד', value: 'תשובה עם מקור', color: '#22D3EE' },
-  { id: 'skills', icon: '⭐', label: 'מיומנויות', trigger: 'פרופיל עובד', value: 'הזדמנות מותאמת', color: '#70D6A7' },
-  { id: 'insights', icon: '🔍', label: 'תובנות ארגוניות', trigger: 'סקר / שיחת סיום', value: 'דפוסים מצרפיים', color: '#4F7CFF' },
-  { id: 'knowledge', icon: '🧠', label: 'שימור ידע', trigger: 'עובד עוזב', value: 'ידע מתועד', color: '#FFD166' },
+  { id: 'skills', icon: '⭐', label: 'מיומנויות', trigger: 'פרופיל עובד', value: 'הזדמנות מותאמת', color: '#10B981' },
+  { id: 'insights', icon: '🔍', label: 'תובנות ארגוניות', trigger: 'סקר / שיחת סיום', value: 'דפוסים מצרפיים', color: '#6366F1' },
+  { id: 'knowledge', icon: '🧠', label: 'שימור ידע', trigger: 'עובד עוזב', value: 'ידע מתועד', color: '#F59E0B' },
 ];
 
 export default function S13_UseCaseConstellation() {

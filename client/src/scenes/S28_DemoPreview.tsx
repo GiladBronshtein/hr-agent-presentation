@@ -13,8 +13,8 @@ export default function S28_DemoPreview() {
             <SceneTitle size="md">תצוגה מקדימה</SceneTitle>
             <p className="text-white/40 text-sm mt-1">האייג׳נט מציג את מה שהכין — לפני ביצוע</p>
           </div>
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.2)' }}>
-            <p className="text-sm font-medium mb-3" style={{ color: '#4F7CFF' }}>🤖 OnboardBot — סיכום לאישור</p>
+          <div className="p-4 rounded-xl" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
+            <p className="text-sm font-medium mb-3" style={{ color: '#6366F1' }}>🤖 OnboardBot — סיכום לאישור</p>
             <div className="space-y-2 text-sm text-white/70">
               <p>✓ פגישת 1:1 תואמה: 14/7 09:00</p>
               <p>✓ בקשת גישות IT נשלחה (Jira, Figma, Slack)</p>

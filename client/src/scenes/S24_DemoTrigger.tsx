@@ -34,9 +34,9 @@ export default function S24_DemoTrigger() {
           </div>
           <div className="terminal-window">
             <div className="terminal-header">
-              <div className="terminal-dot" style={{ background: '#FF6B6B' }} />
-              <div className="terminal-dot" style={{ background: '#FFD166' }} />
-              <div className="terminal-dot" style={{ background: '#70D6A7' }} />
+              <div className="terminal-dot" style={{ background: '#F43F5E' }} />
+              <div className="terminal-dot" style={{ background: '#F59E0B' }} />
+              <div className="terminal-dot" style={{ background: '#10B981' }} />
               <span className="text-white/30 text-xs mr-2">Slack → OnboardBot</span>
             </div>
             <div className="terminal-body">
@@ -46,14 +46,14 @@ export default function S24_DemoTrigger() {
               </div>
               <div className="terminal-line mt-1">
                 <span className="text-white/80">{text}</span>
-                {typing && <span className="animate-pulse text-blue-400">|</span>}
+                {typing && <span className="animate-pulse text-indigo-400">|</span>}
               </div>
             </div>
           </div>
           {demoStep >= 1 && (
-            <div className="p-4 rounded-xl animate-fade-in" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.2)' }}>
+            <div className="p-4 rounded-xl animate-fade-in" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
               <p className="text-white/60 text-sm">
-                <span style={{ color: '#4F7CFF' }}>🤖 OnboardBot:</span>{' '}
+                <span style={{ color: '#6366F1' }}>🤖 OnboardBot:</span>{' '}
                 קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד Product Manager...
               </p>
             </div>

@@ -14,7 +14,7 @@ export default function KnowledgePreservation() {
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">לפני</p>
               <p className="text-white/70 text-base leading-relaxed">ידע עוזב עם העובד</p>
             </GlassCard>
-            <GlassCard style={{ background: '#FFD16610', border: '1px solid #FFD16625' }}>
+            <GlassCard style={{ background: '#F59E0B10', border: '1px solid #F59E0B25' }}>
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">אחרי</p>
               <p className="text-white font-medium text-base leading-relaxed">ידע מתועד ומאושר</p>
             </GlassCard>
@@ -22,7 +22,7 @@ export default function KnowledgePreservation() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/70 text-sm leading-relaxed">הידע לא צריך לעזוב יחד עם העובד</p>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
             <p className="text-white/60 text-sm">הידע מאושר על ידי העובד לפני שמירה</p>
           </div>

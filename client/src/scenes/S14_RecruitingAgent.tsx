@@ -14,7 +14,7 @@ export default function RecruitingAgent() {
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">לפני</p>
               <p className="text-white/70 text-base leading-relaxed">3-5 ימים ממנהל ל-HR</p>
             </GlassCard>
-            <GlassCard style={{ background: '#4F7CFF10', border: '1px solid #4F7CFF25' }}>
+            <GlassCard style={{ background: '#6366F110', border: '1px solid #6366F125' }}>
               <p className="text-white/40 text-xs uppercase tracking-widest mb-2">אחרי</p>
               <p className="text-white font-medium text-base leading-relaxed">2-4 שעות</p>
             </GlassCard>
@@ -22,7 +22,7 @@ export default function RecruitingAgent() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/70 text-sm leading-relaxed">הופך בקשה עמומה לבקשה שאפשר לבחון</p>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
             <p className="text-white/60 text-sm">האייג׳נט אינו מחליט אם צריך לגייס</p>
           </div>

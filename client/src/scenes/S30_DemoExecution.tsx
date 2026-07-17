@@ -32,11 +32,11 @@ export default function S30_DemoExecution() {
               <div key={i} className="flex items-center gap-3 p-3 rounded-xl transition-all duration-500"
                 style={{
                   opacity: i < visible ? 1 : 0.2,
-                  background: i < visible ? 'rgba(112,214,167,0.06)' : 'rgba(255,255,255,0.03)',
-                  border: i < visible ? '1px solid rgba(112,214,167,0.15)' : '1px solid rgba(255,255,255,0.06)',
+                  background: i < visible ? 'rgba(16,185,129,0.06)' : 'rgba(255,255,255,0.03)',
+                  border: i < visible ? '1px solid rgba(16,185,129,0.15)' : '1px solid rgba(255,255,255,0.06)',
                 }}>
                 <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs"
-                  style={{ background: i < visible ? 'rgba(112,214,167,0.2)' : 'rgba(255,255,255,0.05)', color: i < visible ? '#70D6A7' : 'rgba(255,255,255,0.3)' }}>
+                  style={{ background: i < visible ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)', color: i < visible ? '#10B981' : 'rgba(255,255,255,0.3)' }}>
                   {i < visible ? '✓' : (i + 1)}
                 </div>
                 <span className="flex-1 text-sm" style={{ color: i < visible ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)' }}>
@@ -47,8 +47,8 @@ export default function S30_DemoExecution() {
             ))}
           </div>
           {visible >= STEPS.length && (
-            <div className="p-4 rounded-xl text-center animate-fade-in" style={{ background: 'rgba(112,214,167,0.1)', border: '1px solid rgba(112,214,167,0.3)' }}>
-              <p className="text-lg font-bold" style={{ color: '#70D6A7' }}>✅ הושלם</p>
+            <div className="p-4 rounded-xl text-center animate-fade-in" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
+              <p className="text-lg font-bold" style={{ color: '#10B981' }}>✅ הושלם</p>
               <p className="text-white/50 text-sm mt-1">כל הפעולות בוצעו ותועדו</p>
             </div>
           )}

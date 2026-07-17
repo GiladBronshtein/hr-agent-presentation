@@ -19,7 +19,7 @@ export default function S44_ClosingReflection() {
         <div className="text-center space-y-8 max-w-2xl">
           <SceneTitle size="xl">
             אנחנו<br />
-            <span style={{ color: '#4F7CFF', transition: 'all 0.5s ease' }}>
+            <span style={{ color: '#6366F1', transition: 'all 0.5s ease' }}>
               {WORDS[wordIdx]}
             </span>
           </SceneTitle>

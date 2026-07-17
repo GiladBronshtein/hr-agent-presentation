@@ -42,11 +42,11 @@ export default function S43_Objections() {
           <div className="space-y-2">
             {OBJECTIONS.map((obj, i) => (
               <div key={i} className="rounded-xl overflow-hidden transition-all duration-200"
-                style={{ border: open === i ? '1px solid rgba(79,124,255,0.3)' : '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ border: open === i ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.08)' }}>
                 <button
                   onClick={() => setOpen(open === i ? null : i)}
                   className="w-full flex items-center justify-between p-4 text-right"
-                  style={{ background: open === i ? 'rgba(79,124,255,0.08)' : 'rgba(255,255,255,0.03)' }}>
+                  style={{ background: open === i ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.03)' }}>
                   <span className="text-white/80 text-sm font-medium">{obj.q}</span>
                   <span className="text-white/30 text-lg">{open === i ? '−' : '+'}</span>
                 </button>

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 const FIELDS = [
-  { id: 'goal', label: 'מטרה', placeholder: 'מה האייג׳נט צריך להשיג?', color: '#4F7CFF' },
-  { id: 'trigger', label: 'טריגר', placeholder: 'מה מפעיל אותו?', color: '#70D6A7' },
-  { id: 'tools', label: 'כלים', placeholder: 'אילו מערכות הוא ניגש אליהן?', color: '#FFD166' },
-  { id: 'limits', label: 'גבולות', placeholder: 'מה אסור לו לעשות?', color: '#FF6B6B' },
+  { id: 'goal', label: 'מטרה', placeholder: 'מה האייג׳נט צריך להשיג?', color: '#6366F1' },
+  { id: 'trigger', label: 'טריגר', placeholder: 'מה מפעיל אותו?', color: '#10B981' },
+  { id: 'tools', label: 'כלים', placeholder: 'אילו מערכות הוא ניגש אליהן?', color: '#F59E0B' },
+  { id: 'limits', label: 'גבולות', placeholder: 'מה אסור לו לעשות?', color: '#F43F5E' },
   { id: 'approval', label: 'אישור', placeholder: 'מתי עוצר לאדם?', color: '#A78BFA' },
   { id: 'success', label: 'הצלחה', placeholder: 'איך נדע שהצליח?', color: '#22D3EE' },
 ];

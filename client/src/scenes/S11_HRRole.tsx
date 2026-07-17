@@ -27,10 +27,10 @@ export default function S11_HRRole() {
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.2)' }}>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
             <p className="text-white/70 text-sm">
               <strong className="text-white">IT</strong> מחבר את הכלים.{' '}
-              <strong style={{ color: '#4F7CFF' }}>HR</strong> עוזר להגדיר איך עבודה טובה נראית.
+              <strong style={{ color: '#6366F1' }}>HR</strong> עוזר להגדיר איך עבודה טובה נראית.
             </p>
           </div>
         </div>

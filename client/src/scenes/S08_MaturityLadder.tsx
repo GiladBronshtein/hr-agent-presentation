@@ -3,9 +3,9 @@ import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation
 
 const LEVELS = [
   { num: 1, label: 'צ׳אט', desc: 'שאלות וטיוטות ידניות', examples: ['ChatGPT', 'Claude.ai'], color: 'rgba(255,255,255,0.3)' },
-  { num: 2, label: 'עוזר מוטמע', desc: 'AI בתוך כלי קיים', examples: ['Copilot ב-Teams', 'Gemini ב-Docs'], color: '#FFD166' },
-  { num: 3, label: 'אוטומציה חכמה', desc: 'תהליך עם AI בצומת אחד', examples: ['n8n + AI', 'Zapier + GPT'], color: '#70D6A7' },
-  { num: 4, label: 'אייג׳נט', desc: 'מטרה, כלים, גבולות, אישור', examples: ['אייג׳נט קליטה', 'אייג׳נט גיוס'], color: '#4F7CFF' },
+  { num: 2, label: 'עוזר מוטמע', desc: 'AI בתוך כלי קיים', examples: ['Copilot ב-Teams', 'Gemini ב-Docs'], color: '#F59E0B' },
+  { num: 3, label: 'אוטומציה חכמה', desc: 'תהליך עם AI בצומת אחד', examples: ['n8n + AI', 'Zapier + GPT'], color: '#10B981' },
+  { num: 4, label: 'אייג׳נט', desc: 'מטרה, כלים, גבולות, אישור', examples: ['אייג׳נט קליטה', 'אייג׳נט גיוס'], color: '#6366F1' },
   { num: 5, label: 'רשת אייג׳נטים', desc: 'מספר אייג׳נטים שמשתפים פעולה', examples: ['Gig+Onboard+Learn', 'ארכיטקטורת HR'], color: '#A78BFA' },
 ];
 
@@ -52,7 +52,7 @@ export default function S08_MaturityLadder() {
                 </div>
                 {level.num === 4 && (
                   <span className="text-xs px-2 py-1 rounded-full font-medium"
-                    style={{ background: 'rgba(79,124,255,0.15)', color: '#4F7CFF', border: '1px solid rgba(79,124,255,0.3)' }}>
+                    style={{ background: 'rgba(99,102,241,0.15)', color: '#6366F1', border: '1px solid rgba(99,102,241,0.3)' }}>
                     ← אנחנו כאן
                   </span>
                 )}

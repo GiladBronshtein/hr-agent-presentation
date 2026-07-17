@@ -25,7 +25,7 @@ export default function S35_DesignIngredients() {
                 <h3 className="text-white font-bold text-sm mb-1">{ing.title}</h3>
                 <p className="text-white/50 text-xs mb-2 leading-relaxed">{ing.desc}</p>
                 <div className="p-2 rounded-lg text-xs font-mono"
-                  style={{ background: 'rgba(79,124,255,0.06)', color: 'rgba(79,124,255,0.7)', border: '1px solid rgba(79,124,255,0.12)' }}>
+                  style={{ background: 'rgba(99,102,241,0.06)', color: 'rgba(99,102,241,0.7)', border: '1px solid rgba(99,102,241,0.12)' }}>
                   {ing.example}
                 </div>
               </GlassCard>

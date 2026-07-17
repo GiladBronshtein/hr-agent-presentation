@@ -34,9 +34,9 @@ export default function S46_AppendixSystemInstructions() {
           </div>
           <div className="terminal-window">
             <div className="terminal-header">
-              <div className="terminal-dot" style={{ background: '#FF6B6B' }} />
-              <div className="terminal-dot" style={{ background: '#FFD166' }} />
-              <div className="terminal-dot" style={{ background: '#70D6A7' }} />
+              <div className="terminal-dot" style={{ background: '#F43F5E' }} />
+              <div className="terminal-dot" style={{ background: '#F59E0B' }} />
+              <div className="terminal-dot" style={{ background: '#10B981' }} />
               <span className="text-white/30 text-xs mr-2">system_prompt.txt</span>
             </div>
             <div className="terminal-body">

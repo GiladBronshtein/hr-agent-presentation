@@ -1,9 +1,9 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard, AnimatedNumber } from '../components/presentation/SceneBase';
 
 const STATS = [
-  { value: 73, suffix: '%', label: 'מנהלי HR מדווחים על עומס תיאום גבוה', color: '#4F7CFF' },
-  { value: 4.2, suffix: 'ש׳', label: 'ממוצע שעות תיאום ידני ביום', color: '#70D6A7' },
-  { value: 60, suffix: '%', label: 'מהמשימות הניתנות לאוטומציה עדיין ידניות', color: '#FFD166' },
+  { value: 73, suffix: '%', label: 'מנהלי HR מדווחים על עומס תיאום גבוה', color: '#6366F1' },
+  { value: 4.2, suffix: 'ש׳', label: 'ממוצע שעות תיאום ידני ביום', color: '#10B981' },
+  { value: 60, suffix: '%', label: 'מהמשימות הניתנות לאוטומציה עדיין ידניות', color: '#F59E0B' },
 ];
 
 const SHIFTS = [

@@ -22,7 +22,7 @@ export default function LearningAgent() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/70 text-sm leading-relaxed">פחות קטלוג. יותר למידה שמתחילה מצורך.</p>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.15)' }}>
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
             <p className="text-white/60 text-sm">תוכן מאושר בלבד — לא יוצר מחדש</p>
           </div>

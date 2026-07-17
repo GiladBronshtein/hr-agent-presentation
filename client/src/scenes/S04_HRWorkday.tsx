@@ -34,14 +34,14 @@ export default function S04_HRWorkday() {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${(proc.steps / 12) * 100}%`, background: 'linear-gradient(90deg, #4F7CFF, #70D6A7)' }} />
+                    <div className="h-full rounded-full" style={{ width: `${(proc.steps / 12) * 100}%`, background: 'linear-gradient(90deg, #6366F1, #10B981)' }} />
                   </div>
                   <span className="text-xs text-white/30">{proc.steps} שלבים</span>
                 </div>
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.15)' }}>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <p className="text-white/60 text-sm">
               ממוצע: <span className="text-white font-bold">6+ מערכות</span> לכל תהליך משמעותי
             </p>

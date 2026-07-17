@@ -4,15 +4,15 @@ const METRICS = [
   { category: 'יעילות', items: [
     { name: 'זמן לסיום תהליך', before: '6h', after: '45m', unit: '' },
     { name: 'שגיאות ידניות', before: '12%', after: '1%', unit: '' },
-  ], color: '#4F7CFF' },
+  ], color: '#6366F1' },
   { category: 'חוויה', items: [
     { name: 'שביעות רצון עובד', before: '3.2', after: '4.6', unit: '/5' },
     { name: 'זמן תגובה לשאלה', before: '4h', after: '3m', unit: '' },
-  ], color: '#70D6A7' },
+  ], color: '#10B981' },
   { category: 'עסקי', items: [
     { name: 'עלות לתהליך', before: '₪800', after: '₪120', unit: '' },
     { name: 'זמן ל-productivity', before: '45d', after: '28d', unit: '' },
-  ], color: '#FFD166' },
+  ], color: '#F59E0B' },
 ];
 
 export default function S39_MeasuringValue() {
@@ -43,7 +43,7 @@ export default function S39_MeasuringValue() {
               </GlassCard>
             ))}
           </div>
-          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.15)' }}>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <p className="text-white/60 text-sm">
               מדדו לפני ואחרי — ה-ROI מספר את הסיפור
             </p>
