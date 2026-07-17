@@ -13,7 +13,7 @@ export default function S31_DemoFeedback() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 8</p>
             <SceneTitle size="md">משוב ולמידה</SceneTitle>

@@ -13,7 +13,7 @@ export default function S11_HRRole() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">תפקיד HR</SceneTitle>
             <p className="text-white/50 mt-2">HR הוא לא רק לקוח, הוא אחד המעצבים</p>

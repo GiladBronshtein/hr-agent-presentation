@@ -14,7 +14,7 @@ export default function S06_Definition() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">הגדרה</p>
             <SceneTitle size="md">מהו אייג׳נט?</SceneTitle>

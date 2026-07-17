@@ -13,7 +13,7 @@ export default function S36_Governance() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">ממשל ואחריות</SceneTitle>
             <p className="text-white/50 mt-2 text-3xl">ששה עקרונות לאייג׳נט אחראי</p>

@@ -113,6 +113,7 @@ export default function S00_ColdOpen() {
         position: 'relative', zIndex: 10, width: '100%', height: '100%',
         display: 'grid',
         gridTemplateColumns: '1fr 1.2fr 0.9fr',
+        alignItems: 'stretch',
         gap: '1.25rem',
         padding: '1.5rem 1.75rem 5.5rem',
         overflow: 'hidden',
@@ -187,9 +188,9 @@ export default function S00_ColdOpen() {
         </div>
 
         {/* CENTER: Network Visualization */}
-        <div className="animate-scale-in stagger-2" style={{ position: 'relative', minHeight: 0 }}>
+        <div className="animate-scale-in stagger-2" style={{ position: 'relative', minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <div style={{
-            width: '100%', height: '100%', borderRadius: '24px',
+            width: '100%', height: '100%', flexGrow: 1, borderRadius: '24px',
             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
             position: 'relative', overflow: 'hidden',
           }}>

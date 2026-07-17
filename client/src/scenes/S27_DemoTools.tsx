@@ -26,7 +26,7 @@ export default function S27_DemoTools() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
             <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 4</p>
             <SceneTitle size="md">שימוש בכלים</SceneTitle>

@@ -22,7 +22,7 @@ export default function S30_DemoExecution() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 7</p>
             <SceneTitle size="md">ביצוע</SceneTitle>

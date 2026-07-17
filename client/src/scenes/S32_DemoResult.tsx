@@ -4,7 +4,7 @@ export default function S32_DemoResult() {
   return (
     <SceneBase variant="chapter-break">
       <ContentLayout>
-        <div className="w-full max-w-6xl space-y-8 text-center">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8 text-center">
           <SceneTitle size="md">מה ראינו?</SceneTitle>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[

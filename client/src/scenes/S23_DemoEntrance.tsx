@@ -88,7 +88,7 @@ export default function S23_DemoEntrance() {
           opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22D3EE', display: 'inline-block', animation: 'glowPulse 1.5s ease-in-out infinite', boxShadow: '0 0 8px #22D3EE' }} />
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1vw, 0.9rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1vw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
             פרק 02: לראות
           </span>
         </div>
@@ -140,9 +140,9 @@ export default function S23_DemoEntrance() {
           transform: phase >= 2 ? 'translateY(0)' : 'translateY(16px)',
           transition: 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1)',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1vw, 0.875rem)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1vw, 1rem)' }}>
             <span style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.6rem)' }}>🎬</span>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9vw, 0.82rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9vw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
           </div>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
@@ -163,16 +163,16 @@ export default function S23_DemoEntrance() {
 
         {/* Steps flow */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 0.5rem)',
+          display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 1rem)',
           flexWrap: 'wrap', justifyContent: 'center',
           marginTop: 'clamp(1.5rem, 3vw, 3rem)',
           opacity: phase >= 3 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           {DEMO_STEPS.map((step, i) => (
-            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
+            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 1rem)' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '0.375rem',
-                padding: 'clamp(0.3rem, 0.5vw, 0.45rem) clamp(0.625rem, 1vw, 0.875rem)',
+                padding: 'clamp(0.3rem, 0.5vw, 1rem) clamp(0.625rem, 1vw, 1rem)',
                 borderRadius: '8px',
                 background: step.color + '0E', border: `1px solid ${step.color}25`,
               }}>

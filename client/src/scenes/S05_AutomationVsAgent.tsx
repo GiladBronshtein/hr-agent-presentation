@@ -78,7 +78,7 @@ export default function S05_AutomationVsAgent() {
           border: '1px solid rgba(255,255,255,0.1)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 'clamp(1rem, 1.1vw, 0.95rem)',
+          fontSize: 'clamp(1rem, 1.1vw, 1rem)',
           fontWeight: 800, color: 'rgba(255,255,255,0.35)',
           letterSpacing: '0.05em',
         }}>VS</div>
@@ -105,7 +105,7 @@ export default function S05_AutomationVsAgent() {
             background: 'rgba(100,116,139,0.1)', border: '1px solid rgba(100,116,139,0.2)',
             marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 1rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
               AUTOMATION, אוטומציה
             </span>
           </div>
@@ -127,11 +127,11 @@ export default function S05_AutomationVsAgent() {
             כשמשהו קורה, עשה X.<br />תמיד אותו דבר. ללא חשיבה.
           </p>
 
-          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 1rem)' }}>
             {AUTOMATION_TRAITS.map((t, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: '0.625rem',
-                padding: 'clamp(0.5rem, 0.9vw, 0.8rem) clamp(0.75rem, 1.2vw, 1.1rem)',
+                padding: 'clamp(0.5rem, 0.9vw, 1rem) clamp(0.75rem, 1.2vw, 1.1rem)',
                 borderRadius: '10px',
                 background: 'rgba(100,116,139,0.05)',
                 border: '1px solid rgba(100,116,139,0.09)',
@@ -147,10 +147,10 @@ export default function S05_AutomationVsAgent() {
 
           <div className="animate-fade-in stagger-7" style={{
             marginTop: 'clamp(0.75rem, 1.5vw, 1.5rem)',
-            padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+            padding: 'clamp(0.625rem, 1vw, 1rem) clamp(0.875rem, 1.4vw, 1.25rem)',
             borderRadius: '12px',
             background: 'rgba(100,116,139,0.04)', border: '1px solid rgba(100,116,139,0.1)',
-            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 0.9rem)',
+            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 1rem)',
             color: 'rgba(255,255,255,0.25)', lineHeight: 1.6,
           }}>
             <span style={{ color: '#64748B' }}>IF</span> עובד חדש נוסף<br />
@@ -171,7 +171,7 @@ export default function S05_AutomationVsAgent() {
             marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 1rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
               AI AGENT, אייג׳נט
             </span>
           </div>
@@ -196,11 +196,11 @@ export default function S05_AutomationVsAgent() {
             מקבל מטרה, מחליט איך להגיע.<br />חושב, מתאים, פועל.
           </p>
 
-          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 1rem)' }}>
             {AGENT_TRAITS.map((t, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: '0.625rem',
-                padding: 'clamp(0.5rem, 0.9vw, 0.8rem) clamp(0.75rem, 1.2vw, 1.1rem)',
+                padding: 'clamp(0.5rem, 0.9vw, 1rem) clamp(0.75rem, 1.2vw, 1.1rem)',
                 borderRadius: '10px',
                 background: 'rgba(99,102,241,0.07)',
                 border: '1px solid rgba(99,102,241,0.14)',
@@ -217,10 +217,10 @@ export default function S05_AutomationVsAgent() {
 
           <div className="animate-fade-in stagger-7" style={{
             marginTop: 'clamp(0.75rem, 1.5vw, 1.5rem)',
-            padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+            padding: 'clamp(0.625rem, 1vw, 1rem) clamp(0.875rem, 1.4vw, 1.25rem)',
             borderRadius: '12px',
             background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.18)',
-            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 0.9rem)',
+            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 1rem)',
             color: 'rgba(255,255,255,0.5)', lineHeight: 1.6,
           }}>
             <span style={{ color: '#818CF8' }}>GOAL:</span> הכן קליטה לעובד חדש<br />
@@ -240,7 +240,7 @@ export default function S05_AutomationVsAgent() {
         pointerEvents: 'none',
       }}>
         <div style={{
-          padding: 'clamp(0.5rem, 0.8vw, 0.7rem) clamp(1.25rem, 2vw, 2rem)',
+          padding: 'clamp(0.5rem, 0.8vw, 1rem) clamp(1.25rem, 2vw, 2rem)',
           borderRadius: '100px',
           background: 'rgba(10,10,30,0.85)',
           border: '1px solid rgba(99,102,241,0.18)',

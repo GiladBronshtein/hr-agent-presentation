@@ -20,7 +20,7 @@ export default function S13_UseCaseConstellation() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">תשעה אייג׳נטים</SceneTitle>
             <p className="text-white/40 text-3xl mt-2">לחצו על אייג׳נט לפרטים</p>

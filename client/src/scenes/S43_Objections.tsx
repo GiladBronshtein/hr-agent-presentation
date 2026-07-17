@@ -34,7 +34,7 @@ export default function S43_Objections() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
             <SceneTitle size="md">התנגדויות נפוצות</SceneTitle>
             <p className="text-white/40 text-3xl mt-1">לחצו לתשובות</p>
