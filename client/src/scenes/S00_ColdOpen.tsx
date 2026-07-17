@@ -17,14 +17,14 @@ const TOOLS = [
 ];
 
 const ACTIVITIES = [
-  { time: '08:14', text: 'הודעת ברוכים הבאים נשלחה ל-Slack', color: '#E01E5A', icon: '💬' },
-  { time: '08:16', text: 'משתמש חדש נוצר ב-HRIS', color: '#F59E0B', icon: '🏢' },
-  { time: '08:18', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: '📅' },
-  { time: '08:21', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: '📁' },
-  { time: '08:23', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: '🎯' },
-  { time: '08:25', text: 'תיק עובד עודכן ב-Excel', color: '#217346', icon: '📊' },
-  { time: '08:27', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: '📧' },
-  { time: '08:30', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: '🎉' },
+  { time: '08:00', text: 'הודעת ברוכים הבאים נשלחה ל-Slack', color: '#E01E5A', icon: '💬' },
+  { time: '08:07', text: 'משתמש חדש נוצר ב-HRIS', color: '#F59E0B', icon: '🏢' },
+  { time: '08:13', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: '📅' },
+  { time: '08:19', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: '📁' },
+  { time: '08:26', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: '🎯' },
+  { time: '08:33', text: 'תיק עובד עודכן ב-Excel', color: '#217346', icon: '📊' },
+  { time: '08:40', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: '📧' },
+  { time: '08:47', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: '🎉' },
 ];
 
 const STATS = [
@@ -207,7 +207,7 @@ export default function S00_ColdOpen() {
             </svg>
 
             {/* HR Hub */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) translateY(-4%)', zIndex: 10 }}>
               <div style={{
                 width: 'clamp(65px, 8vw, 85px)', height: 'clamp(65px, 8vw, 85px)',
                 borderRadius: '50%',
