@@ -126,7 +126,7 @@ export function ContentLayout({ children, className = '' }: { children: ReactNod
   return (
     <div
       dir="rtl"
-      className={`w-full h-full flex flex-col justify-center ${className}`}
+      className={`w-full h-full flex flex-col items-center justify-center ${className}`}
       style={{
         padding: 'clamp(1.5rem, 3vw, 3.5rem) clamp(2.5rem, 6vw, 7rem) clamp(5rem, 8vw, 7rem)',
         boxSizing: 'border-box',
@@ -218,7 +218,7 @@ export function SceneSubtitle({
       className={className}
       style={{
         color: 'rgba(255,255,255,0.5)',
-        fontSize: 'clamp(0.9rem, 1.5vw, 1.125rem)',
+        fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
         lineHeight: 1.7,
         fontFamily: "'DM Sans', 'Heebo', sans-serif",
         margin: 0,
@@ -254,7 +254,7 @@ export function Takeaway({
         background: c + '12',
         border: `1px solid ${c}28`,
         color: c,
-        fontSize: '0.82rem',
+        fontSize: '1.1rem',
         fontWeight: 600,
         fontFamily: "'DM Sans', sans-serif",
       }}
@@ -371,7 +371,7 @@ export function ChapterBadge({ label, color }: { label: string; color: string })
         borderRadius: '6px',
         background: color + '12',
         border: `1px solid ${color}25`,
-        fontSize: '0.68rem',
+        fontSize: '1rem',
         fontWeight: 700,
         color,
         fontFamily: "'Space Grotesk', sans-serif",

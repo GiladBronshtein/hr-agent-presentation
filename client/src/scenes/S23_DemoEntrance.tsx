@@ -88,7 +88,7 @@ export default function S23_DemoEntrance() {
           opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22D3EE', display: 'inline-block', animation: 'glowPulse 1.5s ease-in-out infinite', boxShadow: '0 0 8px #22D3EE' }} />
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.7rem, 1vw, 0.9rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1vw, 0.9rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
             פרק 02: לראות
           </span>
         </div>
@@ -142,7 +142,7 @@ export default function S23_DemoEntrance() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1vw, 0.875rem)' }}>
             <span style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.6rem)' }}>🎬</span>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.65rem, 0.9vw, 0.82rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9vw, 0.82rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
           </div>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
@@ -154,7 +154,7 @@ export default function S23_DemoEntrance() {
           </p>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(0.85rem, 1.3vw, 1.15rem)',
+            fontSize: 'clamp(1rem, 1.3vw, 1.15rem)',
             color: 'rgba(255,255,255,0.4)', margin: 0, lineHeight: 1.6,
           }}>
             נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם, ומקבל אישור, בלי שמנהל HR יצטרך לתאם ידנית.
@@ -176,8 +176,8 @@ export default function S23_DemoEntrance() {
                 borderRadius: '8px',
                 background: step.color + '0E', border: `1px solid ${step.color}25`,
               }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.75rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
               </div>
               {i < DEMO_STEPS.length - 1 && (
                 <ArrowLeft size={10} style={{ color: 'rgba(255,255,255,0.15)', flexShrink: 0 }} />

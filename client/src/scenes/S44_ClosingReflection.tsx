@@ -127,7 +127,7 @@ export default function S44_ClosingReflection() {
               <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', display: 'block', marginBottom: '0.5rem' }}>{item.icon}</span>
               <p style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(0.875rem, 1.4vw, 1.2rem)',
+                fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
                 color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5,
               }}>{item.q}</p>
             </div>

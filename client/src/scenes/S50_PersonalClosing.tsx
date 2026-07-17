@@ -112,7 +112,7 @@ export default function S50_PersonalClosing() {
               background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.22)',
               marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
             }}>
-              <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)' }}>✨</span>
+              <span style={{ fontSize: 'clamp(1rem, 1.3vw, 1.1rem)' }}>✨</span>
               <span style={{ fontSize: 'clamp(1rem, 1.35vw, 1.25rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
                 תודה שהייתם כאן
               </span>
@@ -151,7 +151,7 @@ export default function S50_PersonalClosing() {
             </p>
             <p style={{
               fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(0.85rem, 1.3vw, 1.1rem)',
+              fontSize: 'clamp(1rem, 1.3vw, 1.1rem)',
               color: 'rgba(255,255,255,0.3)', margin: '0.35rem 0 0',
             }}>
               עוזר ארגונים לעבור מאוטומציה לאייג׳נטים
@@ -199,7 +199,7 @@ export default function S50_PersonalClosing() {
               }}>סרקו להתחבר</div>
               <div style={{
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)',
+                fontSize: 'clamp(1rem, 1.3vw, 1.1rem)',
                 fontWeight: 700, color: '#818CF8',
               }}>LinkedIn</div>
               <div style={{
@@ -242,7 +242,7 @@ export default function S50_PersonalClosing() {
           }}>
             <p style={{
               margin: 0, fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(0.875rem, 1.3vw, 1.15rem)',
+              fontSize: 'clamp(1rem, 1.3vw, 1.15rem)',
               color: 'rgba(255,255,255,0.6)', lineHeight: 1.6,
             }}>
               <span style={{ color: '#22D3EE', fontWeight: 700 }}>הצעד הראשון:</span>{' '}
@@ -323,7 +323,7 @@ export default function S50_PersonalClosing() {
       }}>
         <span style={{
           color: 'rgba(255,255,255,0.18)',
-          fontSize: 'clamp(0.7rem, 0.9vw, 0.85rem)',
+          fontSize: 'clamp(1rem, 0.9vw, 0.85rem)',
           fontFamily: "'Space Grotesk', sans-serif",
           letterSpacing: '0.05em',
         }}>

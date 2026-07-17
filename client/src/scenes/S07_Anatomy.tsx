@@ -37,7 +37,7 @@ export default function S07_Anatomy() {
       >
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '0.5rem' }}>
+          <p style={{ fontSize: '1rem', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '0.5rem' }}>
             7 רכיבים · לחצו לפרטים
           </p>
           <h1
@@ -131,7 +131,7 @@ export default function S07_Anatomy() {
                   </div>
                   <span
                     style={{
-                      fontSize: '0.72rem',
+                      fontSize: '1rem',
                       fontWeight: 700,
                       color: isSelected ? comp.color : 'rgba(255,255,255,0.6)',
                       fontFamily: "'DM Sans', sans-serif",
@@ -194,7 +194,7 @@ export default function S07_Anatomy() {
                     {selectedComp.required && (
                       <span
                         style={{
-                          fontSize: '0.62rem',
+                          fontSize: '1rem',
                           fontWeight: 700,
                           color: selectedComp.color + '90',
                           fontFamily: "'Space Grotesk', sans-serif",
@@ -244,7 +244,7 @@ export default function S07_Anatomy() {
           }}
         >
           <ShieldAlert size={14} style={{ color: '#F43F5E', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             חסר רכיב אחד, המערכת לא שלמה. <span style={{ color: '#F43F5E', fontWeight: 600 }}>גבולות ואישור</span> הם הכי חשובים.
           </p>
         </div>

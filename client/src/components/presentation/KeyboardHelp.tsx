@@ -135,7 +135,7 @@ export function KeyboardHelp() {
                     key={key}
                     style={{
                       padding: '0.18rem 0.45rem', borderRadius: '5px',
-                      fontSize: '0.68rem', fontFamily: "'Space Grotesk', monospace",
+                      fontSize: '1rem', fontFamily: "'Space Grotesk', monospace",
                       fontWeight: 600, color: 'rgba(255,255,255,0.5)',
                       background: 'rgba(255,255,255,0.07)',
                       border: '1px solid rgba(255,255,255,0.12)',
@@ -151,7 +151,7 @@ export function KeyboardHelp() {
 
         <p style={{
           marginTop: '1rem', color: 'rgba(255,255,255,0.18)',
-          fontSize: '0.72rem', textAlign: 'center',
+          fontSize: '1rem', textAlign: 'center',
           fontFamily: "'Heebo', sans-serif",
         }}>
           לחץ H בכל עת לפתיחת עזרה זו

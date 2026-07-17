@@ -1,6 +1,7 @@
 /**
  * S02: Agenda: Four Questions
  * Design: AI-Native UI: bento grid layout, chapter color coding, glassmorphic cards
+ * CONFERENCE HALL EDITION: All text sizes bumped for large screen readability
  */
 import { SceneBase } from '../components/presentation/SceneBase';
 import { BookOpen, Layers, Wrench, Rocket } from 'lucide-react';
@@ -52,32 +53,34 @@ export default function S02_Agenda() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '3rem 3rem 5rem',
-          gap: '2.5rem',
+          padding: 'clamp(2rem, 4vw, 4rem) clamp(3rem, 6vw, 7rem) clamp(5rem, 8vw, 7rem)',
+          gap: 'clamp(1.5rem, 3vw, 3rem)',
         }}
       >
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
           <p
             style={{
-              fontSize: '0.7rem',
+              fontSize: 'clamp(1rem, 1.4vw, 1.3rem)',
               fontWeight: 700,
-              color: 'rgba(255,255,255,0.3)',
+              color: 'rgba(255,255,255,0.35)',
               letterSpacing: '0.12em',
               fontFamily: "'Space Grotesk', sans-serif",
               marginBottom: '0.75rem',
+              textTransform: 'uppercase',
             }}
           >
             ארבע שאלות שנענה עליהן
           </p>
           <h1
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+              fontSize: 'clamp(3rem, 6vw, 5.5rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
               color: 'white',
               margin: 0,
+              lineHeight: 1.1,
             }}
           >
             מה נלמד היום
@@ -89,9 +92,9 @@ export default function S02_Agenda() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '1rem',
+            gap: 'clamp(0.875rem, 1.5vw, 1.5rem)',
             width: '100%',
-            maxWidth: '860px',
+            maxWidth: '1100px',
           }}
         >
           {QUESTIONS.map((item, i) => (
@@ -102,8 +105,8 @@ export default function S02_Agenda() {
                 animationDelay: `${0.1 + i * 0.1}s`,
                 animationFillMode: 'both',
                 opacity: 0,
-                padding: '1.5rem',
-                borderRadius: '16px',
+                padding: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+                borderRadius: '20px',
                 background: item.color + '0A',
                 border: `1px solid ${item.color}22`,
                 position: 'relative',
@@ -123,13 +126,13 @@ export default function S02_Agenda() {
                 }}
               />
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem' }}>
                 {/* Icon */}
                 <div
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
+                    width: 'clamp(48px, 5vw, 60px)',
+                    height: 'clamp(48px, 5vw, 60px)',
+                    borderRadius: '14px',
                     background: item.color + '15',
                     border: `1px solid ${item.color}30`,
                     display: 'flex',
@@ -138,7 +141,7 @@ export default function S02_Agenda() {
                     flexShrink: 0,
                   }}
                 >
-                  <item.Icon size={18} style={{ color: item.color }} />
+                  <item.Icon size={24} style={{ color: item.color }} />
                 </div>
 
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -147,17 +150,17 @@ export default function S02_Agenda() {
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '0.3rem',
-                      padding: '0.15rem 0.5rem',
-                      borderRadius: '5px',
+                      gap: '0.4rem',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '6px',
                       background: item.color + '15',
                       border: `1px solid ${item.color}25`,
-                      fontSize: '0.62rem',
+                      fontSize: 'clamp(1rem, 1.1vw, 1rem)',
                       fontWeight: 700,
                       color: item.color,
                       fontFamily: "'Space Grotesk', sans-serif",
                       letterSpacing: '0.06em',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.75rem',
                     }}
                   >
                     <span style={{ fontFamily: 'monospace' }}>{item.num}</span>
@@ -168,12 +171,12 @@ export default function S02_Agenda() {
                   {/* Question */}
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.88)',
-                      fontSize: '1.7rem',
-                      fontWeight: 600,
-                      lineHeight: 1.45,
-                      fontFamily: "'DM Sans', sans-serif",
-                      margin: '0 0 0.375rem',
+                      color: 'rgba(255,255,255,0.9)',
+                      fontSize: 'clamp(1.5rem, 2.2vw, 2.1rem)',
+                      fontWeight: 700,
+                      lineHeight: 1.4,
+                      fontFamily: "'DM Sans', 'Heebo', sans-serif",
+                      margin: '0 0 0.5rem',
                     }}
                   >
                     {item.q}
@@ -182,10 +185,10 @@ export default function S02_Agenda() {
                   {/* Description */}
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.35)',
-                      fontSize: '0.78rem',
+                      color: 'rgba(255,255,255,0.45)',
+                      fontSize: 'clamp(1rem, 1.4vw, 1.3rem)',
                       lineHeight: 1.5,
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'DM Sans', 'Heebo', sans-serif",
                       margin: 0,
                     }}
                   >
@@ -201,10 +204,10 @@ export default function S02_Agenda() {
         <p
           className="animate-fade-in stagger-9"
           style={{
-            color: 'rgba(255,255,255,0.25)',
-            fontSize: '1.15rem',
+            color: 'rgba(255,255,255,0.3)',
+            fontSize: 'clamp(1.1rem, 1.6vw, 1.5rem)',
             textAlign: 'center',
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'DM Sans', 'Heebo', sans-serif",
           }}
         >
           המטרה: לצאת עם רעיון אחד שאפשר להתחיל לבדוק כבר השבוע

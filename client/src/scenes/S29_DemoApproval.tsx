@@ -50,7 +50,7 @@ export default function S29_DemoApproval() {
             }}
           >
             <Clock size={12} style={{ color: '#F59E0B' }} />
-            <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
+            <span style={{ fontSize: '1rem', fontWeight: 700, color: '#F59E0B', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
               שלב 6 · HUMAN-IN-THE-LOOP
             </span>
           </div>
@@ -136,10 +136,10 @@ export default function S29_DemoApproval() {
                     borderBottom: i < 4 ? '1px solid rgba(255,255,255,0.05)' : 'none',
                   }}
                 >
-                  <span style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: 'rgba(245,158,11,0.5)', flexShrink: 0 }}>
+                  <span style={{ fontFamily: 'monospace', fontSize: '1rem', color: 'rgba(245,158,11,0.5)', flexShrink: 0 }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif" }}>
+                  <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif" }}>
                     {item}
                   </span>
                 </div>
@@ -148,7 +148,7 @@ export default function S29_DemoApproval() {
 
             {/* Comment field */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em', display: 'block', marginBottom: '0.5rem' }}>
+              <label style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em', display: 'block', marginBottom: '0.5rem' }}>
                 הערות (אופציונלי)
               </label>
               <textarea
@@ -266,7 +266,7 @@ export default function S29_DemoApproval() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.375rem', fontWeight: 700, color: '#34D399', margin: '0 0 0.5rem' }}>
               אושר!
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.88rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
               האייג׳נט מתחיל לבצע את התוכנית...
             </p>
           </div>
@@ -290,7 +290,7 @@ export default function S29_DemoApproval() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '2.6rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
               נדחה, האייג׳נט ישנה ויחזור
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
               זה בדיוק המנגנון: האדם שולט, האייג׳נט מתאים
             </p>
             <button
@@ -301,7 +301,7 @@ export default function S29_DemoApproval() {
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.12)',
                 color: 'rgba(255,255,255,0.6)',
-                fontSize: '0.82rem',
+                fontSize: '1.1rem',
                 fontFamily: "'DM Sans', sans-serif",
                 cursor: 'pointer',
               }}
@@ -326,7 +326,7 @@ export default function S29_DemoApproval() {
           }}
         >
           <UserCheck size={14} style={{ color: '#818CF8', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             Human-in-the-Loop הוא <span style={{ color: '#818CF8', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה, הוא מה שהופך אייג׳נט לאמין
           </p>
         </div>

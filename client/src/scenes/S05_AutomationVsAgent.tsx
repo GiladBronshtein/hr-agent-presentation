@@ -78,7 +78,7 @@ export default function S05_AutomationVsAgent() {
           border: '1px solid rgba(255,255,255,0.1)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 'clamp(0.7rem, 1.1vw, 0.95rem)',
+          fontSize: 'clamp(1rem, 1.1vw, 0.95rem)',
           fontWeight: 800, color: 'rgba(255,255,255,0.35)',
           letterSpacing: '0.05em',
         }}>VS</div>
@@ -105,7 +105,7 @@ export default function S05_AutomationVsAgent() {
             background: 'rgba(100,116,139,0.1)', border: '1px solid rgba(100,116,139,0.2)',
             marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
               AUTOMATION, אוטומציה
             </span>
           </div>
@@ -140,7 +140,7 @@ export default function S05_AutomationVsAgent() {
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
                 <span style={{ fontSize: 'clamp(1.5rem, 2.1vw, 2rem)', flexShrink: 0 }}>{t.icon}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)' }}>{t.text}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)' }}>{t.text}</span>
               </div>
             ))}
           </div>
@@ -150,7 +150,7 @@ export default function S05_AutomationVsAgent() {
             padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
             borderRadius: '12px',
             background: 'rgba(100,116,139,0.04)', border: '1px solid rgba(100,116,139,0.1)',
-            fontFamily: 'monospace', fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 0.9rem)',
             color: 'rgba(255,255,255,0.25)', lineHeight: 1.6,
           }}>
             <span style={{ color: '#64748B' }}>IF</span> עובד חדש נוסף<br />
@@ -171,7 +171,7 @@ export default function S05_AutomationVsAgent() {
             marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
               AI AGENT, אייג׳נט
             </span>
           </div>
@@ -210,7 +210,7 @@ export default function S05_AutomationVsAgent() {
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
                 <span style={{ fontSize: 'clamp(1.5rem, 2.1vw, 2rem)', flexShrink: 0 }}>{t.icon}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.7)' }}>{t.text}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.7)' }}>{t.text}</span>
               </div>
             ))}
           </div>
@@ -220,7 +220,7 @@ export default function S05_AutomationVsAgent() {
             padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
             borderRadius: '12px',
             background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.18)',
-            fontFamily: 'monospace', fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            fontFamily: 'monospace', fontSize: 'clamp(1rem, 1vw, 0.9rem)',
             color: 'rgba(255,255,255,0.5)', lineHeight: 1.6,
           }}>
             <span style={{ color: '#818CF8' }}>GOAL:</span> הכן קליטה לעובד חדש<br />
@@ -248,7 +248,7 @@ export default function S05_AutomationVsAgent() {
         }}>
           <span style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
+            fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
             color: 'rgba(255,255,255,0.55)',
           }}>
             אוטומציה מבצעת פקודות.{' '}

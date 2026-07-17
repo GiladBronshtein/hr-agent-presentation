@@ -91,7 +91,7 @@ export default function S12_EmployeeJourney() {
         <div style={{ textAlign: 'center' }}>
           <p style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            fontSize: 'clamp(1rem, 1vw, 0.9rem)',
             fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
             color: 'rgba(99,102,241,0.7)', marginBottom: '0.5rem',
           }}>פרק שני: לראות</p>
@@ -186,7 +186,7 @@ export default function S12_EmployeeJourney() {
             }}>{sel.label}</h3>
             <span style={{
               fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
+              fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
               fontWeight: 600,
               padding: '0.35rem 1rem', borderRadius: '100px',
               background: sel.color + '20', color: sel.color,
@@ -204,7 +204,7 @@ export default function S12_EmployeeJourney() {
             {sel.agents.map(a => (
               <span key={a} style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)',
+                fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
                 padding: 'clamp(0.4rem, 0.7vw, 0.65rem) clamp(0.875rem, 1.4vw, 1.25rem)',
                 borderRadius: '12px',
                 background: 'rgba(255,255,255,0.06)',
@@ -226,7 +226,7 @@ export default function S12_EmployeeJourney() {
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
               <span style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)',
+                fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
                 color: 'rgba(255,255,255,0.4)',
               }}>{RISK_LABELS[k]}</span>
             </div>

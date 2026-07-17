@@ -173,7 +173,7 @@ export function ChapterMap() {
                     {chapter.label}
                   </span>
                   <div style={{ flex: 1, height: '1px', background: chapter.color + '18' }} />
-                  <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace' }}>
+                  <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace' }}>
                     {chapterScenes.length} סצנות
                   </span>
                 </div>
@@ -223,7 +223,7 @@ export function ChapterMap() {
               border: '1px solid rgba(255,255,255,0.1)',
               borderRadius: '6px',
               padding: '0.2rem 0.5rem',
-              fontSize: '0.7rem',
+              fontSize: '1rem',
               color: 'rgba(255,255,255,0.35)',
               fontFamily: 'monospace',
             }}
@@ -300,7 +300,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
         <span
           style={{
             fontFamily: 'monospace',
-            fontSize: '0.65rem',
+            fontSize: '1rem',
             color: isActive ? chapterColor : chapterColor + '55',
             flexShrink: 0,
           }}
@@ -310,7 +310,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
         {scene.isDemo && (
           <span
             style={{
-              fontSize: '0.6rem',
+              fontSize: '1rem',
               fontWeight: 600,
               padding: '0.1rem 0.35rem',
               borderRadius: '4px',
@@ -326,7 +326,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       </div>
       <span
         style={{
-          fontSize: '0.78rem',
+          fontSize: '1rem',
           color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)',
           lineHeight: 1.35,
           fontFamily: "'DM Sans', sans-serif",
