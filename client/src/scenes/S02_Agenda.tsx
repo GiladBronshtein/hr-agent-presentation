@@ -53,17 +53,17 @@ export default function S02_Agenda() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 'clamp(2rem, 4vw, 4rem) clamp(3rem, 6vw, 7rem) clamp(5rem, 8vw, 7rem)',
-          gap: 'clamp(1.5rem, 3vw, 3rem)',
+          padding: 'clamp(2rem, 4cqw, 4rem) clamp(3rem, 6cqw, 7rem) clamp(5rem, 8cqw, 7rem)',
+          gap: 'clamp(1.5rem, 3cqw, 3rem)',
         }}
       >
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
           <p
             style={{
-              fontSize: 'clamp(1rem, 1.4vw, 1.3rem)',
+              fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)',
               fontWeight: 700,
-              color: 'rgba(255,255,255,0.35)',
+              color: 'rgba(255,255,255,0.55)',
               letterSpacing: '0.12em',
               fontFamily: "'Space Grotesk', sans-serif",
               marginBottom: '0.75rem',
@@ -75,7 +75,7 @@ export default function S02_Agenda() {
           <h1
             style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+              fontSize: 'clamp(3rem, 6cqw, 5.5rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
               color: 'white',
@@ -92,7 +92,7 @@ export default function S02_Agenda() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 'clamp(0.875rem, 1.5vw, 1.5rem)',
+            gap: 'clamp(0.875rem, 1.5cqw, 1.5rem)',
             width: '100%',
             maxWidth: '1100px',
           }}
@@ -105,7 +105,7 @@ export default function S02_Agenda() {
                 animationDelay: `${0.1 + i * 0.1}s`,
                 animationFillMode: 'both',
                 opacity: 0,
-                padding: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+                padding: 'clamp(1.5rem, 2.5cqw, 2.5rem)',
                 borderRadius: '20px',
                 background: item.color + '0A',
                 border: `1px solid ${item.color}22`,
@@ -130,8 +130,8 @@ export default function S02_Agenda() {
                 {/* Icon */}
                 <div
                   style={{
-                    width: 'clamp(48px, 5vw, 60px)',
-                    height: 'clamp(48px, 5vw, 60px)',
+                    width: 'clamp(48px, 5cqw, 60px)',
+                    height: 'clamp(48px, 5cqw, 60px)',
                     borderRadius: '14px',
                     background: item.color + '15',
                     border: `1px solid ${item.color}30`,
@@ -155,7 +155,7 @@ export default function S02_Agenda() {
                       borderRadius: '6px',
                       background: item.color + '15',
                       border: `1px solid ${item.color}25`,
-                      fontSize: 'clamp(1rem, 1.1vw, 1rem)',
+                      fontSize: 'clamp(1rem, 1.1cqw, 1rem)',
                       fontWeight: 700,
                       color: item.color,
                       fontFamily: "'Space Grotesk', sans-serif",
@@ -172,7 +172,7 @@ export default function S02_Agenda() {
                   <p
                     style={{
                       color: 'rgba(255,255,255,0.9)',
-                      fontSize: 'clamp(1.5rem, 2.2vw, 2.1rem)',
+                      fontSize: 'clamp(1.5rem, 2.2cqw, 2.1rem)',
                       fontWeight: 700,
                       lineHeight: 1.4,
                       fontFamily: "'DM Sans', 'Heebo', sans-serif",
@@ -185,8 +185,8 @@ export default function S02_Agenda() {
                   {/* Description */}
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.45)',
-                      fontSize: 'clamp(1rem, 1.4vw, 1.3rem)',
+                      color: 'rgba(255,255,255,0.62)',
+                      fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)',
                       lineHeight: 1.5,
                       fontFamily: "'DM Sans', 'Heebo', sans-serif",
                       margin: 0,
@@ -205,7 +205,7 @@ export default function S02_Agenda() {
           className="animate-fade-in stagger-9"
           style={{
             color: 'rgba(255,255,255,0.3)',
-            fontSize: 'clamp(1.1rem, 1.6vw, 1.5rem)',
+            fontSize: 'clamp(1.1rem, 1.6cqw, 1.5rem)',
             textAlign: 'center',
             fontFamily: "'DM Sans', 'Heebo', sans-serif",
           }}

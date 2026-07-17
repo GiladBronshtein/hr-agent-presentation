@@ -13,11 +13,11 @@ export default function S31_DemoFeedback() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 8</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 8</p>
             <SceneTitle size="md">משוב ולמידה</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">כל משוב משפר את האייג׳נט לפעם הבאה</p>
+            <p className="text-white/60 text-3xl mt-1">כל משוב משפר את האייג׳נט לפעם הבאה</p>
           </div>
           <div className="space-y-8">
             {QUESTIONS.map((item, qi) => (

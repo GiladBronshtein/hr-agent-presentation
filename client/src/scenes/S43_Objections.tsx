@@ -34,10 +34,10 @@ export default function S43_Objections() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
             <SceneTitle size="md">התנגדויות נפוצות</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">לחצו לתשובות</p>
+            <p className="text-white/60 text-3xl mt-1">לחצו לתשובות</p>
           </div>
           <div className="space-y-2">
             {OBJECTIONS.map((obj, i) => (
@@ -48,7 +48,7 @@ export default function S43_Objections() {
                   className="w-full flex items-center justify-between p-6 text-right"
                   style={{ background: open === i ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.03)' }}>
                   <span className="text-white/80 text-3xl font-medium">{obj.q}</span>
-                  <span className="text-white/30 text-3xl">{open === i ? '−' : '+'}</span>
+                  <span className="text-white/65 text-3xl">{open === i ? '−' : '+'}</span>
                 </button>
                 {open === i && (
                   <div className="px-6 pb-4 animate-fade-in">

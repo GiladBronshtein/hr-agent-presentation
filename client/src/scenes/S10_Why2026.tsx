@@ -1,4 +1,5 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard, AnimatedNumber } from '../components/presentation/SceneBase';
+import { BarChart3, Handshake, RefreshCw } from 'lucide-react';
 
 // SOURCES (verified):
 // 57%: Deloitte / ServiceNow — https://www.deloitte.com/et/en/alliances/servicenow/about/deloittes-fastforward-powered-by-servicenow.html
@@ -12,9 +13,9 @@ const STATS = [
 ];
 
 const SHIFTS = [
-  { from: 'כלי AI נוסף', to: 'שינוי תהליך עבודה', icon: '🔄' },
-  { from: 'מדידת שימוש', to: 'מדידת ערך', icon: '📊' },
-  { from: 'פרויקט IT', to: 'שותפות HR+IT', icon: '🤝' },
+  { from: 'כלי AI נוסף', to: 'שינוי תהליך עבודה', icon: RefreshCw },
+  { from: 'מדידת שימוש', to: 'מדידת ערך', icon: BarChart3 },
+  { from: 'פרויקט IT', to: 'שותפות HR+IT', icon: Handshake },
 ];
 
 export default function S10_Why2026() {
@@ -24,7 +25,7 @@ export default function S10_Why2026() {
         <div className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">למה 2026 שונה?</SceneTitle>
-            <p className="text-white/50 mt-2">האתגר הוא לא "להשתמש ב-AI", אלא לעצב מחדש איך עבודה מתבצעת</p>
+            <p className="text-white/65 mt-2">האתגר הוא לא "להשתמש ב-AI", אלא לעצב מחדש איך עבודה מתבצעת</p>
           </div>
           <div className="grid grid-cols-3 gap-6">
             {STATS.map((stat, i) => (
@@ -38,7 +39,7 @@ export default function S10_Why2026() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-3xl font-medium transition-all hover:opacity-80"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   📎 {(stat as any).source}
@@ -47,13 +48,13 @@ export default function S10_Why2026() {
             ))}
           </div>
           <div className="space-y-3">
-            <p className="text-white/40 text-3xl uppercase tracking-widest">השינוי הנדרש</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest">השינוי הנדרש</p>
             {SHIFTS.map((shift, i) => (
               <div key={i} className="flex items-center gap-6 p-3 rounded-xl"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <span className="text-3xl">{shift.icon}</span>
-                <span className="text-white/40 text-3xl line-through">{shift.from}</span>
-                <span className="text-white/30">→</span>
+                <span className="text-3xl"><shift.icon size="1em" /></span>
+                <span className="text-white/60 text-3xl line-through">{shift.from}</span>
+                <span className="text-white/65">→</span>
                 <span className="text-white/80 text-3xl font-medium">{shift.to}</span>
               </div>
             ))}

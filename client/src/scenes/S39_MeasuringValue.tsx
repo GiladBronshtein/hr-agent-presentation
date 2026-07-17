@@ -19,10 +19,10 @@ export default function S39_MeasuringValue() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }}>
+        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }}>
           <div>
             <SceneTitle size="md">מדידת ערך</SceneTitle>
-            <p className="text-white/50 mt-2 text-3xl">מדדים שמשכנעים את ה-CFO</p>
+            <p className="text-white/65 mt-2 text-3xl">מדדים שמשכנעים את ה-CFO</p>
           </div>
           <div className="grid grid-cols-3 gap-6">
             {METRICS.map((cat, i) => (
@@ -31,9 +31,9 @@ export default function S39_MeasuringValue() {
                 <div className="space-y-3">
                   {cat.items.map((item) => (
                     <div key={item.name}>
-                      <p className="text-white/40 text-3xl mb-1">{item.name}</p>
+                      <p className="text-white/60 text-3xl mb-1">{item.name}</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-white/30 text-3xl line-through">{item.before}</span>
+                        <span className="text-white/65 text-3xl line-through">{item.before}</span>
                         <span className="text-white/20">→</span>
                         <span className="font-bold text-3xl" style={{ color: cat.color }}>{item.after}{item.unit}</span>
                       </div>

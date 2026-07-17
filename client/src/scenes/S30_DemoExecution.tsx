@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 
@@ -14,17 +15,18 @@ export default function S30_DemoExecution() {
   const [visible, setVisible] = useState(0);
 
   useEffect(() => {
-    STEPS.forEach((_, i) => {
-      setTimeout(() => setVisible(i + 1), 500 + i * 600);
-    });
+    const timers = STEPS.map((_, i) =>
+      setTimeout(() => setVisible(i + 1), 500 + i * 600)
+    );
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 7</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 7</p>
             <SceneTitle size="md">ביצוע</SceneTitle>
           </div>
           <div className="space-y-2">
@@ -42,14 +44,14 @@ export default function S30_DemoExecution() {
                 <span className="flex-1 text-3xl" style={{ color: i < visible ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)' }}>
                   {step.label}
                 </span>
-                {i < visible && <span className="text-3xl text-white/30">{step.time}</span>}
+                {i < visible && <span className="text-3xl text-white/65">{step.time}</span>}
               </div>
             ))}
           </div>
           {visible >= STEPS.length && (
             <div className="p-6 rounded-xl text-center animate-fade-in" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
-              <p className="text-3xl font-bold" style={{ color: '#10B981' }}>✅ הושלם</p>
-              <p className="text-white/50 text-3xl mt-1">כל הפעולות בוצעו ותועדו</p>
+              <p className="text-3xl font-bold flex items-center justify-center gap-2" style={{ color: '#10B981' }}><CheckCircle2 size="1em" /> הושלם</p>
+              <p className="text-white/65 text-3xl mt-1">כל הפעולות בוצעו ותועדו</p>
             </div>
           )}
         </div>

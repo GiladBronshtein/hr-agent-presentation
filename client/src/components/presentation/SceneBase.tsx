@@ -128,7 +128,7 @@ export function ContentLayout({ children, className = '' }: { children: ReactNod
       dir="rtl"
       className={`w-full h-full flex flex-col items-center justify-center ${className}`}
       style={{
-        padding: 'clamp(1.5rem, 3vw, 3.5rem) clamp(2.5rem, 6vw, 7rem) clamp(5rem, 8vw, 7rem)',
+        padding: 'clamp(1.5rem, 3cqw, 3.5rem) clamp(2.5rem, 6cqw, 7rem) clamp(5rem, 8cqw, 7rem)',
         boxSizing: 'border-box',
       }}
     >
@@ -175,10 +175,10 @@ export function SceneTitle({
   className?: string;
 }) {
   const sizes = {
-    sm: 'clamp(1.5rem, 2.5vw, 2rem)',
-    md: 'clamp(2rem, 3.5vw, 2.75rem)',
-    lg: 'clamp(2.5rem, 5vw, 4rem)',
-    xl: 'clamp(3rem, 7vw, 6rem)',
+    sm: 'clamp(1.5rem, 2.5cqw, 2rem)',
+    md: 'clamp(2rem, 3.5cqw, 2.75rem)',
+    lg: 'clamp(2.5rem, 5cqw, 4rem)',
+    xl: 'clamp(3rem, 7cqw, 6rem)',
   };
 
   const style: React.CSSProperties = {
@@ -217,8 +217,8 @@ export function SceneSubtitle({
     <p
       className={className}
       style={{
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+        color: 'rgba(255,255,255,0.68)',
+        fontSize: 'clamp(1rem, 1.5cqw, 1.125rem)',
         lineHeight: 1.7,
         fontFamily: "'DM Sans', 'Heebo', sans-serif",
         margin: 0,

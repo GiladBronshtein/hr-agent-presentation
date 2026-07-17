@@ -7,9 +7,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS, getCurrentChapter } from '../../data/scenes';
 import {
-  LayoutGrid, StickyNote, Maximize, Minimize,
+  LayoutGrid, StickyNote, Maximize, Minimize, MonitorUp,
   ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff,
 } from 'lucide-react';
+import { openPresenterWindow } from '../../lib/presenterChannel';
 
 const CHAPTER_COLORS: Record<string, string> = {
   'להבין': '#6366F1',
@@ -142,7 +143,7 @@ export function PresenterControls() {
       >
         <div
           dir="rtl"
-          className="flex items-center gap-1 px-3 py-2 rounded-2xl"
+          className="control-pill flex items-center gap-1 px-3 py-2 rounded-2xl"
           style={{
             background: 'rgba(8, 8, 20, 0.88)',
             backdropFilter: 'blur(24px)',
@@ -202,6 +203,15 @@ export function PresenterControls() {
             title="הערות מציג (P)"
           >
             <StickyNote size={15} />
+          </ControlBtn>
+
+          {/* Presenter view window */}
+          <ControlBtn
+            onClick={openPresenterWindow}
+            aria-label="חלון מציג (N)"
+            title="חלון מציג (N)"
+          >
+            <MonitorUp size={15} />
           </ControlBtn>
 
           <Divider />
@@ -293,7 +303,7 @@ function ControlBtn({
     ? activeColor
     : hovered
     ? '#818CF8'
-    : 'rgba(255,255,255,0.45)';
+    : 'rgba(255,255,255,0.62)';
 
   const border = active
     ? `1px solid ${activeColor}35`
@@ -309,6 +319,7 @@ function ControlBtn({
       title={title}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="control-btn"
       style={{
         display: 'flex',
         alignItems: 'center',

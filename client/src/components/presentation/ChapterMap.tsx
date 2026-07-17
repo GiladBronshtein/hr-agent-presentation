@@ -99,7 +99,7 @@ export function ChapterMap() {
             >
               מפת המצגת
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
+            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
               {SCENES.length} סצנות · לחץ לניווט ישיר
             </p>
           </div>
@@ -112,7 +112,7 @@ export function ChapterMap() {
               borderRadius: '10px',
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.68)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -126,7 +126,7 @@ export function ChapterMap() {
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)';
-              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.68)';
               (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)';
             }}
           >
@@ -214,7 +214,7 @@ export function ChapterMap() {
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '2.6rem' }}>
+          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '1rem' }}>
             לחץ על סצנה לניווט ישיר
           </span>
           <kbd
@@ -224,7 +224,7 @@ export function ChapterMap() {
               borderRadius: '6px',
               padding: '0.2rem 0.5rem',
               fontSize: '1rem',
-              color: 'rgba(255,255,255,0.35)',
+              color: 'rgba(255,255,255,0.55)',
               fontFamily: 'monospace',
             }}
           >
@@ -327,7 +327,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       <span
         style={{
           fontSize: '1rem',
-          color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)',
+          color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.68)',
           lineHeight: 1.35,
           fontFamily: "'DM Sans', sans-serif",
         }}

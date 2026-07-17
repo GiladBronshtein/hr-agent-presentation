@@ -2,7 +2,7 @@
  * S29: Demo Approval: Human-in-the-Loop
  * Design: AI-Native UI: trust moment, approval card with textarea, clear approve/reject CTAs
  */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 import { UserCheck, CheckCircle, XCircle, AlertTriangle, Clock, FileText } from 'lucide-react';
@@ -10,10 +10,15 @@ import { UserCheck, CheckCircle, XCircle, AlertTriangle, Clock, FileText } from 
 export default function S29_DemoApproval() {
   const { demoApprovalState, setDemoApprovalState, goNext } = usePresentationStore();
   const [comment, setComment] = useState('');
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current); };
+  }, []);
 
   const handleApprove = () => {
     setDemoApprovalState('approved');
-    setTimeout(() => goNext(), 1800);
+    advanceTimer.current = setTimeout(() => goNext(), 1800);
   };
 
   const handleReject = () => {
@@ -57,7 +62,7 @@ export default function S29_DemoApproval() {
           <h1
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
+              fontSize: 'clamp(1.75rem, 3.5cqw, 2.75rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
               color: 'white',
@@ -103,7 +108,7 @@ export default function S29_DemoApproval() {
                 <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '1.7rem', color: 'white', margin: '0 0 0.25rem' }}>
                   תוכנית קליטה, יעל כהן
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.15rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+                <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '1.15rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
                   האייג׳נט הכין תוכנית מלאה ומחכה לאישורך לפני שליחה
                 </p>
               </div>
@@ -148,7 +153,7 @@ export default function S29_DemoApproval() {
 
             {/* Comment field */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em', display: 'block', marginBottom: '0.5rem' }}>
+              <label style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em', display: 'block', marginBottom: '0.5rem' }}>
                 הערות (אופציונלי)
               </label>
               <textarea
@@ -290,7 +295,7 @@ export default function S29_DemoApproval() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '2.6rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
               נדחה, האייג׳נט ישנה ויחזור
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
               זה בדיוק המנגנון: האדם שולט, האייג׳נט מתאים
             </p>
             <button
@@ -326,7 +331,7 @@ export default function S29_DemoApproval() {
           }}
         >
           <UserCheck size={14} style={{ color: '#818CF8', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             Human-in-the-Loop הוא <span style={{ color: '#818CF8', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה, הוא מה שהופך אייג׳נט לאמין
           </p>
         </div>

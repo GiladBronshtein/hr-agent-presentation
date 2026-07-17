@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { Bell, Brain, Building2, Calendar, Mail, MessageCircle } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 const NODES = [
-  { id: 'trigger', label: 'Slack Trigger', icon: '💬', color: '#6366F1', x: 5, y: 40 },
-  { id: 'ai', label: 'AI Agent', icon: '🧠', color: '#A78BFA', x: 30, y: 40 },
-  { id: 'calendar', label: 'Calendar', icon: '📅', color: '#10B981', x: 55, y: 20 },
-  { id: 'email', label: 'Gmail', icon: '📧', color: '#F59E0B', x: 55, y: 60 },
-  { id: 'hris', label: 'HRIS', icon: '🏢', color: '#22D3EE', x: 80, y: 40 },
-  { id: 'notify', label: 'Notify HR', icon: '🔔', color: '#F43F5E', x: 80, y: 70 },
+  { id: 'trigger', label: 'Slack Trigger', icon: MessageCircle, color: '#6366F1', x: 5, y: 40 },
+  { id: 'ai', label: 'AI Agent', icon: Brain, color: '#A78BFA', x: 30, y: 40 },
+  { id: 'calendar', label: 'Calendar', icon: Calendar, color: '#10B981', x: 55, y: 20 },
+  { id: 'email', label: 'Gmail', icon: Mail, color: '#F59E0B', x: 55, y: 60 },
+  { id: 'hris', label: 'HRIS', icon: Building2, color: '#22D3EE', x: 80, y: 40 },
+  { id: 'notify', label: 'Notify HR', icon: Bell, color: '#F43F5E', x: 80, y: 70 },
 ];
 
 const EDGES = [
@@ -24,10 +25,10 @@ export default function S34_N8nWorkflow() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">n8n Workflow</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">ויזואליזציה של זרימת האייג׳נט</p>
+            <p className="text-white/60 text-3xl mt-1">ויזואליזציה של זרימת האייג׳נט</p>
           </div>
           <div className="relative h-48 rounded-2xl overflow-hidden"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -58,14 +59,14 @@ export default function S34_N8nWorkflow() {
                     border: active === node.id ? `2px solid ${node.color}60` : `1px solid ${node.color}30`,
                     boxShadow: active === node.id ? `0 0 12px ${node.color}40` : 'none',
                   }}>
-                  {node.icon}
+                  <node.icon size="1em" />
                 </div>
-                <span className="text-3xl text-white/50 whitespace-nowrap">{node.label}</span>
+                <span className="text-3xl text-white/65 whitespace-nowrap">{node.label}</span>
               </button>
             ))}
           </div>
           <div className="p-6 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/50 text-3xl text-center">
+            <p className="text-white/65 text-3xl text-center">
               n8n מאפשר בניית זרימות ויזואליות, ללא קוד, עם כלים מוכנים לחיבור
             </p>
           </div>

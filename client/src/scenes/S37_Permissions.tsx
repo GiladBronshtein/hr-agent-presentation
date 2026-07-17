@@ -25,10 +25,10 @@ export default function S37_Permissions() {
         <div className="w-full max-w-6xl space-y-8">
           <div>
             <SceneTitle size="md">מטריצת הרשאות</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">מה האייג׳נט יכול לעשות, ומה אסור</p>
+            <p className="text-white/60 text-3xl mt-1">מה האייג׳נט יכול לעשות, ומה אסור</p>
           </div>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="grid grid-cols-4 p-3 text-3xl text-white/40 uppercase tracking-widest"
+            <div className="grid grid-cols-4 p-3 text-3xl text-white/60 uppercase tracking-widest"
               style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <span>פעולה</span>
               <span>סיכון</span>
@@ -43,7 +43,7 @@ export default function S37_Permissions() {
                   <span className="text-white/70">{row.action}</span>
                   <span className="text-3xl px-2 py-0.5 rounded-full w-fit" style={{ background: cfg.color + '15', color: cfg.color }}>{cfg.label}</span>
                   <span style={{ color: row.auto ? '#10B981' : 'rgba(255,255,255,0.3)' }}>{row.auto ? '✓' : ' - '}</span>
-                  <span className="text-white/40 text-3xl">{row.note}</span>
+                  <span className="text-white/60 text-3xl">{row.note}</span>
                 </div>
               );
             })}

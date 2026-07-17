@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { usePresentationStore } from '../store/presentationStore';
+import { openPresenterWindow } from '../lib/presenterChannel';
 
 export function useKeyboardControls() {
   const {
@@ -117,6 +118,12 @@ export function useKeyboardControls() {
         case 'R':
           e.preventDefault();
           resetDemo();
+          break;
+
+        case 'n':
+        case 'N':
+          e.preventDefault();
+          openPresenterWindow();
           break;
 
         case 'h':

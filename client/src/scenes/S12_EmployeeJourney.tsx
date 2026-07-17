@@ -3,40 +3,41 @@
  * Conference Hall Edition — full-screen, RTL arrows, massive cards
  */
 import { useState, useEffect } from 'react';
+import { DoorOpen, MessageCircle, Target, TrendingUp, UserPlus } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
 
 type RiskLevel = 'low' | 'medium' | 'high';
 
 const STAGES: {
-  id: string; label: string; icon: string; risk: RiskLevel;
+  id: string; label: string; icon: React.ElementType; risk: RiskLevel;
   agents: string[]; description: string; color: string;
 }[] = [
   {
-    id: 'exit', label: 'עזיבה', icon: '🚪', risk: 'high',
+    id: 'exit', label: 'עזיבה', icon: DoorOpen, risk: 'high',
     agents: ['שימור ידע', 'ראיון יציאה'],
     description: 'תיעוד ידע, ראיון יציאה, העברת תפקיד',
     color: '#F43F5E',
   },
   {
-    id: 'engage', label: 'מעורבות', icon: '💬', risk: 'low',
+    id: 'engage', label: 'מעורבות', icon: MessageCircle, risk: 'low',
     agents: ['שירות עובדים', 'תובנות'],
     description: 'סקרי מעורבות, תמיכה שוטפת, פולס-צ׳קים',
     color: '#10B981',
   },
   {
-    id: 'develop', label: 'פיתוח', icon: '📈', risk: 'medium',
+    id: 'develop', label: 'פיתוח', icon: TrendingUp, risk: 'medium',
     agents: ['למידה', 'מוביליות'],
     description: 'תוכניות למידה, מסלולי קריירה, מנטורינג',
     color: '#F59E0B',
   },
   {
-    id: 'onboard', label: 'קליטה', icon: '👋', risk: 'medium',
+    id: 'onboard', label: 'קליטה', icon: UserPlus, risk: 'medium',
     agents: ['תוכנית קליטה', 'הכנת מנהל'],
     description: 'Onboarding מותאם, ציוד, גישות, הכנת מנהל',
     color: '#F59E0B',
   },
   {
-    id: 'attract', label: 'גיוס', icon: '🎯', risk: 'low',
+    id: 'attract', label: 'גיוס', icon: Target, risk: 'low',
     agents: ['פתיחת משרה', 'חוויית מועמד'],
     description: 'פרסום משרה, סינון קורות חיים, תיאום ראיונות',
     color: '#10B981',
@@ -81,9 +82,9 @@ export default function S12_EmployeeJourney() {
         position: 'relative', zIndex: 10,
         width: '100%', height: '100%',
         display: 'flex', flexDirection: 'column',
-        padding: 'clamp(1.5rem, 3vw, 3rem) clamp(2rem, 5vw, 6rem) clamp(5rem, 8vw, 7rem)',
+        padding: 'clamp(1.5rem, 3cqw, 3rem) clamp(2rem, 5cqw, 6rem) clamp(5rem, 8cqw, 7rem)',
         boxSizing: 'border-box',
-        gap: 'clamp(1.25rem, 2.5vw, 2.5rem)',
+        gap: 'clamp(1.25rem, 2.5cqw, 2.5rem)',
         opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease',
       }}>
 
@@ -91,40 +92,40 @@ export default function S12_EmployeeJourney() {
         <div style={{ textAlign: 'center' }}>
           <p style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'clamp(1rem, 1vw, 0.9rem)',
+            fontSize: 'clamp(1rem, 1cqw, 0.9rem)',
             fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
             color: 'rgba(99,102,241,0.7)', marginBottom: '0.5rem',
           }}>פרק שני: לראות</p>
           <h1 style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+            fontSize: 'clamp(2.5rem, 5cqw, 5rem)',
             fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1,
             color: '#fff', margin: 0,
           }}>מסע העובד</h1>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
-            color: 'rgba(255,255,255,0.4)', marginTop: '0.5rem',
+            fontSize: 'clamp(1rem, 1.5cqw, 1.3rem)',
+            color: 'rgba(255,255,255,0.6)', marginTop: '0.5rem',
           }}>לחצו על שלב לפרטים</p>
         </div>
 
         {/* Journey Steps — RTL: right to left = גיוס → קליטה → פיתוח → מעורבות → עזיבה */}
         <div style={{
           display: 'flex', alignItems: 'stretch',
-          gap: 'clamp(0.5rem, 1vw, 1rem)',
+          gap: 'clamp(0.5rem, 1cqw, 1rem)',
           justifyContent: 'center',
           flex: '0 0 auto',
         }}>
           {STAGES.slice().reverse().map((stage, i, arr) => (
-            <div key={stage.id} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 1rem)' }}>
+            <div key={stage.id} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1cqw, 1rem)' }}>
               <button
                 onClick={() => setSelected(stage.id)}
                 style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center',
-                  gap: 'clamp(0.5rem, 0.8vw, 0.75rem)',
-                  padding: 'clamp(1rem, 1.8vw, 1.75rem) clamp(1.25rem, 2vw, 2rem)',
+                  gap: 'clamp(0.5rem, 0.8cqw, 0.75rem)',
+                  padding: 'clamp(1rem, 1.8cqw, 1.75rem) clamp(1.25rem, 2cqw, 2rem)',
                   borderRadius: '16px',
-                  minWidth: 'clamp(100px, 13vw, 160px)',
+                  minWidth: 'clamp(100px, 13cqw, 160px)',
                   cursor: 'pointer',
                   transition: 'all 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
                   background: selected === stage.id
@@ -139,15 +140,15 @@ export default function S12_EmployeeJourney() {
                   transform: selected === stage.id ? 'translateY(-4px) scale(1.03)' : 'translateY(0) scale(1)',
                 }}
               >
-                <span style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', lineHeight: 1 }}>{stage.icon}</span>
+                <span style={{ fontSize: 'clamp(2rem, 3.5cqw, 3.5rem)', lineHeight: 1 }}><stage.icon size="1em" /></span>
                 <span style={{
                   fontFamily: "'Heebo', sans-serif",
-                  fontSize: 'clamp(1rem, 1.5vw, 1.4rem)',
+                  fontSize: 'clamp(1rem, 1.5cqw, 1.4rem)',
                   fontWeight: 700,
                   color: selected === stage.id ? '#fff' : 'rgba(255,255,255,0.6)',
                 }}>{stage.label}</span>
                 <div style={{
-                  width: 'clamp(6px, 0.8vw, 10px)', height: 'clamp(6px, 0.8vw, 10px)',
+                  width: 'clamp(6px, 0.8cqw, 10px)', height: 'clamp(6px, 0.8cqw, 10px)',
                   borderRadius: '50%', background: stage.color,
                   boxShadow: selected === stage.id ? `0 0 10px ${stage.color}` : 'none',
                 }} />
@@ -156,7 +157,7 @@ export default function S12_EmployeeJourney() {
               {i < arr.length - 1 && (
                 <span style={{
                   color: 'rgba(255,255,255,0.2)',
-                  fontSize: 'clamp(1.2rem, 2vw, 2rem)',
+                  fontSize: 'clamp(1.2rem, 2cqw, 2rem)',
                   flexShrink: 0,
                   userSelect: 'none',
                 }}>←</span>
@@ -168,25 +169,25 @@ export default function S12_EmployeeJourney() {
         {/* Detail Panel */}
         <div style={{
           flex: 1,
-          padding: 'clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.5rem, 3vw, 3rem)',
+          padding: 'clamp(1.25rem, 2.5cqw, 2.5rem) clamp(1.5rem, 3cqw, 3rem)',
           borderRadius: '20px',
           background: sel.color + '0D',
           border: `1px solid ${sel.color}30`,
           boxShadow: `0 0 40px ${sel.color}10`,
           transition: 'all 0.3s ease',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          gap: 'clamp(1rem, 1.8vw, 1.75rem)',
+          gap: 'clamp(1rem, 1.8cqw, 1.75rem)',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.75rem, 1.2vw, 1.25rem)', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 'clamp(2rem, 3vw, 3rem)' }}>{sel.icon}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.75rem, 1.2cqw, 1.25rem)', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 'clamp(2rem, 3cqw, 3rem)' }}><sel.icon size="1em" /></span>
             <h3 style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+              fontSize: 'clamp(1.5rem, 2.5cqw, 2.5rem)',
               fontWeight: 800, color: '#fff', margin: 0,
             }}>{sel.label}</h3>
             <span style={{
               fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
+              fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)',
               fontWeight: 600,
               padding: '0.35rem 1rem', borderRadius: '100px',
               background: sel.color + '20', color: sel.color,
@@ -196,16 +197,16 @@ export default function S12_EmployeeJourney() {
 
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(1rem, 1.6vw, 1.5rem)',
+            fontSize: 'clamp(1rem, 1.6cqw, 1.5rem)',
             color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6,
           }}>{sel.description}</p>
 
-          <div style={{ display: 'flex', gap: 'clamp(0.5rem, 0.8vw, 0.75rem)', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 'clamp(0.5rem, 0.8cqw, 0.75rem)', flexWrap: 'wrap' }}>
             {sel.agents.map(a => (
               <span key={a} style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
-                padding: 'clamp(0.4rem, 0.7vw, 0.65rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+                fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)',
+                padding: 'clamp(0.4rem, 0.7cqw, 0.65rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
                 borderRadius: '12px',
                 background: 'rgba(255,255,255,0.06)',
                 color: 'rgba(255,255,255,0.75)',
@@ -219,15 +220,15 @@ export default function S12_EmployeeJourney() {
 
         {/* Legend */}
         <div style={{
-          display: 'flex', gap: 'clamp(1.5rem, 3vw, 3rem)', justifyContent: 'center', flexWrap: 'wrap',
+          display: 'flex', gap: 'clamp(1.5rem, 3cqw, 3rem)', justifyContent: 'center', flexWrap: 'wrap',
         }}>
           {([['low', '#10B981'], ['medium', '#F59E0B'], ['high', '#F43F5E']] as const).map(([k, c]) => (
             <div key={k} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
               <span style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
-                color: 'rgba(255,255,255,0.4)',
+                fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)',
+                color: 'rgba(255,255,255,0.6)',
               }}>{RISK_LABELS[k]}</span>
             </div>
           ))}

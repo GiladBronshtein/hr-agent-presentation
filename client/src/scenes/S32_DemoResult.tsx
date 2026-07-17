@@ -4,7 +4,7 @@ export default function S32_DemoResult() {
   return (
     <SceneBase variant="chapter-break">
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8 text-center">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8 text-center">
           <SceneTitle size="md">מה ראינו?</SceneTitle>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -17,7 +17,7 @@ export default function S32_DemoResult() {
                 <div className="text-4xl font-black mb-1" style={{ color: stat.color }}>
                   <AnimatedNumber value={stat.val} suffix={stat.suffix} color={stat.color} />
                 </div>
-                <p className="text-white/50 text-3xl">{stat.label}</p>
+                <p className="text-white/65 text-3xl">{stat.label}</p>
               </GlassCard>
             ))}
           </div>

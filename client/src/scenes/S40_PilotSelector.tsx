@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import { BookOpen, Briefcase, ClipboardList, MessageCircle, UserPlus } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 const PILOTS = [
-  { id: 'onboarding', name: 'קליטת עובד', score: 9, risk: 'low', effort: 'medium', roi: 'high', icon: '👋' },
-  { id: 'service', name: 'שירות עובדים', score: 8, risk: 'low', effort: 'low', roi: 'medium', icon: '💬' },
-  { id: 'manager-prep', name: 'הכנת מנהלים', score: 7, risk: 'low', effort: 'low', roi: 'medium', icon: '👔' },
-  { id: 'recruiting', name: 'פתיחת משרה', score: 7, risk: 'medium', effort: 'medium', roi: 'high', icon: '📋' },
-  { id: 'learning', name: 'מסלול למידה', score: 6, risk: 'low', effort: 'high', roi: 'medium', icon: '📚' },
+  { id: 'onboarding', name: 'קליטת עובד', score: 9, risk: 'low', effort: 'medium', roi: 'high', icon: UserPlus },
+  { id: 'service', name: 'שירות עובדים', score: 8, risk: 'low', effort: 'low', roi: 'medium', icon: MessageCircle },
+  { id: 'manager-prep', name: 'הכנת מנהלים', score: 7, risk: 'low', effort: 'low', roi: 'medium', icon: Briefcase },
+  { id: 'recruiting', name: 'פתיחת משרה', score: 7, risk: 'medium', effort: 'medium', roi: 'high', icon: ClipboardList },
+  { id: 'learning', name: 'מסלול למידה', score: 6, risk: 'low', effort: 'high', roi: 'medium', icon: BookOpen },
 ];
 
 const LABELS = { low: 'נמוך', medium: 'בינוני', high: 'גבוה' };
@@ -18,11 +19,11 @@ export default function S40_PilotSelector() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">פרק רביעי: להטמיע</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">פרק רביעי: להטמיע</p>
             <SceneTitle size="md">בחרו פיילוט</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">מה הפיילוט הנכון לארגון שלכם?</p>
+            <p className="text-white/60 text-3xl mt-1">מה הפיילוט הנכון לארגון שלכם?</p>
           </div>
           <div className="space-y-2">
             {PILOTS.map((pilot) => (
@@ -32,19 +33,19 @@ export default function S40_PilotSelector() {
                   background: selected === pilot.id ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.03)',
                   border: selected === pilot.id ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.06)',
                 }}>
-                <span className="text-4xl">{pilot.icon}</span>
+                <span className="text-4xl"><pilot.icon size="1em" /></span>
                 <span className="flex-1 text-white/80 font-medium text-3xl">{pilot.name}</span>
                 <div className="flex gap-5 text-3xl">
                   <div className="text-center">
-                    <p className="text-white/30 mb-0.5">סיכון</p>
+                    <p className="text-white/65 mb-0.5">סיכון</p>
                     <span style={{ color: COLORS[pilot.risk as keyof typeof COLORS] }}>{LABELS[pilot.risk as keyof typeof LABELS]}</span>
                   </div>
                   <div className="text-center">
-                    <p className="text-white/30 mb-0.5">מאמץ</p>
+                    <p className="text-white/65 mb-0.5">מאמץ</p>
                     <span style={{ color: COLORS[pilot.effort as keyof typeof COLORS] }}>{LABELS[pilot.effort as keyof typeof LABELS]}</span>
                   </div>
                   <div className="text-center">
-                    <p className="text-white/30 mb-0.5">ROI</p>
+                    <p className="text-white/65 mb-0.5">ROI</p>
                     <span style={{ color: COLORS[pilot.roi as keyof typeof COLORS] }}>{LABELS[pilot.roi as keyof typeof LABELS]}</span>
                   </div>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-3xl"

@@ -4,27 +4,29 @@
  * FIXED: Grid proportions adjusted so all content fits within viewport
  */
 import { useEffect, useState, useRef } from 'react';
+import { BarChart3, Building2, Calendar, Folder, Mail, MessageCircle, PartyPopper, Target, User } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
 const TOOLS = [
-  { id: 'slack',    label: 'Slack',    icon: '💬', color: '#E01E5A', x: 18, y: 22 },
-  { id: 'gmail',    label: 'Gmail',    icon: '📧', color: '#EA4335', x: 78, y: 14 },
-  { id: 'jira',     label: 'Jira',     icon: '🎯', color: '#0052CC', x: 88, y: 58 },
-  { id: 'excel',    label: 'Excel',    icon: '📊', color: '#217346', x: 72, y: 86 },
-  { id: 'hris',     label: 'HRIS',     icon: '🏢', color: '#F59E0B', x: 28, y: 86 },
-  { id: 'calendar', label: 'Calendar', icon: '📅', color: '#4285F4', x: 12, y: 58 },
-  { id: 'drive',    label: 'Drive',    icon: '📁', color: '#34A853', x: 50, y: 8 },
+  { id: 'slack',    label: 'Slack',    icon: MessageCircle, color: '#E01E5A', x: 18, y: 22 },
+  { id: 'gmail',    label: 'Gmail',    icon: Mail, color: '#EA4335', x: 78, y: 14 },
+  { id: 'jira',     label: 'Jira',     icon: Target, color: '#0052CC', x: 88, y: 58 },
+  { id: 'excel',    label: 'Excel',    icon: BarChart3, color: '#217346', x: 72, y: 86 },
+  { id: 'hris',     label: 'HRIS',     icon: Building2, color: '#F59E0B', x: 28, y: 86 },
+  { id: 'calendar', label: 'Calendar', icon: Calendar, color: '#4285F4', x: 12, y: 58 },
+  { id: 'drive',    label: 'Drive',    icon: Folder, color: '#34A853', x: 50, y: 8 },
 ];
 
 const ACTIVITIES = [
-  { time: '08:00', text: 'הודעת ברוכים הבאים נשלחה ל-Slack', color: '#E01E5A', icon: '💬' },
-  { time: '08:07', text: 'משתמש חדש נוצר ב-HRIS', color: '#F59E0B', icon: '🏢' },
-  { time: '08:13', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: '📅' },
-  { time: '08:19', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: '📁' },
-  { time: '08:26', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: '🎯' },
-  { time: '08:33', text: 'תיק עובד עודכן ב-Excel', color: '#217346', icon: '📊' },
-  { time: '08:40', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: '📧' },
-  { time: '08:47', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: '🎉' },
+  { time: '08:00', text: 'הודעת ברוכים הבאים נשלחה ל-Slack', color: '#E01E5A', icon: MessageCircle },
+  { time: '08:07', text: 'משתמש חדש נוצר ב-HRIS', color: '#F59E0B', icon: Building2 },
+  { time: '08:13', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: Calendar },
+  { time: '08:19', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: Folder },
+  { time: '08:26', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: Target },
+  { time: '08:33', text: 'תיק עובד עודכן ב-Excel', color: '#217346', icon: BarChart3 },
+  { time: '08:40', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: Mail },
+  { time: '08:47', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: PartyPopper },
 ];
 
 const STATS = [
@@ -33,44 +35,35 @@ const STATS = [
   { value: '3', unit: 'ימים', label: 'עד גישה מלאה', color: '#6366F1' },
 ];
 
+const setupParticleField = (canvas: HTMLCanvasElement) => {
+  const colors = ['#6366F1', '#06B6D4', '#F59E0B', '#10B981'];
+  const particles = Array.from({ length: 70 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: -Math.random() * 0.5 - 0.15,
+    size: Math.random() * 2.5 + 0.5,
+    opacity: Math.random() * 0.45 + 0.08,
+    color: colors[Math.floor(Math.random() * colors.length)],
+  }));
+  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { dt }: { dt: number }) => {
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    const step = dt * 60; // velocities tuned for 60fps
+    particles.forEach((p) => {
+      p.x += p.vx * step; p.y += p.vy * step;
+      if (p.y < -10) { p.y = cnv.height + 10; p.x = Math.random() * cnv.width; }
+      if (p.x < -10) p.x = cnv.width + 10;
+      if (p.x > cnv.width + 10) p.x = -10;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, '0');
+      ctx.fill();
+    });
+  };
+};
+
 function ParticleField() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const setSize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    setSize();
-    const colors = ['#6366F1', '#06B6D4', '#F59E0B', '#10B981'];
-    const particles = Array.from({ length: 70 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: -Math.random() * 0.5 - 0.15,
-      size: Math.random() * 2.5 + 0.5,
-      opacity: Math.random() * 0.45 + 0.08,
-      color: colors[Math.floor(Math.random() * colors.length)],
-    }));
-    let animId: number;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
-        if (p.x < -10) p.x = canvas.width + 10;
-        if (p.x > canvas.width + 10) p.x = -10;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, '0');
-        ctx.fill();
-      });
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-    window.addEventListener('resize', setSize);
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', setSize); };
-  }, []);
+  const canvasRef = useDecorativeCanvas(setupParticleField);
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
 }
 
@@ -115,13 +108,13 @@ export default function S00_ColdOpen() {
         gridTemplateColumns: '1fr 1.2fr 0.9fr',
         alignItems: 'stretch',
         gap: '1.25rem',
-        padding: '1.5rem 1.75rem 5.5rem',
+        padding: '1.25rem 1.75rem 4.75rem',
         overflow: 'hidden',
         opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease',
       }}>
 
         {/* LEFT: Headline + Stats */}
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem', minHeight: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'clamp(0.625rem, 1.2cqh, 1rem)', minHeight: 0 }}>
           <div className="animate-fade-in-up stagger-1" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
             padding: '0.3rem 0.75rem', borderRadius: '100px',
@@ -129,7 +122,7 @@ export default function S00_ColdOpen() {
             width: 'fit-content',
           }}>
             <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
+            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
               יום ראשון, עובד חדש
             </span>
           </div>
@@ -137,14 +130,14 @@ export default function S00_ColdOpen() {
           <div className="animate-fade-in-up stagger-2">
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(3.5rem, 6.5vw, 6.5rem)',
-              fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
+              fontSize: 'clamp(2.75rem, 5cqw, 5rem)',
+              fontWeight: 800, lineHeight: 0.95, letterSpacing: '-0.04em',
               color: 'white', margin: 0,
             }}>מה קורה</h1>
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(3.5rem, 6.5vw, 6.5rem)',
-              fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
+              fontSize: 'clamp(2.75rem, 5cqw, 5rem)',
+              fontWeight: 800, lineHeight: 0.95, letterSpacing: '-0.04em',
               margin: '0.05em 0 0',
               background: 'linear-gradient(135deg, #818CF8, #6366F1, #22D3EE)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -152,36 +145,36 @@ export default function S00_ColdOpen() {
           </div>
 
           <p className="animate-fade-in-up stagger-3" style={{
-            color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1.2rem, 1.8vw, 1.75rem)',
-            lineHeight: 1.55, fontFamily: "'Heebo', sans-serif", margin: 0,
+            color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.5rem)',
+            lineHeight: 1.5, fontFamily: "'Heebo', sans-serif", margin: 0,
           }}>
             כל קליטה מפעילה שרשרת פעולות ידניות, חוצת מערכות, אנשים ושעות עבודה.
           </p>
 
           {/* Stats - smaller numbers to fit */}
-          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {STATS.map((stat, i) => (
               <div key={i} style={{
-                padding: '0.875rem 1rem', borderRadius: '14px',
+                padding: '0.625rem 1rem', borderRadius: '14px',
                 background: stat.color + '0A', border: `1px solid ${stat.color}22`,
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
-                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1rem, 1.4vw, 1.3rem)', fontFamily: "'Heebo', sans-serif" }}>
+                <span style={{ color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)', fontFamily: "'Heebo', sans-serif" }}>
                   {stat.label}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem' }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(3rem, 5.5vw, 5.5rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.2cqw, 3.25rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="animate-fade-in stagger-7" style={{
-            padding: '0.875rem 1rem', borderRadius: '12px',
+            padding: '0.625rem 1rem', borderRadius: '12px',
             background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
           }}>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.2rem, 1.7vw, 1.6rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.45rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
               מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span>, בלי מגע אנושי?
             </p>
           </div>
@@ -207,9 +200,9 @@ export default function S00_ColdOpen() {
             </svg>
 
             {/* HR Hub */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) translateY(-4%)', zIndex: 10 }}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
               <div style={{
-                width: 'clamp(65px, 8vw, 85px)', height: 'clamp(65px, 8vw, 85px)',
+                width: 'clamp(65px, 8cqw, 85px)', height: 'clamp(65px, 8cqw, 85px)',
                 borderRadius: '50%',
                 background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.12) 100%)',
                 border: '2px solid rgba(99,102,241,0.55)',
@@ -217,8 +210,8 @@ export default function S00_ColdOpen() {
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
                 animation: 'breathe 3s ease-in-out infinite',
               }}>
-                <span style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)' }}>👤</span>
-                <span style={{ fontSize: 'clamp(1rem, 1.1vw, 1rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
+                <span style={{ fontSize: 'clamp(1.3rem, 2.2cqw, 1.8rem)', display: 'inline-flex', color: '#A5B4FC' }}><User size="1em" /></span>
+                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
               </div>
               {[0, 1].map((r) => (
                 <div key={r} style={{
@@ -239,7 +232,7 @@ export default function S00_ColdOpen() {
                   transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)', zIndex: 5,
                 }}>
                   <div style={{
-                    width: 'clamp(48px, 6.5vw, 64px)', height: 'clamp(48px, 6.5vw, 64px)',
+                    width: 'clamp(48px, 6.5cqw, 64px)', height: 'clamp(48px, 6.5cqw, 64px)',
                     borderRadius: '14px',
                     background: isActive ? tool.color + '22' : 'rgba(255,255,255,0.04)',
                     border: `1px solid ${isActive ? tool.color + '55' : 'rgba(255,255,255,0.08)'}`,
@@ -247,8 +240,8 @@ export default function S00_ColdOpen() {
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
                     transition: 'all 0.3s ease', backdropFilter: 'blur(8px)',
                   }}>
-                    <span style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.5rem)', lineHeight: 1 }}>{tool.icon}</span>
-                    <span style={{ fontSize: 'clamp(1rem, 1vw, 0.95rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
+                    <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.5rem)', lineHeight: 1, display: 'inline-flex', color: isActive ? tool.color : 'rgba(255,255,255,0.7)', transition: 'color 0.3s ease' }}><tool.icon size="1em" /></span>
+                    <span style={{ fontSize: 'clamp(1rem, 1cqw, 0.95rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
                   </div>
                 </div>
               );
@@ -260,7 +253,7 @@ export default function S00_ColdOpen() {
         <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minHeight: 0, height: '100%', overflow: 'hidden', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem', flexShrink: 0 }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.1vw, 1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
+            <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
           </div>
 
           {ACTIVITIES.map((activity, i) => {
@@ -276,10 +269,10 @@ export default function S00_ColdOpen() {
                 display: 'flex', alignItems: 'flex-start', gap: '0.5rem',
                 flexShrink: 0,
               }}>
-                <span style={{ fontSize: 'clamp(1rem, 1.1vw, 1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px' }}>{activity.icon}</span>
+                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px', display: 'inline-flex', color: activity.color }}><activity.icon size="1em" /></span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.1vw, 1rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
-                  <div style={{ fontSize: 'clamp(1rem, 1.3vw, 1.2rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
+                  <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
                 </div>
               </div>
             );

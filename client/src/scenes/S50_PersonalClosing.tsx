@@ -3,68 +3,51 @@
  * Gilad Bronshtein | HR Leaders Summit 2026
  * Full-bleed cinematic layout with generated portrait + LinkedIn QR
  */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
-const PHOTO_URL = '/hr-agent-presentation/images/gilad-photo-2026.webp';
-const QR_URL = '/hr-agent-presentation/images/linkedin-qr.png';
+import { PHOTO_URL, QR_URL } from '../lib/mediaAssets';
+import { SmoothImage } from '../components/SmoothImage';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/giladbronshtein/';
 
+const setupClosingParticles = (canvas: HTMLCanvasElement) => {
+  const particles = Array.from({ length: 55 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.4,
+    vx: (Math.random() - 0.5) * 0.18,
+    vy: (Math.random() - 0.5) * 0.18,
+    alpha: Math.random() * 0.35 + 0.08,
+  }));
+  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { dt }: { dt: number }) => {
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    const step = dt * 60; // velocities tuned for 60fps
+    for (const p of particles) {
+      p.x += p.vx * step; p.y += p.vy * step;
+      if (p.x < 0) p.x = cnv.width;
+      if (p.x > cnv.width) p.x = 0;
+      if (p.y < 0) p.y = cnv.height;
+      if (p.y > cnv.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(130,140,255,${p.alpha})`;
+      ctx.fill();
+    }
+  };
+};
+
 function ParticleField() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const particles = Array.from({ length: 55 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5 + 0.4,
-      vx: (Math.random() - 0.5) * 0.18,
-      vy: (Math.random() - 0.5) * 0.18,
-      alpha: Math.random() * 0.35 + 0.08,
-    }));
-
-    let animId: number;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const p of particles) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(130,140,255,${p.alpha})`;
-        ctx.fill();
-      }
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => cancelAnimationFrame(animId);
-  }, []);
+  const canvasRef = useDecorativeCanvas(setupClosingParticles);
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
 }
 
-function AuroraBlobs() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    let t = 0;
-    let animId: number;
-    const animate = () => {
+const setupAuroraBlobs = (_canvas: HTMLCanvasElement) => {
+  return (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, { t: seconds }: { t: number }) => {
+    const t = seconds * 0.24; // original: 0.004/frame at 60fps
+    {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      t += 0.004;
       // Indigo blob left
       const g1 = ctx.createRadialGradient(
         canvas.width * (0.2 + 0.07 * Math.sin(t * 0.8)), canvas.height * (0.5 + 0.06 * Math.cos(t * 0.6)),
@@ -97,11 +80,12 @@ function AuroraBlobs() {
       g3.addColorStop(0, `rgba(245,158,11,${0.07 + 0.02 * Math.sin(t * 0.7)})`);
       g3.addColorStop(1, 'rgba(245,158,11,0)');
       ctx.fillStyle = g3; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => cancelAnimationFrame(animId);
-  }, []);
+    }
+  };
+};
+
+function AuroraBlobs() {
+  const canvasRef = useDecorativeCanvas(setupAuroraBlobs, 24);
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }} />;
 }
 
@@ -144,8 +128,8 @@ export default function S50_PersonalClosing() {
         {/* ── LEFT PANEL ── */}
         <div style={{
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          padding: 'clamp(2.5rem,5vw,5.5rem) clamp(1.5rem,3vw,3rem) clamp(2.5rem,5vw,5.5rem) clamp(3rem,6vw,6.5rem)',
-          gap: 'clamp(1.5rem,3vw,3rem)',
+          padding: 'clamp(2.5rem,5cqw,5.5rem) clamp(1.5rem,3cqw,3rem) clamp(2.5rem,5cqw,5.5rem) clamp(3rem,6cqw,6.5rem)',
+          gap: 'clamp(1.5rem,3cqw,3rem)',
         }}>
 
           {/* Thank-you pill */}
@@ -158,8 +142,8 @@ export default function S50_PersonalClosing() {
             transform: phase >= 1 ? 'translateY(0)' : 'translateY(12px)',
             transition: 'opacity 0.5s ease 0.1s, transform 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s',
           }}>
-            <span style={{ fontSize: 'clamp(1rem,1.3vw,1.2rem)' }}>✨</span>
-            <span style={{ fontSize: 'clamp(0.95rem,1.25vw,1.15rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.08em' }}>
+            <span style={{ fontSize: 'clamp(1rem,1.3cqw,1.2rem)', display: 'inline-flex', color: '#FCD34D' }}><Sparkles size="1em" /></span>
+            <span style={{ fontSize: 'clamp(0.95rem,1.25cqw,1.15rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.08em' }}>
               תודה שהייתם כאן
             </span>
           </div>
@@ -172,7 +156,7 @@ export default function S50_PersonalClosing() {
           }}>
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(4rem,10vw,9.5rem)',
+              fontSize: 'clamp(4rem,10cqw,9.5rem)',
               fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.04em',
               color: 'white', margin: 0,
               textShadow: '0 0 60px rgba(99,102,241,0.25)',
@@ -181,7 +165,7 @@ export default function S50_PersonalClosing() {
             </h1>
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-              fontSize: 'clamp(4rem,10vw,9.5rem)',
+              fontSize: 'clamp(4rem,10cqw,9.5rem)',
               fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.04em',
               margin: '0.04em 0 0',
               background: 'linear-gradient(130deg, #818CF8 0%, #6366F1 35%, #22D3EE 75%, #67E8F9 100%)',
@@ -200,14 +184,14 @@ export default function S50_PersonalClosing() {
           }}>
             <p style={{
               fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(1.1rem,1.7vw,1.5rem)',
+              fontSize: 'clamp(1.1rem,1.7cqw,1.5rem)',
               color: 'rgba(255,255,255,0.75)', margin: 0, lineHeight: 1.35, fontWeight: 500,
             }}>
               Professional Services and Ops Team Lead at Rise
             </p>
             <p style={{
               fontFamily: "'Heebo', sans-serif",
-              fontSize: 'clamp(1rem,1.4vw,1.25rem)',
+              fontSize: 'clamp(1rem,1.4cqw,1.25rem)',
               color: 'rgba(255,255,255,0.42)', margin: '0.4rem 0 0', lineHeight: 1.5,
             }}>
               מנהל טכנולוגי שמחבר בין אנשים, דאטה ו-AI<br />והופך מורכבות לתוצאות ברורות.
@@ -216,8 +200,8 @@ export default function S50_PersonalClosing() {
 
           {/* QR + LinkedIn */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 'clamp(1rem,2vw,2rem)',
-            padding: 'clamp(1rem,1.8vw,1.75rem)',
+            display: 'flex', alignItems: 'center', gap: 'clamp(1rem,2cqw,2rem)',
+            padding: 'clamp(1rem,1.8cqw,1.75rem)',
             borderRadius: '20px',
             background: 'rgba(255,255,255,0.03)',
             border: '1px solid rgba(255,255,255,0.08)',
@@ -229,29 +213,29 @@ export default function S50_PersonalClosing() {
           }}>
             {/* QR code */}
             <div style={{
-              width: 'clamp(90px,12vw,130px)', height: 'clamp(90px,12vw,130px)',
+              width: 'clamp(90px,12cqw,130px)', height: 'clamp(90px,12cqw,130px)',
               borderRadius: '14px', overflow: 'hidden', background: 'white',
-              padding: '6px', flexShrink: 0,
+              padding: '6px', flexShrink: 0, position: 'relative',
               boxShadow: '0 0 0 1px rgba(99,102,241,0.35), 0 0 28px rgba(99,102,241,0.25)',
             }}>
-              <img src={QR_URL} alt="QR code to LinkedIn" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+              <SmoothImage src={QR_URL} alt="QR code to LinkedIn" shimmer style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </div>
             <div>
-              <div style={{ fontSize: 'clamp(0.85rem,1.1vw,1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.3)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+              <div style={{ fontSize: 'clamp(0.85rem,1.1cqw,1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.3)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
                 סרקו להתחבר
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem,1.3vw,1.2rem)', fontWeight: 700, color: '#818CF8' }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.2rem)', fontWeight: 700, color: '#818CF8' }}>
                 LinkedIn
               </div>
-              <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem,1.2vw,1.1rem)', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
+              <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem,1.2cqw,1.1rem)', color: 'rgba(255,255,255,0.55)', marginTop: '2px' }}>
                 /in/giladbronshtein
               </div>
               <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
-                marginTop: 'clamp(0.4rem,0.7vw,0.65rem)',
+                marginTop: 'clamp(0.4rem,0.7cqw,0.65rem)',
                 padding: '0.3rem 0.75rem', borderRadius: '8px',
                 background: 'rgba(99,102,241,0.14)', border: '1px solid rgba(99,102,241,0.25)',
-                color: '#818CF8', fontSize: 'clamp(0.9rem,1.1vw,1rem)',
+                color: '#818CF8', fontSize: 'clamp(0.9rem,1.1cqw,1rem)',
                 fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, textDecoration: 'none',
               }}>
                 שאלות? נשמח לדבר →
@@ -261,14 +245,14 @@ export default function S50_PersonalClosing() {
 
           {/* Key takeaway */}
           <div style={{
-            padding: 'clamp(0.875rem,1.4vw,1.25rem) clamp(1.1rem,1.8vw,1.6rem)',
+            padding: 'clamp(0.875rem,1.4cqw,1.25rem) clamp(1.1rem,1.8cqw,1.6rem)',
             borderRadius: '14px',
             background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.05))',
             border: '1px solid rgba(99,102,241,0.18)',
             opacity: phase >= 3 ? 1 : 0,
             transition: 'opacity 0.5s ease 0.7s',
           }}>
-            <p style={{ margin: 0, fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3vw,1.15rem)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
+            <p style={{ margin: 0, fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.15rem)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
               <span style={{ color: '#22D3EE', fontWeight: 700 }}>הצעד הראשון:</span>{' '}
               בחרו תהליך אחד שמתחיל ב"מישהו צריך לזכור" ובנו שם את האייג׳נט הראשון שלכם.
             </p>
@@ -298,9 +282,10 @@ export default function S50_PersonalClosing() {
             transition: 'opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.23,1,0.32,1) 0.4s',
             zIndex: 4,
           }}>
-            <img
+            <SmoothImage
               src={PHOTO_URL}
               alt="גלעד ברונשטיין"
+              duration={900}
               style={{
                 height: '97%', width: 'auto', maxWidth: '100%',
                 objectFit: 'cover', objectPosition: 'top center',
@@ -323,7 +308,7 @@ export default function S50_PersonalClosing() {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'linear-gradient(to top, rgba(3,3,10,0.9) 0%, transparent 100%)',
       }}>
-        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 'clamp(0.85rem,0.9vw,0.9rem)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em' }}>
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 'clamp(0.85rem,0.9cqw,0.9rem)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em' }}>
           linkedin.com/in/giladbronshtein
         </span>
       </div>

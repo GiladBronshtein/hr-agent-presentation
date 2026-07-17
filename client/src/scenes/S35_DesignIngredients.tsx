@@ -1,29 +1,30 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
+import { BarChart3, BookOpen, ClipboardList, Database, Hand, Wrench } from 'lucide-react';
 
 const INGREDIENTS = [
-  { icon: '📋', title: 'System Prompt', desc: 'זהות, מטרה, גבולות, סגנון תקשורת', example: 'אתה אייג׳נט קליטה של [חברה]. תפקידך...' },
-  { icon: '📚', title: 'Knowledge Base', desc: 'מסמכים מאושרים, מדיניות, תהליכים', example: 'Employee Handbook v3.2, Onboarding Playbook' },
-  { icon: '🔧', title: 'Tool Definitions', desc: 'כלים מורשים עם הרשאות מוגדרות', example: 'calendar.create (read+write), hris (read-only)' },
-  { icon: '✋', title: 'Approval Gates', desc: 'מתי לעצור ולבקש אישור אנושי', example: 'לפני שליחת מייל, לפני שינוי HRIS' },
-  { icon: '💾', title: 'Memory Schema', desc: 'מה לזכור בין שיחות', example: 'employee_id, stage, completed_steps[]' },
-  { icon: '📊', title: 'Evaluation Criteria', desc: 'איך מודדים הצלחה', example: 'דיוק, זמן, שביעות רצון, אי-חריגה' },
+  { icon: ClipboardList, title: 'System Prompt', desc: 'זהות, מטרה, גבולות, סגנון תקשורת', example: 'אתה אייג׳נט קליטה של [חברה]. תפקידך...' },
+  { icon: BookOpen, title: 'Knowledge Base', desc: 'מסמכים מאושרים, מדיניות, תהליכים', example: 'Employee Handbook v3.2, Onboarding Playbook' },
+  { icon: Wrench, title: 'Tool Definitions', desc: 'כלים מורשים עם הרשאות מוגדרות', example: 'calendar.create (read+write), hris (read-only)' },
+  { icon: Hand, title: 'Approval Gates', desc: 'מתי לעצור ולבקש אישור אנושי', example: 'לפני שליחת מייל, לפני שינוי HRIS' },
+  { icon: Database, title: 'Memory Schema', desc: 'מה לזכור בין שיחות', example: 'employee_id, stage, completed_steps[]' },
+  { icon: BarChart3, title: 'Evaluation Criteria', desc: 'איך מודדים הצלחה', example: 'דיוק, זמן, שביעות רצון, אי-חריגה' },
 ];
 
 export default function S35_DesignIngredients() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4vw,4rem)' }}>
+        <div className="w-full max-w-7xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4cqw,4rem)' }}>
           <div>
             <SceneTitle size="md">מרכיבי העיצוב</SceneTitle>
-            <p className="text-white/50 mt-2 text-3xl">שישה מרכיבים שכל אייג׳נט HR צריך</p>
+            <p className="text-white/65 mt-2 text-3xl">שישה מרכיבים שכל אייג׳נט HR צריך</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(1.25rem,2.5vw,2.5rem)' }}>
+          <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(1.25rem,2.5cqw,2.5rem)' }}>
             {INGREDIENTS.map((ing, i) => (
               <GlassCard key={i}>
-                <div className="text-3xl mb-2">{ing.icon}</div>
+                <div className="text-3xl mb-2"><ing.icon size="1em" /></div>
                 <h3 className="text-white font-bold text-3xl mb-1">{ing.title}</h3>
-                <p className="text-white/50 text-3xl mb-2 leading-relaxed">{ing.desc}</p>
+                <p className="text-white/65 text-3xl mb-2 leading-relaxed">{ing.desc}</p>
                 <div className="p-2 rounded-lg text-3xl font-mono"
                   style={{ background: 'rgba(99,102,241,0.06)', color: 'rgba(99,102,241,0.7)', border: '1px solid rgba(99,102,241,0.12)' }}>
                   {ing.example}

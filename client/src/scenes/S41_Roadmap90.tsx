@@ -31,10 +31,10 @@ export default function S41_Roadmap90() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }}>
+        <div className="w-full max-w-7xl space-y-8" style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }}>
           <div>
             <SceneTitle size="md">מפת דרכים 90 יום</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">מהרעיון לאייג׳נט פעיל, בשלושה חודשים</p>
+            <p className="text-white/60 text-3xl mt-1">מהרעיון לאייג׳נט פעיל, בשלושה חודשים</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {PHASES.map((phase, i) => (
@@ -46,7 +46,7 @@ export default function S41_Roadmap90() {
                   animationFillMode: 'both',
                   opacity: 0,
                 }}>
-                <p className="text-3xl text-white/40 mb-1">{phase.phase}</p>
+                <p className="text-3xl text-white/60 mb-1">{phase.phase}</p>
                 <h3 className="font-bold text-3xl mb-3" style={{ color: phase.color }}>{phase.title}</h3>
                 <div className="space-y-1.5">
                   {phase.tasks.map((task) => (
@@ -59,7 +59,7 @@ export default function S41_Roadmap90() {
               </div>
             ))}
           </div>
-          <p className="text-center text-white/30 text-3xl">
+          <p className="text-center text-white/65 text-3xl">
             90 יום, מספיק לראות ערך, מהיר מספיק לשמור על מומנטום
           </p>
         </div>

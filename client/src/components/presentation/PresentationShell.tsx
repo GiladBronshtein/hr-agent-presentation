@@ -1,11 +1,16 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { prefetchMediaAssets } from '../../lib/mediaAssets';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useKeyboardControls } from '../../hooks/useKeyboardControls';
+import { useHashSync } from '../../hooks/useHashSync';
+import { usePresenterBridge } from '../../hooks/usePresenterBridge';
 import { PresenterControls } from './PresenterControls';
 import { ChapterMap } from './ChapterMap';
 import { SpeakerNotes } from './SpeakerNotes';
 import { KeyboardHelp } from './KeyboardHelp';
 import { SceneRenderer } from './SceneRenderer';
+import { SceneStage } from './SceneStage';
+import { RotateHint } from './RotateHint';
 
 export function PresentationShell() {
   const {
@@ -21,6 +26,15 @@ export function PresentationShell() {
 
   // Enable keyboard controls
   useKeyboardControls();
+
+  // URL hash <-> scene index sync (deep links + refresh recovery)
+  useHashSync();
+
+  // Sync state with the presenter-view window (BroadcastChannel)
+  usePresenterBridge();
+
+  // Warm the image cache during idle time so slide images appear instantly
+  useEffect(() => { prefetchMediaAssets(); }, []);
 
   // Touch/swipe support
   const touchStartX = useRef<number | null>(null);
@@ -60,11 +74,16 @@ export function PresentationShell() {
       onTouchEnd={handleTouchEnd}
       dir="rtl"
     >
-      {/* Main scene area */}
-      <SceneRenderer currentIndex={currentSceneIndex} />
+      {/* Main scene area — SceneStage scales it to fit small screens */}
+      <SceneStage>
+        <SceneRenderer currentIndex={currentSceneIndex} />
+      </SceneStage>
 
       {/* Controls */}
       <PresenterControls />
+
+      {/* Mobile portrait hint */}
+      <RotateHint />
 
       {/* Overlays */}
       <div onClick={handleBackdropClick}>

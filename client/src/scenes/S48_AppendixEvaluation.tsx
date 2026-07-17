@@ -11,9 +11,9 @@ export default function S48_AppendixEvaluation() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">נספח ג׳</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">נספח ג׳</p>
             <SceneTitle size="md">מסגרת הערכה</SceneTitle>
           </div>
           <div className="grid grid-cols-2 gap-6">

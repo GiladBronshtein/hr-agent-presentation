@@ -12,11 +12,11 @@ export default function S33_AccessibleStack() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div className="w-full max-w-6xl" style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)', display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4vw,4rem)' }}>
+        <div className="w-full max-w-6xl" style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)', display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4cqw,4rem)' }}>
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">פרק שלישי: לבנות</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">פרק שלישי: לבנות</p>
             <SceneTitle size="md">הסטאק הנגיש</SceneTitle>
-            <p className="text-white/50 mt-2 text-3xl">אין צורך בצוות פיתוח גדול, כלים נגישים קיימים</p>
+            <p className="text-white/65 mt-2 text-3xl">אין צורך בצוות פיתוח גדול, כלים נגישים קיימים</p>
           </div>
           <div className="space-y-3">
             {STACK.map((layer, i) => (
@@ -37,7 +37,7 @@ export default function S33_AccessibleStack() {
             ))}
           </div>
           <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/50 text-3xl">
+            <p className="text-white/65 text-3xl">
               ניתן להתחיל עם <strong className="text-white">n8n + Claude + Google Workspace</strong>, ללא קוד
             </p>
           </div>

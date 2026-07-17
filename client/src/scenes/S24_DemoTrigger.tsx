@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Bot } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 
@@ -27,9 +28,9 @@ export default function S24_DemoTrigger() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 1</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 1</p>
             <SceneTitle size="md">הטריגר</SceneTitle>
           </div>
           <div className="terminal-window">
@@ -37,7 +38,7 @@ export default function S24_DemoTrigger() {
               <div className="terminal-dot" style={{ background: '#F43F5E' }} />
               <div className="terminal-dot" style={{ background: '#F59E0B' }} />
               <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/30 text-3xl mr-2">Slack → OnboardBot</span>
+              <span className="text-white/65 text-3xl mr-2">Slack → OnboardBot</span>
             </div>
             <div className="terminal-body">
               <div className="terminal-line">
@@ -53,7 +54,7 @@ export default function S24_DemoTrigger() {
           {demoStep >= 1 && (
             <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
               <p className="text-white/60 text-3xl">
-                <span style={{ color: '#6366F1' }}>🤖 OnboardBot:</span>{' '}
+                <span style={{ color: '#6366F1', display: 'inline-flex', alignItems: 'center', gap: '0.35em' }}><Bot size="1em" /> OnboardBot:</span>{' '}
                 קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד Product Manager...
               </p>
             </div>

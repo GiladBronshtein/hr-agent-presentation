@@ -14,10 +14,11 @@ export default function S26_DemoPlanning() {
   const [visible, setVisible] = useState(0);
 
   useEffect(() => {
-    PLAN_STEPS.forEach((_, i) => {
-      setTimeout(() => setVisible(i + 1), 300 + i * 600);
-    });
-    setTimeout(() => setDemoStep(3), 300 + PLAN_STEPS.length * 600 + 500);
+    const timers = PLAN_STEPS.map((_, i) =>
+      setTimeout(() => setVisible(i + 1), 300 + i * 600)
+    );
+    timers.push(setTimeout(() => setDemoStep(3), 300 + PLAN_STEPS.length * 600 + 500));
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
@@ -25,9 +26,9 @@ export default function S26_DemoPlanning() {
       <ContentLayout>
         <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 3</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 3</p>
             <SceneTitle size="md">תכנון</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">האייג׳נט בונה תוכנית קליטה מותאמת</p>
+            <p className="text-white/60 text-3xl mt-1">האייג׳נט בונה תוכנית קליטה מותאמת</p>
           </div>
           <div className="space-y-3">
             {PLAN_STEPS.map((step, i) => (

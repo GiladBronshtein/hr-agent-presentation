@@ -14,6 +14,7 @@ const SHORTCUTS = [
   { keys: ['Esc'], description: 'פתח/סגור מפת מצגת' },
   { keys: ['F'], description: 'מסך מלא' },
   { keys: ['P'], description: 'הערות מציג' },
+  { keys: ['N'], description: 'חלון מציג (מסך שני)' },
   { keys: ['M'], description: 'הפעל/השתק' },
   { keys: ['R'], description: 'אפס דמו' },
   { keys: ['H', '?'], description: 'עזרה' },
@@ -92,7 +93,7 @@ export function KeyboardHelp() {
               width: '30px', height: '30px', borderRadius: '8px',
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.68)',
               cursor: 'pointer',
               transition: 'all 180ms ease',
             }}
@@ -104,7 +105,7 @@ export function KeyboardHelp() {
             onMouseLeave={(e) => {
               const btn = e.currentTarget as HTMLButtonElement;
               btn.style.background = 'rgba(255,255,255,0.06)';
-              btn.style.color = 'rgba(255,255,255,0.5)';
+              btn.style.color = 'rgba(255,255,255,0.68)';
             }}
             aria-label="סגור"
           >
@@ -136,7 +137,7 @@ export function KeyboardHelp() {
                     style={{
                       padding: '0.18rem 0.45rem', borderRadius: '5px',
                       fontSize: '1rem', fontFamily: "'Space Grotesk', monospace",
-                      fontWeight: 600, color: 'rgba(255,255,255,0.5)',
+                      fontWeight: 600, color: 'rgba(255,255,255,0.68)',
                       background: 'rgba(255,255,255,0.07)',
                       border: '1px solid rgba(255,255,255,0.12)',
                     }}

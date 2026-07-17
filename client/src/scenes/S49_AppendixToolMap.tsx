@@ -21,21 +21,21 @@ export default function S49_AppendixToolMap() {
       <ContentLayout>
         <div className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">נספח ד׳</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">נספח ד׳</p>
             <SceneTitle size="md">מפת כלים</SceneTitle>
           </div>
           {TOOLS.map((cat, ci) => (
             <div key={ci}>
-              <p className="text-white/40 text-3xl uppercase tracking-widest mb-3">{cat.category}</p>
+              <p className="text-white/60 text-3xl uppercase tracking-widest mb-3">{cat.category}</p>
               <div className="space-y-2">
                 {cat.items.map((tool, i) => (
                   <div key={i} className="flex items-center gap-6 p-3 rounded-xl"
                     style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <div className="flex-1">
                       <span className="text-white/80 font-medium text-3xl">{tool.name}</span>
-                      <span className="text-white/40 text-3xl mr-2"> -  {tool.desc}</span>
+                      <span className="text-white/60 text-3xl mr-2"> -  {tool.desc}</span>
                     </div>
-                    <span className="text-white/30 text-3xl">{tool.cost}</span>
+                    <span className="text-white/65 text-3xl">{tool.cost}</span>
                     <span className="text-3xl px-2 py-0.5 rounded"
                       style={{ background: LEVEL_COLORS[tool.level as keyof typeof LEVEL_COLORS] + '15', color: LEVEL_COLORS[tool.level as keyof typeof LEVEL_COLORS] }}>
                       {tool.level === 'beginner' ? 'מתחיל' : 'מתקדם'}

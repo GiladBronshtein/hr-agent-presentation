@@ -1,29 +1,30 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
+import { ClipboardList, Eye, Hand, Lock, RefreshCw, Target } from 'lucide-react';
 
 const PRINCIPLES = [
-  { icon: '👁️', title: 'שקיפות', desc: 'העובד יודע שמדבר עם AI', color: '#6366F1' },
-  { icon: '🎯', title: 'מטרה מוגדרת', desc: 'כל אייג׳נט עושה דבר אחד בלבד', color: '#10B981' },
-  { icon: '📋', title: 'תיעוד מלא', desc: 'כל פעולה מתועדת עם timestamp', color: '#F59E0B' },
-  { icon: '✋', title: 'אישור אנושי', desc: 'פעולות רגישות דורשות אישור', color: '#F43F5E' },
-  { icon: '🔒', title: 'הרשאות מינימליות', desc: 'גישה רק למה שנדרש', color: '#A78BFA' },
-  { icon: '🔄', title: 'ביקורת תקופתית', desc: 'בדיקה כל רבעון', color: '#22D3EE' },
+  { icon: Eye, title: 'שקיפות', desc: 'העובד יודע שמדבר עם AI', color: '#6366F1' },
+  { icon: Target, title: 'מטרה מוגדרת', desc: 'כל אייג׳נט עושה דבר אחד בלבד', color: '#10B981' },
+  { icon: ClipboardList, title: 'תיעוד מלא', desc: 'כל פעולה מתועדת עם timestamp', color: '#F59E0B' },
+  { icon: Hand, title: 'אישור אנושי', desc: 'פעולות רגישות דורשות אישור', color: '#F43F5E' },
+  { icon: Lock, title: 'הרשאות מינימליות', desc: 'גישה רק למה שנדרש', color: '#A78BFA' },
+  { icon: RefreshCw, title: 'ביקורת תקופתית', desc: 'בדיקה כל רבעון', color: '#22D3EE' },
 ];
 
 export default function S36_Governance() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">ממשל ואחריות</SceneTitle>
-            <p className="text-white/50 mt-2 text-3xl">ששה עקרונות לאייג׳נט אחראי</p>
+            <p className="text-white/65 mt-2 text-3xl">ששה עקרונות לאייג׳נט אחראי</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {PRINCIPLES.map((p, i) => (
               <GlassCard key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s`, animationFillMode: 'both', opacity: 0 }}>
-                <div className="text-4xl mb-2">{p.icon}</div>
+                <div className="text-4xl mb-2"><p.icon size="1em" /></div>
                 <h3 className="font-bold text-3xl mb-1" style={{ color: p.color }}>{p.title}</h3>
-                <p className="text-white/50 text-3xl leading-relaxed">{p.desc}</p>
+                <p className="text-white/65 text-3xl leading-relaxed">{p.desc}</p>
               </GlassCard>
             ))}
           </div>

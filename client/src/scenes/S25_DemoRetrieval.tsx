@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
+import { BookOpen, Building2, Calendar, ClipboardList, FileText, Key } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 
 const RETRIEVALS = [
-  { icon: '📄', source: 'HRIS', data: 'יעל כהן: PM Senior, מחלקת Product, מנהל: דוד לוי', status: 'success' },
-  { icon: '📋', source: 'Onboarding Playbook', data: 'תוכנית קליטה לתפקידי Product: 30 יום', status: 'success' },
-  { icon: '📅', source: 'Google Calendar', data: 'זמינות דוד לוי: ב׳ 09:00-10:00, ד׳ 14:00-15:00', status: 'success' },
-  { icon: '🔑', source: 'IT Permissions', data: 'רשימת גישות לתפקיד PM: Jira, Figma, Slack, Notion', status: 'success' },
-  { icon: '📚', source: 'Learning Platform', data: '3 קורסי חובה לתפקיד PM', status: 'success' },
-  { icon: '🏢', source: 'Office System', data: 'תג כניסה, חניה, מקום ישיבה, קומה 4', status: 'success' },
+  { icon: FileText, source: 'HRIS', data: 'יעל כהן: PM Senior, מחלקת Product, מנהל: דוד לוי', status: 'success' },
+  { icon: ClipboardList, source: 'Onboarding Playbook', data: 'תוכנית קליטה לתפקידי Product: 30 יום', status: 'success' },
+  { icon: Calendar, source: 'Google Calendar', data: 'זמינות דוד לוי: ב׳ 09:00-10:00, ד׳ 14:00-15:00', status: 'success' },
+  { icon: Key, source: 'IT Permissions', data: 'רשימת גישות לתפקיד PM: Jira, Figma, Slack, Notion', status: 'success' },
+  { icon: BookOpen, source: 'Learning Platform', data: '3 קורסי חובה לתפקיד PM', status: 'success' },
+  { icon: Building2, source: 'Office System', data: 'תג כניסה, חניה, מקום ישיבה, קומה 4', status: 'success' },
 ];
 
 export default function S25_DemoRetrieval() {
@@ -27,9 +28,9 @@ export default function S25_DemoRetrieval() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-6xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-2">שלב 2</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 2</p>
             <SceneTitle size="md">איסוף מידע</SceneTitle>
           </div>
           <div className="space-y-2">
@@ -41,9 +42,9 @@ export default function S25_DemoRetrieval() {
                   background: 'rgba(255,255,255,0.03)',
                   border: '1px solid rgba(255,255,255,0.06)',
                 }}>
-                <span className="text-3xl">{r.icon}</span>
+                <span className="text-3xl"><r.icon size="1em" /></span>
                 <div className="flex-1">
-                  <span className="text-white/40 text-3xl">{r.source}</span>
+                  <span className="text-white/60 text-3xl">{r.source}</span>
                   <p className="text-white/70 text-3xl">{r.data}</p>
                 </div>
                 {i < visible && <span style={{ color: '#10B981' }} className="text-3xl">✓</span>}

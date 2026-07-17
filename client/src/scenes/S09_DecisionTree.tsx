@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Bot, Settings, User, UserCheck } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
 
 type Answer = 'yes' | 'no' | null;
@@ -9,10 +10,10 @@ export default function S09_DecisionTree() {
   const [q3, setQ3] = useState<Answer>(null);
 
   const getRecommendation = () => {
-    if (q1 === 'yes') return { label: 'אוטומציה', color: '#F59E0B', icon: '⚙️', desc: 'השלבים תמיד זהים, אוטומציה פשוטה מספיקה ועדיפה.' };
-    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#F43F5E', icon: '👤', desc: 'ללא הקשר, אדם עם סיוע AI הוא הפתרון הנכון.' };
-    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#6366F1', icon: '🤖✋', desc: 'מתאים לאייג׳נט, עם נקודת אישור אנושית חובה.' };
-    if (q1 === 'no' && q2 === 'yes' && q3 === 'no') return { label: 'אייג׳נט', color: '#10B981', icon: '🤖', desc: 'מתאים לאייג׳נט עם אישור בנקודות מוגדרות.' };
+    if (q1 === 'yes') return { label: 'אוטומציה', color: '#F59E0B', icon: Settings, desc: 'השלבים תמיד זהים, אוטומציה פשוטה מספיקה ועדיפה.' };
+    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#F43F5E', icon: User, desc: 'ללא הקשר, אדם עם סיוע AI הוא הפתרון הנכון.' };
+    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#6366F1', icon: UserCheck, desc: 'מתאים לאייג׳נט, עם נקודת אישור אנושית חובה.' };
+    if (q1 === 'no' && q2 === 'yes' && q3 === 'no') return { label: 'אייג׳נט', color: '#10B981', icon: Bot, desc: 'מתאים לאייג׳נט עם אישור בנקודות מוגדרות.' };
     return null;
   };
 
@@ -26,7 +27,7 @@ export default function S09_DecisionTree() {
           style={{
             background: current === v ? (v === 'yes' ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)') : 'rgba(255,255,255,0.05)',
             border: current === v ? `1px solid ${v === 'yes' ? 'rgba(16,185,129,0.4)' : 'rgba(244,63,94,0.4)'}` : '1px solid rgba(255,255,255,0.08)',
-            color: current === v ? (v === 'yes' ? '#10B981' : '#F43F5E') : 'rgba(255,255,255,0.5)',
+            color: current === v ? (v === 'yes' ? '#10B981' : '#F43F5E') : 'rgba(255,255,255,0.68)',
           }}>
           {v === 'yes' ? yes : no}
         </button>
@@ -40,7 +41,7 @@ export default function S09_DecisionTree() {
         <div className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">עץ ההחלטות</SceneTitle>
-            <p className="text-white/40 text-3xl mt-2">ענו על שלוש שאלות</p>
+            <p className="text-white/60 text-3xl mt-2">ענו על שלוש שאלות</p>
           </div>
           <div className="space-y-8">
             <div className="p-6 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -62,7 +63,7 @@ export default function S09_DecisionTree() {
           </div>
           {rec && (
             <div className="p-7 rounded-xl animate-fade-in text-center" style={{ background: rec.color + '12', border: `1px solid ${rec.color}30` }}>
-              <div className="text-5xl mb-2">{rec.icon}</div>
+              <div className="text-5xl mb-2"><rec.icon size="1em" /></div>
               <h3 className="text-3xl font-bold mb-1" style={{ color: rec.color }}>{rec.label}</h3>
               <p className="text-white/60 text-3xl">{rec.desc}</p>
             </div>

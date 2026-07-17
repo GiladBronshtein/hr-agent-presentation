@@ -18,7 +18,7 @@ export default function S08_MaturityLadder() {
         <div className="w-full max-w-6xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">סולם הבגרות</SceneTitle>
-            <p className="text-white/40 text-3xl mt-2">לא כל שימוש ב-AI הוא אייג׳נט</p>
+            <p className="text-white/60 text-3xl mt-2">לא כל שימוש ב-AI הוא אייג׳נט</p>
           </div>
           <div className="space-y-3">
             {LEVELS.map((level, i) => (
@@ -39,7 +39,7 @@ export default function S08_MaturityLadder() {
                 <div className="flex-1">
                   <div className="flex items-center gap-5">
                     <span className="font-bold text-white">{level.label}</span>
-                    <span className="text-white/40 text-3xl">{level.desc}</span>
+                    <span className="text-white/60 text-3xl">{level.desc}</span>
                   </div>
                   <div className="flex gap-2 mt-1">
                     {level.examples.map((ex) => (
@@ -59,7 +59,7 @@ export default function S08_MaturityLadder() {
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-3xl text-center">
+          <p className="text-white/65 text-3xl text-center">
             הפיילוט הראשון צריך להיות שלב 4, פשוט, מדיד, בסיכון נמוך
           </p>
         </div>

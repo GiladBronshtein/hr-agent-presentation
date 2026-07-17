@@ -16,10 +16,10 @@ export default function S42_AgentCanvas() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3vw,3rem)' }} className="w-full max-w-7xl space-y-8">
+        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">Agent Canvas</SceneTitle>
-            <p className="text-white/40 text-3xl mt-1">מלאו את הקנבס לאייג׳נט שלכם</p>
+            <p className="text-white/60 text-3xl mt-1">מלאו את הקנבס לאייג׳נט שלכם</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {FIELDS.map((field) => (
@@ -45,7 +45,7 @@ export default function S42_AgentCanvas() {
             ))}
           </div>
           <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/40 text-3xl">
+            <p className="text-white/60 text-3xl">
               {Object.values(values).filter(v => v.trim()).length}/6 שדות מולאו
               {Object.values(values).filter(v => v.trim()).length === 6 && ', הקנבס מוכן! 🎉'}
             </p>

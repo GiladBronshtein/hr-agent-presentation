@@ -4,6 +4,7 @@
  * "אנחנו...": cycling words, cinematic reveal
  */
 import { useEffect, useState } from 'react';
+import { BarChart3, Handshake, Rocket, Target } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
 
 const WORDS = [
@@ -14,10 +15,10 @@ const WORDS = [
 ];
 
 const QUESTIONS = [
-  { q: 'מה תהליך אחד שתרצו לבדוק?', icon: '🎯', color: '#6366F1' },
-  { q: 'מי השותף הנכון ב-IT?', icon: '🤝', color: '#0891B2' },
-  { q: 'מה מדד ההצלחה שלכם?', icon: '📊', color: '#10B981' },
-  { q: 'מה הצעד הראשון השבוע?', icon: '🚀', color: '#F59E0B' },
+  { q: 'מה תהליך אחד שתרצו לבדוק?', icon: Target, color: '#6366F1' },
+  { q: 'מי השותף הנכון ב-IT?', icon: Handshake, color: '#0891B2' },
+  { q: 'מה מדד ההצלחה שלכם?', icon: BarChart3, color: '#10B981' },
+  { q: 'מה הצעד הראשון השבוע?', icon: Rocket, color: '#F59E0B' },
 ];
 
 export default function S44_ClosingReflection() {
@@ -65,15 +66,15 @@ export default function S44_ClosingReflection() {
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         textAlign: 'center',
-        padding: 'clamp(2rem, 4vw, 5rem) clamp(2rem, 6vw, 8rem) 6rem',
+        padding: 'clamp(2rem, 4cqw, 5rem) clamp(2rem, 6cqw, 8rem) 6rem',
         opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease',
       }}>
 
         {/* Main cycling headline */}
-        <div className="animate-fade-in-up stagger-1" style={{ marginBottom: 'clamp(1rem, 2vw, 2rem)' }}>
+        <div className="animate-fade-in-up stagger-1" style={{ marginBottom: 'clamp(1rem, 2cqw, 2rem)' }}>
           <span style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+            fontSize: 'clamp(2rem, 5cqw, 4.5rem)',
             fontWeight: 400, color: 'rgba(255,255,255,0.6)',
             display: 'block', marginBottom: '0.15em',
           }}>
@@ -81,7 +82,7 @@ export default function S44_ClosingReflection() {
           </span>
           <span style={{
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-            fontSize: 'clamp(4.5rem, 11vw, 10rem)',
+            fontSize: 'clamp(4.5rem, 11cqw, 10rem)',
             fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.06em',
             display: 'block',
             color: currentWord.color,
@@ -95,9 +96,9 @@ export default function S44_ClosingReflection() {
         {/* Subtitle */}
         <p className="animate-fade-in-up stagger-3" style={{
           fontFamily: "'Heebo', sans-serif",
-          fontSize: 'clamp(1rem, 1.9vw, 1.7rem)',
-          color: 'rgba(255,255,255,0.45)',
-          margin: '0 0 clamp(2rem, 4vw, 4rem)',
+          fontSize: 'clamp(1rem, 1.9cqw, 1.7rem)',
+          color: 'rgba(255,255,255,0.62)',
+          margin: '0 0 clamp(2rem, 4cqw, 4rem)',
           maxWidth: '680px', lineHeight: 1.6,
         }}>
           AI Agents אינם פרויקט IT, הם שינוי בדרך שעבודה מתבצעת.<br />
@@ -107,7 +108,7 @@ export default function S44_ClosingReflection() {
         {/* Questions grid */}
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: 'clamp(0.75rem, 1.5vw, 1.25rem)',
+          gap: 'clamp(0.75rem, 1.5cqw, 1.25rem)',
           maxWidth: '700px', width: '100%',
           opacity: showQuestions ? 1 : 0,
           transform: showQuestions ? 'translateY(0)' : 'translateY(20px)',
@@ -115,7 +116,7 @@ export default function S44_ClosingReflection() {
         }}>
           {QUESTIONS.map((item, i) => (
             <div key={i} style={{
-              padding: 'clamp(1rem, 1.8vw, 1.5rem)',
+              padding: 'clamp(1rem, 1.8cqw, 1.5rem)',
               borderRadius: '16px',
               background: item.color + '08',
               border: `1px solid ${item.color}18`,
@@ -124,10 +125,10 @@ export default function S44_ClosingReflection() {
               transform: showQuestions ? 'translateY(0)' : 'translateY(12px)',
               transition: `opacity 0.4s ease ${i * 0.1}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${i * 0.1}s`,
             }}>
-              <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', display: 'block', marginBottom: '0.5rem' }}>{item.icon}</span>
+              <span style={{ fontSize: 'clamp(1.25rem, 2cqw, 1.75rem)', display: 'block', marginBottom: '0.5rem' }}><item.icon size="1em" /></span>
               <p style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
+                fontSize: 'clamp(1rem, 1.4cqw, 1.2rem)',
                 color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5,
               }}>{item.q}</p>
             </div>
@@ -136,7 +137,7 @@ export default function S44_ClosingReflection() {
 
         {/* Word cycle dots */}
         <div style={{
-          display: 'flex', gap: '0.5rem', marginTop: 'clamp(1.5rem, 3vw, 3rem)',
+          display: 'flex', gap: '0.5rem', marginTop: 'clamp(1.5rem, 3cqw, 3rem)',
           opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease 0.8s',
         }}>
           {WORDS.map((w, i) => (

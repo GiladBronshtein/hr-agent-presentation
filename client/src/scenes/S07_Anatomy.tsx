@@ -43,7 +43,7 @@ export default function S07_Anatomy() {
           <h1
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
+              fontSize: 'clamp(1.75rem, 3.5cqw, 2.75rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
               color: 'white',
@@ -244,7 +244,7 @@ export default function S07_Anatomy() {
           }}
         >
           <ShieldAlert size={14} style={{ color: '#F43F5E', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             חסר רכיב אחד, המערכת לא שלמה. <span style={{ color: '#F43F5E', fontWeight: 600 }}>גבולות ואישור</span> הם הכי חשובים.
           </p>
         </div>

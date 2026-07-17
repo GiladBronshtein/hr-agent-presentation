@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES } from '../../data/scenes';
 
@@ -62,8 +63,8 @@ function SceneFallback({ sceneId }: { sceneId: string }) {
   return (
     <div className="scene-base flex items-center justify-center" dir="rtl">
       <div className="text-center">
-        <div className="text-white/20 text-6xl mb-4">⟳</div>
-        <p className="text-white/40 text-sm">{scene?.hebrewTitle || sceneId}</p>
+        <div className="text-white/20 mb-4 flex justify-center"><Loader2 size={48} className="animate-spin" /></div>
+        <p className="text-white/60 text-sm">{scene?.hebrewTitle || sceneId}</p>
       </div>
     </div>
   );

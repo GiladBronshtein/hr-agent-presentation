@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Clapperboard } from 'lucide-react';
 
 const DEMO_STEPS = [
   { num: '01', label: 'טריגר', color: '#6366F1' },
@@ -76,7 +76,7 @@ export default function S23_DemoEntrance() {
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         textAlign: 'center',
-        padding: 'clamp(2rem, 4vw, 5rem) clamp(2rem, 6vw, 8rem) 6rem',
+        padding: 'clamp(2rem, 4cqw, 5rem) clamp(2rem, 6cqw, 8rem) 6rem',
       }}>
 
         {/* Chapter badge */}
@@ -84,25 +84,25 @@ export default function S23_DemoEntrance() {
           display: 'inline-flex', alignItems: 'center', gap: '0.625rem',
           padding: '0.5rem 1.25rem', borderRadius: '100px',
           background: 'rgba(8,145,178,0.12)', border: '1px solid rgba(8,145,178,0.3)',
-          marginBottom: 'clamp(1.5rem, 3vw, 3rem)',
+          marginBottom: 'clamp(1.5rem, 3cqw, 3rem)',
           opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22D3EE', display: 'inline-block', animation: 'glowPulse 1.5s ease-in-out infinite', boxShadow: '0 0 8px #22D3EE' }} />
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1vw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1cqw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
             פרק 02: לראות
           </span>
         </div>
 
         {/* Main headline */}
         <div style={{
-          marginBottom: 'clamp(1rem, 2vw, 2rem)',
+          marginBottom: 'clamp(1rem, 2cqw, 2rem)',
           opacity: phase >= 1 ? 1 : 0,
           transform: phase >= 1 ? 'translateY(0)' : 'translateY(24px)',
           transition: 'opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(0.23,1,0.32,1) 0.15s',
         }}>
           <h1 style={{
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-            fontSize: 'clamp(4.5rem, 12vw, 12rem)',
+            fontSize: 'clamp(4.5rem, 12cqw, 12rem)',
             fontWeight: 900, lineHeight: 0.82, letterSpacing: '-0.07em',
             margin: 0,
             background: 'linear-gradient(135deg, #22D3EE 0%, #0891B2 50%, #0E7490 100%)',
@@ -116,9 +116,9 @@ export default function S23_DemoEntrance() {
         {/* Subtitle */}
         <p style={{
           fontFamily: "'Heebo', sans-serif",
-          fontSize: 'clamp(1.1rem, 2.2vw, 2rem)',
-          color: 'rgba(255,255,255,0.45)',
-          margin: '0 0 clamp(2rem, 4vw, 4rem)',
+          fontSize: 'clamp(1.1rem, 2.2cqw, 2rem)',
+          color: 'rgba(255,255,255,0.62)',
+          margin: '0 0 clamp(2rem, 4cqw, 4rem)',
           maxWidth: '700px', lineHeight: 1.5,
           opacity: phase >= 1 ? 1 : 0,
           transition: 'opacity 0.6s ease 0.3s',
@@ -129,7 +129,7 @@ export default function S23_DemoEntrance() {
 
         {/* Scenario card */}
         <div style={{
-          padding: 'clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.5rem, 3vw, 3.5rem)',
+          padding: 'clamp(1.25rem, 2.5cqw, 2.5rem) clamp(1.5rem, 3cqw, 3.5rem)',
           borderRadius: '20px',
           background: 'rgba(8,145,178,0.08)',
           border: '1px solid rgba(8,145,178,0.2)',
@@ -140,13 +140,13 @@ export default function S23_DemoEntrance() {
           transform: phase >= 2 ? 'translateY(0)' : 'translateY(16px)',
           transition: 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1)',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1vw, 1rem)' }}>
-            <span style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.6rem)' }}>🎬</span>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9vw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1cqw, 1rem)' }}>
+            <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.6rem)', display: 'inline-flex', color: '#22D3EE' }}><Clapperboard size="1em" /></span>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9cqw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
           </div>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(1rem, 1.7vw, 1.5rem)',
+            fontSize: 'clamp(1rem, 1.7cqw, 1.5rem)',
             color: 'rgba(255,255,255,0.8)', margin: '0 0 0.5rem', lineHeight: 1.55,
           }}>
             <span style={{ color: 'white', fontWeight: 700 }}>יעל כהן</span> קיבלה הצעת עבודה כ-Product Manager.
@@ -154,8 +154,8 @@ export default function S23_DemoEntrance() {
           </p>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(1rem, 1.3vw, 1.15rem)',
-            color: 'rgba(255,255,255,0.4)', margin: 0, lineHeight: 1.6,
+            fontSize: 'clamp(1rem, 1.3cqw, 1.15rem)',
+            color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6,
           }}>
             נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם, ומקבל אישור, בלי שמנהל HR יצטרך לתאם ידנית.
           </p>
@@ -163,21 +163,21 @@ export default function S23_DemoEntrance() {
 
         {/* Steps flow */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 1rem)',
+          display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5cqw, 1rem)',
           flexWrap: 'wrap', justifyContent: 'center',
-          marginTop: 'clamp(1.5rem, 3vw, 3rem)',
+          marginTop: 'clamp(1.5rem, 3cqw, 3rem)',
           opacity: phase >= 3 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           {DEMO_STEPS.map((step, i) => (
-            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5vw, 1rem)' }}>
+            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5cqw, 1rem)' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '0.375rem',
-                padding: 'clamp(0.3rem, 0.5vw, 1rem) clamp(0.625rem, 1vw, 1rem)',
+                padding: 'clamp(0.3rem, 0.5cqw, 1rem) clamp(0.625rem, 1cqw, 1rem)',
                 borderRadius: '8px',
                 background: step.color + '0E', border: `1px solid ${step.color}25`,
               }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.2vw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
               </div>
               {i < DEMO_STEPS.length - 1 && (
                 <ArrowLeft size={10} style={{ color: 'rgba(255,255,255,0.15)', flexShrink: 0 }} />

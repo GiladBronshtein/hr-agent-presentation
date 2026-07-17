@@ -1,10 +1,11 @@
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+import { BarChart3, ClipboardList, FlaskConical, Handshake } from 'lucide-react';
 
 const ACTIONS = [
-  { icon: '📋', title: 'בחרו תהליך', desc: 'תהליך אחד שרוצים לשפר', cta: 'השבוע' },
-  { icon: '🤝', title: 'מצאו שותף', desc: 'IT או מפתח שיעזור לכם', cta: 'השבוע' },
-  { icon: '🧪', title: 'בנו פיילוט', desc: 'n8n + Claude + כלי אחד', cta: 'תוך חודש' },
-  { icon: '📊', title: 'מדדו', desc: 'לפני ואחרי: ROI ברור', cta: 'תוך 90 יום' },
+  { icon: ClipboardList, title: 'בחרו תהליך', desc: 'תהליך אחד שרוצים לשפר', cta: 'השבוע' },
+  { icon: Handshake, title: 'מצאו שותף', desc: 'IT או מפתח שיעזור לכם', cta: 'השבוע' },
+  { icon: FlaskConical, title: 'בנו פיילוט', desc: 'n8n + Claude + כלי אחד', cta: 'תוך חודש' },
+  { icon: BarChart3, title: 'מדדו', desc: 'לפני ואחרי: ROI ברור', cta: 'תוך 90 יום' },
 ];
 
 export default function S45_FinalAction() {
@@ -13,7 +14,7 @@ export default function S45_FinalAction() {
       <ContentLayout>
         <div className="w-full max-w-6xl space-y-8 text-center">
           <div>
-            <p className="text-white/40 text-3xl uppercase tracking-widest mb-3">הצעד הבא</p>
+            <p className="text-white/60 text-3xl uppercase tracking-widest mb-3">הצעד הבא</p>
             <SceneTitle size="lg">
               מה תעשו<br />
               <span style={{ color: '#10B981' }}>מחר בבוקר?</span>
@@ -29,9 +30,9 @@ export default function S45_FinalAction() {
                   animationFillMode: 'both',
                   opacity: 0,
                 }}>
-                <span className="text-5xl block mb-3">{action.icon}</span>
+                <span className="text-5xl block mb-3"><action.icon size="1em" /></span>
                 <h3 className="text-white font-bold text-3xl mb-1">{action.title}</h3>
-                <p className="text-white/40 text-3xl mb-3">{action.desc}</p>
+                <p className="text-white/60 text-3xl mb-3">{action.desc}</p>
                 <span className="text-3xl px-2 py-1 rounded-full"
                   style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981', border: '1px solid rgba(16,185,129,0.25)' }}>
                   {action.cta}
@@ -39,7 +40,7 @@ export default function S45_FinalAction() {
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-3xl">
+          <p className="text-white/65 text-3xl">
             שאלות? המשאבים בנספחים: System Prompt, Blueprint, Evaluation Framework
           </p>
         </div>

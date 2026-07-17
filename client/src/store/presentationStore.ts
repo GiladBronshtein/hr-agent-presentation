@@ -239,6 +239,7 @@ export const usePresentationStore = create<PresentationStore>()(
     {
       name: 'hr-agent-presentation',
       partialize: (state) => ({
+        currentSceneIndex: state.currentSceneIndex,
         audienceSelections: state.audienceSelections,
         agentCanvas: state.agentCanvas,
         pilotScores: state.pilotScores,
