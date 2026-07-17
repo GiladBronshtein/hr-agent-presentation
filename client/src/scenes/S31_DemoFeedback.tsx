@@ -1,0 +1,52 @@
+import { useState } from 'react';
+import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+
+const QUESTIONS = [
+  { q: 'האם תוכנית הקליטה מתאימה לתפקיד?', default: 4 },
+  { q: 'האם המייל מתאים לתרבות הארגון?', default: 5 },
+  { q: 'האם הגישות שהוזמנו נכונות?', default: 4 },
+];
+
+export default function S31_DemoFeedback() {
+  const [ratings, setRatings] = useState(QUESTIONS.map(q => q.default));
+
+  return (
+    <SceneBase>
+      <ContentLayout>
+        <div className="w-full max-w-2xl space-y-6">
+          <div>
+            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">שלב 8</p>
+            <SceneTitle size="md">משוב ולמידה</SceneTitle>
+            <p className="text-white/40 text-sm mt-1">כל משוב משפר את האייג׳נט לפעם הבאה</p>
+          </div>
+          <div className="space-y-4">
+            {QUESTIONS.map((item, qi) => (
+              <div key={qi} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <p className="text-white/70 text-sm mb-3">{item.q}</p>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((r) => (
+                    <button key={r} onClick={() => setRatings(prev => { const n = [...prev]; n[qi] = r; return n; })}
+                      className="w-8 h-8 rounded-lg text-sm font-medium transition-all"
+                      style={{
+                        background: ratings[qi] >= r ? 'rgba(79,124,255,0.2)' : 'rgba(255,255,255,0.05)',
+                        border: ratings[qi] >= r ? '1px solid rgba(79,124,255,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                        color: ratings[qi] >= r ? '#4F7CFF' : 'rgba(255,255,255,0.3)',
+                      }}>
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-4 rounded-xl" style={{ background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.15)' }}>
+            <p className="text-white/60 text-sm">
+              ממוצע: <strong style={{ color: '#4F7CFF' }}>{(ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)}/5</strong>
+              {' '}— המשוב נשמר לשיפור הבא
+            </p>
+          </div>
+        </div>
+      </ContentLayout>
+    </SceneBase>
+  );
+}
