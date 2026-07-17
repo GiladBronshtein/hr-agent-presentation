@@ -188,9 +188,9 @@ export default function S00_ColdOpen() {
         </div>
 
         {/* CENTER: Network Visualization */}
-        <div className="animate-scale-in stagger-2" style={{ position: 'relative', minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+        <div className="animate-scale-in stagger-2" style={{ minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <div style={{
-            width: '100%', height: '100%', flexGrow: 1, borderRadius: '24px',
+            width: '100%', flexGrow: 1, minHeight: '300px', borderRadius: '24px',
             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
             position: 'relative', overflow: 'hidden',
           }}>

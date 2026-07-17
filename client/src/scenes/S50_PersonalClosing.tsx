@@ -6,8 +6,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 
-const PHOTO_URL = '/manus-storage/gilad-photo-2026_d7a6c793.webp';
-const QR_URL = '/manus-storage/linkedin-qr-gilad-v2_67e5167b.png';
+const PHOTO_URL = '/hr-agent-presentation/images/gilad-photo-2026.webp';
+const QR_URL = '/hr-agent-presentation/images/linkedin-qr.png';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/giladbronshtein/';
 
 function ParticleField() {
