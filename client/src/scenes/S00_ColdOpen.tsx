@@ -1,12 +1,9 @@
 /**
  * S00 — Cold Open: The Invisible Work
- * Design: AI-Native UI — animated workflow nodes, streaming activity feed, glassmorphic cards
- * Colors: Deep Space bg, Indigo primary, Cyan secondary, Gold accent
- * Typography: Space Grotesk headings, DM Sans body
+ * CONFERENCE HALL EDITION — Massive typography, particle system, cinematic reveal
  */
 import { useEffect, useState, useRef } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
-import { Users, CheckCircle, Zap } from 'lucide-react';
 
 const TOOLS = [
   { id: 'slack',    label: 'Slack',    icon: '💬', color: '#E01E5A', x: 18, y: 22 },
@@ -35,16 +32,54 @@ const STATS = [
   { value: '3', unit: 'ימים', label: 'עד גישה מלאה', color: '#6366F1' },
 ];
 
+function ParticleField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const setSize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    setSize();
+    const colors = ['#6366F1', '#06B6D4', '#F59E0B', '#10B981'];
+    const particles = Array.from({ length: 70 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -Math.random() * 0.5 - 0.15,
+      size: Math.random() * 2.5 + 0.5,
+      opacity: Math.random() * 0.45 + 0.08,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }));
+    let animId: number;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, '0');
+        ctx.fill();
+      });
+      animId = requestAnimationFrame(animate);
+    };
+    animate();
+    window.addEventListener('resize', setSize);
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', setSize); };
+  }, []);
+  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
+}
+
 export default function S00_ColdOpen() {
   const [visibleActivities, setVisibleActivities] = useState<number[]>([]);
   const [activeNodeIdx, setActiveNodeIdx] = useState<number>(-1);
   const [mounted, setMounted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
 
   useEffect(() => {
     if (!mounted) return;
@@ -58,219 +93,130 @@ export default function S00_ColdOpen() {
         if (intervalRef.current) clearInterval(intervalRef.current);
         setActiveNodeIdx(-1);
       }
-    }, 650);
+    }, 800);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [mounted]);
 
   return (
     <SceneBase>
-      {/* Background */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse 70% 60% at 25% 30%, rgba(99,102,241,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 75% 70%, rgba(8,145,178,0.08) 0%, transparent 60%), #0A0A1A',
-        }}
-      />
+      <ParticleField />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(99,102,241,0.14) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 15% 80%, rgba(6,182,212,0.08) 0%, transparent 55%), #06060F' }} />
       <div className="grid-overlay" />
       <div className="noise-overlay" />
       <div className="accent-line-top" />
 
-      <div
-        dir="rtl"
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          gap: '2rem',
-          padding: '3.5rem 2.5rem 5rem',
-          opacity: mounted ? 1 : 0,
-          transition: 'opacity 0.5s ease',
-        }}
-      >
-        {/* ── Column 1: Headline + Stats ── */}
-        <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.5rem' }}>
-          {/* Tag */}
-          <div
-            className="animate-fade-in-up stagger-1"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.3rem 0.75rem',
-              borderRadius: '8px',
-              background: 'rgba(99,102,241,0.12)',
-              border: '1px solid rgba(99,102,241,0.25)',
-              width: 'fit-content',
-            }}
-          >
-            <Zap size={12} style={{ color: '#818CF8' }} />
-            <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.08em' }}>
+      <div dir="rtl" style={{
+        position: 'relative', zIndex: 10, width: '100%', height: '100%',
+        display: 'grid', gridTemplateColumns: '1fr 1.4fr 1fr',
+        gap: '1.5rem', padding: '2rem 2rem 5.5rem',
+        opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease',
+      }}>
+
+        {/* LEFT: Headline + Stats */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.5rem' }}>
+          <div className="animate-fade-in-up stagger-1" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.35rem 0.875rem', borderRadius: '100px',
+            background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)',
+            width: 'fit-content',
+          }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
+            <span style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.8rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
               יום ראשון — עובד חדש
             </span>
           </div>
 
-          {/* Headline */}
           <div className="animate-fade-in-up stagger-2">
-            <h1
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
-                fontWeight: 800,
-                lineHeight: 1.2,
-                letterSpacing: '-0.03em',
-                color: 'white',
-                margin: 0,
-              }}
-            >
-              מה קורה
-              <br />
-              <span style={{
-                background: 'linear-gradient(135deg, #818CF8 0%, #6366F1 50%, #4F46E5 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>
-                מאחורי הקלעים?
-              </span>
-            </h1>
+            <h1 style={{
+              fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+              fontSize: 'clamp(2.75rem, 5.5vw, 5rem)',
+              fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
+              color: 'white', margin: 0,
+            }}>מה קורה</h1>
+            <h1 style={{
+              fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+              fontSize: 'clamp(2.75rem, 5.5vw, 5rem)',
+              fontWeight: 800, lineHeight: 0.92, letterSpacing: '-0.04em',
+              margin: '0.05em 0 0',
+              background: 'linear-gradient(135deg, #818CF8, #6366F1, #22D3EE)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>מאחורי הקלעים?</h1>
           </div>
 
-          <p
-            className="animate-fade-in-up stagger-3"
-            style={{ color: 'rgba(255,255,255,0.42)', fontSize: '0.875rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", margin: 0 }}
-          >
+          <p className="animate-fade-in-up stagger-3" style={{
+            color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
+            lineHeight: 1.6, fontFamily: "'Heebo', sans-serif", margin: 0,
+          }}>
             כל קליטה מפעילה שרשרת פעולות ידניות — חוצת מערכות, אנשים ושעות עבודה.
           </p>
 
-          {/* Stats */}
-          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {STATS.map((stat, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '0.625rem 0.875rem',
-                  borderRadius: '10px',
-                  background: stat.color + '0A',
-                  border: `1px solid ${stat.color}1E`,
-                }}
-              >
-                <div style={{ minWidth: '48px', textAlign: 'center' }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.375rem', fontWeight: 800, color: stat.color }}>
-                    {stat.value}
-                  </span>
-                  <span style={{ fontSize: '0.65rem', color: stat.color + '99', marginRight: '2px' }}>
-                    {stat.unit}
-                  </span>
-                </div>
-                <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', fontFamily: "'DM Sans', sans-serif" }}>
+              <div key={i} style={{
+                padding: '1rem 1.25rem', borderRadius: '16px',
+                background: stat.color + '0A', border: `1px solid ${stat.color}22`,
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              }}>
+                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)', fontFamily: "'Heebo', sans-serif" }}>
                   {stat.label}
                 </span>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.25rem' }}>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em' }}>{stat.value}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.8rem, 1.1vw, 1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
+                </div>
               </div>
             ))}
           </div>
 
-          {/* CTA question */}
-          <div
-            className="animate-fade-in-up stagger-5"
-            style={{
-              padding: '0.875rem',
-              borderRadius: '12px',
-              background: 'rgba(99,102,241,0.07)',
-              border: '1px solid rgba(99,102,241,0.18)',
-            }}
-          >
-            <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.55, fontFamily: "'DM Sans', sans-serif" }}>
-              <span style={{ color: '#818CF8', fontWeight: 600 }}>מה אם</span> כל זה קרה אוטומטית — בלי מגע אנושי?
+          <div className="animate-fade-in stagger-7" style={{
+            padding: '1rem 1.25rem', borderRadius: '14px',
+            background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
+          }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(0.9rem, 1.3vw, 1.15rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
+              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span> — בלי מגע אנושי?
             </p>
           </div>
         </div>
 
-        {/* ── Column 2: Network Visualization ── */}
-        <div
-          className="animate-scale-in stagger-2"
-          style={{ flex: 1, position: 'relative', minWidth: 0 }}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '20px',
-              background: 'rgba(255,255,255,0.015)',
-              border: '1px solid rgba(255,255,255,0.06)',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Dot grid */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                backgroundImage: 'radial-gradient(rgba(99,102,241,0.08) 1px, transparent 1px)',
-                backgroundSize: '30px 30px',
-                pointerEvents: 'none',
-              }}
-            />
-
-            {/* SVG connection lines */}
+        {/* CENTER: Network Visualization */}
+        <div className="animate-scale-in stagger-2" style={{ position: 'relative' }}>
+          <div style={{
+            width: '100%', height: '100%', borderRadius: '24px',
+            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+            position: 'relative', overflow: 'hidden',
+          }}>
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
             <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
               {TOOLS.map((tool, i) => (
-                <line
-                  key={tool.id}
-                  x1="50%" y1="50%"
-                  x2={`${tool.x}%`} y2={`${tool.y}%`}
-                  stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.05)'}
-                  strokeWidth={activeNodeIdx === i ? 1.5 : 1}
-                  strokeDasharray={activeNodeIdx === i ? '5 3' : '3 5'}
-                  style={{ transition: 'stroke 400ms ease, stroke-width 400ms ease' }}
+                <line key={tool.id} x1="50%" y1="50%" x2={`${tool.x}%`} y2={`${tool.y}%`}
+                  stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.06)'}
+                  strokeWidth={activeNodeIdx === i ? 2 : 1}
+                  strokeDasharray={activeNodeIdx === i ? '0' : '4 6'}
+                  style={{ transition: 'all 0.35s ease' }}
                 />
               ))}
             </svg>
 
-            {/* Center HR node */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: 10,
-              }}
-            >
-              <div
-                style={{
-                  width: '68px', height: '68px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #6366F1, #4F46E5)',
-                  border: '2px solid rgba(99,102,241,0.5)',
-                  boxShadow: '0 0 28px rgba(99,102,241,0.45)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: '2px',
-                }}
-              >
-                <Users size={18} color="white" />
-                <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.85)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, letterSpacing: '0.05em' }}>HR</span>
+            {/* HR Hub */}
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+              <div style={{
+                width: 'clamp(70px, 9vw, 90px)', height: 'clamp(70px, 9vw, 90px)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.12) 100%)',
+                border: '2px solid rgba(99,102,241,0.55)',
+                boxShadow: '0 0 40px rgba(99,102,241,0.45), 0 0 80px rgba(99,102,241,0.15)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
+                animation: 'breathe 3s ease-in-out infinite',
+              }}>
+                <span style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}>👤</span>
+                <span style={{ fontSize: 'clamp(0.6rem, 0.9vw, 0.75rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
               </div>
-              {/* Ripple rings */}
               {[0, 1].map((r) => (
-                <div
-                  key={r}
-                  style={{
-                    position: 'absolute',
-                    inset: `${-8 - r * 14}px`,
-                    borderRadius: '50%',
-                    border: '1px solid rgba(99,102,241,0.15)',
-                    animation: `ripple 2.5s ease-out ${r * 0.6}s infinite`,
-                  }}
-                />
+                <div key={r} style={{
+                  position: 'absolute', inset: `${-10 - r * 16}px`, borderRadius: '50%',
+                  border: '1px solid rgba(99,102,241,0.15)',
+                  animation: `ripple 2.5s ease-out ${r * 0.7}s infinite`,
+                }} />
               ))}
             </div>
 
@@ -278,35 +224,22 @@ export default function S00_ColdOpen() {
             {TOOLS.map((tool, i) => {
               const isActive = activeNodeIdx === i;
               return (
-                <div
-                  key={tool.id}
-                  style={{
-                    position: 'absolute',
-                    left: `${tool.x}%`, top: `${tool.y}%`,
-                    transform: `translate(-50%, -50%) scale(${isActive ? 1.12 : 1})`,
-                    zIndex: 5,
-                    transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '54px', height: '54px',
-                      borderRadius: '14px',
-                      background: isActive ? tool.color + '20' : 'rgba(255,255,255,0.04)',
-                      border: `1px solid ${isActive ? tool.color + '55' : 'rgba(255,255,255,0.08)'}`,
-                      boxShadow: isActive ? `0 0 18px ${tool.color}40` : 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'column',
-                      gap: '3px',
-                      transition: 'all 300ms ease',
-                    }}
-                  >
-                    <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>{tool.icon}</span>
-                    <span style={{ fontSize: '0.52rem', color: isActive ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.3)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>
-                      {tool.label}
-                    </span>
+                <div key={tool.id} style={{
+                  position: 'absolute', left: `${tool.x}%`, top: `${tool.y}%`,
+                  transform: `translate(-50%, -50%) scale(${isActive ? 1.18 : 1})`,
+                  transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)', zIndex: 5,
+                }}>
+                  <div style={{
+                    width: 'clamp(52px, 7vw, 68px)', height: 'clamp(52px, 7vw, 68px)',
+                    borderRadius: '16px',
+                    background: isActive ? tool.color + '22' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${isActive ? tool.color + '55' : 'rgba(255,255,255,0.08)'}`,
+                    boxShadow: isActive ? `0 0 24px ${tool.color}50` : 'none',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
+                    transition: 'all 0.3s ease', backdropFilter: 'blur(8px)',
+                  }}>
+                    <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.625rem)', lineHeight: 1 }}>{tool.icon}</span>
+                    <span style={{ fontSize: 'clamp(0.55rem, 0.75vw, 0.7rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
                   </div>
                 </div>
               );
@@ -314,55 +247,33 @@ export default function S00_ColdOpen() {
           </div>
         </div>
 
-        {/* ── Column 3: Activity Feed ── */}
-        <div
-          className="animate-fade-in stagger-3"
-          style={{ flex: '0 0 240px', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}
-        >
-          {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.125rem' }}>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              LIVE ACTIVITY
-            </span>
+        {/* RIGHT: Activity Feed */}
+        <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
+            <span style={{ fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)', fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
           </div>
 
-          {/* Activity items */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', flex: 1, overflow: 'hidden' }}>
-            {ACTIVITIES.map((activity, i) => {
-              const isVisible = visibleActivities.includes(i);
-              return (
-                <div
-                  key={i}
-                  style={{
-                    padding: '0.5rem 0.625rem',
-                    borderRadius: '9px',
-                    background: isVisible ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.01)',
-                    border: `1px solid ${isVisible ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)'}`,
-                    opacity: isVisible ? 1 : 0.15,
-                    transform: isVisible ? 'translateX(0)' : 'translateX(-10px)',
-                    transition: 'all 400ms cubic-bezier(0.23, 1, 0.32, 1)',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '0.4rem',
-                  }}
-                >
-                  <span style={{ fontSize: '0.8rem', lineHeight: 1, flexShrink: 0, marginTop: '1px' }}>{activity.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.58)', lineHeight: 1.4, fontFamily: "'DM Sans', sans-serif" }}>
-                      {activity.text}
-                    </div>
-                    <div style={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.22)', marginTop: '2px', fontFamily: 'monospace' }}>
-                      {activity.time}
-                    </div>
-                  </div>
-                  {isVisible && (
-                    <CheckCircle size={9} style={{ color: '#10B981', flexShrink: 0, marginTop: '3px' }} />
-                  )}
+          {ACTIVITIES.map((activity, i) => {
+            const isVisible = visibleActivities.includes(i);
+            return (
+              <div key={i} style={{
+                padding: '0.75rem 0.875rem', borderRadius: '12px',
+                background: isVisible ? activity.color + '0D' : 'transparent',
+                border: `1px solid ${isVisible ? activity.color + '28' : 'transparent'}`,
+                opacity: isVisible ? 1 : 0.12,
+                transform: isVisible ? 'translateX(0)' : 'translateX(-16px)',
+                transition: 'all 0.45s cubic-bezier(0.23, 1, 0.32, 1)',
+                display: 'flex', alignItems: 'flex-start', gap: '0.625rem',
+              }}>
+                <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px' }}>{activity.icon}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(0.65rem, 0.85vw, 0.78rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
+                  <div style={{ fontSize: 'clamp(0.8rem, 1.1vw, 1rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </SceneBase>

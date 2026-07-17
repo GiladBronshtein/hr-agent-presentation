@@ -3,23 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <meta name="theme-color" content="#0A0A1A" />
     <title>מהאוטומציה לאייג׳נט — AI Agents for HR 2026</title>
+    <meta name="description" content="מצגת אינטראקטיבית על AI Agents לאנשי HR — גלעד ברונשטיין" />
 
-    <!-- Preconnect for performance -->
+    <!-- Google Fonts: Space Grotesk + Heebo + DM Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Space Grotesk (headings) + DM Sans (body) — Tech Startup pairing from UI/UX Pro Max -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
-
-    <!-- Heebo for Hebrew text rendering -->
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
 
     <style>
-      /* Critical: prevent flash of unstyled content */
-      html, body { background: #0A0A1A; margin: 0; padding: 0; overflow: hidden; }
-      #root { width: 100vw; height: 100vh; }
+      /* Critical: prevent FOUC */
+      html, body { background: #03030A; margin: 0; padding: 0; }
     </style>
   </head>
   <body>
@@ -28,7 +22,6 @@
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%">
-    </script>
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
   </body>
 </html>

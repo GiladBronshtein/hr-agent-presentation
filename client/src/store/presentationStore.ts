@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { SCENES } from '../data/scenes';
 
 export type QualityLevel = 'high' | 'balanced' | 'lightweight';
 export type DemoState = 'idle' | 'trigger' | 'retrieving' | 'planning' | 'tools' | 'preview' | 'approval' | 'executing' | 'feedback' | 'result';
@@ -105,7 +106,7 @@ function detectQualityLevel(): QualityLevel {
   return 'high';
 }
 
-const TOTAL_SCENES = 50; // 46 main + 4 appendix
+const TOTAL_SCENES = SCENES.length; // auto-derived from scenes data
 
 export const usePresentationStore = create<PresentationStore>()(
   persist(

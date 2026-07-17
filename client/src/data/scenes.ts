@@ -553,6 +553,16 @@ export const SCENES: SceneConfig[] = [
     isAppendix: true,
     deepLink: '#/scene/appendix-tool-map',
   },
+  {
+    id: 'personal-closing',
+    index: 50,
+    hebrewTitle: 'תודה — גלעד ברונשטיין',
+    chapter: 'נספח',
+    chapterIndex: 4,
+    takeaway: 'linkedin.com/in/giladbronshtein',
+    estimatedMinutes: 1,
+    deepLink: '#/scene/personal-closing',
+  },
 ];
 
 export const CHAPTERS: { id: Chapter; label: string; color: string; sceneRange: [number, number] }[] = [
@@ -560,7 +570,7 @@ export const CHAPTERS: { id: Chapter; label: string; color: string; sceneRange: 
   { id: 'לראות', label: 'לראות', color: '#70D6A7', sceneRange: [12, 22] },
   { id: 'לבנות', label: 'לבנות', color: '#FF6B6B', sceneRange: [23, 34] },
   { id: 'להטמיע', label: 'להטמיע', color: '#FFD166', sceneRange: [35, 45] },
-  { id: 'נספח', label: 'נספח', color: '#A78BFA', sceneRange: [46, 49] },
+  { id: 'נספח', label: 'נספח', color: '#A78BFA', sceneRange: [46, 50] },
 ];
 
 export function getSceneById(id: string): SceneConfig | undefined {

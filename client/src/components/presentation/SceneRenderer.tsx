@@ -54,6 +54,7 @@ const SCENE_COMPONENTS: Record<string, React.LazyExoticComponent<React.Component
   'appendix-n8n-blueprint': lazy(() => import('../../scenes/S47_AppendixN8nBlueprint')),
   'appendix-evaluation': lazy(() => import('../../scenes/S48_AppendixEvaluation')),
   'appendix-tool-map': lazy(() => import('../../scenes/S49_AppendixToolMap')),
+  'personal-closing': lazy(() => import('../../scenes/S50_PersonalClosing')),
 };
 
 function SceneFallback({ sceneId }: { sceneId: string }) {

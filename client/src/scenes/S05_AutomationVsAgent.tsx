@@ -1,280 +1,253 @@
 /**
  * S05 — Automation vs Agent
- * Design: AI-Native UI — side-by-side comparison, interactive toggle, visual spectrum
+ * Conference Hall Edition — The Great Divide
+ * Two worlds. One choice. Maximum visual impact.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
-import { Settings, Brain, ArrowRight, Check } from 'lucide-react';
 
 const AUTOMATION_TRAITS = [
-  'אם X קרה → עשה Y',
-  'שלבים קבועים ומוגדרים',
-  'לא מבינה הקשר',
-  'מהירה ואמינה',
-  'אין שיקול דעת',
+  { icon: '📋', text: 'מבצע רצף פעולות קבוע' },
+  { icon: '🔒', text: 'לא מסתגל לשינויים' },
+  { icon: '⚡', text: 'מהיר אבל שביר' },
+  { icon: '🔧', text: 'דורש תחזוקה תמידית' },
+  { icon: '❌', text: 'נשבר כשמשהו משתנה' },
 ];
 
 const AGENT_TRAITS = [
-  'מקבל מטרה, בוחר פעולות',
-  'מבין הקשר ומתאים',
-  'יודע מתי לעצור ולשאול',
-  'מתועד ואחראי',
-  'לומד מהניסיון',
+  { icon: '🧠', text: 'חושב, מתכנן, מחליט' },
+  { icon: '🔄', text: 'מסתגל לכל מצב חדש' },
+  { icon: '🛠️', text: 'בוחר כלים בעצמו' },
+  { icon: '💬', text: 'מבקש אישור כשצריך' },
+  { icon: '✅', text: 'לומד מכל אינטראקציה' },
 ];
 
 export default function S05_AutomationVsAgent() {
-  const [hover, setHover] = useState<'automation' | 'agent' | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [showDivider, setShowDivider] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setMounted(true), 80);
+    const t2 = setTimeout(() => setShowDivider(true), 600);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
 
   return (
-    <SceneBase>
-      <div
-        dir="rtl"
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '3rem 3rem 5rem',
-          gap: '2rem',
-        }}
-      >
-        {/* Header */}
-        <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
-          <h1
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.03em',
-              color: 'white',
-              margin: 0,
-            }}
-          >
-            אוטומציה לעומת{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #818CF8, #6366F1)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              אייג׳נט
+    <SceneBase noBg>
+      {/* Background */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: '#03030A' }} />
+      {/* Left half tint */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, bottom: 0, width: '50%', zIndex: 0,
+        background: 'radial-gradient(ellipse 80% 70% at 30% 50%, rgba(100,116,139,0.05) 0%, transparent 70%)',
+      }} />
+      {/* Right half tint */}
+      <div style={{
+        position: 'absolute', top: 0, right: 0, bottom: 0, width: '50%', zIndex: 0,
+        background: 'radial-gradient(ellipse 80% 70% at 70% 50%, rgba(99,102,241,0.1) 0%, transparent 70%)',
+      }} />
+      <div className="grid-overlay" />
+      <div className="noise-overlay" />
+
+      {/* Top accent line — split colors */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '2px', zIndex: 5,
+        background: 'linear-gradient(90deg, rgba(100,116,139,0.4) 0%, rgba(100,116,139,0.4) 50%, rgba(99,102,241,0.6) 50%, rgba(34,211,238,0.6) 100%)',
+      }} />
+
+      {/* Center divider */}
+      <div style={{
+        position: 'absolute', top: '6%', bottom: '6%', left: '50%', width: '1px', zIndex: 5,
+        background: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.07) 20%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.07) 80%, transparent 100%)',
+        transform: showDivider ? 'scaleY(1)' : 'scaleY(0)',
+        transformOrigin: 'top',
+        transition: 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
+      }} />
+
+      {/* VS badge */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 10,
+        opacity: showDivider ? 1 : 0,
+        transition: 'opacity 0.5s ease 0.7s',
+      }}>
+        <div style={{
+          width: 'clamp(44px, 5vw, 58px)', height: 'clamp(44px, 5vw, 58px)',
+          borderRadius: '50%', background: '#03030A',
+          border: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 'clamp(0.7rem, 1.1vw, 0.95rem)',
+          fontWeight: 800, color: 'rgba(255,255,255,0.35)',
+          letterSpacing: '0.05em',
+        }}>VS</div>
+      </div>
+
+      <div dir="rtl" style={{
+        position: 'relative', zIndex: 10,
+        width: '100%', height: '100%',
+        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease',
+      }}>
+
+        {/* LEFT: Automation */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          padding: 'clamp(1.5rem, 3vw, 4rem) clamp(2rem, 5vw, 6rem) clamp(1.5rem, 3vw, 4rem) clamp(1.5rem, 3vw, 4rem)',
+        }}>
+          <div className="animate-fade-in-up stagger-1" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.4rem 1rem', borderRadius: '100px', width: 'fit-content',
+            background: 'rgba(100,116,139,0.1)', border: '1px solid rgba(100,116,139,0.2)',
+            marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
+          }}>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
+              AUTOMATION — אוטומציה
             </span>
-          </h1>
+          </div>
+
+          <h2 className="animate-fade-in-up stagger-2" style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(3rem, 7vw, 7rem)',
+            fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.06em',
+            color: '#475569', margin: '0 0 clamp(0.75rem, 1.5vw, 1.5rem)',
+          }}>
+            IF<br />THEN
+          </h2>
+
+          <p className="animate-fade-in-up stagger-3" style={{
+            fontFamily: "'Heebo', sans-serif",
+            fontSize: 'clamp(1rem, 1.7vw, 1.5rem)',
+            color: 'rgba(255,255,255,0.3)', margin: '0 0 clamp(1.25rem, 2.5vw, 2.5rem)', lineHeight: 1.5,
+          }}>
+            כשמשהו קורה — עשה X.<br />תמיד אותו דבר. ללא חשיבה.
+          </p>
+
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>
+            {AUTOMATION_TRAITS.map((t, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '0.625rem',
+                padding: 'clamp(0.5rem, 0.9vw, 0.8rem) clamp(0.75rem, 1.2vw, 1.1rem)',
+                borderRadius: '10px',
+                background: 'rgba(100,116,139,0.05)',
+                border: '1px solid rgba(100,116,139,0.09)',
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? 'translateX(0)' : 'translateX(-20px)',
+                transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
+              }}>
+                <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)', flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)' }}>{t.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="animate-fade-in stagger-7" style={{
+            marginTop: 'clamp(0.75rem, 1.5vw, 1.5rem)',
+            padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+            borderRadius: '12px',
+            background: 'rgba(100,116,139,0.04)', border: '1px solid rgba(100,116,139,0.1)',
+            fontFamily: 'monospace', fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            color: 'rgba(255,255,255,0.25)', lineHeight: 1.6,
+          }}>
+            <span style={{ color: '#64748B' }}>IF</span> עובד חדש נוסף<br />
+            <span style={{ color: '#64748B' }}>THEN</span> שלח מייל ברוכים הבאים<br />
+            <span style={{ color: '#334155' }}>// אחרת — שגיאה</span>
+          </div>
         </div>
 
-        {/* Comparison cards */}
-        <div
-          className="animate-fade-in-up stagger-2"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto 1fr',
-            gap: '1.5rem',
-            width: '100%',
-            maxWidth: '900px',
-            alignItems: 'stretch',
-          }}
-        >
-          {/* Automation card */}
-          <div
-            onMouseEnter={() => setHover('automation')}
-            onMouseLeave={() => setHover(null)}
-            style={{
-              padding: '1.75rem',
-              borderRadius: '20px',
-              background: hover === 'automation' ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${hover === 'automation' ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.08)'}`,
-              transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
-              cursor: 'default',
-            }}
-          >
-            {/* Icon */}
-            <div
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '14px',
-                background: 'rgba(245,158,11,0.12)',
-                border: '1px solid rgba(245,158,11,0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '1rem',
-              }}
-            >
-              <Settings size={22} style={{ color: '#F59E0B' }} />
-            </div>
-
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: '1.375rem',
-                fontWeight: 700,
-                color: '#F59E0B',
-                margin: '0 0 0.375rem',
-              }}
-            >
-              אוטומציה
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
-              מבצעת מסלול קבוע. מצוינת לתהליכים צפויים.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem' }}>
-              {AUTOMATION_TRAITS.map((trait) => (
-                <div key={trait} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Check size={13} style={{ color: '#F59E0B', flexShrink: 0 }} />
-                  <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif" }}>
-                    {trait}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Example */}
-            <div
-              style={{
-                padding: '0.75rem 1rem',
-                borderRadius: '10px',
-                background: 'rgba(245,158,11,0.07)',
-                border: '1px solid rgba(245,158,11,0.15)',
-              }}
-            >
-              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em' }}>
-                דוגמה
-              </span>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.78rem', margin: '0.25rem 0 0', fontFamily: "'DM Sans', sans-serif" }}>
-                עובד מילא טופס → שלח מייל אוטומטי
-              </p>
-            </div>
+        {/* RIGHT: Agent */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          padding: 'clamp(1.5rem, 3vw, 4rem) clamp(1.5rem, 3vw, 4rem) clamp(1.5rem, 3vw, 4rem) clamp(2rem, 5vw, 6rem)',
+        }}>
+          <div className="animate-fade-in-up stagger-1" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.4rem 1rem', borderRadius: '100px', width: 'fit-content',
+            background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)',
+            marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
+              AI AGENT — אייג׳נט
+            </span>
           </div>
 
-          {/* Center divider */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              padding: '0 0.5rem',
-            }}
-          >
-            <div style={{ flex: 1, width: '1px', background: 'rgba(255,255,255,0.07)' }} />
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ArrowRight size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
-            </div>
-            <div style={{ flex: 1, width: '1px', background: 'rgba(255,255,255,0.07)' }} />
-          </div>
+          <h2 className="animate-fade-in-up stagger-2" style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(3rem, 7vw, 7rem)',
+            fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.06em',
+            margin: '0 0 clamp(0.75rem, 1.5vw, 1.5rem)',
+            background: 'linear-gradient(135deg, #818CF8 0%, #6366F1 40%, #22D3EE 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.4))',
+          }}>
+            THINK<br />ACT
+          </h2>
 
-          {/* Agent card */}
-          <div
-            onMouseEnter={() => setHover('agent')}
-            onMouseLeave={() => setHover(null)}
-            style={{
-              padding: '1.75rem',
-              borderRadius: '20px',
-              background: hover === 'agent' ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${hover === 'agent' ? 'rgba(99,102,241,0.35)' : 'rgba(255,255,255,0.08)'}`,
-              transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
-              cursor: 'default',
-            }}
-          >
-            {/* Icon */}
-            <div
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '14px',
-                background: 'rgba(99,102,241,0.12)',
-                border: '1px solid rgba(99,102,241,0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '1rem',
-              }}
-            >
-              <Brain size={22} style={{ color: '#818CF8' }} />
-            </div>
+          <p className="animate-fade-in-up stagger-3" style={{
+            fontFamily: "'Heebo', sans-serif",
+            fontSize: 'clamp(1rem, 1.7vw, 1.5rem)',
+            color: 'rgba(255,255,255,0.55)', margin: '0 0 clamp(1.25rem, 2.5vw, 2.5rem)', lineHeight: 1.5,
+          }}>
+            מקבל מטרה — מחליט איך להגיע.<br />חושב, מתאים, פועל.
+          </p>
 
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: '1.375rem',
-                fontWeight: 700,
-                color: '#818CF8',
-                margin: '0 0 0.375rem',
-              }}
-            >
-              אייג׳נט
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
-              מנהל מטרה. מתאים לתהליכים שדורשים הבנה ובחירה.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem' }}>
-              {AGENT_TRAITS.map((trait) => (
-                <div key={trait} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Check size={13} style={{ color: '#818CF8', flexShrink: 0 }} />
-                  <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif" }}>
-                    {trait}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Example */}
-            <div
-              style={{
-                padding: '0.75rem 1rem',
+          <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>
+            {AGENT_TRAITS.map((t, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '0.625rem',
+                padding: 'clamp(0.5rem, 0.9vw, 0.8rem) clamp(0.75rem, 1.2vw, 1.1rem)',
                 borderRadius: '10px',
                 background: 'rgba(99,102,241,0.07)',
-                border: '1px solid rgba(99,102,241,0.15)',
-              }}
-            >
-              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em' }}>
-                דוגמה
-              </span>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.78rem', margin: '0.25rem 0 0', fontFamily: "'DM Sans', sans-serif" }}>
-                הכן תוכנית קליטה מותאמת ומאושרת לפני יום ראשון
-              </p>
-            </div>
+                border: '1px solid rgba(99,102,241,0.14)',
+                boxShadow: '0 0 10px rgba(99,102,241,0.04)',
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? 'translateX(0)' : 'translateX(20px)',
+                transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
+              }}>
+                <span style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.2rem)', flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)', color: 'rgba(255,255,255,0.7)' }}>{t.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="animate-fade-in stagger-7" style={{
+            marginTop: 'clamp(0.75rem, 1.5vw, 1.5rem)',
+            padding: 'clamp(0.625rem, 1vw, 0.9rem) clamp(0.875rem, 1.4vw, 1.25rem)',
+            borderRadius: '12px',
+            background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.18)',
+            fontFamily: 'monospace', fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
+            color: 'rgba(255,255,255,0.5)', lineHeight: 1.6,
+          }}>
+            <span style={{ color: '#818CF8' }}>GOAL:</span> הכן קליטה לעובד חדש<br />
+            <span style={{ color: '#22D3EE' }}>PLAN:</span> בדוק → תכנן → בצע → אשר<br />
+            <span style={{ color: '#34D399' }}>ADAPT:</span> מסתגל לכל שינוי בדרך
           </div>
         </div>
+      </div>
 
-        {/* Spectrum bar */}
-        <div
-          className="animate-fade-in stagger-7"
-          style={{
-            width: '100%',
-            maxWidth: '900px',
-            padding: '1rem 1.5rem',
-            borderRadius: '12px',
-            background: 'rgba(255,255,255,0.02)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-          }}
-        >
-          <span style={{ color: '#F59E0B', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif", flexShrink: 0 }}>תהליך צפוי</span>
-          <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'linear-gradient(90deg, rgba(245,158,11,0.6), rgba(99,102,241,0.6))', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', width: '8px', height: '8px', borderRadius: '50%', background: '#F59E0B', boxShadow: '0 0 8px rgba(245,158,11,0.6)' }} />
-            <div style={{ position: 'absolute', top: '50%', left: '75%', transform: 'translate(-50%, -50%)', width: '8px', height: '8px', borderRadius: '50%', background: '#818CF8', boxShadow: '0 0 8px rgba(99,102,241,0.6)' }} />
-          </div>
-          <span style={{ color: '#818CF8', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif", flexShrink: 0 }}>תהליך מורכב</span>
+      {/* Bottom takeaway */}
+      <div style={{
+        position: 'absolute', bottom: 'clamp(3.5rem, 5.5vw, 5.5rem)', left: 0, right: 0,
+        display: 'flex', justifyContent: 'center', zIndex: 10,
+        opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease 0.9s',
+      }}>
+        <div style={{
+          padding: 'clamp(0.6rem, 1vw, 0.875rem) clamp(1.5rem, 2.5vw, 2.5rem)',
+          borderRadius: '100px',
+          background: 'rgba(99,102,241,0.09)',
+          border: '1px solid rgba(99,102,241,0.18)',
+          backdropFilter: 'blur(12px)',
+        }}>
+          <span style={{
+            fontFamily: "'Heebo', sans-serif",
+            fontSize: 'clamp(0.9rem, 1.4vw, 1.3rem)',
+            color: 'rgba(255,255,255,0.55)',
+          }}>
+            אוטומציה מבצעת פקודות.{' '}
+            <span style={{ color: '#818CF8', fontWeight: 700 }}>אייג׳נט מבצע מטרות.</span>
+          </span>
         </div>
       </div>
     </SceneBase>
