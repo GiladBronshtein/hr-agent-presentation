@@ -3,7 +3,7 @@
  * CONFERENCE HALL EDITION: Massive typography, particle system, cinematic reveal
  * FIXED: Grid proportions adjusted so all content fits within viewport
  */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { BarChart3, Building2, Calendar, Folder, Mail, MessageCircle, PartyPopper, Target, User } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
@@ -65,6 +65,56 @@ const setupParticleField = (canvas: HTMLCanvasElement) => {
 function ParticleField() {
   const canvasRef = useDecorativeCanvas(setupParticleField);
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
+}
+
+/** Connection lines trimmed so they stop at the hub's edge and just before each node. */
+function ConnectionLines({ activeNodeIdx }: { activeNodeIdx: number }) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [dims, setDims] = useState({ w: 0, h: 0 });
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = svgRef.current?.parentElement;
+      if (el) setDims({ w: el.clientWidth, h: el.clientHeight });
+    };
+    measure();
+    // second pass after first paint, when flex sizing has fully settled
+    const raf = requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+    window.addEventListener('orientationchange', measure);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('orientationchange', measure);
+    };
+  }, []);
+
+  const HUB_TRIM = 56;  // hub radius (~42.5px) + breathing room
+  const NODE_TRIM = 46; // half node tile (~32px) + breathing room
+
+  return (
+    <svg ref={svgRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+      {dims.w > 0 && TOOLS.map((tool, i) => {
+        const cx = dims.w / 2, cy = dims.h / 2;
+        const nx = (tool.x / 100) * dims.w, ny = (tool.y / 100) * dims.h;
+        const dx = nx - cx, dy = ny - cy;
+        const len = Math.hypot(dx, dy);
+        if (len <= HUB_TRIM + NODE_TRIM + 8) return null;
+        const ux = dx / len, uy = dy / len;
+        return (
+          <line key={tool.id}
+            x1={cx + ux * HUB_TRIM} y1={cy + uy * HUB_TRIM}
+            x2={nx - ux * NODE_TRIM} y2={ny - uy * NODE_TRIM}
+            stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.06)'}
+            strokeWidth={activeNodeIdx === i ? 2 : 1}
+            strokeDasharray={activeNodeIdx === i ? '0' : '4 6'}
+            strokeLinecap="round"
+            style={{ transition: 'stroke 0.35s ease, stroke-width 0.35s ease' }}
+          />
+        );
+      })}
+    </svg>
+  );
 }
 
 export default function S00_ColdOpen() {
@@ -188,16 +238,7 @@ export default function S00_ColdOpen() {
             position: 'relative', overflow: 'hidden',
           }}>
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
-            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-              {TOOLS.map((tool, i) => (
-                <line key={tool.id} x1="50%" y1="50%" x2={`${tool.x}%`} y2={`${tool.y}%`}
-                  stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.06)'}
-                  strokeWidth={activeNodeIdx === i ? 2 : 1}
-                  strokeDasharray={activeNodeIdx === i ? '0' : '4 6'}
-                  style={{ transition: 'all 0.35s ease' }}
-                />
-              ))}
-            </svg>
+            <ConnectionLines activeNodeIdx={activeNodeIdx} />
 
             {/* HR Hub */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
