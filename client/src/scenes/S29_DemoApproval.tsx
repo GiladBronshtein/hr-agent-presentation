@@ -1,6 +1,6 @@
 /**
- * S29 — Demo Approval: Human-in-the-Loop
- * Design: AI-Native UI — trust moment, approval card with textarea, clear approve/reject CTAs
+ * S29: Demo Approval: Human-in-the-Loop
+ * Design: AI-Native UI: trust moment, approval card with textarea, clear approve/reject CTAs
  */
 import { useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
@@ -101,7 +101,7 @@ export default function S29_DemoApproval() {
               </div>
               <div>
                 <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.95rem', color: 'white', margin: '0 0 0.25rem' }}>
-                  תוכנית קליטה — יעל כהן
+                  תוכנית קליטה, יעל כהן
                 </p>
                 <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.8rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
                   האייג׳נט הכין תוכנית מלאה ומחכה לאישורך לפני שליחה
@@ -121,10 +121,10 @@ export default function S29_DemoApproval() {
             >
               {[
                 'מייל ברוכים הבאים + קישור לפורטל',
-                'פגישת Onboarding עם מנהל — 16/07 10:00',
+                'פגישת Onboarding עם מנהל: 16/07 10:00',
                 'הגדרת חשבונות: Jira, Slack, GitHub',
                 'מסמך "30-60-90 ימים" ב-Google Drive',
-                'פגישת היכרות עם הצוות — 17/07 14:00',
+                'פגישת היכרות עם הצוות: 17/07 14:00',
               ].map((item, i) => (
                 <div
                   key={i}
@@ -288,7 +288,7 @@ export default function S29_DemoApproval() {
           >
             <AlertTriangle size={36} style={{ color: '#F43F5E', margin: '0 auto 1rem', display: 'block' }} />
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.125rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
-              נדחה — האייג׳נט ישנה ויחזור
+              נדחה, האייג׳נט ישנה ויחזור
             </h3>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
               זה בדיוק המנגנון: האדם שולט, האייג׳נט מתאים
@@ -327,7 +327,7 @@ export default function S29_DemoApproval() {
         >
           <UserCheck size={14} style={{ color: '#818CF8', flexShrink: 0 }} />
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
-            Human-in-the-Loop הוא <span style={{ color: '#818CF8', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה — הוא מה שהופך אייג׳נט לאמין
+            Human-in-the-Loop הוא <span style={{ color: '#818CF8', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה, הוא מה שהופך אייג׳נט לאמין
           </p>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function EmployeeService() {
             </GlassCard>
           </div>
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-white/70 text-sm leading-relaxed">כשמידע חסר — עוצר ושואל, לא מנחש</p>
+            <p className="text-white/70 text-sm leading-relaxed">כשמידע חסר, עוצר ושואל, לא מנחש</p>
           </div>
           <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>

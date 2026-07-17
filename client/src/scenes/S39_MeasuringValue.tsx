@@ -45,7 +45,7 @@ export default function S39_MeasuringValue() {
           </div>
           <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <p className="text-white/60 text-sm">
-              מדדו לפני ואחרי — ה-ROI מספר את הסיפור
+              מדדו לפני ואחרי, ה-ROI מספר את הסיפור
             </p>
           </div>
         </div>

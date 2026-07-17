@@ -4,7 +4,7 @@ const ACTIONS = [
   { icon: '📋', title: 'בחרו תהליך', desc: 'תהליך אחד שרוצים לשפר', cta: 'השבוע' },
   { icon: '🤝', title: 'מצאו שותף', desc: 'IT או מפתח שיעזור לכם', cta: 'השבוע' },
   { icon: '🧪', title: 'בנו פיילוט', desc: 'n8n + Claude + כלי אחד', cta: 'תוך חודש' },
-  { icon: '📊', title: 'מדדו', desc: 'לפני ואחרי — ROI ברור', cta: 'תוך 90 יום' },
+  { icon: '📊', title: 'מדדו', desc: 'לפני ואחרי: ROI ברור', cta: 'תוך 90 יום' },
 ];
 
 export default function S45_FinalAction() {
@@ -40,7 +40,7 @@ export default function S45_FinalAction() {
             ))}
           </div>
           <p className="text-white/30 text-sm">
-            שאלות? המשאבים בנספחים — System Prompt, Blueprint, Evaluation Framework
+            שאלות? המשאבים בנספחים: System Prompt, Blueprint, Evaluation Framework
           </p>
         </div>
       </ContentLayout>

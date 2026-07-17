@@ -24,7 +24,7 @@ export default function S06_Definition() {
               מערכת שמקבלת <span style={{ color: '#6366F1' }}>מטרה</span>,
               מבינה <span style={{ color: '#10B981' }}>מצב</span>,
               בוחרת <span style={{ color: '#F59E0B' }}>פעולות</span>,
-              ומשתמשת ב<span style={{ color: '#F43F5E' }}>כלים</span> — ויודעת מתי לעצור
+              ומשתמשת ב<span style={{ color: '#F43F5E' }}>כלים</span>, ויודעת מתי לעצור
             </p>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-7 gap-3">
@@ -37,7 +37,7 @@ export default function S06_Definition() {
               </div>
             ))}
           </div>
-          <Takeaway>מודל AI לבדו עדיין אינו אייג׳נט — הוא צריך את כל שבעת הרכיבים</Takeaway>
+          <Takeaway>מודל AI לבדו עדיין אינו אייג׳נט, הוא צריך את כל שבעת הרכיבים</Takeaway>
         </div>
       </ContentLayout>
     </SceneBase>

@@ -1,6 +1,6 @@
 /**
- * S05 — Automation vs Agent
- * Conference Hall Edition — The Great Divide
+ * S05: Automation vs Agent
+ * Conference Hall Edition: The Great Divide
  * Two worlds. One choice. Maximum visual impact.
  */
 import { useEffect, useState } from 'react';
@@ -49,7 +49,7 @@ export default function S05_AutomationVsAgent() {
       <div className="grid-overlay" />
       <div className="noise-overlay" />
 
-      {/* Top accent line — split colors */}
+      {/* Top accent line: split colors */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '2px', zIndex: 5,
         background: 'linear-gradient(90deg, rgba(100,116,139,0.4) 0%, rgba(100,116,139,0.4) 50%, rgba(99,102,241,0.6) 50%, rgba(34,211,238,0.6) 100%)',
@@ -103,7 +103,7 @@ export default function S05_AutomationVsAgent() {
             marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em' }}>
-              AUTOMATION — אוטומציה
+              AUTOMATION, אוטומציה
             </span>
           </div>
 
@@ -121,7 +121,7 @@ export default function S05_AutomationVsAgent() {
             fontSize: 'clamp(1rem, 1.7vw, 1.5rem)',
             color: 'rgba(255,255,255,0.3)', margin: '0 0 clamp(1.25rem, 2.5vw, 2.5rem)', lineHeight: 1.5,
           }}>
-            כשמשהו קורה — עשה X.<br />תמיד אותו דבר. ללא חשיבה.
+            כשמשהו קורה, עשה X.<br />תמיד אותו דבר. ללא חשיבה.
           </p>
 
           <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>
@@ -152,7 +152,7 @@ export default function S05_AutomationVsAgent() {
           }}>
             <span style={{ color: '#64748B' }}>IF</span> עובד חדש נוסף<br />
             <span style={{ color: '#64748B' }}>THEN</span> שלח מייל ברוכים הבאים<br />
-            <span style={{ color: '#334155' }}>// אחרת — שגיאה</span>
+            <span style={{ color: '#334155' }}>// אחרת, שגיאה</span>
           </div>
         </div>
 
@@ -169,7 +169,7 @@ export default function S05_AutomationVsAgent() {
           }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.6rem, 0.85vw, 0.78rem)', fontWeight: 700, color: '#818CF8', letterSpacing: '0.1em' }}>
-              AI AGENT — אייג׳נט
+              AI AGENT, אייג׳נט
             </span>
           </div>
 
@@ -190,7 +190,7 @@ export default function S05_AutomationVsAgent() {
             fontSize: 'clamp(1rem, 1.7vw, 1.5rem)',
             color: 'rgba(255,255,255,0.55)', margin: '0 0 clamp(1.25rem, 2.5vw, 2.5rem)', lineHeight: 1.5,
           }}>
-            מקבל מטרה — מחליט איך להגיע.<br />חושב, מתאים, פועל.
+            מקבל מטרה, מחליט איך להגיע.<br />חושב, מתאים, פועל.
           </p>
 
           <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.7vw, 0.625rem)' }}>

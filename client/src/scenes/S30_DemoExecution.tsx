@@ -6,7 +6,7 @@ const STEPS = [
   { label: 'שולח מייל ברוך הבא', status: 'done', time: '0.3s' },
   { label: 'מוסיף לקבוצת Slack #product', status: 'done', time: '0.5s' },
   { label: 'יוצר אירוע קליטה ב-Calendar', status: 'done', time: '0.8s' },
-  { label: 'מעדכן HRIS — סטטוס: Active', status: 'done', time: '1.1s' },
+  { label: 'מעדכן HRIS: סטטוס: Active', status: 'done', time: '1.1s' },
   { label: 'שולח סיכום ל-HR ולמנהל', status: 'done', time: '1.4s' },
 ];
 

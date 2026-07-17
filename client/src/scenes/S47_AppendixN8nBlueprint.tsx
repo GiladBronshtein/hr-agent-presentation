@@ -31,7 +31,7 @@ export default function S47_AppendixN8nBlueprint() {
                 </div>
                 <div className="flex-1">
                   <span className="text-white/80 text-sm font-medium">{node.node}</span>
-                  <span className="text-white/40 text-xs mr-2">— {node.desc}</span>
+                  <span className="text-white/40 text-xs mr-2"> -  {node.desc}</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded"
                   style={{ background: TYPE_COLORS[node.type as keyof typeof TYPE_COLORS] + '15', color: TYPE_COLORS[node.type as keyof typeof TYPE_COLORS] }}>

@@ -19,7 +19,7 @@ export default function S10_Why2026() {
         <div className="w-full max-w-4xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">למה 2026 שונה?</SceneTitle>
-            <p className="text-white/50 mt-2">האתגר הוא לא "להשתמש ב-AI" — אלא לעצב מחדש איך עבודה מתבצעת</p>
+            <p className="text-white/50 mt-2">האתגר הוא לא "להשתמש ב-AI", אלא לעצב מחדש איך עבודה מתבצעת</p>
           </div>
           <div className="grid grid-cols-3 gap-4">
             {STATS.map((stat, i) => (

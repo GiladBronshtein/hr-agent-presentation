@@ -7,7 +7,7 @@ export default function S24_DemoTrigger() {
   const demoStep = ['idle', 'trigger', 'retrieving', 'planning', 'tools', 'preview', 'approval', 'executing', 'feedback', 'result'].indexOf(demoState);
   const [typing, setTyping] = useState(false);
   const [text, setText] = useState('');
-  const fullText = 'יעל כהן קיבלה הצעה ואישרה. יום ראשון שלה — 15 ביולי. צריך תוכנית קליטה מלאה.';
+  const fullText = 'יעל כהן קיבלה הצעה ואישרה. יום ראשון שלה: 15 ביולי. צריך תוכנית קליטה מלאה.';
 
   useEffect(() => {
     setTyping(true);

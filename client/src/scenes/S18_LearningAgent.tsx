@@ -24,7 +24,7 @@ export default function LearningAgent() {
           </div>
           <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <span className="text-red-400 text-sm">⚠️</span>
-            <p className="text-white/60 text-sm">תוכן מאושר בלבד — לא יוצר מחדש</p>
+            <p className="text-white/60 text-sm">תוכן מאושר בלבד, לא יוצר מחדש</p>
           </div>
         </div>
       </ContentLayout>

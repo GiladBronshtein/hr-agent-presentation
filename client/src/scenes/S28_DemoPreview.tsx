@@ -11,22 +11,22 @@ export default function S28_DemoPreview() {
           <div>
             <p className="text-white/40 text-xs uppercase tracking-widest mb-2">שלב 5</p>
             <SceneTitle size="md">תצוגה מקדימה</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">האייג׳נט מציג את מה שהכין — לפני ביצוע</p>
+            <p className="text-white/40 text-sm mt-1">האייג׳נט מציג את מה שהכין, לפני ביצוע</p>
           </div>
           <div className="p-4 rounded-xl" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-            <p className="text-sm font-medium mb-3" style={{ color: '#6366F1' }}>🤖 OnboardBot — סיכום לאישור</p>
+            <p className="text-sm font-medium mb-3" style={{ color: '#6366F1' }}>🤖 OnboardBot: סיכום לאישור</p>
             <div className="space-y-2 text-sm text-white/70">
               <p>✓ פגישת 1:1 תואמה: 14/7 09:00</p>
               <p>✓ בקשת גישות IT נשלחה (Jira, Figma, Slack)</p>
               <p>✓ רישום לקורסים: PM-101, Product-Strategy</p>
-              <p>⏳ מייל ברוך הבא — <strong className="text-white">ממתין לאישורך</strong></p>
+              <p>⏳ מייל ברוך הבא - <strong className="text-white">ממתין לאישורך</strong></p>
             </div>
           </div>
           <GlassCard>
             <p className="text-white/60 text-sm mb-3">טיוטת מייל לאישור:</p>
             <div className="p-3 rounded-lg text-sm" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
               <p className="text-white/40 text-xs mb-2">אל: yael.cohen@company.co.il</p>
-              <p className="text-white/40 text-xs mb-3">נושא: ברוכה הבאה! יום ראשון שלך — 15 ביולי</p>
+              <p className="text-white/40 text-xs mb-3">נושא: ברוכה הבאה! יום ראשון שלך: 15 ביולי</p>
               <p className="text-white/70 leading-relaxed">
                 יעל שלום,<br /><br />
                 אנחנו שמחים שתצטרפי אלינו! הכנתי עבורך תוכנית קליטה מלאה...

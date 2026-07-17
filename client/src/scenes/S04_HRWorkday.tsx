@@ -15,7 +15,7 @@ export default function S04_HRWorkday() {
           <div>
             <p className="text-white/40 text-xs uppercase tracking-widest mb-2">ניתוח תהליכים</p>
             <SceneTitle size="md">יום העבודה של HR</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">המידע קיים — החיבור עדיין ידני</p>
+            <p className="text-white/50 mt-2 text-sm">המידע קיים, החיבור עדיין ידני</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PROCESSES.map((proc, i) => (

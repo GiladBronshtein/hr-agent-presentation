@@ -1,6 +1,6 @@
 /**
- * S02 — Agenda: Four Questions
- * Design: AI-Native UI — bento grid layout, chapter color coding, glassmorphic cards
+ * S02: Agenda: Four Questions
+ * Design: AI-Native UI: bento grid layout, chapter color coding, glassmorphic cards
  */
 import { SceneBase } from '../components/presentation/SceneBase';
 import { BookOpen, Layers, Wrench, Rocket } from 'lucide-react';

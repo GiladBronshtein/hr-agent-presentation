@@ -59,7 +59,7 @@ export default function S40_PilotSelector() {
             <div className="p-4 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
               <p className="text-white/70 text-sm">
                 ✓ בחרתם: <strong style={{ color: '#6366F1' }}>{PILOTS.find(p => p.id === selected)?.name}</strong>
-                {' '}— מתאים לפיילוט ראשון
+                {' '} -  מתאים לפיילוט ראשון
               </p>
             </div>
           )}

@@ -42,7 +42,7 @@ export default function S31_DemoFeedback() {
           <div className="p-4 rounded-xl" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <p className="text-white/60 text-sm">
               ממוצע: <strong style={{ color: '#6366F1' }}>{(ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)}/5</strong>
-              {' '}— המשוב נשמר לשיפור הבא
+              {' '} -  המשוב נשמר לשיפור הבא
             </p>
           </div>
         </div>

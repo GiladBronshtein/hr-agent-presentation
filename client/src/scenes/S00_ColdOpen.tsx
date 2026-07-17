@@ -1,6 +1,6 @@
 /**
- * S00 — Cold Open: The Invisible Work
- * CONFERENCE HALL EDITION — Massive typography, particle system, cinematic reveal
+ * S00: Cold Open: The Invisible Work
+ * CONFERENCE HALL EDITION: Massive typography, particle system, cinematic reveal
  */
 import { useEffect, useState, useRef } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
@@ -122,7 +122,7 @@ export default function S00_ColdOpen() {
           }}>
             <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
             <span style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.8rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              יום ראשון — עובד חדש
+              יום ראשון, עובד חדש
             </span>
           </div>
 
@@ -147,7 +147,7 @@ export default function S00_ColdOpen() {
             color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
             lineHeight: 1.6, fontFamily: "'Heebo', sans-serif", margin: 0,
           }}>
-            כל קליטה מפעילה שרשרת פעולות ידניות — חוצת מערכות, אנשים ושעות עבודה.
+            כל קליטה מפעילה שרשרת פעולות ידניות, חוצת מערכות, אנשים ושעות עבודה.
           </p>
 
           <div className="animate-fade-in-up stagger-4" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -173,7 +173,7 @@ export default function S00_ColdOpen() {
             background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
           }}>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(0.9rem, 1.3vw, 1.15rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
-              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span> — בלי מגע אנושי?
+              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span>, בלי מגע אנושי?
             </p>
           </div>
         </div>

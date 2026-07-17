@@ -49,7 +49,7 @@ export default function S03_AudienceQuestion() {
           </div>
           {audienceSelections.length > 0 && (
             <p className="text-center text-white/40 text-sm animate-fade-in">
-              בחרתם {audienceSelections.length} תחומים — נחזור אליהם בסוף
+              בחרתם {audienceSelections.length} תחומים, נחזור אליהם בסוף
             </p>
           )}
         </div>

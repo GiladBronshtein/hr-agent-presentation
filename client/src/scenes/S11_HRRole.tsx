@@ -16,7 +16,7 @@ export default function S11_HRRole() {
         <div className="w-full max-w-4xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">תפקיד HR</SceneTitle>
-            <p className="text-white/50 mt-2">HR הוא לא רק לקוח — הוא אחד המעצבים</p>
+            <p className="text-white/50 mt-2">HR הוא לא רק לקוח, הוא אחד המעצבים</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {ROLES.map((role, i) => (

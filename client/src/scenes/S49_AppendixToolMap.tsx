@@ -7,9 +7,9 @@ const TOOLS = [
     { name: 'LangChain', desc: 'Framework לאייג׳נטים', cost: 'חינם', level: 'advanced' },
   ]},
   { category: 'מודלים', items: [
-    { name: 'Claude 3.5', desc: 'Anthropic — מצוין לעברית', cost: 'Pay-per-use', level: 'beginner' },
-    { name: 'GPT-4o', desc: 'OpenAI — רב-תכליתי', cost: 'Pay-per-use', level: 'beginner' },
-    { name: 'Gemini Pro', desc: 'Google — מחובר ל-Workspace', cost: 'Pay-per-use', level: 'beginner' },
+    { name: 'Claude 3.5', desc: 'Anthropic, מצוין לעברית', cost: 'Pay-per-use', level: 'beginner' },
+    { name: 'GPT-4o', desc: 'OpenAI: רב-תכליתי', cost: 'Pay-per-use', level: 'beginner' },
+    { name: 'Gemini Pro', desc: 'Google, מחובר ל-Workspace', cost: 'Pay-per-use', level: 'beginner' },
   ]},
 ];
 
@@ -33,7 +33,7 @@ export default function S49_AppendixToolMap() {
                     style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <div className="flex-1">
                       <span className="text-white/80 font-medium text-sm">{tool.name}</span>
-                      <span className="text-white/40 text-xs mr-2">— {tool.desc}</span>
+                      <span className="text-white/40 text-xs mr-2"> -  {tool.desc}</span>
                     </div>
                     <span className="text-white/30 text-xs">{tool.cost}</span>
                     <span className="text-xs px-2 py-0.5 rounded"

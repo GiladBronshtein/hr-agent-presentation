@@ -16,7 +16,7 @@ export default function S33_AccessibleStack() {
           <div>
             <p className="text-white/40 text-xs uppercase tracking-widest mb-2">פרק שלישי: לבנות</p>
             <SceneTitle size="md">הסטאק הנגיש</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">אין צורך בצוות פיתוח גדול — כלים נגישים קיימים</p>
+            <p className="text-white/50 mt-2 text-sm">אין צורך בצוות פיתוח גדול, כלים נגישים קיימים</p>
           </div>
           <div className="space-y-3">
             {STACK.map((layer, i) => (
@@ -38,7 +38,7 @@ export default function S33_AccessibleStack() {
           </div>
           <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/50 text-sm">
-              ניתן להתחיל עם <strong className="text-white">n8n + Claude + Google Workspace</strong> — ללא קוד
+              ניתן להתחיל עם <strong className="text-white">n8n + Claude + Google Workspace</strong>, ללא קוד
             </p>
           </div>
         </div>

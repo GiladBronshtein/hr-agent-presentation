@@ -60,7 +60,7 @@ export default function S08_MaturityLadder() {
             ))}
           </div>
           <p className="text-white/30 text-sm text-center">
-            הפיילוט הראשון צריך להיות שלב 4 — פשוט, מדיד, בסיכון נמוך
+            הפיילוט הראשון צריך להיות שלב 4, פשוט, מדיד, בסיכון נמוך
           </p>
         </div>
       </ContentLayout>

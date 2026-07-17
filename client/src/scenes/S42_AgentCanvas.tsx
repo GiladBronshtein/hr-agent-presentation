@@ -47,7 +47,7 @@ export default function S42_AgentCanvas() {
           <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/40 text-xs">
               {Object.values(values).filter(v => v.trim()).length}/6 שדות מולאו
-              {Object.values(values).filter(v => v.trim()).length === 6 && ' — הקנבס מוכן! 🎉'}
+              {Object.values(values).filter(v => v.trim()).length === 6 && ', הקנבס מוכן! 🎉'}
             </p>
           </div>
         </div>

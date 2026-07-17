@@ -1,6 +1,6 @@
 /**
- * S01 — Title Slide: מהאוטומציה לאייג׳נט
- * CONFERENCE HALL EDITION — Cinematic hero, massive typography, star field
+ * S01: Title Slide: מהאוטומציה לאייג׳נט
+ * CONFERENCE HALL EDITION: Cinematic hero, massive typography, star field
  */
 import { useEffect, useState, useRef } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
@@ -153,7 +153,7 @@ export default function S01_Title() {
           margin: '0 0 clamp(2rem, 4vw, 4rem)', letterSpacing: '-0.01em',
           maxWidth: '700px',
         }}>
-          AI Agents for HR — מה זה, למה עכשיו, ואיך מתחילים
+          AI Agents for HR: מה זה, למה עכשיו, ואיך מתחילים
         </p>
 
         {/* Chapter pills */}

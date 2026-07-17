@@ -23,7 +23,7 @@ export default function S32_DemoResult() {
           </div>
           <div className="p-5 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
             <p className="text-white/80 text-base leading-relaxed">
-              האייג׳נט לא החליף את HR — הוא שחרר את HR מ-6 שעות תיאום<br />
+              האייג׳נט לא החליף את HR: הוא שחרר את HR מ-6 שעות תיאום<br />
               <strong style={{ color: '#10B981' }}>כדי שיוכל להתמקד בחוויית העובד האמיתית</strong>
             </p>
           </div>

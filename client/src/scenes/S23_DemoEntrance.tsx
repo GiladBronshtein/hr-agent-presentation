@@ -1,7 +1,7 @@
 /**
- * S23 — Demo Entrance: Chapter 2 Break
- * Conference Hall Edition — Maximum cinematic impact
- * "לראות" — The live demo chapter begins
+ * S23: Demo Entrance: Chapter 2 Break
+ * Conference Hall Edition: Maximum cinematic impact
+ * "לראות": The live demo chapter begins
  */
 import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
@@ -89,7 +89,7 @@ export default function S23_DemoEntrance() {
         }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22D3EE', display: 'inline-block', animation: 'glowPulse 1.5s ease-in-out infinite', boxShadow: '0 0 8px #22D3EE' }} />
           <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(0.7rem, 1vw, 0.9rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
-            פרק 02 — לראות
+            פרק 02: לראות
           </span>
         </div>
 
@@ -123,7 +123,7 @@ export default function S23_DemoEntrance() {
           opacity: phase >= 1 ? 1 : 0,
           transition: 'opacity 0.6s ease 0.3s',
         }}>
-          אייג׳נט קליטת עובד — מהרגע שהצעת העבודה אושרה<br />
+          אייג׳נט קליטת עובד, מהרגע שהצעת העבודה אושרה<br />
           ועד ליום הראשון בעבודה
         </p>
 
@@ -150,14 +150,14 @@ export default function S23_DemoEntrance() {
             color: 'rgba(255,255,255,0.8)', margin: '0 0 0.5rem', lineHeight: 1.55,
           }}>
             <span style={{ color: 'white', fontWeight: 700 }}>יעל כהן</span> קיבלה הצעת עבודה כ-Product Manager.
-            {' '}יום ראשון שלה — <span style={{ color: '#F43F5E', fontWeight: 700 }}>15 ביולי</span>, בעוד שבועיים.
+            {' '}יום ראשון שלה - <span style={{ color: '#F43F5E', fontWeight: 700 }}>15 ביולי</span>, בעוד שבועיים.
           </p>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(0.85rem, 1.3vw, 1.15rem)',
             color: 'rgba(255,255,255,0.4)', margin: 0, lineHeight: 1.6,
           }}>
-            נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם, ומקבל אישור — בלי שמנהל HR יצטרך לתאם ידנית.
+            נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם, ומקבל אישור, בלי שמנהל HR יצטרך לתאם ידנית.
           </p>
         </div>
 

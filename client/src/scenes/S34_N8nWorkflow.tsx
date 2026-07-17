@@ -66,7 +66,7 @@ export default function S34_N8nWorkflow() {
           </div>
           <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/50 text-sm text-center">
-              n8n מאפשר בניית זרימות ויזואליות — ללא קוד, עם כלים מוכנים לחיבור
+              n8n מאפשר בניית זרימות ויזואליות, ללא קוד, עם כלים מוכנים לחיבור
             </p>
           </div>
         </div>

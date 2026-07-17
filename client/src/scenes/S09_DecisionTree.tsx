@@ -9,9 +9,9 @@ export default function S09_DecisionTree() {
   const [q3, setQ3] = useState<Answer>(null);
 
   const getRecommendation = () => {
-    if (q1 === 'yes') return { label: 'אוטומציה', color: '#F59E0B', icon: '⚙️', desc: 'השלבים תמיד זהים — אוטומציה פשוטה מספיקה ועדיפה.' };
-    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#F43F5E', icon: '👤', desc: 'ללא הקשר — אדם עם סיוע AI הוא הפתרון הנכון.' };
-    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#6366F1', icon: '🤖✋', desc: 'מתאים לאייג׳נט — עם נקודת אישור אנושית חובה.' };
+    if (q1 === 'yes') return { label: 'אוטומציה', color: '#F59E0B', icon: '⚙️', desc: 'השלבים תמיד זהים, אוטומציה פשוטה מספיקה ועדיפה.' };
+    if (q1 === 'no' && q2 === 'no') return { label: 'אדם', color: '#F43F5E', icon: '👤', desc: 'ללא הקשר, אדם עם סיוע AI הוא הפתרון הנכון.' };
+    if (q1 === 'no' && q2 === 'yes' && q3 === 'yes') return { label: 'אייג׳נט עם אישור', color: '#6366F1', icon: '🤖✋', desc: 'מתאים לאייג׳נט, עם נקודת אישור אנושית חובה.' };
     if (q1 === 'no' && q2 === 'yes' && q3 === 'no') return { label: 'אייג׳נט', color: '#10B981', icon: '🤖', desc: 'מתאים לאייג׳נט עם אישור בנקודות מוגדרות.' };
     return null;
   };

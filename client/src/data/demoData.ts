@@ -1,5 +1,5 @@
 // ============================================================
-// DEMO DATA — All fictional, for presentation purposes only
+// DEMO DATA: All fictional, for presentation purposes only
 // ============================================================
 
 export const DEMO_EMPLOYEE = {
@@ -23,7 +23,7 @@ export const DEMO_SOURCES = [
     description: 'פרופיל תפקיד',
     status: 'found' as const,
     icon: '📄',
-    detail: 'Customer Success Manager — גרסה 3.2, עודכן מרץ 2026',
+    detail: 'Customer Success Manager, גרסה 3.2, עודכן מרץ 2026',
   },
   {
     id: 'confluence-team-guide',
@@ -31,7 +31,7 @@ export const DEMO_SOURCES = [
     description: 'מדריך צוות',
     status: 'found' as const,
     icon: '📚',
-    detail: 'מדריך קליטה לצוות Customer Success — 24 עמודים',
+    detail: 'מדריך קליטה לצוות Customer Success: 24 עמודים',
   },
   {
     id: 'calendar-manager',
@@ -39,7 +39,7 @@ export const DEMO_SOURCES = [
     description: 'זמינות המנהלת',
     status: 'partial' as const,
     icon: '📅',
-    detail: 'דנה כהן זמינה חלקית ביום ראשון — 09:00 תפוס, 10:30 פנוי',
+    detail: 'דנה כהן זמינה חלקית ביום ראשון: 09:00 תפוס, 10:30 פנוי',
   },
   {
     id: 'hr-trainings',
@@ -55,7 +55,7 @@ export const DEMO_SOURCES = [
     description: 'תבנית משימות קליטה',
     status: 'found' as const,
     icon: '✅',
-    detail: 'תבנית ONBOARD-TEMPLATE-v4 — 12 משימות',
+    detail: 'תבנית ONBOARD-TEMPLATE-v4: 12 משימות',
   },
 ];
 
@@ -77,7 +77,7 @@ export const DEMO_MISSING_INFO = [
   {
     id: 'first-month-clients',
     question: 'האם נועה תעבוד עם לקוחות ספציפיים בחודש הראשון?',
-    options: ['עדיין לא', 'כן — לקוחות Enterprise', 'כן — לקוחות SMB'],
+    options: ['עדיין לא', 'כן, לקוחות Enterprise', 'כן, לקוחות SMB'],
     defaultAnswer: 'עדיין לא',
     field: 'firstMonthClients' as const,
   },
@@ -117,7 +117,7 @@ export const DEMO_TOOL_CALLS = [
     action: 'הכנת מסמך קליטה',
     status: 'draft' as const,
     icon: '📝',
-    output: 'תוכנית הקליטה של נועה — 7 פרקים',
+    output: 'תוכנית הקליטה של נועה: 7 פרקים',
   },
   {
     id: 'google-calendar',
@@ -157,7 +157,7 @@ export const DEMO_TOOL_CALLS = [
     action: 'הצעת סרטון קצר על הצוות',
     status: 'suggested' as const,
     icon: '🎬',
-    output: 'הצעה לסרטון 2 דקות — ממתין לאישור',
+    output: 'הצעה לסרטון 2 דקות, ממתין לאישור',
   },
 ];
 
@@ -178,19 +178,19 @@ export const DEMO_ONBOARDING_DOC = {
     {
       title: 'יום ראשון',
       items: [
-        '10:30 — שיחת פתיחה עם דנה כהן (מנהלת)',
-        '12:00 — היכרות עם צוות Customer Success',
-        '14:00 — הדרכת כלי עבודה',
-        '16:00 — שיחה עם יעל שמיר (buddy)',
+        '10:30, שיחת פתיחה עם דנה כהן (מנהלת)',
+        '12:00, היכרות עם צוות Customer Success',
+        '14:00, הדרכת כלי עבודה',
+        '16:00, שיחה עם יעל שמיר (buddy)',
       ],
     },
     {
       title: 'השבוע הראשון',
       items: [
-        'הדרכת מוצר — 3 שעות',
-        'הדרכת תהליכי CS — 2 שעות',
-        'פגישת HR — תנאים, מדיניות, שאלות',
-        'הדרכת אבטחת מידע — 1 שעה',
+        'הדרכת מוצר: 3 שעות',
+        'הדרכת תהליכי CS: 2 שעות',
+        'פגישת HR: תנאים, מדיניות, שאלות',
+        'הדרכת אבטחת מידע: 1 שעה',
         'סיכום שבוע ראשון עם דנה',
       ],
     },
@@ -207,8 +207,8 @@ export const DEMO_ONBOARDING_DOC = {
     {
       title: 'אנשים שכדאי להכיר',
       items: [
-        'דנה כהן — מנהלת ישירה',
-        'יעל שמיר — buddy',
+        'דנה כהן, מנהלת ישירה',
+        'יעל שמיר: buddy',
         'צוות Customer Success (6 אנשים)',
         'צוות Product (ממשק יומי)',
         'צוות Sales (העברת לקוחות)',
@@ -217,10 +217,10 @@ export const DEMO_ONBOARDING_DOC = {
     {
       title: 'מערכות והרשאות',
       items: [
-        '✅ Google Workspace — מאושר',
-        '✅ Slack — מאושר',
-        '✅ Jira — מאושר',
-        '⏳ CRM — בקשת אישור נשלחה למנהל IT',
+        '✅ Google Workspace, מאושר',
+        '✅ Slack: מאושר',
+        '✅ Jira: מאושר',
+        '⏳ CRM, בקשת אישור נשלחה למנהל IT',
       ],
     },
     {
@@ -265,8 +265,8 @@ export const DEMO_EMAIL = {
 הכנתי לך תוכנית קליטה מלאה שתעזור לך להתחיל בצורה הטובה ביותר. תמצאי בה את כל מה שצריך לדעת על הצוות, הכלים והתהליכים.
 
 כמה דברים חשובים לדעת:
-• נפגש ב-10:30 לשיחת פתיחה — אני מצפה לפגוש אותך!
-• יעל שמיר תהיה ה-buddy שלך — היא תעזור לך בכל שאלה
+• נפגש ב-10:30 לשיחת פתיחה, אני מצפה לפגוש אותך!
+• יעל שמיר תהיה ה-buddy שלך, היא תעזור לך בכל שאלה
 • יש לי זמן פנוי בכל יום שלישי ב-15:00 לשאלות
 
 מחכה לראותך ביום ראשון,
@@ -295,7 +295,7 @@ export const DEMO_APPROVAL_SUMMARY = {
     { label: 'פרט עדיין חסר', value: 1, icon: '❓' },
   ],
   pendingApprovals: [
-    'הרשאת CRM — ממתין לאישור מנהל IT',
+    'הרשאת CRM, ממתין לאישור מנהל IT',
     'שיתוף מסמך קליטה עם נועה',
   ],
   missingInfo: 'אישור הרשאת CRM עדיין לא התקבל',
@@ -326,11 +326,11 @@ export const DEMO_AUDIT_LOG = [
     approver: 'מערכת',
     tool: 'Google Calendar',
     source: 'dana.cohen@company.co.il',
-    result: 'חלקי — 09:00 תפוס',
+    result: 'חלקי: 09:00 תפוס',
     agentVersion: 'v2.1.4',
   },
   {
-    action: 'שאלת הבהרה — buddy',
+    action: 'שאלת הבהרה: buddy',
     time: '14:23:15',
     approver: 'מנהל HR',
     tool: 'ממשק משתמש',
@@ -344,7 +344,7 @@ export const DEMO_AUDIT_LOG = [
     approver: 'מערכת',
     tool: 'Google Docs',
     source: 'תבנית + פרופיל תפקיד',
-    result: 'טיוטה — ממתין לאישור',
+    result: 'טיוטה, ממתין לאישור',
     agentVersion: 'v2.1.4',
   },
   {
@@ -403,11 +403,11 @@ export const DEMO_EXECUTION_STATUS = {
     '6 משימות נפתחו',
     'מייל ברכה נשלח',
     'הודעת Slack מתוזמנת',
-    'buddy הוקצה — יעל שמיר',
+    'buddy הוקצה, יעל שמיר',
     'המנהלת אישרה את תוכנית השבוע הראשון',
   ],
   pendingItems: [
-    'הרשאת CRM — ממתין לאישור מנהל IT',
+    'הרשאת CRM, ממתין לאישור מנהל IT',
   ],
 };
 
@@ -466,7 +466,7 @@ export const TOOL_MAP: ToolInfo[] = [
   { name: 'Asana', category: 'ניהול משימות', role: 'ניהול פרויקטים ומשימות', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: false },
   { name: 'Google Calendar', category: 'מערכות רשמיות', role: 'ניהול לוחות זמנים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
   { name: 'HeyGen', category: 'יצירת תוכן', role: 'יצירת סרטוני וידאו עם AI', storesOfficialData: false, executesActions: true, requiresEnterpriseApproval: false },
-  { name: 'Workday', category: 'מערכות HR', role: 'HRIS — מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
-  { name: 'HiBob', category: 'מערכות HR', role: 'HRIS — מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
-  { name: 'BambooHR', category: 'מערכות HR', role: 'HRIS — מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'Workday', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'HiBob', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'BambooHR', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
 ];

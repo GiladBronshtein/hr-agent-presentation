@@ -29,7 +29,7 @@ export default function S36_Governance() {
           </div>
           <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
             <p className="text-white/60 text-sm">
-              ⚠️ ממשל לא מוריד ערך — הוא מה שמאפשר לסמוך על האייג׳נט
+              ⚠️ ממשל לא מוריד ערך, הוא מה שמאפשר לסמוך על האייג׳נט
             </p>
           </div>
         </div>

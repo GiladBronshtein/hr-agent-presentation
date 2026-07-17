@@ -36,7 +36,7 @@ export default function S27_DemoTools() {
               <div className="terminal-dot" style={{ background: '#F43F5E' }} />
               <div className="terminal-dot" style={{ background: '#F59E0B' }} />
               <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/30 text-xs mr-2">OnboardBot — tool calls</span>
+              <span className="text-white/30 text-xs mr-2">OnboardBot: tool calls</span>
             </div>
             <div className="terminal-body space-y-3">
               {TOOL_CALLS.map((call, i) => (
@@ -59,7 +59,7 @@ export default function S27_DemoTools() {
             </div>
           </div>
           <p className="text-white/40 text-xs text-center">
-            כל פעולה מתועדת — מי, מה, מתי, למה
+            כל פעולה מתועדת, מי, מה, מתי, למה
           </p>
         </div>
       </ContentLayout>

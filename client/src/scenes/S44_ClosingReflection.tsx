@@ -1,7 +1,7 @@
 /**
- * S44 — Closing Reflection
- * Conference Hall Edition — The emotional crescendo
- * "אנחנו..." — cycling words, cinematic reveal
+ * S44: Closing Reflection
+ * Conference Hall Edition: The emotional crescendo
+ * "אנחנו...": cycling words, cinematic reveal
  */
 import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
@@ -100,8 +100,8 @@ export default function S44_ClosingReflection() {
           margin: '0 0 clamp(2rem, 4vw, 4rem)',
           maxWidth: '680px', lineHeight: 1.6,
         }}>
-          AI Agents אינם פרויקט IT — הם שינוי בדרך שעבודה מתבצעת.<br />
-          <span style={{ color: 'rgba(255,255,255,0.65)', fontWeight: 600 }}>HR הוא לא רק לקוח — הוא אחד המעצבים.</span>
+          AI Agents אינם פרויקט IT, הם שינוי בדרך שעבודה מתבצעת.<br />
+          <span style={{ color: 'rgba(255,255,255,0.65)', fontWeight: 600 }}>HR הוא לא רק לקוח, הוא אחד המעצבים.</span>
         </p>
 
         {/* Questions grid */}

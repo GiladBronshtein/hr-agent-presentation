@@ -14,7 +14,7 @@ export default function S38_TrustArchitecture() {
         <div className="w-full max-w-3xl space-y-6">
           <div>
             <SceneTitle size="md">ארכיטקטורת אמון</SceneTitle>
-            <p className="text-white/50 mt-2 text-sm">אמון נבנה בשכבות — לא בהצהרות</p>
+            <p className="text-white/50 mt-2 text-sm">אמון נבנה בשכבות, לא בהצהרות</p>
           </div>
           <div className="space-y-3">
             {LAYERS.map((layer, i) => (
@@ -33,7 +33,7 @@ export default function S38_TrustArchitecture() {
           </div>
           <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-white/50 text-sm">
-              כל שכבה מגינה על השכבה שמעליה — ומאפשרת לאייג׳נט לפעול בביטחון
+              כל שכבה מגינה על השכבה שמעליה, ומאפשרת לאייג׳נט לפעול בביטחון
             </p>
           </div>
         </div>

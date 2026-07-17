@@ -3,12 +3,12 @@ import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation
 import { usePresentationStore } from '../store/presentationStore';
 
 const RETRIEVALS = [
-  { icon: '📄', source: 'HRIS', data: 'יעל כהן — PM Senior, מחלקת Product, מנהל: דוד לוי', status: 'success' },
-  { icon: '📋', source: 'Onboarding Playbook', data: 'תוכנית קליטה לתפקידי Product — 30 יום', status: 'success' },
+  { icon: '📄', source: 'HRIS', data: 'יעל כהן: PM Senior, מחלקת Product, מנהל: דוד לוי', status: 'success' },
+  { icon: '📋', source: 'Onboarding Playbook', data: 'תוכנית קליטה לתפקידי Product: 30 יום', status: 'success' },
   { icon: '📅', source: 'Google Calendar', data: 'זמינות דוד לוי: ב׳ 09:00-10:00, ד׳ 14:00-15:00', status: 'success' },
   { icon: '🔑', source: 'IT Permissions', data: 'רשימת גישות לתפקיד PM: Jira, Figma, Slack, Notion', status: 'success' },
   { icon: '📚', source: 'Learning Platform', data: '3 קורסי חובה לתפקיד PM', status: 'success' },
-  { icon: '🏢', source: 'Office System', data: 'תג כניסה, חניה, מקום ישיבה — קומה 4', status: 'success' },
+  { icon: '🏢', source: 'Office System', data: 'תג כניסה, חניה, מקום ישיבה, קומה 4', status: 'success' },
 ];
 
 export default function S25_DemoRetrieval() {
@@ -52,7 +52,7 @@ export default function S25_DemoRetrieval() {
           </div>
           {visible >= RETRIEVALS.length && (
             <div className="p-3 rounded-xl animate-fade-in text-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-              <p className="text-sm" style={{ color: '#10B981' }}>✓ כל המידע נאסף — מתחיל תכנון</p>
+              <p className="text-sm" style={{ color: '#10B981' }}>✓ כל המידע נאסף, מתחיל תכנון</p>
             </div>
           )}
         </div>

@@ -34,7 +34,7 @@ export default function S41_Roadmap90() {
         <div className="w-full max-w-4xl space-y-6">
           <div>
             <SceneTitle size="md">מפת דרכים 90 יום</SceneTitle>
-            <p className="text-white/40 text-sm mt-1">מהרעיון לאייג׳נט פעיל — בשלושה חודשים</p>
+            <p className="text-white/40 text-sm mt-1">מהרעיון לאייג׳נט פעיל, בשלושה חודשים</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {PHASES.map((phase, i) => (
@@ -60,7 +60,7 @@ export default function S41_Roadmap90() {
             ))}
           </div>
           <p className="text-center text-white/30 text-sm">
-            90 יום — מספיק לראות ערך, מהיר מספיק לשמור על מומנטום
+            90 יום, מספיק לראות ערך, מהיר מספיק לשמור על מומנטום
           </p>
         </div>
       </ContentLayout>
