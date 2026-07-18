@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Bot } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+import { SlackWindow, SlackMessage, TypingIndicator } from '../components/presentation/SlackChat';
 import { usePresentationStore } from '../store/presentationStore';
 
 export default function S24_DemoTrigger() {
@@ -28,37 +28,27 @@ export default function S24_DemoTrigger() {
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
-          <div>
-            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 1</p>
+        <div className="w-full max-w-5xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.5rem, 3cqh, 2.5rem)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <p className="text-white/60 uppercase tracking-widest mb-2" style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>שלב 1</p>
             <SceneTitle size="md">הטריגר</SceneTitle>
           </div>
-          <div className="terminal-window">
-            <div className="terminal-header">
-              <div className="terminal-dot" style={{ background: '#F43F5E' }} />
-              <div className="terminal-dot" style={{ background: '#F59E0B' }} />
-              <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/65 text-3xl mr-2">Slack → OnboardBot</span>
-            </div>
-            <div className="terminal-body">
-              <div className="terminal-line">
-                <span className="terminal-prompt">@OnboardBot</span>
-                <span className="text-white/70 mr-2">דוד לוי:</span>
-              </div>
-              <div className="terminal-line mt-1">
-                <span className="text-white/80">{text}</span>
-                {typing && <span className="animate-pulse text-indigo-400">|</span>}
-              </div>
-            </div>
-          </div>
-          {demoStep >= 1 && (
-            <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              <p className="text-white/60 text-3xl">
-                <span style={{ color: '#6366F1', display: 'inline-flex', alignItems: 'center', gap: '0.35em' }}><Bot size="1em" /> OnboardBot:</span>{' '}
-                קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד Product Manager...
-              </p>
-            </div>
-          )}
+
+          <SlackWindow channel="hr-onboarding">
+            <SlackMessage initials="דל" name="דוד לוי" time="09:42" color="#7C3AED">
+              <span style={{ color: '#818CF8', fontWeight: 700, direction: 'ltr', unicodeBidi: 'isolate' }}>@OnboardBot</span>{' '}
+              {text}
+              {typing && <span className="animate-pulse" style={{ color: '#818CF8' }}>|</span>}
+            </SlackMessage>
+
+            {demoStep >= 1 ? (
+              <SlackMessage initials="OB" name="OnboardBot" time="09:42" color="#6366F1" isBot>
+                קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד <bdi dir="ltr">Product Manager</bdi>.
+              </SlackMessage>
+            ) : !typing && (
+              <TypingIndicator name="OnboardBot" />
+            )}
+          </SlackWindow>
         </div>
       </ContentLayout>
     </SceneBase>

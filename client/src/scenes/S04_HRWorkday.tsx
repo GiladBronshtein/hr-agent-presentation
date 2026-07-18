@@ -22,7 +22,10 @@ export default function S04_HRWorkday() {
               <GlassCard key={i}>
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-white font-bold text-3xl">{proc.name}</h3>
-                  <span className="text-3xl text-white/60">{proc.hours} שעות</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2.2rem, 3.4cqw, 3.4rem)', fontWeight: 900, lineHeight: 1, color: '#F43F5E', textShadow: '0 0 32px rgba(244,63,94,0.4)', fontVariantNumeric: 'tabular-nums', direction: 'ltr' }}>{proc.hours}</span>
+                    <span className="text-white/60" style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 600 }}>שעות</span>
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {proc.systems.map((sys) => (

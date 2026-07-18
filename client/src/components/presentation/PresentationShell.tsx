@@ -19,6 +19,8 @@ export function PresentationShell() {
     isPresenterNotesOpen,
     isKeyboardHelpOpen,
     isTransitioning,
+    isBlackout,
+    toggleBlackout,
     setTransitioning,
     goNext,
     goPrev,
@@ -93,6 +95,13 @@ export function PresentationShell() {
 
       {/* Speaker notes — slides up from bottom */}
       <SpeakerNotes />
+
+      {/* Presenter blackout (B) */}
+      <div
+        className={`blackout-overlay ${isBlackout ? 'on' : ''}`}
+        onClick={() => { if (isBlackout) toggleBlackout(); }}
+        aria-hidden={!isBlackout}
+      />
     </div>
   );
 }

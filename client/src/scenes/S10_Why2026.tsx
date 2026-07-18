@@ -1,5 +1,5 @@
 import { SceneBase, ContentLayout, SceneTitle, GlassCard, AnimatedNumber } from '../components/presentation/SceneBase';
-import { BarChart3, Handshake, RefreshCw } from 'lucide-react';
+import { BarChart3, Handshake, Link, RefreshCw } from 'lucide-react';
 
 // SOURCES (verified):
 // 57%: Deloitte / ServiceNow — https://www.deloitte.com/et/en/alliances/servicenow/about/deloittes-fastforward-powered-by-servicenow.html
@@ -30,7 +30,7 @@ export default function S10_Why2026() {
           <div className="grid grid-cols-3 gap-6">
             {STATS.map((stat, i) => (
               <GlassCard key={i} className="text-center">
-                <div className="text-5xl font-black mb-1" style={{ color: stat.color }}>
+                <div className="font-black mb-2" style={{ color: stat.color, fontSize: 'clamp(4rem, 7cqw, 7rem)', lineHeight: 1, textShadow: `0 0 60px ${stat.color}50`, fontFamily: "'Space Grotesk', sans-serif" }}>
                   <AnimatedNumber value={stat.value} suffix={stat.suffix} color={stat.color} />
                 </div>
                 <p className="text-white/60 text-3xl leading-relaxed mb-3">{stat.label}</p>
@@ -42,7 +42,7 @@ export default function S10_Why2026() {
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  📎 {(stat as any).source}
+                  <Link size="1em" /> {(stat as any).source}
                 </a>
               </GlassCard>
             ))}

@@ -4,6 +4,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { CelebrationBurst } from '../components/presentation/CelebrationBurst';
 import { usePresentationStore } from '../store/presentationStore';
 import { UserCheck, CheckCircle, XCircle, AlertTriangle, Clock, FileText } from 'lucide-react';
 
@@ -27,6 +28,7 @@ export default function S29_DemoApproval() {
 
   return (
     <SceneBase>
+      <CelebrationBurst active={demoApprovalState === 'approved'} />
       <div
         dir="rtl"
         style={{

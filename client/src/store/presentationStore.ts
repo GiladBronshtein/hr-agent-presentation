@@ -18,6 +18,7 @@ export interface PresentationStore {
   isKeyboardHelpOpen: boolean;
   isDiagnosticsOpen: boolean;
   isFullscreen: boolean;
+  isBlackout: boolean;
 
   // Sound
   isSoundEnabled: boolean;
@@ -68,6 +69,7 @@ export interface PresentationStore {
   toggleKeyboardHelp: () => void;
   toggleDiagnostics: () => void;
   toggleFullscreen: () => void;
+  toggleBlackout: () => void;
   toggleSound: () => void;
   toggleReducedMotion: () => void;
   setQualityLevel: (level: QualityLevel) => void;
@@ -121,6 +123,7 @@ export const usePresentationStore = create<PresentationStore>()(
       isKeyboardHelpOpen: false,
       isDiagnosticsOpen: false,
       isFullscreen: false,
+      isBlackout: false,
 
       isSoundEnabled: false,
       isReducedMotion: typeof window !== 'undefined'
@@ -208,6 +211,7 @@ export const usePresentationStore = create<PresentationStore>()(
         }
       },
       toggleSound: () => set((s) => ({ isSoundEnabled: !s.isSoundEnabled })),
+      toggleBlackout: () => set((s) => ({ isBlackout: !s.isBlackout })),
       toggleReducedMotion: () => set((s) => ({ isReducedMotion: !s.isReducedMotion })),
       setQualityLevel: (level) => set({ qualityLevel: level }),
 

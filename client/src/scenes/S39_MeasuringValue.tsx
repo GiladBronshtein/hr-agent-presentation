@@ -35,7 +35,7 @@ export default function S39_MeasuringValue() {
                       <div className="flex items-center gap-2">
                         <span className="text-white/65 text-3xl line-through">{item.before}</span>
                         <span className="text-white/20">→</span>
-                        <span className="font-bold text-3xl" style={{ color: cat.color }}>{item.after}{item.unit}</span>
+                        <span className="font-black" style={{ color: cat.color, fontSize: 'clamp(2.2rem, 3.4cqw, 3.2rem)', lineHeight: 1, textShadow: `0 0 32px ${cat.color}45`, fontFamily: "'Space Grotesk', 'Heebo', sans-serif", direction: 'ltr', unicodeBidi: 'isolate' }}>{item.after}{item.unit}</span>
                       </div>
                     </div>
                   ))}

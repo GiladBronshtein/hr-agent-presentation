@@ -1,4 +1,4 @@
-import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
+import { SceneBase, ContentLayout, SceneTitle, GlassCard, GhostWord } from '../components/presentation/SceneBase';
 
 const STACK = [
   { layer: 'ממשק', tools: ['Slack', 'Teams', 'Web App'], color: '#6366F1' },
@@ -11,6 +11,7 @@ const STACK = [
 export default function S33_AccessibleStack() {
   return (
     <SceneBase>
+      <GhostWord color="#10B9810A">03</GhostWord>
       <ContentLayout>
         <div className="w-full max-w-6xl" style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)', display: 'flex', flexDirection: 'column', gap: 'clamp(2rem,4cqw,4rem)' }}>
           <div>
@@ -22,7 +23,7 @@ export default function S33_AccessibleStack() {
             {STACK.map((layer, i) => (
               <div key={i} className="flex items-center gap-6 p-6 rounded-xl"
                 style={{ background: layer.color + '08', border: `1px solid ${layer.color}20` }}>
-                <div className="w-24 shrink-0">
+                <div className="shrink-0" style={{ minWidth: 'clamp(9rem, 13cqw, 13rem)' }}>
                   <span className="text-3xl font-bold" style={{ color: layer.color }}>{layer.layer}</span>
                 </div>
                 <div className="flex gap-2 flex-wrap">

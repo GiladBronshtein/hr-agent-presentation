@@ -1,10 +1,12 @@
 /**
- * S07: Anatomy of an Agent
- * Design: AI-Native UI: hexagonal component grid, interactive detail panel
+ * S07: Anatomy of an Agent — radial diagram.
+ * Seven components orbit a central Agent core (visually bookending the
+ * cold-open system map). Clicking a component lights its spoke and opens
+ * the detail card below.
  */
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
-import { Target, BookOpen, Brain, Wrench, Database, ShieldAlert, UserCheck } from 'lucide-react';
+import { Target, BookOpen, Brain, Wrench, Database, ShieldAlert, UserCheck, Bot } from 'lucide-react';
 
 const COMPONENTS = [
   { id: 'goal', Icon: Target, label: 'מטרה', color: '#6366F1', detail: 'הגדרה ברורה של מה צריך להשיג. "עזור ל-HR" לא מספיק. "הכן תוכנית קליטה מאושרת לפני יום ראשון", זו מטרה.', required: true },
@@ -16,237 +18,158 @@ const COMPONENTS = [
   { id: 'approval', Icon: UserCheck, label: 'אישור', color: '#34D399', detail: 'מתי עוצרים לאדם: לפני שליחת מייל, יצירת אירוע, מתן הרשאה. Human-in-the-loop הוא עיצוב, לא פשרה.', required: true },
 ];
 
+// Position each node on an ellipse around the center, starting at the top
+const NODE_POS = COMPONENTS.map((_, i) => {
+  const angle = -Math.PI / 2 + (i * 2 * Math.PI) / COMPONENTS.length;
+  return { x: 50 + 40 * Math.cos(angle), y: 50 + 38 * Math.sin(angle) };
+});
+
+const HUB_TRIM = 62;
+const NODE_TRIM = 52;
+
 export default function S07_Anatomy() {
   const [selected, setSelected] = useState<string | null>('goal');
   const selectedComp = COMPONENTS.find(c => c.id === selected);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [dims, setDims] = useState({ w: 0, h: 0 });
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = svgRef.current?.parentElement;
+      if (el) setDims({ w: el.clientWidth, h: el.clientHeight });
+    };
+    measure();
+    const raf = requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); };
+  }, []);
 
   return (
     <SceneBase>
-      <div
-        dir="rtl"
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2.5rem 3rem 5rem',
-          gap: '1.75rem',
-        }}
-      >
+      <div dir="rtl" style={{
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        padding: 'clamp(1.5rem, 3cqh, 2.5rem) clamp(3rem, 6cqw, 6rem) clamp(4rem, 7cqh, 5.5rem)',
+        gap: 'clamp(0.75rem, 1.6cqh, 1.25rem)',
+      }}>
         {/* Header */}
-        <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '1rem', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '0.5rem' }}>
+        <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center', flexShrink: 0 }}>
+          <p style={{ fontSize: 'clamp(0.95rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.12em', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '0.4rem' }}>
             7 רכיבים · לחצו לפרטים
           </p>
-          <h1
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.75rem, 3.5cqw, 2.75rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.03em',
-              color: 'white',
-              margin: 0,
-            }}
-          >
+          <h1 style={{
+            fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+            fontSize: 'clamp(2rem, 3.8cqw, 3.4rem)',
+            fontWeight: 900, letterSpacing: '-0.03em', color: 'white', margin: 0,
+          }}>
             אנטומיה של אייג׳נט
           </h1>
         </div>
 
-        {/* Main content: components + detail */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '1.5rem',
-            width: '100%',
-            maxWidth: '900px',
-          }}
-        >
-          {/* Component grid */}
-          <div
-            className="animate-fade-in-up stagger-2"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '0.625rem',
-              alignContent: 'start',
-            }}
-          >
-            {COMPONENTS.map((comp, i) => {
-              const isSelected = selected === comp.id;
+        {/* Radial diagram */}
+        <div className="animate-scale-in stagger-2" style={{ position: 'relative', flexGrow: 1, width: '100%', maxWidth: '900px', minHeight: 'clamp(260px, 40cqh, 460px)' }}>
+          <svg ref={svgRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+            {dims.w > 0 && COMPONENTS.map((comp, i) => {
+              const cx = dims.w / 2, cy = dims.h / 2;
+              const nx = (NODE_POS[i].x / 100) * dims.w, ny = (NODE_POS[i].y / 100) * dims.h;
+              const dx = nx - cx, dy = ny - cy;
+              const len = Math.hypot(dx, dy);
+              if (len <= HUB_TRIM + NODE_TRIM) return null;
+              const ux = dx / len, uy = dy / len;
+              const on = selected === comp.id;
               return (
-                <button
-                  key={comp.id}
-                  onClick={() => setSelected(isSelected ? null : comp.id)}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.875rem 0.5rem',
-                    borderRadius: '14px',
-                    background: isSelected ? comp.color + '14' : 'rgba(255,255,255,0.03)',
-                    border: isSelected ? `1px solid ${comp.color}40` : '1px solid rgba(255,255,255,0.07)',
-                    cursor: 'pointer',
-                    transition: 'all 200ms cubic-bezier(0.23, 1, 0.32, 1)',
-                    transform: isSelected ? 'scale(1.04)' : 'scale(1)',
-                    boxShadow: isSelected ? `0 0 20px ${comp.color}20` : 'none',
-                    position: 'relative',
-                    animationDelay: `${0.1 + i * 0.05}s`,
-                    animationFillMode: 'both',
-                    opacity: 0,
-                  }}
-                  className="animate-fade-in-up"
-                >
-                  {/* Required indicator */}
-                  {comp.required && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '5px',
-                        left: '5px',
-                        width: '5px',
-                        height: '5px',
-                        borderRadius: '50%',
-                        background: comp.color,
-                        opacity: 0.7,
-                      }}
-                    />
-                  )}
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '10px',
-                      background: comp.color + '15',
-                      border: `1px solid ${comp.color}30`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <comp.Icon size={16} style={{ color: comp.color }} />
-                  </div>
-                  <span
-                    style={{
-                      fontSize: '1rem',
-                      fontWeight: 700,
-                      color: isSelected ? comp.color : 'rgba(255,255,255,0.6)',
-                      fontFamily: "'DM Sans', sans-serif",
-                      textAlign: 'center',
-                    }}
-                  >
-                    {comp.label}
-                  </span>
-                </button>
+                <line key={comp.id}
+                  x1={cx + ux * HUB_TRIM} y1={cy + uy * HUB_TRIM}
+                  x2={nx - ux * NODE_TRIM} y2={ny - uy * NODE_TRIM}
+                  stroke={on ? comp.color : 'rgba(255,255,255,0.1)'}
+                  strokeWidth={on ? 2.5 : 1}
+                  strokeDasharray={on ? '0' : '4 6'}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke 0.3s ease, stroke-width 0.3s ease' }}
+                />
               );
             })}
+          </svg>
+
+          {/* Center core */}
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 5 }}>
+            <div style={{
+              width: 'clamp(76px, 8cqw, 104px)', height: 'clamp(76px, 8cqw, 104px)',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.1) 100%)',
+              border: '2px solid rgba(99,102,241,0.55)',
+              boxShadow: '0 0 48px rgba(99,102,241,0.45)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px',
+              animation: 'breathe 3s ease-in-out infinite',
+            }}>
+              <span style={{ display: 'inline-flex', color: '#A5B4FC', fontSize: 'clamp(1.6rem, 2.4cqw, 2.2rem)' }}><Bot size="1em" /></span>
+              <span style={{ fontSize: 'clamp(0.8rem, 1cqw, 0.95rem)', color: '#A5B4FC', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>Agent</span>
+            </div>
           </div>
 
-          {/* Detail panel */}
-          <div
-            className="animate-fade-in-up stagger-3"
-            style={{
-              padding: '1.5rem',
-              borderRadius: '16px',
-              background: selectedComp ? selectedComp.color + '0A' : 'rgba(255,255,255,0.02)',
-              border: selectedComp ? `1px solid ${selectedComp.color}25` : '1px solid rgba(255,255,255,0.06)',
-              transition: 'all 300ms cubic-bezier(0.23, 1, 0.32, 1)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              minHeight: '200px',
-            }}
-          >
-            {selectedComp ? (
-              <div style={{ animation: 'fadeInUp 0.3s ease both' }}>
-                {/* Icon + label */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                  <div
-                    style={{
-                      width: '44px',
-                      height: '44px',
-                      borderRadius: '12px',
-                      background: selectedComp.color + '18',
-                      border: `1px solid ${selectedComp.color}35`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <selectedComp.Icon size={20} style={{ color: selectedComp.color }} />
-                  </div>
-                  <div>
-                    <h3
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: '2.6rem',
-                        fontWeight: 700,
-                        color: selectedComp.color,
-                        margin: 0,
-                      }}
-                    >
-                      {selectedComp.label}
-                    </h3>
-                    {selectedComp.required && (
-                      <span
-                        style={{
-                          fontSize: '1rem',
-                          fontWeight: 700,
-                          color: selectedComp.color + '90',
-                          fontFamily: "'Space Grotesk', sans-serif",
-                          letterSpacing: '0.08em',
-                        }}
-                      >
-                        חובה
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <p
-                  style={{
-                    color: 'rgba(255,255,255,0.7)',
-                    fontSize: '1.65rem',
-                    lineHeight: 1.65,
-                    fontFamily: "'DM Sans', sans-serif",
-                    margin: 0,
-                  }}
-                >
-                  {selectedComp.detail}
-                </p>
-              </div>
-            ) : (
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '2.1rem', fontFamily: "'DM Sans', sans-serif" }}>
-                  בחרו רכיב לפרטים
-                </p>
-              </div>
-            )}
-          </div>
+          {/* Orbiting components */}
+          {COMPONENTS.map((comp, i) => {
+            const isSelected = selected === comp.id;
+            return (
+              <button
+                key={comp.id}
+                onClick={() => setSelected(isSelected ? null : comp.id)}
+                className="interactive-card"
+                style={{
+                  position: 'absolute',
+                  left: `${NODE_POS[i].x}%`, top: `${NODE_POS[i].y}%`,
+                  transform: 'translate(-50%, -50%)',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
+                  padding: 'clamp(0.625rem, 1.1cqh, 0.9rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
+                  borderRadius: '16px',
+                  background: isSelected ? comp.color + '1F' : 'rgba(255,255,255,0.04)',
+                  border: isSelected ? `1px solid ${comp.color}70` : '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: isSelected ? `0 0 32px ${comp.color}45` : 'none',
+                  zIndex: 6,
+                  animation: `fadeInUp 0.45s ease ${0.15 + i * 0.06}s both`,
+                }}
+              >
+                <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
+                  <comp.Icon size="1em" />
+                </span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.35cqw, 1.3rem)', color: isSelected ? 'white' : 'rgba(255,255,255,0.8)' }}>
+                  {comp.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Warning footer */}
-        <div
-          className="animate-fade-in stagger-9"
-          style={{
-            padding: '0.75rem 1.25rem',
-            borderRadius: '10px',
-            background: 'rgba(244,63,94,0.07)',
-            border: '1px solid rgba(244,63,94,0.18)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.625rem',
-            maxWidth: '600px',
-          }}
-        >
-          <ShieldAlert size={14} style={{ color: '#F43F5E', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
-            חסר רכיב אחד, המערכת לא שלמה. <span style={{ color: '#F43F5E', fontWeight: 600 }}>גבולות ואישור</span> הם הכי חשובים.
-          </p>
+        {/* Detail card */}
+        <div className="animate-fade-in" key={selected || 'none'} style={{
+          flexShrink: 0, width: '100%', maxWidth: '980px',
+          minHeight: 'clamp(84px, 13cqh, 120px)',
+          padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.25rem, 2.2cqw, 2rem)',
+          borderRadius: '18px',
+          background: selectedComp ? selectedComp.color + '10' : 'rgba(255,255,255,0.03)',
+          border: selectedComp ? `1px solid ${selectedComp.color}40` : '1px solid rgba(255,255,255,0.08)',
+          display: 'flex', alignItems: 'center', gap: '1rem',
+          animation: 'fadeIn 0.3s ease both',
+        }}>
+          {selectedComp ? (
+            <>
+              <span style={{ display: 'inline-flex', color: selectedComp.color, fontSize: 'clamp(1.8rem, 2.6cqw, 2.4rem)', flexShrink: 0 }}>
+                <selectedComp.Icon size="1em" />
+              </span>
+              <div>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.2rem, 1.7cqw, 1.6rem)', color: selectedComp.color, marginLeft: '0.6rem' }}>
+                  {selectedComp.label}:
+                </span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.55cqw, 1.45rem)', color: 'rgba(255,255,255,0.82)', lineHeight: 1.55 }}>
+                  {selectedComp.detail}
+                </span>
+              </div>
+            </>
+          ) : (
+            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.5)', margin: '0 auto' }}>
+              חסר רכיב אחד? המערכת לא שלמה. גבולות ואישור הם הכי חשובים.
+            </span>
+          )}
         </div>
       </div>
     </SceneBase>

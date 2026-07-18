@@ -3,8 +3,8 @@
  * Conference Hall Edition — full-screen, RTL arrows, massive cards
  */
 import { useState, useEffect } from 'react';
-import { DoorOpen, MessageCircle, Target, TrendingUp, UserPlus } from 'lucide-react';
-import { SceneBase } from '../components/presentation/SceneBase';
+import { Bot, DoorOpen, MessageCircle, Target, TrendingUp, UserPlus } from 'lucide-react';
+import { SceneBase, GhostWord } from '../components/presentation/SceneBase';
 
 type RiskLevel = 'low' | 'medium' | 'high';
 
@@ -211,8 +211,9 @@ export default function S12_EmployeeJourney() {
                 background: 'rgba(255,255,255,0.06)',
                 color: 'rgba(255,255,255,0.75)',
                 border: '1px solid rgba(255,255,255,0.1)',
+                display: 'inline-flex', alignItems: 'center', gap: '0.4em',
               }}>
-                🤖 {a}
+                <Bot size="1em" style={{ color: sel.color, flexShrink: 0 }} /> {a}
               </span>
             ))}
           </div>

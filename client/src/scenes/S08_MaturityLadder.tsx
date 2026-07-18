@@ -23,17 +23,24 @@ export default function S08_MaturityLadder() {
           <div className="space-y-3">
             {LEVELS.map((level, i) => (
               <div key={i}
-                className="flex items-center gap-6 p-6 rounded-xl cursor-pointer transition-all duration-200"
+                className="interactive-card flex items-center gap-6 p-6 rounded-xl"
                 style={{
-                  background: hovered === i ? level.color + '12' : 'rgba(255,255,255,0.03)',
-                  border: hovered === i ? `1px solid ${level.color}30` : '1px solid rgba(255,255,255,0.06)',
-                  transform: hovered === i ? 'translateX(-4px)' : undefined,
+                  background: level.num === 4 ? level.color + '10' : hovered === i ? level.color + '12' : 'rgba(255,255,255,0.03)',
+                  border: level.num === 4 ? `1px solid ${level.color}45` : hovered === i ? `1px solid ${level.color}30` : '1px solid rgba(255,255,255,0.06)',
+                  marginRight: `calc(${i} * clamp(1rem, 3.2cqw, 3.4rem))`,
+                  boxShadow: level.num === 4 ? '0 0 32px rgba(99,102,241,0.2)' : 'none',
+                  animation: `slideInRight 0.5s ease ${0.12 + i * 0.12}s both`,
                 }}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
               >
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-3xl shrink-0"
-                  style={{ background: level.color + '20', color: level.color, border: `1px solid ${level.color}30` }}>
+                <div className="rounded-full flex items-center justify-center font-black shrink-0"
+                  style={{
+                    width: 'clamp(44px, 4cqw, 56px)', height: 'clamp(44px, 4cqw, 56px)',
+                    fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)',
+                    background: level.color + '20', color: level.color, border: `1px solid ${level.color}30`,
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}>
                   {level.num}
                 </div>
                 <div className="flex-1">
@@ -51,8 +58,13 @@ export default function S08_MaturityLadder() {
                   </div>
                 </div>
                 {level.num === 4 && (
-                  <span className="text-3xl px-2 py-1 rounded-full font-medium"
-                    style={{ background: 'rgba(99,102,241,0.15)', color: '#6366F1', border: '1px solid rgba(99,102,241,0.3)' }}>
+                  <span className="px-4 py-1.5 rounded-full font-bold"
+                    style={{
+                      background: 'rgba(99,102,241,0.2)', color: '#A5B4FC', border: '1px solid rgba(99,102,241,0.5)',
+                      fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)',
+                      animation: 'winnerGlow 2.4s ease-in-out infinite',
+                      whiteSpace: 'nowrap',
+                    }}>
                     ← אנחנו כאן
                   </span>
                 )}

@@ -1,44 +1,65 @@
-import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
-import { Bot, Clock } from 'lucide-react';
-import { usePresentationStore } from '../store/presentationStore';
+import { SceneBase, ContentLayout, SceneTitle, TakeawayBar } from '../components/presentation/SceneBase';
+import { SlackWindow, SlackMessage } from '../components/presentation/SlackChat';
+import { CheckCircle2, Clock, Mail } from 'lucide-react';
+
+const DONE_ITEMS = [
+  'פגישת 1:1 תואמה: 14/7 09:00',
+  'בקשת גישות IT נשלחה (Jira, Figma, Slack)',
+  'רישום לקורסים: PM-101, Product-Strategy',
+];
 
 export default function S28_DemoPreview() {
-  const { setDemoApprovalState } = usePresentationStore();
-
   return (
     <SceneBase>
       <ContentLayout>
-        <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
-          <div>
-            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">שלב 5</p>
+        <div className="w-full max-w-5xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.25rem, 2.4cqh, 2rem)', paddingBottom: 'clamp(3rem, 5cqh, 4rem)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <p className="text-white/60 uppercase tracking-widest mb-2" style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>שלב 5</p>
             <SceneTitle size="md">תצוגה מקדימה</SceneTitle>
-            <p className="text-white/60 text-3xl mt-1">האייג׳נט מציג את מה שהכין, לפני ביצוע</p>
           </div>
-          <div className="p-6 rounded-xl" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-            <p className="text-3xl font-medium mb-3 flex items-center gap-2" style={{ color: '#6366F1' }}><Bot size="1em" /> OnboardBot: סיכום לאישור</p>
-            <div className="space-y-2 text-3xl text-white/70">
-              <p>✓ פגישת 1:1 תואמה: 14/7 09:00</p>
-              <p>✓ בקשת גישות IT נשלחה (Jira, Figma, Slack)</p>
-              <p>✓ רישום לקורסים: PM-101, Product-Strategy</p>
-              <p className="flex items-center gap-2"><Clock size="1em" style={{ color: '#F59E0B', flexShrink: 0 }} /> מייל ברוך הבא - <strong className="text-white">ממתין לאישורך</strong></p>
-            </div>
-          </div>
-          <GlassCard>
-            <p className="text-white/60 text-3xl mb-3">טיוטת מייל לאישור:</p>
-            <div className="p-3 rounded-lg text-3xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-white/60 text-3xl mb-2">אל: yael.cohen@company.co.il</p>
-              <p className="text-white/60 text-3xl mb-3">נושא: ברוכה הבאה! יום ראשון שלך: 15 ביולי</p>
-              <p className="text-white/70 leading-relaxed">
-                יעל שלום,<br /><br />
-                אנחנו שמחים שתצטרפי אלינו! הכנתי עבורך תוכנית קליטה מלאה...
-              </p>
-            </div>
-          </GlassCard>
-          <p className="text-center text-white/60 text-3xl">
-            ← בשקף הבא: האם לאשר?
-          </p>
+
+          <SlackWindow channel="hr-onboarding">
+            <SlackMessage initials="OB" name="OnboardBot" time="10:07" color="#6366F1" isBot>
+              <div style={{ fontWeight: 700, color: '#A5B4FC', marginBottom: '0.5rem' }}>סיכום לאישור:</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                {DONE_ITEMS.map((item) => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                    <span style={{ display: 'inline-flex', color: '#10B981', flexShrink: 0 }}><CheckCircle2 size="1em" /></span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                  <span style={{ display: 'inline-flex', color: '#F59E0B', flexShrink: 0 }}><Clock size="1em" /></span>
+                  <span>מייל ברוך הבא - <strong style={{ color: 'white' }}>ממתין לאישורך</strong></span>
+                </div>
+              </div>
+
+              {/* Attached email draft */}
+              <div style={{
+                marginTop: '0.875rem', padding: 'clamp(0.875rem, 1.5cqh, 1.25rem)',
+                borderRadius: '12px', borderRight: '3px solid #F59E0B',
+                background: 'rgba(255,255,255,0.04)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#FCD34D', fontWeight: 700, fontSize: 'clamp(0.95rem, 1.2cqw, 1.15rem)', marginBottom: '0.45rem' }}>
+                  <Mail size="1em" /> טיוטת מייל
+                </div>
+                <div style={{ fontSize: 'clamp(0.95rem, 1.25cqw, 1.2rem)', color: 'rgba(255,255,255,0.55)', direction: 'ltr', textAlign: 'left', fontFamily: 'monospace' }}>
+                  To: yael.cohen@company.co.il
+                </div>
+                <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', color: 'rgba(255,255,255,0.7)', marginTop: '0.3rem' }}>
+                  נושא: ברוכה הבאה! יום ראשון שלך: 15 ביולי
+                </div>
+                <div style={{ fontSize: 'clamp(1rem, 1.35cqw, 1.3rem)', color: 'rgba(255,255,255,0.78)', marginTop: '0.55rem', lineHeight: 1.55 }}>
+                  יעל שלום, אנחנו שמחים שתצטרפי אלינו! הכנתי עבורך תוכנית קליטה מלאה...
+                </div>
+              </div>
+            </SlackMessage>
+          </SlackWindow>
         </div>
       </ContentLayout>
+      <TakeawayBar color="#F59E0B">
+        שום דבר לא נשלח עדיין. <span style={{ color: '#FCD34D', fontWeight: 700 }}>הכול מחכה לאישור אנושי.</span>
+      </TakeawayBar>
     </SceneBase>
   );
 }

@@ -384,3 +384,113 @@ export function ChapterBadge({ label, color }: { label: string; color: string })
     </div>
   );
 }
+
+// ─── Metric — conference-scale stat ───────────────────────────
+
+export function Metric({
+  label,
+  value,
+  number,
+  suffix = '',
+  strike,
+  sub,
+  color = '#6366F1',
+  size = 'lg',
+}: {
+  /** Small caption above the value */
+  label?: string;
+  /** Text value (rendered huge). Use `number` instead for count-up. */
+  value?: string;
+  /** Numeric value — animates counting up on mount */
+  number?: number;
+  suffix?: string;
+  /** Old value shown small + struck-through next to the new one */
+  strike?: string;
+  /** Small caption below the value */
+  sub?: string;
+  color?: string;
+  size?: 'md' | 'lg' | 'xl';
+}) {
+  const sizes = {
+    md: 'clamp(2.5rem, 4cqw, 4rem)',
+    lg: 'clamp(3.5rem, 6cqw, 6rem)',
+    xl: 'clamp(4.5rem, 8cqw, 8rem)',
+  };
+  return (
+    <div style={{ textAlign: 'center' }}>
+      {label && (
+        <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: "'Heebo', sans-serif", letterSpacing: '0.04em', marginBottom: '0.35rem' }}>
+          {label}
+        </div>
+      )}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <span style={{
+          fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+          fontSize: sizes[size], fontWeight: 900, lineHeight: 1,
+          letterSpacing: '-0.03em', color,
+          textShadow: `0 0 60px ${color}55`,
+          fontVariantNumeric: 'tabular-nums',
+        }}>
+          {number !== undefined ? <AnimatedNumber value={number} suffix={suffix} color={color} /> : value}
+        </span>
+        {strike && (
+          <span style={{ fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)', fontWeight: 600, color: 'rgba(255,255,255,0.35)', textDecoration: 'line-through', fontFamily: "'Space Grotesk', 'Heebo', sans-serif" }}>
+            {strike}
+          </span>
+        )}
+      </div>
+      {sub && (
+        <div style={{ fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)', color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", marginTop: '0.45rem' }}>
+          {sub}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TakeawayBar — system-wide bottom takeaway pill ───────────
+
+export function TakeawayBar({ children, color }: { children: ReactNode; color?: string }) {
+  const { currentSceneIndex } = usePresentationStore();
+  const chapter = getCurrentChapter(currentSceneIndex);
+  const c = color || CHAPTER_COLORS[chapter] || '#6366F1';
+  return (
+    <div style={{
+      position: 'absolute', bottom: 'clamp(1.25rem, 2.5cqh, 2rem)', left: 0, right: 0,
+      display: 'flex', justifyContent: 'center', zIndex: 4, pointerEvents: 'none',
+      animation: 'fadeInUp 0.6s ease 0.9s both',
+    }}>
+      <div style={{
+        padding: 'clamp(0.5rem, 0.8cqw, 1rem) clamp(1.25rem, 2cqw, 2rem)',
+        borderRadius: '100px',
+        background: 'rgba(10,10,30,0.85)',
+        border: `1px solid ${c}30`,
+        boxShadow: `0 0 24px ${c}18`,
+        backdropFilter: 'blur(12px)',
+      }}>
+        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.15rem)', color: 'rgba(255,255,255,0.72)' }}>
+          {children}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── GhostWord — giant faded chapter motif ────────────────────
+
+export function GhostWord({ children, color = 'rgba(99,102,241,0.04)', side = 'left' }: {
+  children: ReactNode; color?: string; side?: 'left' | 'right';
+}) {
+  return (
+    <div aria-hidden style={{
+      position: 'absolute', [side]: '-2%', top: '50%', transform: 'translateY(-50%)',
+      fontFamily: "'Space Grotesk', sans-serif",
+      fontSize: 'clamp(18rem, 34cqw, 30rem)',
+      fontWeight: 900, lineHeight: 1, letterSpacing: '-0.06em',
+      color, userSelect: 'none', pointerEvents: 'none', zIndex: 2,
+      direction: 'ltr',
+    }}>
+      {children}
+    </div>
+  );
+}

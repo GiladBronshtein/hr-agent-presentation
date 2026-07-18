@@ -13,7 +13,7 @@ export function useKeyboardControls() {
     toggleKeyboardHelp,
     toggleDiagnostics,
     toggleFullscreen,
-    toggleSound,
+    toggleBlackout,
     toggleReducedMotion,
     resetDemo,
     isChapterMapOpen,
@@ -108,10 +108,10 @@ export function useKeyboardControls() {
           togglePresenterNotes();
           break;
 
-        case 'm':
-        case 'M':
+        case 'b':
+        case 'B':
           e.preventDefault();
-          toggleSound();
+          toggleBlackout();
           break;
 
         case 'r':
@@ -147,7 +147,7 @@ export function useKeyboardControls() {
     toggleKeyboardHelp,
     toggleDiagnostics,
     toggleFullscreen,
-    toggleSound,
+    toggleBlackout,
     toggleReducedMotion,
     resetDemo,
     isChapterMapOpen,

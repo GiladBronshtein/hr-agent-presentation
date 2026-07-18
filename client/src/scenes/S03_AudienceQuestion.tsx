@@ -8,14 +8,14 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 
 const OPTIONS = [
-  { id: 'coordination', label: 'תיאומים ותזכורות', icon: RefreshCw },
-  { id: 'writing', label: 'כתיבה חוזרת', icon: PenLine },
-  { id: 'data-entry', label: 'הזנת נתונים', icon: BarChart3 },
-  { id: 'searching', label: 'חיפוש מידע', icon: Search },
-  { id: 'approvals', label: 'מעקב אחר אישורים', icon: CheckCircle2 },
-  { id: 'onboarding', label: 'קליטת עובדים', icon: UserPlus },
-  { id: 'reporting', label: 'הכנת דוחות', icon: TrendingUp },
-  { id: 'scheduling', label: 'תיאום פגישות', icon: Calendar },
+  { id: 'coordination', label: 'תיאומים ותזכורות', icon: RefreshCw, color: '#6366F1' },
+  { id: 'writing', label: 'כתיבה חוזרת', icon: PenLine, color: '#22D3EE' },
+  { id: 'data-entry', label: 'הזנת נתונים', icon: BarChart3, color: '#10B981' },
+  { id: 'searching', label: 'חיפוש מידע', icon: Search, color: '#F59E0B' },
+  { id: 'approvals', label: 'מעקב אחר אישורים', icon: CheckCircle2, color: '#A78BFA' },
+  { id: 'onboarding', label: 'קליטת עובדים', icon: UserPlus, color: '#F43F5E' },
+  { id: 'reporting', label: 'הכנת דוחות', icon: TrendingUp, color: '#34D399' },
+  { id: 'scheduling', label: 'תיאום פגישות', icon: Calendar, color: '#FCD34D' },
 ];
 
 export default function S03_AudienceQuestion() {
@@ -60,14 +60,32 @@ export default function S03_AudienceQuestion() {
           }}>
             איפה הזמן שלכם נעלם?
           </h1>
-          <p style={{
-            color: 'rgba(255,255,255,0.62)',
-            marginTop: '0.75rem',
-            fontSize: 'clamp(1.2rem, 1.8cqw, 1.7rem)',
-            fontFamily: "'Heebo', sans-serif",
-          }}>
-            בחרו עד שלושה תחומים
-          </p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.875rem', marginTop: '0.875rem' }}>
+            <p style={{
+              color: 'rgba(255,255,255,0.62)',
+              margin: 0,
+              fontSize: 'clamp(1.2rem, 1.8cqw, 1.7rem)',
+              fontFamily: "'Heebo', sans-serif",
+            }}>
+              בחרו עד שלושה תחומים
+            </p>
+            <div style={{ display: 'flex', gap: '0.4rem' }}>
+              {[0, 1, 2].map((slot) => {
+                const filled = slot < audienceSelections.length;
+                const color = filled ? OPTIONS.find(o => o.id === audienceSelections[slot])?.color || '#818CF8' : 'transparent';
+                return (
+                  <span key={slot} style={{
+                    width: 'clamp(14px, 1.4cqw, 18px)', height: 'clamp(14px, 1.4cqw, 18px)', borderRadius: '50%',
+                    background: color,
+                    border: filled ? 'none' : '2px solid rgba(255,255,255,0.25)',
+                    boxShadow: filled ? `0 0 12px ${color}90` : 'none',
+                    transition: 'all 0.3s ease',
+                    animation: filled ? 'popIn 0.35s cubic-bezier(0.23,1,0.32,1) both' : 'none',
+                  }} />
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Options grid */}
@@ -84,25 +102,23 @@ export default function S03_AudienceQuestion() {
               <button
                 key={opt.id}
                 onClick={() => toggleAudienceSelection(opt.id)}
+                className="interactive-card"
                 style={{
-                  padding: 'clamp(1.25rem, 2cqw, 2rem)',
-                  borderRadius: '16px',
+                  padding: 'clamp(1.5rem, 2.6cqh, 2.4rem) clamp(1.25rem, 2cqw, 2rem)',
+                  borderRadius: '18px',
                   textAlign: 'center',
-                  transition: 'all 200ms cubic-bezier(0.23, 1, 0.32, 1)',
-                  background: isSelected ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.04)',
-                  border: isSelected ? '1px solid rgba(99,102,241,0.4)' : '1px solid rgba(255,255,255,0.08)',
-                  transform: isSelected ? 'scale(1.03)' : 'scale(1)',
-                  cursor: 'pointer',
-                  boxShadow: isSelected ? '0 0 24px rgba(99,102,241,0.25)' : 'none',
+                  background: isSelected ? opt.color + '1A' : 'rgba(255,255,255,0.04)',
+                  border: isSelected ? `1px solid ${opt.color}60` : '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: isSelected ? `0 0 32px ${opt.color}30` : 'none',
                 }}
               >
-                <div style={{ fontSize: 'clamp(2rem, 3.5cqw, 3rem)', marginBottom: '0.625rem' }}><opt.icon size="1em" /></div>
+                <div style={{ fontSize: 'clamp(2.2rem, 3.8cqw, 3.4rem)', marginBottom: '0.625rem', color: isSelected ? opt.color : 'rgba(255,255,255,0.65)', display: 'flex', justifyContent: 'center', transition: 'color 0.25s ease' }}><opt.icon size="1em" /></div>
                 <p style={{
-                  fontSize: 'clamp(1.1rem, 1.8cqw, 1.7rem)',
+                  fontSize: 'clamp(1.15rem, 1.9cqw, 1.8rem)',
                   fontWeight: 600,
                   fontFamily: "'Heebo', sans-serif",
                   margin: 0,
-                  color: isSelected ? '#818CF8' : 'rgba(255,255,255,0.75)',
+                  color: isSelected ? 'white' : 'rgba(255,255,255,0.75)',
                   lineHeight: 1.3,
                 }}>
                   {opt.label}
@@ -112,15 +128,34 @@ export default function S03_AudienceQuestion() {
           })}
         </div>
 
-        {audienceSelections.length > 0 && (
+        {audienceSelections.length > 0 && audienceSelections.length < 3 && (
           <p className="animate-fade-in" style={{
             textAlign: 'center',
             color: 'rgba(255,255,255,0.6)',
             fontSize: 'clamp(1.1rem, 1.6cqw, 1.5rem)',
             fontFamily: "'Heebo', sans-serif",
           }}>
-            בחרתם {audienceSelections.length} תחומים, נחזור אליהם בסוף
+            בחרתם {audienceSelections.length} מתוך 3
           </p>
+        )}
+        {audienceSelections.length === 3 && (
+          <div style={{
+            padding: 'clamp(0.75rem, 1.4cqh, 1.2rem) clamp(1.5rem, 2.6cqw, 2.5rem)',
+            borderRadius: '100px',
+            background: 'linear-gradient(135deg, rgba(99,102,241,0.16), rgba(6,182,212,0.12))',
+            border: '1px solid rgba(99,102,241,0.4)',
+            boxShadow: '0 0 40px rgba(99,102,241,0.25)',
+            animation: 'popIn 0.45s cubic-bezier(0.23,1,0.32,1) both',
+          }}>
+            <p style={{
+              margin: 0, textAlign: 'center',
+              color: 'white', fontWeight: 700,
+              fontSize: 'clamp(1.2rem, 1.9cqw, 1.8rem)',
+              fontFamily: "'Heebo', sans-serif",
+            }}>
+              מעולה. בדיוק בתחומים האלה אייג׳נטים חזקים, נראה איך
+            </p>
+          </div>
         )}
       </div>
     </SceneBase>

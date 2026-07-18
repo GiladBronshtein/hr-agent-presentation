@@ -665,3 +665,52 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── INTERACTIVE AFFORDANCE ──────────────────────────────────────── */
+.interactive-card {
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
+}
+.interactive-card:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 24px rgba(99,102,241,0.18);
+}
+.interactive-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+.interactive-card:focus-visible {
+  outline: 2px solid rgba(129,140,248,0.7);
+  outline-offset: 3px;
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes winnerGlow {
+  0%, 100% { box-shadow: 0 0 24px rgba(99,102,241,0.25); }
+  50%      { box-shadow: 0 0 48px rgba(99,102,241,0.5); }
+}
+
+/* ─── BLACKOUT (presenter B key) ──────────────────────────────────── */
+.blackout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 350ms ease;
+}
+.blackout-overlay.on {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@keyframes dashFlow {
+  to { stroke-dashoffset: -24; }
+}

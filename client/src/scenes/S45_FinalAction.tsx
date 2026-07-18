@@ -30,7 +30,7 @@ export default function S45_FinalAction() {
                   animationFillMode: 'both',
                   opacity: 0,
                 }}>
-                <span className="text-5xl block mb-3"><action.icon size="1em" /></span>
+                <span className="block mb-3" style={{ fontSize: 'clamp(2.6rem, 4.2cqw, 4rem)', color: '#34D399', display: 'flex', justifyContent: 'center' }}><action.icon size="1em" /></span>
                 <h3 className="text-white font-bold text-3xl mb-1">{action.title}</h3>
                 <p className="text-white/60 text-3xl mb-3">{action.desc}</p>
                 <span className="text-3xl px-2 py-1 rounded-full"

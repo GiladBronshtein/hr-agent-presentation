@@ -15,7 +15,7 @@ const SHORTCUTS = [
   { keys: ['F'], description: 'מסך מלא' },
   { keys: ['P'], description: 'הערות מציג' },
   { keys: ['N'], description: 'חלון מציג (מסך שני)' },
-  { keys: ['M'], description: 'הפעל/השתק' },
+  { keys: ['B'], description: 'מסך שחור (הפסקה)' },
   { keys: ['R'], description: 'אפס דמו' },
   { keys: ['H', '?'], description: 'עזרה' },
 ];

@@ -97,6 +97,23 @@ export function PresenterControls() {
             transition: 'width 500ms cubic-bezier(0.23, 1, 0.32, 1)',
           }}
         />
+        {/* Chapter boundary markers */}
+        {CHAPTERS.slice(1).map((ch) => (
+          <div
+            key={ch.id}
+            style={{
+              position: 'absolute',
+              top: '-1px',
+              left: `${(ch.sceneRange[0] / (totalScenes - 1)) * 100}%`,
+              width: '4px',
+              height: '4px',
+              borderRadius: '50%',
+              background: ch.color,
+              boxShadow: `0 0 6px ${ch.color}`,
+              opacity: 0.8,
+            }}
+          />
+        ))}
       </div>
 
       {/* ── Chapter + scene counter (top right, auto-hides) ── */}
