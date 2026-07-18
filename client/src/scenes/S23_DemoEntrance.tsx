@@ -55,9 +55,9 @@ export default function S23_DemoEntrance() {
         <div key={i} style={{
           position: 'absolute', top: '50%', left: '50%',
           width: `${(i + 1) * 200}px`, height: `${(i + 1) * 200}px`,
+          marginLeft: `${-(i + 1) * 100}px`, marginTop: `${-(i + 1) * 100}px`,
           borderRadius: '50%',
           border: `1px solid rgba(8,145,178,${0.1 - i * 0.02})`,
-          transform: 'translate(-50%, -50%)',
           animation: `ripple 3.5s ease-out ${i * 0.7}s infinite`,
           pointerEvents: 'none', zIndex: 1,
         }} />

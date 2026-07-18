@@ -28,8 +28,10 @@ export function RotateHint() {
       style={{
         position: 'fixed',
         top: '1rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
+        left: 0,
+        right: 0,
+        marginInline: 'auto',
+        width: 'fit-content',
         zIndex: 200,
         display: 'flex',
         alignItems: 'center',

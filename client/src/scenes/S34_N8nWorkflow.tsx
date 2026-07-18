@@ -70,12 +70,14 @@ export default function S34_N8nWorkflow() {
               return (
                 <button key={node.id}
                   onClick={() => setActive(on ? null : node.id)}
-                  className="absolute interactive-card"
+                  className="absolute"
                   style={{
                     left: `${node.x}%`, top: `${node.y}%`,
                     transform: 'translate(-50%, -50%)',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                     background: 'transparent', border: 'none', padding: 0,
+                  }}>
+                  <div className="interactive-card" style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                     animation: `fadeInUp 0.5s ease ${0.15 + i * 0.1}s both`,
                   }}>
                   <div style={{
@@ -93,6 +95,7 @@ export default function S34_N8nWorkflow() {
                   <div style={{ textAlign: 'center' }}>
                     <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: 'rgba(255,255,255,0.9)', whiteSpace: 'nowrap' }}>{node.label}</div>
                     <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.85rem, 1.1cqw, 1.05rem)', color: node.color + 'BB', whiteSpace: 'nowrap' }}>{node.sub}</div>
+                  </div>
                   </div>
                 </button>
               );

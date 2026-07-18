@@ -36,13 +36,21 @@ export default function S07_Anatomy() {
   useLayoutEffect(() => {
     const measure = () => {
       const el = svgRef.current?.parentElement;
-      if (el) setDims({ w: el.clientWidth, h: el.clientHeight });
+      if (el && (el.clientWidth !== dims.w || el.clientHeight !== dims.h)) {
+        setDims({ w: el.clientWidth, h: el.clientHeight });
+      }
     };
     measure();
     const raf = requestAnimationFrame(measure);
     window.addEventListener('resize', measure);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); };
-  }, []);
+    let ro: ResizeObserver | null = null;
+    const el = svgRef.current?.parentElement;
+    if (el && typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(measure);
+      ro.observe(el);
+    }
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); ro?.disconnect(); };
+  });
 
   return (
     <SceneBase>
@@ -67,7 +75,7 @@ export default function S07_Anatomy() {
         </div>
 
         {/* Radial diagram */}
-        <div className="animate-scale-in stagger-2" style={{ position: 'relative', flexGrow: 1, width: '100%', maxWidth: '900px', minHeight: 'clamp(260px, 40cqh, 460px)' }}>
+        <div className="animate-scale-in stagger-2" style={{ position: 'relative', flexShrink: 0, width: '100%', maxWidth: '900px', height: 'clamp(300px, 46cqh, 500px)' }}>
           <svg ref={svgRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
             {dims.w > 0 && COMPONENTS.map((comp, i) => {
               const cx = dims.w / 2, cy = dims.h / 2;
@@ -119,22 +127,28 @@ export default function S07_Anatomy() {
                   position: 'absolute',
                   left: `${NODE_POS[i].x}%`, top: `${NODE_POS[i].y}%`,
                   transform: 'translate(-50%, -50%)',
+                  background: 'transparent', border: 'none', padding: 0,
+                  zIndex: 6,
+                }}
+              >
+                {/* Entrance animation lives on an inner wrapper so it can never
+                    override the button's centering transform */}
+                <div style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
                   padding: 'clamp(0.625rem, 1.1cqh, 0.9rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
                   borderRadius: '16px',
                   background: isSelected ? comp.color + '1F' : 'rgba(255,255,255,0.04)',
                   border: isSelected ? `1px solid ${comp.color}70` : '1px solid rgba(255,255,255,0.1)',
                   boxShadow: isSelected ? `0 0 32px ${comp.color}45` : 'none',
-                  zIndex: 6,
                   animation: `fadeInUp 0.45s ease ${0.15 + i * 0.06}s both`,
-                }}
-              >
-                <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
-                  <comp.Icon size="1em" />
-                </span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.35cqw, 1.3rem)', color: isSelected ? 'white' : 'rgba(255,255,255,0.8)' }}>
-                  {comp.label}
-                </span>
+                }}>
+                  <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
+                    <comp.Icon size="1em" />
+                  </span>
+                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.35cqw, 1.3rem)', color: isSelected ? 'white' : 'rgba(255,255,255,0.8)' }}>
+                    {comp.label}
+                  </span>
+                </div>
               </button>
             );
           })}
@@ -143,7 +157,8 @@ export default function S07_Anatomy() {
         {/* Detail card */}
         <div className="animate-fade-in" key={selected || 'none'} style={{
           flexShrink: 0, width: '100%', maxWidth: '980px',
-          minHeight: 'clamp(84px, 13cqh, 120px)',
+          height: 'clamp(96px, 15cqh, 136px)',
+          overflow: 'hidden',
           padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.25rem, 2.2cqw, 2rem)',
           borderRadius: '18px',
           background: selectedComp ? selectedComp.color + '10' : 'rgba(255,255,255,0.03)',
