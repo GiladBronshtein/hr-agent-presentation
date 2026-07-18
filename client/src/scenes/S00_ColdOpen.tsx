@@ -67,44 +67,62 @@ function ParticleField() {
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
 }
 
-/** Connection lines trimmed so they stop at the hub's edge and just before each node. */
+/** Connection lines measured against the real hub/node rectangles so they
+ * stop at each card's edge with a uniform gap, whatever the card's size. */
 function ConnectionLines({ activeNodeIdx }: { activeNodeIdx: number }) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [dims, setDims] = useState({ w: 0, h: 0 });
+  const [geo, setGeo] = useState<{
+    hub: { x: number; y: number; r: number };
+    nodes: { x: number; y: number; hw: number; hh: number }[];
+  } | null>(null);
 
   useLayoutEffect(() => {
     const measure = () => {
-      const el = svgRef.current?.parentElement;
-      if (el) setDims({ w: el.clientWidth, h: el.clientHeight });
+      const box = svgRef.current?.parentElement;
+      if (!box) return;
+      const boxRect = box.getBoundingClientRect();
+      if (boxRect.width === 0 || box.clientWidth === 0) return;
+      const k = box.clientWidth / boxRect.width; // visual px -> layout px
+      const hubEl = box.querySelector('[data-map-hub]');
+      const nodeEls = box.querySelectorAll('[data-map-node]');
+      if (!hubEl || nodeEls.length === 0) return;
+      const rel = (r: DOMRect) => ({
+        x: (r.left - boxRect.left + r.width / 2) * k,
+        y: (r.top - boxRect.top + r.height / 2) * k,
+        hw: (r.width / 2) * k,
+        hh: (r.height / 2) * k,
+      });
+      const h = rel(hubEl.getBoundingClientRect());
+      setGeo({
+        hub: { x: h.x, y: h.y, r: Math.max(h.hw, h.hh) },
+        nodes: Array.from(nodeEls).map((el) => rel(el.getBoundingClientRect())),
+      });
     };
     measure();
-    // second pass after first paint, when flex sizing has fully settled
     const raf = requestAnimationFrame(measure);
     window.addEventListener('resize', measure);
-    window.addEventListener('orientationchange', measure);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', measure);
-      window.removeEventListener('orientationchange', measure);
-    };
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); };
   }, []);
 
-  const HUB_TRIM = 56;  // hub radius (~42.5px) + breathing room
-  const NODE_TRIM = 46; // half node tile (~32px) + breathing room
+  const GAP = 12;
 
   return (
     <svg ref={svgRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-      {dims.w > 0 && TOOLS.map((tool, i) => {
-        const cx = dims.w / 2, cy = dims.h / 2;
-        const nx = (tool.x / 100) * dims.w, ny = (tool.y / 100) * dims.h;
-        const dx = nx - cx, dy = ny - cy;
+      {geo && TOOLS.map((tool, i) => {
+        const n = geo.nodes[i];
+        if (!n) return null;
+        const dx = n.x - geo.hub.x, dy = n.y - geo.hub.y;
         const len = Math.hypot(dx, dy);
-        if (len <= HUB_TRIM + NODE_TRIM + 8) return null;
+        if (len < 1) return null;
         const ux = dx / len, uy = dy / len;
+        const startTrim = geo.hub.r + GAP;
+        const edge = Math.min(n.hw / Math.max(Math.abs(ux), 1e-6), n.hh / Math.max(Math.abs(uy), 1e-6));
+        const endTrim = edge + GAP;
+        if (len <= startTrim + endTrim) return null;
         return (
           <line key={tool.id}
-            x1={cx + ux * HUB_TRIM} y1={cy + uy * HUB_TRIM}
-            x2={nx - ux * NODE_TRIM} y2={ny - uy * NODE_TRIM}
+            x1={geo.hub.x + ux * startTrim} y1={geo.hub.y + uy * startTrim}
+            x2={n.x - ux * endTrim} y2={n.y - uy * endTrim}
             stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.06)'}
             strokeWidth={activeNodeIdx === i ? 2 : 1}
             strokeDasharray={activeNodeIdx === i ? '0' : '4 6'}
@@ -242,7 +260,7 @@ export default function S00_ColdOpen() {
 
             {/* HR Hub */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-              <div style={{
+              <div data-map-hub style={{
                 width: 'clamp(65px, 8cqw, 85px)', height: 'clamp(65px, 8cqw, 85px)',
                 borderRadius: '50%',
                 background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.12) 100%)',
@@ -267,13 +285,14 @@ export default function S00_ColdOpen() {
             {TOOLS.map((tool, i) => {
               const isActive = activeNodeIdx === i;
               return (
-                <div key={tool.id} style={{
+                <div key={tool.id} data-map-node style={{
                   position: 'absolute', left: `${tool.x}%`, top: `${tool.y}%`,
                   transform: `translate(-50%, -50%) scale(${isActive ? 1.18 : 1})`,
                   transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)', zIndex: 5,
                 }}>
                   <div style={{
-                    width: 'clamp(48px, 6.5cqw, 64px)', height: 'clamp(48px, 6.5cqw, 64px)',
+                    minWidth: 'clamp(52px, 6.5cqw, 68px)', width: 'auto',
+                    padding: 'clamp(0.4rem, 0.8cqh, 0.6rem) clamp(0.6rem, 1cqw, 0.9rem)',
                     borderRadius: '14px',
                     background: isActive ? tool.color + '22' : 'rgba(255,255,255,0.04)',
                     border: `1px solid ${isActive ? tool.color + '55' : 'rgba(255,255,255,0.08)'}`,

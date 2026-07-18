@@ -24,33 +24,44 @@ const NODE_POS = COMPONENTS.map((_, i) => {
   return { x: 50 + 40 * Math.cos(angle), y: 50 + 38 * Math.sin(angle) };
 });
 
-const HUB_TRIM = 62;
-const NODE_TRIM = 52;
+const SPOKE_GAP = 12;
 
 export default function S07_Anatomy() {
   const [selected, setSelected] = useState<string | null>('goal');
   const selectedComp = COMPONENTS.find(c => c.id === selected);
   const svgRef = useRef<SVGSVGElement>(null);
-  const [dims, setDims] = useState({ w: 0, h: 0 });
+  const [geo, setGeo] = useState<{
+    hub: { x: number; y: number; r: number };
+    nodes: { x: number; y: number; hw: number; hh: number }[];
+  } | null>(null);
 
   useLayoutEffect(() => {
     const measure = () => {
-      const el = svgRef.current?.parentElement;
-      if (el && (el.clientWidth !== dims.w || el.clientHeight !== dims.h)) {
-        setDims({ w: el.clientWidth, h: el.clientHeight });
-      }
+      const box = svgRef.current?.parentElement;
+      if (!box) return;
+      const boxRect = box.getBoundingClientRect();
+      if (boxRect.width === 0 || box.clientWidth === 0) return;
+      const k = box.clientWidth / boxRect.width; // visual px -> layout px
+      const hubEl = box.querySelector('[data-map-hub]');
+      const nodeEls = box.querySelectorAll('[data-map-node]');
+      if (!hubEl || nodeEls.length === 0) return;
+      const rel = (r: DOMRect) => ({
+        x: (r.left - boxRect.left + r.width / 2) * k,
+        y: (r.top - boxRect.top + r.height / 2) * k,
+        hw: (r.width / 2) * k,
+        hh: (r.height / 2) * k,
+      });
+      const h = rel(hubEl.getBoundingClientRect());
+      setGeo({
+        hub: { x: h.x, y: h.y, r: Math.max(h.hw, h.hh) },
+        nodes: Array.from(nodeEls).map((el) => rel(el.getBoundingClientRect())),
+      });
     };
     measure();
     const raf = requestAnimationFrame(measure);
     window.addEventListener('resize', measure);
-    let ro: ResizeObserver | null = null;
-    const el = svgRef.current?.parentElement;
-    if (el && typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(measure);
-      ro.observe(el);
-    }
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); ro?.disconnect(); };
-  });
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); };
+  }, []);
 
   return (
     <SceneBase>
@@ -77,18 +88,22 @@ export default function S07_Anatomy() {
         {/* Radial diagram */}
         <div className="animate-scale-in stagger-2" style={{ position: 'relative', flexShrink: 0, width: '100%', maxWidth: '900px', height: 'clamp(300px, 46cqh, 500px)' }}>
           <svg ref={svgRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-            {dims.w > 0 && COMPONENTS.map((comp, i) => {
-              const cx = dims.w / 2, cy = dims.h / 2;
-              const nx = (NODE_POS[i].x / 100) * dims.w, ny = (NODE_POS[i].y / 100) * dims.h;
-              const dx = nx - cx, dy = ny - cy;
+            {geo && COMPONENTS.map((comp, i) => {
+              const n = geo.nodes[i];
+              if (!n) return null;
+              const dx = n.x - geo.hub.x, dy = n.y - geo.hub.y;
               const len = Math.hypot(dx, dy);
-              if (len <= HUB_TRIM + NODE_TRIM) return null;
+              if (len < 1) return null;
               const ux = dx / len, uy = dy / len;
+              const startTrim = geo.hub.r + SPOKE_GAP;
+              const edge = Math.min(n.hw / Math.max(Math.abs(ux), 1e-6), n.hh / Math.max(Math.abs(uy), 1e-6));
+              const endTrim = edge + SPOKE_GAP;
+              if (len <= startTrim + endTrim) return null;
               const on = selected === comp.id;
               return (
                 <line key={comp.id}
-                  x1={cx + ux * HUB_TRIM} y1={cy + uy * HUB_TRIM}
-                  x2={nx - ux * NODE_TRIM} y2={ny - uy * NODE_TRIM}
+                  x1={geo.hub.x + ux * startTrim} y1={geo.hub.y + uy * startTrim}
+                  x2={n.x - ux * endTrim} y2={n.y - uy * endTrim}
                   stroke={on ? comp.color : 'rgba(255,255,255,0.1)'}
                   strokeWidth={on ? 2.5 : 1}
                   strokeDasharray={on ? '0' : '4 6'}
@@ -101,7 +116,7 @@ export default function S07_Anatomy() {
 
           {/* Center core */}
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 5 }}>
-            <div style={{
+            <div data-map-hub style={{
               width: 'clamp(76px, 8cqw, 104px)', height: 'clamp(76px, 8cqw, 104px)',
               borderRadius: '50%',
               background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.1) 100%)',
@@ -121,6 +136,7 @@ export default function S07_Anatomy() {
             return (
               <button
                 key={comp.id}
+                data-map-node
                 onClick={() => setSelected(isSelected ? null : comp.id)}
                 className="interactive-card"
                 style={{

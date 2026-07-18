@@ -9,6 +9,7 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
 import { PHOTO_URL, QR_URL } from '../lib/mediaAssets';
+import { usePresentationStore } from '../store/presentationStore';
 import { SmoothImage } from '../components/SmoothImage';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/giladbronshtein/';
 
@@ -89,8 +90,20 @@ function AuroraBlobs() {
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }} />;
 }
 
+const AUDIENCE_LABELS: Record<string, string> = {
+  coordination: 'תיאומים ותזכורות',
+  writing: 'כתיבה חוזרת',
+  'data-entry': 'הזנת נתונים',
+  searching: 'חיפוש מידע',
+  approvals: 'מעקב אחר אישורים',
+  onboarding: 'קליטת עובדים',
+  reporting: 'הכנת דוחות',
+  scheduling: 'תיאום פגישות',
+};
+
 export default function S50_PersonalClosing() {
   const [phase, setPhase] = useState(0);
+  const { audienceSelections } = usePresentationStore();
 
   useEffect(() => {
     const timers = [
@@ -168,9 +181,11 @@ export default function S50_PersonalClosing() {
               fontSize: 'clamp(4rem,10cqw,9.5rem)',
               fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.04em',
               margin: '0.04em 0 0',
-              background: 'linear-gradient(130deg, #818CF8 0%, #6366F1 35%, #22D3EE 75%, #67E8F9 100%)',
+              background: 'linear-gradient(130deg, #818CF8 0%, #6366F1 30%, #22D3EE 55%, #67E8F9 75%, #818CF8 100%)',
+              backgroundSize: '220% 100%',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               filter: 'drop-shadow(0 0 35px rgba(99,102,241,0.5))',
+              animation: 'gradientShift 7s ease-in-out infinite',
             }}>
               ברונשטיין
             </h1>
@@ -217,6 +232,7 @@ export default function S50_PersonalClosing() {
               borderRadius: '14px', overflow: 'hidden', background: 'white',
               padding: '6px', flexShrink: 0, position: 'relative',
               boxShadow: '0 0 0 1px rgba(99,102,241,0.35), 0 0 28px rgba(99,102,241,0.25)',
+              animation: 'winnerGlow 3s ease-in-out infinite',
             }}>
               <SmoothImage src={QR_URL} alt="QR code to LinkedIn" shimmer style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </div>
@@ -238,10 +254,36 @@ export default function S50_PersonalClosing() {
                 color: '#818CF8', fontSize: 'clamp(0.9rem,1.1cqw,1rem)',
                 fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, textDecoration: 'none',
               }}>
-                שאלות? נשמח לדבר →
+                שאלות? אשמח לדבר →
               </a>
             </div>
           </div>
+
+          {/* Audience payoff: what they chose at the start comes back at the end */}
+          {audienceSelections.length > 0 && (
+            <div style={{
+              display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.6rem',
+              opacity: phase >= 3 ? 1 : 0,
+              transition: 'opacity 0.5s ease 0.6s',
+            }}>
+              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.2rem)', fontWeight: 700, color: 'rgba(255,255,255,0.72)' }}>
+                התחומים שבחרתם בתחילת ההרצאה:
+              </span>
+              {audienceSelections.map((id) => AUDIENCE_LABELS[id] && (
+                <span key={id} style={{
+                  padding: '0.3rem 0.85rem', borderRadius: '100px',
+                  background: 'rgba(34,211,238,0.12)', border: '1px solid rgba(34,211,238,0.35)',
+                  color: '#67E8F9', fontFamily: "'Heebo', sans-serif", fontWeight: 600,
+                  fontSize: 'clamp(0.95rem,1.25cqw,1.15rem)',
+                }}>
+                  {AUDIENCE_LABELS[id]}
+                </span>
+              ))}
+              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.2rem)', color: 'rgba(255,255,255,0.6)' }}>
+                לכל אחד מהם יש אייג׳נט שמחכה להיבנות.
+              </span>
+            </div>
+          )}
 
           {/* Key takeaway */}
           <div style={{
