@@ -35,8 +35,12 @@ export function PresentationShell() {
   // Sync state with the presenter-view window (BroadcastChannel)
   usePresenterBridge();
 
-  // Warm the image cache during idle time so slide images appear instantly
-  useEffect(() => { prefetchMediaAssets(); }, []);
+  // Warm caches during idle time: slide images + the heavy 3D closing scene
+  useEffect(() => {
+    prefetchMediaAssets();
+    const t = setTimeout(() => { import('../../scenes/S50_PersonalClosing'); }, 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   // Touch/swipe support
   const touchStartX = useRef<number | null>(null);
@@ -76,7 +80,7 @@ export function PresentationShell() {
       onTouchEnd={handleTouchEnd}
       dir="rtl"
     >
-      {/* Main scene area — SceneStage scales it to fit small screens */}
+      {/* Main scene area - SceneStage scales it to fit small screens */}
       <SceneStage>
         <SceneRenderer currentIndex={currentSceneIndex} />
       </SceneStage>
@@ -93,7 +97,7 @@ export function PresentationShell() {
         <KeyboardHelp />
       </div>
 
-      {/* Speaker notes — slides up from bottom */}
+      {/* Speaker notes - slides up from bottom */}
       <SpeakerNotes />
 
       {/* Presenter blackout (B) */}

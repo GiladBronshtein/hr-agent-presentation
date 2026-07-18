@@ -1,5 +1,5 @@
 /**
- * SceneBase — Shared scene wrapper
+ * SceneBase - Shared scene wrapper
  * Design: AI-Native UI + Glassmorphism + Dark Mode OLED
  * Colors: Deep Space #0A0A1A, Indigo #6366F1, Cyan #0891B2
  * Typography: Space Grotesk (headings), DM Sans (body)
@@ -21,7 +21,7 @@ interface SceneBaseProps {
   className?: string;
   variant?: 'dark' | 'deep-dark' | 'light' | 'chapter-break';
   chapterColor?: string;
-  /** Skip the default background — scene manages its own */
+  /** Skip the default background - scene manages its own */
   noBg?: boolean;
 }
 
@@ -385,7 +385,7 @@ export function ChapterBadge({ label, color }: { label: string; color: string })
   );
 }
 
-// ─── Metric — conference-scale stat ───────────────────────────
+// ─── Metric - conference-scale stat ───────────────────────────
 
 export function Metric({
   label,
@@ -401,7 +401,7 @@ export function Metric({
   label?: string;
   /** Text value (rendered huge). Use `number` instead for count-up. */
   value?: string;
-  /** Numeric value — animates counting up on mount */
+  /** Numeric value - animates counting up on mount */
   number?: number;
   suffix?: string;
   /** Old value shown small + struck-through next to the new one */
@@ -448,7 +448,7 @@ export function Metric({
   );
 }
 
-// ─── TakeawayBar — system-wide bottom takeaway pill ───────────
+// ─── TakeawayBar - system-wide bottom takeaway pill ───────────
 
 export function TakeawayBar({ children, color }: { children: ReactNode; color?: string }) {
   const { currentSceneIndex } = usePresentationStore();
@@ -476,7 +476,7 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
   );
 }
 
-// ─── GhostWord — giant faded chapter motif ────────────────────
+// ─── GhostWord - giant faded chapter motif ────────────────────
 
 export function GhostWord({ children, color = 'rgba(99,102,241,0.04)', side = 'left' }: {
   children: ReactNode; color?: string; side?: 'left' | 'right';

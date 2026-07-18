@@ -13,7 +13,7 @@ type SetupFn = (canvas: HTMLCanvasElement) => DrawFn;
 
 /**
  * Decorative canvas animation with conference-safe behavior:
- * - throttled to `fps` (default 30) — half the main-thread cost of a raw rAF loop
+ * - throttled to `fps` (default 30) - half the main-thread cost of a raw rAF loop
  * - pauses entirely when the tab is hidden
  * - reduced motion or "lightweight" quality renders a single static frame
  * - handles sizing + resize

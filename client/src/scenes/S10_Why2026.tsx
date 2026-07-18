@@ -2,9 +2,9 @@ import { SceneBase, ContentLayout, SceneTitle, GlassCard, AnimatedNumber } from 
 import { BarChart3, Handshake, Link, RefreshCw } from 'lucide-react';
 
 // SOURCES (verified):
-// 57%: Deloitte / ServiceNow — https://www.deloitte.com/et/en/alliances/servicenow/about/deloittes-fastforward-powered-by-servicenow.html
-// 60%: McKinsey Global Institute, Jun 2023 — https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier
-// 82%: Gartner, 2025 — https://eightfold.ai/learn/gartner-prepare-for-the-future-of-ai-agents-in-hr/
+// 57%: Deloitte / ServiceNow - https://www.deloitte.com/et/en/alliances/servicenow/about/deloittes-fastforward-powered-by-servicenow.html
+// 60%: McKinsey Global Institute, Jun 2023 - https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier
+// 82%: Gartner, 2025 - https://eightfold.ai/learn/gartner-prepare-for-the-future-of-ai-agents-in-hr/
 
 const STATS = [
   { value: 57, suffix: '%', label: 'מזמן HR הולך למשימות אדמיניסטרטיביות', color: '#6366F1', source: 'Deloitte', sourceUrl: 'https://www.deloitte.com/et/en/alliances/servicenow/about/deloittes-fastforward-powered-by-servicenow.html' },

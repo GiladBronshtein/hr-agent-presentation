@@ -1,5 +1,5 @@
 /**
- * SceneStage — scale-to-fit rendering surface for scenes.
+ * SceneStage - scale-to-fit rendering surface for scenes.
  *
  * Scenes always render on a fixed 16:9 virtual canvas (a size container, so
  * cqw/cqh resolve against it) that is scaled to fit the window, letterboxed

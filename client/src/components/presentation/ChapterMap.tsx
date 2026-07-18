@@ -1,13 +1,14 @@
 /**
- * ChapterMap — AI-Native UI + Glassmorphism overlay
+ * ChapterMap - AI-Native UI + Glassmorphism overlay
  * Design: Full-screen frosted glass overlay, bento-grid scene cards, chapter color coding
  */
 import { useEffect, useRef } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS } from '../../data/scenes';
 import { X, BookOpen, Layers, Wrench, Rocket, FileText } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-const CHAPTER_ICONS: Record<string, React.ElementType> = {
+const CHAPTER_ICONS: Record<string, LucideIcon> = {
   'להבין': BookOpen,
   'לראות': Layers,
   'לבנות': Wrench,

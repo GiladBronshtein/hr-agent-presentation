@@ -1,5 +1,5 @@
 /**
- * PresenterView — second-window presenter console (#/presenter).
+ * PresenterView - second-window presenter console (#/presenter).
  * Synced with the main window over BroadcastChannel; renders no heavy scenes,
  * just what the presenter needs: current/next slide, notes, timer, clock.
  */

@@ -1,5 +1,5 @@
 /**
- * CelebrationBurst — a one-shot confetti particle burst for milestone moments
+ * CelebrationBurst - a one-shot confetti particle burst for milestone moments
  * (e.g. approving the agent's plan in the live demo). Fires once on the
  * rising edge of `active`, ~1.8s, then cleans up. Skipped under reduced motion.
  */

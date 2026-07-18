@@ -1,5 +1,5 @@
 /**
- * S34: n8n Workflow — full-canvas node graph of the agent flow,
+ * S34: n8n Workflow - full-canvas node graph of the agent flow,
  * with a success branch (top) and a human-notify branch (bottom).
  */
 import { useState } from 'react';

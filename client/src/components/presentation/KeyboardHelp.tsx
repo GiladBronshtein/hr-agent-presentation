@@ -1,6 +1,6 @@
 /**
- * KeyboardHelp — Keyboard shortcuts overlay
- * Design: AI-Native UI glassmorphic modal — hidden by default, shown only when isKeyboardHelpOpen
+ * KeyboardHelp - Keyboard shortcuts overlay
+ * Design: AI-Native UI glassmorphic modal - hidden by default, shown only when isKeyboardHelpOpen
  */
 import { useEffect } from 'react';
 import { X } from 'lucide-react';

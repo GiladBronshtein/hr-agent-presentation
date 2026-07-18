@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ═══════════════════════════════════════════════════════════════════
-   DESIGN SYSTEM: AI-Native UI — Conference Hall Edition
+   DESIGN SYSTEM: AI-Native UI - Conference Hall Edition
    Colors: Deep Space OLED + Indigo primary + Cyan interactive + Gold CTA
    Typography: Space Grotesk (display) + Heebo (Hebrew body) + DM Sans (en body)
    Scale: Optimized for 1920×1080 projector, readable from 20m
@@ -166,7 +166,7 @@
   backdrop-filter: blur(24px) saturate(1.5);
   border-top: 1px solid rgba(99,102,241,0.15);
   box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
-  /* Hidden by default — slides up when .open is added */
+  /* Hidden by default - slides up when .open is added */
   transform: translateY(100%);
   opacity: 0;
   pointer-events: none;
@@ -244,7 +244,7 @@
   backdrop-filter: blur(12px);
 }
 
-/* ─── TYPOGRAPHY — CONFERENCE HALL SCALE ─────────────────────────── */
+/* ─── TYPOGRAPHY - CONFERENCE HALL SCALE ─────────────────────────── */
 /* All sizes use clamp() for responsive scaling */
 .display-hero {
   font-family: 'Space Grotesk', 'Heebo', sans-serif;
@@ -718,4 +718,13 @@
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50%      { background-position: 100% 50%; }
+}
+
+@keyframes drawStroke {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes kenBurns {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.045); }
 }

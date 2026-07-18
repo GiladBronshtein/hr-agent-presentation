@@ -1,15 +1,16 @@
 /**
  * S12: Employee Journey
- * Conference Hall Edition — full-screen, RTL arrows, massive cards
+ * Conference Hall Edition - full-screen, RTL arrows, massive cards
  */
 import { useState, useEffect } from 'react';
 import { Bot, DoorOpen, MessageCircle, Target, TrendingUp, UserPlus } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { SceneBase, GhostWord } from '../components/presentation/SceneBase';
 
 type RiskLevel = 'low' | 'medium' | 'high';
 
 const STAGES: {
-  id: string; label: string; icon: React.ElementType; risk: RiskLevel;
+  id: string; label: string; icon: LucideIcon; risk: RiskLevel;
   agents: string[]; description: string; color: string;
 }[] = [
   {
@@ -109,7 +110,7 @@ export default function S12_EmployeeJourney() {
           }}>לחצו על שלב לפרטים</p>
         </div>
 
-        {/* Journey Steps — RTL: right to left = גיוס → קליטה → פיתוח → מעורבות → עזיבה */}
+        {/* Journey Steps - RTL: right to left = גיוס → קליטה → פיתוח → מעורבות → עזיבה */}
         <div style={{
           display: 'flex', alignItems: 'stretch',
           gap: 'clamp(0.5rem, 1cqw, 1rem)',

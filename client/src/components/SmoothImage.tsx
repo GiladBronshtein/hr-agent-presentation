@@ -1,5 +1,5 @@
 /**
- * SmoothImage — progressive image with shimmer placeholder and blur-up reveal.
+ * SmoothImage - progressive image with shimmer placeholder and blur-up reveal.
  * - Shimmer sweep (glassmorphism-toned) fills the box while loading
  * - Image fades in and un-blurs on load (respects prefers-reduced-motion)
  * - Cache-aware: already-loaded images render instantly with no animation

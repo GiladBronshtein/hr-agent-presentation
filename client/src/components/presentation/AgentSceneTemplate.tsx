@@ -1,11 +1,12 @@
 /**
- * AgentSceneTemplate — shared cinematic layout for the nine HR agent slides
+ * AgentSceneTemplate - shared cinematic layout for the nine HR agent slides
  * (S14-S22). Gives each agent a color identity, a conference-scale
  * before→after hero, a giant ghost icon, and series progress dots so the
  * audience always knows where they are in the 9-agent run.
  */
 import { useEffect, useState } from 'react';
 import { AlertTriangle, ArrowLeft } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { SceneBase } from './SceneBase';
 
 const SERIES_LENGTH = 9;
@@ -14,7 +15,7 @@ export interface AgentSceneProps {
   /** 1-based position in the 9-agent series */
   index: number;
   title: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   color: string;
   before: string;
   after: string;
@@ -28,7 +29,7 @@ export function AgentScene({ index, title, icon: Icon, color, before, after, val
 
   return (
     <SceneBase>
-      {/* Giant ghost icon — per-agent identity */}
+      {/* Giant ghost icon - per-agent identity */}
       <div aria-hidden style={{
         position: 'absolute', left: '-4%', top: '50%', transform: 'translateY(-50%)',
         fontSize: 'clamp(16rem, 26cqw, 24rem)', lineHeight: 1,

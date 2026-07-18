@@ -1,5 +1,5 @@
 /**
- * RotateHint — on compact portrait screens, suggests rotating to landscape
+ * RotateHint - on compact portrait screens, suggests rotating to landscape
  * for the full cinematic layout. Auto-dismisses and never comes back within
  * the session once dismissed or rotated.
  */

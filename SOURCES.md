@@ -32,11 +32,11 @@
   - URL: https://www.deloitte.com/lu/en/our-thinking/future-of-advice/hr-to-lead-agentic-ai.html
   - Quote: "Nearly nine in ten HR professionals using AI in recruiting say it saves time, and more than one in three reports reduced hiring costs"
 
-### S39_MeasuringValue (illustrative benchmarks — not exact research claims)
+### S39_MeasuringValue (illustrative benchmarks - not exact research claims)
 - These are illustrative before/after benchmarks based on industry averages, not specific study claims.
 - Should be presented as "industry benchmarks" not as specific research statistics.
 
 ## Notes
-- The 73% "HR managers report high coordination load" stat in original S10 was NOT from a verified source — replaced with verified 57% Deloitte stat.
-- The 4.2 hours/day coordination stat was NOT from a verified source — removed.
+- The 73% "HR managers report high coordination load" stat in original S10 was NOT from a verified source - replaced with verified 57% Deloitte stat.
+- The 4.2 hours/day coordination stat was NOT from a verified source - removed.
 - All remaining stats in S10 are now from verified, linkable sources.

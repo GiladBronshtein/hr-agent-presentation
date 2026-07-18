@@ -231,7 +231,7 @@ export default function S05_AutomationVsAgent() {
         </div>
       </div>
 
-      {/* Bottom takeaway — hugs the slide's bottom edge, clear of the content above */}
+      {/* Bottom takeaway - hugs the slide's bottom edge, clear of the content above */}
       <div style={{
         position: 'absolute',
         bottom: 'clamp(1.25rem, 2.5cqh, 2rem)',

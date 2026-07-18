@@ -1,5 +1,5 @@
 /**
- * S07: Anatomy of an Agent — radial diagram.
+ * S07: Anatomy of an Agent - radial diagram.
  * Seven components orbit a central Agent core (visually bookending the
  * cold-open system map). Clicking a component lights its spoke and opens
  * the detail card below.

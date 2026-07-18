@@ -1,5 +1,5 @@
 /**
- * S43: Objections — the hard questions as big flip-style quote cards.
+ * S43: Objections - the hard questions as big flip-style quote cards.
  * Click a quote: the card fills with its accent color and reveals the answer.
  */
 import { useState } from 'react';

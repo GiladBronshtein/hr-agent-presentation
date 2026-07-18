@@ -1,5 +1,5 @@
 /**
- * SlackChat — realistic Slack-style chat window for the live demo slides.
+ * SlackChat - realistic Slack-style chat window for the live demo slides.
  * The audience instantly recognizes the tool, which sells the "this is real"
  * moment better than an abstract terminal.
  */

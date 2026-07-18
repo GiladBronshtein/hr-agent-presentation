@@ -37,7 +37,7 @@ export default function S47_AppendixN8nBlueprint() {
             <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 'clamp(1.1rem,1.5cqw,1.4rem)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>
               נספח ב׳
             </p>
-            <SceneTitle size="md">n8n Blueprint — אייג׳נט קליטה</SceneTitle>
+            <SceneTitle size="md">n8n Blueprint - אייג׳נט קליטה</SceneTitle>
             <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: 'clamp(1rem,1.4cqw,1.3rem)', marginTop: '0.5rem' }}>
               7 צמתים שמרכיבים את הזרימה המלאה
             </p>
