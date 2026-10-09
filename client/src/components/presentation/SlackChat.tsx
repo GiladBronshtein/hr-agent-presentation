@@ -25,10 +25,11 @@ export function SlackWindow({ channel, children }: { channel: string; children: 
         <span style={{ display: 'inline-flex', color: 'rgba(255,255,255,0.55)', fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)' }}>
           <Hash size="1em" />
         </span>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.92)', direction: 'ltr' }}>
+        <span style={{ fontFamily: "'DM Sans', 'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.92)', direction: 'ltr' }}>
           {channel}
         </span>
-        <span style={{ marginRight: 'auto', display: 'flex', gap: '6px' }}>
+        {/* macOS window dots: red, amber, green from the left (LTR inside the RTL bar) */}
+        <span dir="ltr" style={{ marginRight: 'auto', display: 'flex', gap: '6px' }}>
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#F43F5E' }} />
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#F59E0B' }} />
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981' }} />
@@ -63,13 +64,13 @@ export function SlackMessage({
           <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.95)' }}>{name}</span>
           {isBot && (
             <span style={{
-              fontSize: 'clamp(0.7rem, 0.9cqw, 0.8rem)', fontWeight: 700, letterSpacing: '0.04em',
+              fontSize: 'clamp(0.85rem, 0.9cqw, 1rem)', fontWeight: 700, letterSpacing: '0.04em',
               padding: '0.1rem 0.4rem', borderRadius: '4px',
               background: 'rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.75)',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'DM Sans', 'Heebo', sans-serif",
             }}>APP</span>
           )}
-          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace', direction: 'ltr' }}>{time}</span>
+          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.4)', fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", direction: 'ltr' }}>{time}</span>
         </div>
         <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', color: 'rgba(255,255,255,0.85)', lineHeight: 1.55, overflowWrap: 'break-word' }}>
           {children}

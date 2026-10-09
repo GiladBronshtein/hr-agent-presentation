@@ -11,12 +11,14 @@ const SHORTCUTS = [
   { keys: ['←'], description: 'סצנה קודמת' },
   { keys: ['Home'], description: 'סצנה ראשונה' },
   { keys: ['End'], description: 'סצנה אחרונה' },
-  { keys: ['Esc'], description: 'פתח/סגור מפת מצגת' },
+  { keys: ['Esc'], description: 'פתיחה / סגירה של מפת המצגת' },
   { keys: ['F'], description: 'מסך מלא' },
   { keys: ['P'], description: 'הערות מציג' },
   { keys: ['N'], description: 'חלון מציג (מסך שני)' },
   { keys: ['B'], description: 'מסך שחור (הפסקה)' },
-  { keys: ['R'], description: 'אפס דמו' },
+  { keys: ['M'], description: 'השתקה / הפעלת צליל' },
+  { keys: ['I'], description: 'ניגון חוזר של פתיח הכותרת' },
+  { keys: ['R'], description: 'איפוס דמו' },
   { keys: ['H', '?'], description: 'עזרה' },
 ];
 
@@ -48,6 +50,8 @@ export function KeyboardHelp() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: '1rem',
+        boxSizing: 'border-box',
         background: 'rgba(3, 3, 12, 0.82)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
@@ -64,24 +68,27 @@ export function KeyboardHelp() {
         dir="rtl"
         style={{
           width: '100%',
-          maxWidth: '400px',
-          margin: '0 1rem',
+          maxWidth: '520px',
+          maxHeight: '100%',
+          overflowY: 'auto',
+          scrollbarWidth: 'none',
+          boxSizing: 'border-box',
           borderRadius: '20px',
           background: 'rgba(12, 12, 30, 0.97)',
           border: '1px solid rgba(99,102,241,0.22)',
           boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)',
-          padding: '1.75rem',
-          animation: 'scaleIn 0.25s cubic-bezier(0.23, 1, 0.32, 1) both',
+          padding: 'clamp(1.1rem, 3vh, 1.75rem) clamp(1.1rem, 4vw, 1.75rem)',
+          animation: 'scaleIn 0.3s var(--mo-ease-out) both',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          marginBottom: '1.25rem',
+          marginBottom: 'clamp(0.5rem, 1.6vh, 1rem)',
         }}>
           <h2 style={{
-            margin: 0, fontSize: '1.05rem', fontWeight: 700,
+            margin: 0, fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3,
             color: 'white', fontFamily: "'Heebo', sans-serif",
           }}>
             קיצורי מקלדת
@@ -107,7 +114,7 @@ export function KeyboardHelp() {
               btn.style.background = 'rgba(255,255,255,0.06)';
               btn.style.color = 'rgba(255,255,255,0.68)';
             }}
-            aria-label="סגור"
+            aria-label="סגירה"
           >
             <X size={15} />
           </button>
@@ -120,24 +127,30 @@ export function KeyboardHelp() {
               key={i}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '0.45rem 0',
+                gap: '1rem',
+                padding: 'clamp(0.3rem, 0.9vh, 0.55rem) 0',
                 borderBottom: i < SHORTCUTS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
               }}
             >
               <span style={{
-                color: 'rgba(255,255,255,0.6)', fontSize: '2.1rem',
-                fontFamily: "'Heebo', sans-serif",
+                color: 'rgba(255,255,255,0.78)', fontSize: '1.0625rem', lineHeight: 1.35,
+                fontFamily: "'Heebo', sans-serif", minWidth: 0, textWrap: 'balance',
               }}>
                 {shortcut.description}
               </span>
-              <div style={{ display: 'flex', gap: '0.25rem' }}>
+              <div dir="ltr" style={{ display: 'flex', gap: '0.3rem', flexShrink: 0 }}>
                 {shortcut.keys.map((key) => (
                   <kbd
                     key={key}
                     style={{
-                      padding: '0.18rem 0.45rem', borderRadius: '5px',
-                      fontSize: '1rem', fontFamily: "'Space Grotesk', monospace",
-                      fontWeight: 600, color: 'rgba(255,255,255,0.68)',
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      minWidth: '2rem', height: '1.75rem', padding: '0 0.5rem', borderRadius: '6px',
+                      boxSizing: 'border-box', lineHeight: 1,
+                      // Arrow glyphs are tiny in Space Grotesk: draw them in the system font
+                      ...(key.length === 1 && /[←→]/.test(key)
+                        ? { fontSize: '1.05rem', fontFamily: 'system-ui, sans-serif' }
+                        : { fontSize: '0.875rem', fontFamily: "'Space Grotesk', monospace" }),
+                      fontWeight: 600, color: 'rgba(255,255,255,0.85)',
                       background: 'rgba(255,255,255,0.07)',
                       border: '1px solid rgba(255,255,255,0.12)',
                     }}
@@ -151,11 +164,11 @@ export function KeyboardHelp() {
         </div>
 
         <p style={{
-          marginTop: '1rem', color: 'rgba(255,255,255,0.18)',
-          fontSize: '1rem', textAlign: 'center',
+          margin: 'clamp(0.5rem, 1.6vh, 1rem) 0 0', color: 'rgba(255,255,255,0.5)',
+          fontSize: '0.875rem', lineHeight: 1.4, textAlign: 'center',
           fontFamily: "'Heebo', sans-serif",
         }}>
-          לחץ H בכל עת לפתיחת עזרה זו
+          לחיצה על H בכל עת פותחת עזרה זו
         </p>
       </div>
     </div>

@@ -125,10 +125,10 @@ export function PresenterView() {
             }}>
               {formatElapsed(elapsed)}
             </span>
-            <button onClick={() => setRunning((r) => !r)} aria-label={running ? 'השהה' : 'המשך'} style={btnStyle}>
+            <button onClick={() => setRunning((r) => !r)} aria-label={running ? 'השהיה' : 'המשך'} style={btnStyle}>
               {running ? <Pause size={15} /> : <Play size={15} />}
             </button>
-            <button onClick={() => { setElapsed(0); startRef.current = Date.now(); }} aria-label="אפס" style={btnStyle}>
+            <button onClick={() => { setElapsed(0); startRef.current = Date.now(); }} aria-label="איפוס" style={btnStyle}>
               <RotateCcw size={15} />
             </button>
           </div>
@@ -145,7 +145,7 @@ export function PresenterView() {
           background: color + '10', border: `1px solid ${color}30`,
         }}>
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color, letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif" }}>
-            סלייד נוכחי
+            סצנה נוכחית
           </div>
           <div style={{ fontSize: '1.9rem', fontWeight: 800, lineHeight: 1.2 }}>
             {scene?.hebrewTitle}
@@ -161,7 +161,7 @@ export function PresenterView() {
         }}>
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <ArrowLeft size={13} />
-            הסלייד הבא
+            הסצנה הבאה
           </div>
           {nextScene ? (
             <>
@@ -194,10 +194,10 @@ export function PresenterView() {
                 {notes.audienceQuestion}
               </NoteBlock>
             )}
-            <NoteBlock label="מגבלה / סיכון" icon={<AlertTriangle size={13} />} color="#F59E0B">
+            <NoteBlock label="סיכון / מגבלה" icon={<AlertTriangle size={13} />} color="#F59E0B">
               {notes.riskOrLimitation}
             </NoteBlock>
-            <NoteBlock label="מעבר לסלייד הבא" color="#10B981">{notes.transition}</NoteBlock>
+            <NoteBlock label="מעבר לסצנה הבאה" color="#10B981">{notes.transition}</NoteBlock>
           </div>
         ) : (
           <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.05rem' }}>אין הערות לסצנה זו</div>
@@ -206,17 +206,17 @@ export function PresenterView() {
 
       {/* Nav bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexShrink: 0 }}>
-        <button onClick={() => send({ type: 'nav', action: 'prev' })} aria-label="סלייד קודם" style={{ ...navBtnStyle, opacity: index === 0 ? 0.35 : 1 }}>
+        <button onClick={() => send({ type: 'nav', action: 'prev' })} aria-label="סצנה קודמת" style={{ ...navBtnStyle, opacity: index === 0 ? 0.35 : 1 }}>
           <ChevronRight size={20} />
           קודם
         </button>
         {notes && (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', padding: '0 1rem' }}>
             <Clock size={14} />
-            {notes.estimatedMinutes} דק׳ לסלייד
+            {notes.estimatedMinutes} דק׳ לסצנה
           </span>
         )}
-        <button onClick={() => send({ type: 'nav', action: 'next' })} aria-label="סלייד הבא" style={{ ...navBtnStyle, opacity: index >= SCENES.length - 1 ? 0.35 : 1 }}>
+        <button onClick={() => send({ type: 'nav', action: 'next' })} aria-label="סצנה הבאה" style={{ ...navBtnStyle, opacity: index >= SCENES.length - 1 ? 0.35 : 1 }}>
           הבא
           <ChevronLeft size={20} />
         </button>

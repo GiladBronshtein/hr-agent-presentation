@@ -19,12 +19,12 @@ const TOOLS = [
 ];
 
 const ACTIVITIES = [
-  { time: '08:00', text: 'הודעת ברוכים הבאים נשלחה ל-Slack', color: '#E01E5A', icon: MessageCircle },
-  { time: '08:07', text: 'משתמש חדש נוצר ב-HRIS', color: '#F59E0B', icon: Building2 },
+  { time: '08:00', text: 'הודעת ברכה נשלחה ל-Slack', color: '#E01E5A', icon: MessageCircle },
+  { time: '08:07', text: 'חשבון חדש נוצר ב-HRIS', color: '#F59E0B', icon: Building2 },
   { time: '08:13', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: Calendar },
   { time: '08:19', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: Folder },
   { time: '08:26', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: Target },
-  { time: '08:33', text: 'תיק עובד עודכן ב-Excel', color: '#217346', icon: BarChart3 },
+  { time: '08:33', text: 'תיק אישי עודכן ב-Excel', color: '#217346', icon: BarChart3 },
   { time: '08:40', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: Mail },
   { time: '08:47', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: PartyPopper },
 ];
@@ -178,7 +178,6 @@ export default function S00_ColdOpen() {
         gap: '1.25rem',
         padding: '1.25rem 1.75rem 4.75rem',
         overflow: 'hidden',
-        opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease',
       }}>
 
         {/* LEFT: Headline + Stats */}
@@ -189,9 +188,9 @@ export default function S00_ColdOpen() {
             background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)',
             width: 'fit-content',
           }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: '#FCD34D', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              יום ראשון, עובד חדש
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', boxShadow: '0 0 8px #F59E0B' }} />
+            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#FCD34D', fontFamily: "'Heebo', sans-serif" }}>
+              יום ראשון, קליטה חדשה
             </span>
           </div>
 
@@ -231,8 +230,8 @@ export default function S00_ColdOpen() {
                   {stat.label}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', direction: 'ltr', justifyContent: 'flex-end', minWidth: '9.5rem', flexShrink: 0 }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(2rem, 3.2cqw, 3.25rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em', minWidth: '2ch', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{stat.value}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: stat.color + 'BB' }}>{stat.unit}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(2rem, 3.2cqw, 3.25rem)', fontWeight: 800, color: stat.color, lineHeight: 1, letterSpacing: '-0.04em', minWidth: '2ch', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{stat.value}</span>
                 </div>
               </div>
             ))}
@@ -243,7 +242,7 @@ export default function S00_ColdOpen() {
             background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
           }}>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.45rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
-              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה קרה אוטומטית</span>, בלי מגע אנושי?
+              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה היה קורה אוטומטית</span>, בלי מגע אנושי?
             </p>
           </div>
         </div>
@@ -267,18 +266,10 @@ export default function S00_ColdOpen() {
                 border: '2px solid rgba(99,102,241,0.55)',
                 boxShadow: '0 0 40px rgba(99,102,241,0.45), 0 0 80px rgba(99,102,241,0.15)',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
-                animation: 'breathe 3s ease-in-out infinite',
               }}>
                 <span style={{ fontSize: 'clamp(1.3rem, 2.2cqw, 1.8rem)', display: 'inline-flex', color: '#A5B4FC' }}><User size="1em" /></span>
-                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>HR</span>
+                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: '#818CF8', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 700 }}>HR</span>
               </div>
-              {[0, 1].map((r) => (
-                <div key={r} style={{
-                  position: 'absolute', inset: `${-10 - r * 16}px`, borderRadius: '50%',
-                  border: '1px solid rgba(99,102,241,0.15)',
-                  animation: `ripple 2.5s ease-out ${r * 0.7}s infinite`,
-                }} />
-              ))}
             </div>
 
             {/* Tool nodes */}
@@ -301,7 +292,7 @@ export default function S00_ColdOpen() {
                     transition: 'all 0.3s ease', backdropFilter: 'blur(8px)',
                   }}>
                     <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.5rem)', lineHeight: 1, display: 'inline-flex', color: isActive ? tool.color : 'rgba(255,255,255,0.7)', transition: 'color 0.3s ease' }}><tool.icon size="1em" /></span>
-                    <span style={{ fontSize: 'clamp(1rem, 1cqw, 0.95rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{tool.label}</span>
+                    <span style={{ fontSize: 'clamp(1rem, 1cqw, 0.95rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 600 }}>{tool.label}</span>
                   </div>
                 </div>
               );
@@ -312,8 +303,8 @@ export default function S00_ColdOpen() {
         {/* RIGHT: Activity Feed */}
         <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minHeight: 0, height: '100%', overflow: 'hidden', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem', flexShrink: 0 }}>
-            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>LIVE ACTIVITY</span>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981' }} />
+            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif" }}>פעילות בזמן אמת</span>
           </div>
 
           {ACTIVITIES.map((activity, i) => {
@@ -331,7 +322,7 @@ export default function S00_ColdOpen() {
               }}>
                 <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px', display: 'inline-flex', color: activity.color }}><activity.icon size="1em" /></span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
+                  <div style={{ fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
                   <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
                 </div>
               </div>

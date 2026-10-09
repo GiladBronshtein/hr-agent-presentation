@@ -1,8 +1,9 @@
-import { SceneBase, ContentLayout, SceneTitle, GlassCard } from '../components/presentation/SceneBase';
-import { ClipboardList, Eye, Hand, Lock, RefreshCw, Target } from 'lucide-react';
+import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle, GlassCard } from '../components/presentation/SceneBase';
+import { AlertTriangle, ClipboardList, Eye, Hand, Lock, RefreshCw, Target } from 'lucide-react';
+import { textTint } from '../lib/typeTokens';
 
 const PRINCIPLES = [
-  { icon: Eye, title: 'שקיפות', desc: 'העובד יודע שמדבר עם AI', color: '#6366F1' },
+  { icon: Eye, title: 'שקיפות', desc: 'תמיד ברור שהשיחה היא עם AI', color: '#6366F1' },
   { icon: Target, title: 'מטרה מוגדרת', desc: 'כל אייג׳נט עושה דבר אחד בלבד', color: '#10B981' },
   { icon: ClipboardList, title: 'תיעוד מלא', desc: 'כל פעולה מתועדת עם timestamp', color: '#F59E0B' },
   { icon: Hand, title: 'אישור אנושי', desc: 'פעולות רגישות דורשות אישור', color: '#F43F5E' },
@@ -17,20 +18,21 @@ export default function S36_Governance() {
         <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
             <SceneTitle size="md">ממשל ואחריות</SceneTitle>
-            <p className="text-white/65 mt-2 text-3xl">ששה עקרונות לאייג׳נט אחראי</p>
+            <SceneSubtitle>שישה עקרונות לאייג׳נט אחראי</SceneSubtitle>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 gap-6">
             {PRINCIPLES.map((p, i) => (
-              <GlassCard key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s`, animationFillMode: 'both', opacity: 0 }}>
-                <div className="text-4xl mb-2"><p.icon size="1em" /></div>
-                <h3 className="font-bold text-3xl mb-1" style={{ color: p.color }}>{p.title}</h3>
-                <p className="text-white/65 text-3xl leading-relaxed">{p.desc}</p>
+              <GlassCard key={i} className="mo-rise" style={{ animationDelay: `${0.15 + i * 0.07}s` }}>
+                <div className="text-4xl mb-2" style={{ color: textTint(p.color) }}><p.icon size="1em" /></div>
+                <h3 className="font-bold text-3xl mb-1" style={{ color: textTint(p.color) }}>{p.title}</h3>
+                <p className="text-white/70 text-3xl leading-relaxed" style={{ textWrap: 'pretty' } as React.CSSProperties}>{p.desc}</p>
               </GlassCard>
             ))}
           </div>
-          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
-            <p className="text-white/60 text-3xl">
-              ⚠️ ממשל לא מוריד ערך, הוא מה שמאפשר לסמוך על האייג׳נט
+          <div className="p-6 rounded-xl text-center mo-rise" style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)', animationDelay: '0.65s' }}>
+            <p className="text-white/75 text-3xl" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5em' }}>
+              <AlertTriangle aria-hidden size="1em" style={{ color: '#FDA4AF', flexShrink: 0 }} />
+              ממשל לא מוריד ערך, הוא מה שמאפשר לסמוך על האייג׳נט
             </p>
           </div>
         </div>

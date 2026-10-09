@@ -5,7 +5,7 @@ export default function OnboardingAgent() {
   return (
     <AgentScene
       index={3}
-      title="אייג׳נט לקליטת עובד"
+      title="אייג׳נט לקליטה"
       icon={UserPlus}
       color="#F43F5E"
       before="4-6 שעות עבודה ידנית"

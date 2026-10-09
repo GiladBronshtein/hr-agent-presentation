@@ -1,13 +1,15 @@
 /**
  * PresenterControls - AI-Native UI + Glassmorphism
  * Design: Floating glassmorphic pill, indigo/cyan accents, smooth 200ms transitions
- * Auto-hide: fades out after 3.5s of inactivity, reappears on any mouse/key/touch
+ * Auto-hide: shown only on real pointer movement or touch, never on key or
+ * clicker presses (navigation must not flash chrome over the audience view).
+ * Hides after 3s of inactivity and immediately on a slide change.
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS, getCurrentChapter } from '../../data/scenes';
 import {
-  LayoutGrid, StickyNote, Maximize, Minimize, MonitorUp,
+  LayoutGrid, StickyNote, Maximize, Minimize, MonitorUp, Volume2, VolumeX,
   ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff,
 } from 'lucide-react';
 import { openPresenterWindow } from '../../lib/presenterChannel';
@@ -20,7 +22,8 @@ const CHAPTER_COLORS: Record<string, string> = {
   'נספח': '#64748B',
 };
 
-const HIDE_DELAY = 3500;
+const HIDE_DELAY = 3000;
+const MOVE_THRESHOLD = 6; // px: ignore jitter and synthetic mousemove after layout changes
 
 export function PresenterControls() {
   const {
@@ -35,14 +38,18 @@ export function PresenterControls() {
     togglePresenterNotes,
     toggleFullscreen,
     toggleReducedMotion,
+    isSoundEnabled,
+    toggleSound,
     setQualityLevel,
     goNext,
     goPrev,
   } = usePresentationStore();
 
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   // Use a ref for the timer to avoid stale closure issues
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverRef = useRef(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
 
   const currentScene = SCENES[currentSceneIndex];
   const currentChapter = getCurrentChapter(currentSceneIndex);
@@ -61,20 +68,30 @@ export function PresenterControls() {
   }, [scheduleHide]);
 
   useEffect(() => {
-    // Start initial hide timer
-    scheduleHide();
+    const onMove = (e: MouseEvent) => {
+      const last = lastPointRef.current;
+      lastPointRef.current = { x: e.clientX, y: e.clientY };
+      if (!last) return; // first event only records the resting position
+      if (Math.abs(e.clientX - last.x) + Math.abs(e.clientY - last.y) < MOVE_THRESHOLD) return;
+      showAndReschedule();
+    };
 
-    window.addEventListener('mousemove', showAndReschedule);
-    window.addEventListener('keydown', showAndReschedule);
+    window.addEventListener('mousemove', onMove);
     window.addEventListener('touchstart', showAndReschedule);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      window.removeEventListener('mousemove', showAndReschedule);
-      window.removeEventListener('keydown', showAndReschedule);
+      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('touchstart', showAndReschedule);
     };
-  }, [scheduleHide, showAndReschedule]);
+  }, [showAndReschedule]);
+
+  // A slide change hides the chrome at once, unless the pointer is on the pill
+  useEffect(() => {
+    if (hoverRef.current) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setIsVisible(false);
+  }, [currentSceneIndex]);
 
   return (
     <>
@@ -139,7 +156,8 @@ export function PresenterControls() {
           pointerEvents: isVisible ? 'auto' : 'none',
         }}
         // Hovering the controls bar keeps it visible
-        onMouseEnter={showAndReschedule}
+        onMouseEnter={() => { hoverRef.current = true; setIsVisible(true); if (timerRef.current) clearTimeout(timerRef.current); }}
+        onMouseLeave={() => { hoverRef.current = false; scheduleHide(); }}
       >
         <div
           dir="rtl"
@@ -189,8 +207,8 @@ export function PresenterControls() {
           <ControlBtn
             onClick={toggleChapterMap}
             active={isChapterMapOpen}
-            aria-label="מפת פרקים (Esc)"
-            title="מפת פרקים (Esc)"
+            aria-label="מפת המצגת (Esc)"
+            title="מפת המצגת (Esc)"
           >
             <LayoutGrid size={15} />
           </ControlBtn>
@@ -215,6 +233,17 @@ export function PresenterControls() {
           </ControlBtn>
 
           <Divider />
+
+          {/* Sound */}
+          <ControlBtn
+            onClick={toggleSound}
+            active={!isSoundEnabled}
+            activeColor="#F43F5E"
+            aria-label={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
+            title={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
+          >
+            {isSoundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
+          </ControlBtn>
 
           {/* Reduced motion */}
           <ControlBtn
@@ -245,7 +274,7 @@ export function PresenterControls() {
           {/* Fullscreen */}
           <ControlBtn
             onClick={toggleFullscreen}
-            aria-label={isFullscreen ? 'צא ממסך מלא (F)' : 'מסך מלא (F)'}
+            aria-label={isFullscreen ? 'יציאה ממסך מלא (F)' : 'מסך מלא (F)'}
             title="מסך מלא (F)"
           >
             {isFullscreen ? <Minimize size={15} /> : <Maximize size={15} />}

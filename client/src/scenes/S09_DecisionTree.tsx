@@ -1,8 +1,23 @@
 import { useState } from 'react';
 import { Bot, Settings, User, UserCheck } from 'lucide-react';
-import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle } from '../components/presentation/SceneBase';
 
 type Answer = 'yes' | 'no' | null;
+
+/**
+ * Stem that draws down from the previous step into the newly revealed one.
+ * Sits in the 2rem gap above its card (space-y-8), so it never shifts layout.
+ */
+function Stem({ color = 'rgba(255,255,255,0.28)' }: { color?: string }) {
+  return (
+    <span aria-hidden className="mo-grow-y" style={{
+      position: 'absolute', top: '-2rem', height: '2rem',
+      left: 'calc(50% - 1px)', width: '2px', borderRadius: '2px',
+      background: `linear-gradient(180deg, rgba(255,255,255,0.06), ${color})`,
+      pointerEvents: 'none',
+    }} />
+  );
+}
 
 export default function S09_DecisionTree() {
   const [q1, setQ1] = useState<Answer>(null);
@@ -41,31 +56,40 @@ export default function S09_DecisionTree() {
         <div className="w-full max-w-7xl space-y-8">
           <div className="text-center">
             <SceneTitle size="md">עץ ההחלטות</SceneTitle>
-            <p className="text-white/60 text-3xl mt-2">ענו על שלוש שאלות</p>
+            <SceneSubtitle>שלוש שאלות להחלטה</SceneSubtitle>
           </div>
           <div className="space-y-8">
-            <div className="p-6 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="p-6 rounded-xl mo-rise" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', animationDelay: '0.2s' }}>
               <p className="text-white/80 text-3xl font-medium mb-3">1. האם השלבים תמיד זהים?</p>
               <Btn val={q1} current={q1} set={setQ1} yes="כן, תמיד" no="לא, משתנה" />
             </div>
             {q1 === 'no' && (
-              <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <p className="text-white/80 text-3xl font-medium mb-3">2. האם נדרש הקשר מורכב?</p>
-                <Btn val={q2} current={q2} set={setQ2} yes="כן" no="לא" />
+              <div className="relative">
+                <Stem />
+                <div className="p-6 rounded-xl mo-rise" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', animationDelay: '0.22s' }}>
+                  <p className="text-white/80 text-3xl font-medium mb-3">2. האם נדרש הקשר מורכב?</p>
+                  <Btn val={q2} current={q2} set={setQ2} yes="כן" no="לא" />
+                </div>
               </div>
             )}
             {q1 === 'no' && q2 === 'yes' && (
-              <div className="p-6 rounded-xl animate-fade-in" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <p className="text-white/80 text-3xl font-medium mb-3">3. האם הפעולה רגישה?</p>
-                <Btn val={q3} current={q3} set={setQ3} yes="כן, רגישה" no="לא, בסיכון נמוך" />
+              <div className="relative">
+                <Stem />
+                <div className="p-6 rounded-xl mo-rise" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', animationDelay: '0.22s' }}>
+                  <p className="text-white/80 text-3xl font-medium mb-3">3. האם הפעולה רגישה?</p>
+                  <Btn val={q3} current={q3} set={setQ3} yes="כן, רגישה" no="לא, בסיכון נמוך" />
+                </div>
               </div>
             )}
           </div>
           {rec && (
-            <div className="p-7 rounded-xl animate-fade-in text-center" style={{ background: rec.color + '12', border: `1px solid ${rec.color}30` }}>
-              <div className="text-5xl mb-2"><rec.icon size="1em" /></div>
-              <h3 className="text-3xl font-bold mb-1" style={{ color: rec.color }}>{rec.label}</h3>
-              <p className="text-white/60 text-3xl">{rec.desc}</p>
+            <div key={rec.label} className="relative">
+              <Stem color={rec.color + 'AA'} />
+              <div className="p-7 rounded-xl mo-rise text-center" style={{ background: rec.color + '12', border: `1px solid ${rec.color}30`, animationDelay: '0.22s' }}>
+                <div className="text-5xl mb-2 mo-pop" style={{ animationDelay: '0.42s' }}><rec.icon size="1em" /></div>
+                <h3 className="text-3xl font-bold mb-1" style={{ color: rec.color }}>{rec.label}</h3>
+                <p className="text-white/60 text-3xl">{rec.desc}</p>
+              </div>
             </div>
           )}
         </div>

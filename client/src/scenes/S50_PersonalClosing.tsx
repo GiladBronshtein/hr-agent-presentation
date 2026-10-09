@@ -6,7 +6,7 @@
  */
 import { useEffect, useState } from 'react';
 import { Sparkles, MessageCircle, Mail, Calendar, Folder, Target, BarChart3, Building2, Linkedin } from 'lucide-react';
-import { SceneBase, TakeawayBar } from '../components/presentation/SceneBase';
+import { SceneBase } from '../components/presentation/SceneBase';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
 import { PHOTO_URL, QR_URL } from '../lib/mediaAssets';
@@ -101,7 +101,7 @@ const AUDIENCE_LABELS: Record<string, string> = {
   'data-entry': 'הזנת נתונים',
   searching: 'חיפוש מידע',
   approvals: 'מעקב אחר אישורים',
-  onboarding: 'קליטת עובדים',
+  onboarding: 'קליטה לארגון',
   reporting: 'הכנת דוחות',
   scheduling: 'תיאום פגישות',
 };
@@ -134,7 +134,6 @@ export default function S50_PersonalClosing() {
             color: c.color, opacity: 0.14,
             fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)',
             display: 'inline-flex',
-            animation: `float ${c.dur}s ease-in-out ${i * 0.7}s infinite`,
           }}>
             <c.icon size="1em" strokeWidth={1.5} />
           </span>
@@ -160,6 +159,7 @@ export default function S50_PersonalClosing() {
 
         {/* ── LEFT PANEL ── */}
         <div style={{
+          position: 'relative',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           padding: 'clamp(2rem,4cqh,4rem) clamp(1.5rem,3cqw,3rem) clamp(4.5rem,8cqh,6rem) clamp(3rem,6cqw,6.5rem)',
           gap: 'clamp(1rem,2.2cqh,1.9rem)',
@@ -174,7 +174,7 @@ export default function S50_PersonalClosing() {
             transition: 'opacity 0.5s ease 0.05s, transform 0.5s cubic-bezier(0.23,1,0.32,1) 0.05s',
           }}>
             <span style={{ fontSize: 'clamp(0.95rem,1.2cqw,1.1rem)', display: 'inline-flex', color: '#818CF8' }}><Sparkles size="1em" /></span>
-            <span style={{ fontSize: 'clamp(0.9rem,1.15cqw,1.05rem)', fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.16em' }}>
+            <span style={{ fontSize: 'clamp(0.9rem,1.15cqw,1.05rem)', fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", letterSpacing: '0.16em' }}>
               HR LEADERS SUMMIT 2026
             </span>
           </div>
@@ -188,11 +188,10 @@ export default function S50_PersonalClosing() {
             backgroundSize: '200% 100%',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             filter: 'drop-shadow(0 0 30px rgba(245,158,11,0.35))',
-            animation: 'gradientShift 6s ease-in-out infinite',
             opacity: phase >= 1 ? 1 : 0,
             transition: 'opacity 0.5s ease 0.15s',
           }}>
-            תודה שהייתם כאן.
+            תודה על ההקשבה.
           </h2>
 
           {/* Name block + signature draw */}
@@ -219,7 +218,6 @@ export default function S50_PersonalClosing() {
               backgroundSize: '220% 100%',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               filter: 'drop-shadow(0 0 35px rgba(99,102,241,0.5))',
-              animation: 'gradientShift 7s ease-in-out infinite',
             }}>
               ברונשטיין
             </h1>
@@ -259,7 +257,7 @@ export default function S50_PersonalClosing() {
             <p style={{
               fontFamily: "'Heebo', sans-serif",
               fontSize: 'clamp(1rem,1.4cqw,1.25rem)',
-              color: 'rgba(255,255,255,0.5)', margin: '0.35rem 0 0', lineHeight: 1.5,
+              color: 'rgba(255,255,255,0.65)', margin: '0.35rem 0 0', lineHeight: 1.5,
             }}>
               מנהל טכנולוגי שמחבר בין אנשים, דאטה ו-AI, והופך מורכבות לתוצאות ברורות.
             </p>
@@ -284,17 +282,16 @@ export default function S50_PersonalClosing() {
               borderRadius: '16px', overflow: 'hidden', background: 'white',
               padding: '7px', flexShrink: 0, position: 'relative',
               boxShadow: '0 0 0 1px rgba(99,102,241,0.35), 0 0 28px rgba(99,102,241,0.25)',
-              animation: 'winnerGlow 3s ease-in-out infinite',
             }}>
               <SmoothImage src={QR_URL} alt="QR code to LinkedIn" shimmer style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </div>
             <div>
-              <div style={{ fontSize: 'clamp(0.85rem,1.1cqw,1rem)', fontWeight: 700, color: 'rgba(255,255,255,0.45)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
-                סרקו להתחבר
+              <div style={{ fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", marginBottom: '0.4rem' }}>
+                סריקה להתחברות
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ display: 'inline-flex', color: '#818CF8', fontSize: 'clamp(1.2rem,1.6cqw,1.5rem)' }}><Linkedin size="1em" /></span>
-                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem,1.5cqw,1.4rem)', fontWeight: 700, color: 'white', direction: 'ltr' }}>
+                <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.1rem,1.5cqw,1.4rem)', fontWeight: 700, color: 'white', direction: 'ltr' }}>
                   /in/giladbronshtein
                 </span>
               </div>
@@ -322,24 +319,44 @@ export default function S50_PersonalClosing() {
               opacity: phase >= 3 ? 1 : 0,
               transition: 'opacity 0.5s ease 0.65s',
             }}>
-              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.2rem)', fontWeight: 700, color: 'rgba(255,255,255,0.72)' }}>
-                התחומים שבחרתם בתחילת ההרצאה:
+              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)', fontWeight: 700, color: 'rgba(255,255,255,0.75)' }}>
+                התחומים שנבחרו בתחילת ההרצאה:
               </span>
               {audienceSelections.map((id) => AUDIENCE_LABELS[id] && (
                 <span key={id} style={{
                   padding: '0.3rem 0.85rem', borderRadius: '100px',
                   background: 'rgba(34,211,238,0.12)', border: '1px solid rgba(34,211,238,0.35)',
                   color: '#67E8F9', fontFamily: "'Heebo', sans-serif", fontWeight: 600,
-                  fontSize: 'clamp(0.95rem,1.25cqw,1.15rem)',
+                  fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)',
                 }}>
                   {AUDIENCE_LABELS[id]}
                 </span>
               ))}
-              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem,1.3cqw,1.2rem)', color: 'rgba(255,255,255,0.6)' }}>
+              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)', color: 'rgba(255,255,255,0.68)' }}>
                 לכל אחד מהם יש אייג׳נט שמחכה להיבנות.
               </span>
             </div>
           ) : null}
+          {/* First-step pill: lives in the text column, clear of the photo */}
+          <div className="mo-rise" style={{
+            position: 'absolute', bottom: 'clamp(1.25rem, 2.5cqh, 2rem)', left: 'clamp(1.5rem,3cqw,3rem)', right: 'clamp(1.5rem,3cqw,3rem)',
+            display: 'flex', justifyContent: 'center', pointerEvents: 'none',
+            animationDelay: '1.2s',
+          }}>
+            <div style={{
+              padding: 'clamp(0.5rem, 0.8cqw, 0.9rem) clamp(1.1rem, 1.8cqw, 1.75rem)',
+              borderRadius: '100px',
+              background: 'rgba(10,10,30,0.85)',
+              border: '1px solid rgba(245,158,11,0.3)',
+              boxShadow: '0 0 24px rgba(245,158,11,0.1)',
+              textAlign: 'center',
+            }}>
+              <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(255,255,255,0.8)', textWrap: 'balance' } as React.CSSProperties}>
+                <span style={{ color: '#FCD34D', fontWeight: 700 }}>הצעד הראשון:</span>{' '}
+                לבחור תהליך אחד שמתחיל ב"מישהו צריך לזכור", ולבנות שם את האייג׳נט הראשון.
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* ── RIGHT PANEL: Photo ── */}
@@ -377,11 +394,13 @@ export default function S50_PersonalClosing() {
                 height: '97%', width: 'auto', maxWidth: '100%',
                 objectFit: 'cover', objectPosition: 'top center',
                 filter: 'brightness(0.92) contrast(1.08) saturate(0.9)',
-                maskImage: 'linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%)',
-                transformOrigin: 'center bottom',
-                animation: 'kenBurns 22s ease-in-out infinite alternate',
-              }}
+                // Soft edges on all four sides, so the photo's black backdrop
+                // melts into the page instead of reading as a rectangle
+                maskImage: 'linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
+                maskComposite: 'intersect',
+                WebkitMaskComposite: 'source-in',
+              } as React.CSSProperties}
             />
           </div>
 
@@ -390,10 +409,6 @@ export default function S50_PersonalClosing() {
         </div>
       </div>
 
-      <TakeawayBar color="#F59E0B">
-        <span style={{ color: '#FCD34D', fontWeight: 700 }}>הצעד הראשון:</span>{' '}
-        בחרו תהליך אחד שמתחיל ב"מישהו צריך לזכור", ובנו שם את האייג׳נט הראשון שלכם.
-      </TakeawayBar>
     </SceneBase>
   );
 }

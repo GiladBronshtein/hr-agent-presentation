@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 import { ArrowLeft, Clapperboard } from 'lucide-react';
+import { textTint } from '../lib/typeTokens';
 
 const DEMO_STEPS = [
   { num: '01', label: 'טריגר', color: '#6366F1' },
@@ -28,7 +29,7 @@ export default function S23_DemoEntrance() {
     const timers = [
       setTimeout(() => setPhase(1), 200),
       setTimeout(() => setPhase(2), 800),
-      setTimeout(() => setPhase(3), 1400),
+      setTimeout(() => setPhase(3), 1100),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -50,15 +51,15 @@ export default function S23_DemoEntrance() {
       <div className="grid-overlay" />
       <div className="noise-overlay" />
 
-      {/* Pulsing rings */}
-      {[0, 1, 2, 3].map((i) => (
-        <div key={i} style={{
+      {/* Slow ripple rings: the slide's single ambient loop, behind everything */}
+      {[0, 1, 2].map((i) => (
+        <div key={i} aria-hidden style={{
           position: 'absolute', top: '50%', left: '50%',
-          width: `${(i + 1) * 200}px`, height: `${(i + 1) * 200}px`,
-          marginLeft: `${-(i + 1) * 100}px`, marginTop: `${-(i + 1) * 100}px`,
+          width: `${(i + 1) * 240}px`, height: `${(i + 1) * 240}px`,
+          marginLeft: `${-(i + 1) * 120}px`, marginTop: `${-(i + 1) * 120}px`,
           borderRadius: '50%',
-          border: `1px solid rgba(8,145,178,${0.1 - i * 0.02})`,
-          animation: `ripple 3.5s ease-out ${i * 0.7}s infinite`,
+          border: `1px solid rgba(8,145,178,${0.09 - i * 0.02})`,
+          animation: `ripple 6s ease-out ${i * 2}s infinite`,
           pointerEvents: 'none', zIndex: 1,
         }} />
       ))}
@@ -79,19 +80,6 @@ export default function S23_DemoEntrance() {
         padding: 'clamp(2rem, 4cqw, 5rem) clamp(2rem, 6cqw, 8rem) 6rem',
       }}>
 
-        {/* Chapter badge */}
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: '0.625rem',
-          padding: '0.5rem 1.25rem', borderRadius: '100px',
-          background: 'rgba(8,145,178,0.12)', border: '1px solid rgba(8,145,178,0.3)',
-          marginBottom: 'clamp(1.5rem, 3cqw, 3rem)',
-          opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.5s ease',
-        }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22D3EE', display: 'inline-block', animation: 'glowPulse 1.5s ease-in-out infinite', boxShadow: '0 0 8px #22D3EE' }} />
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1cqw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.12em' }}>
-            פרק 02: לראות
-          </span>
-        </div>
 
         {/* Main headline */}
         <div style={{
@@ -123,7 +111,7 @@ export default function S23_DemoEntrance() {
           opacity: phase >= 1 ? 1 : 0,
           transition: 'opacity 0.6s ease 0.3s',
         }}>
-          אייג׳נט קליטת עובד, מהרגע שהצעת העבודה אושרה<br />
+          אייג׳נט קליטה, מהרגע שהצעת העבודה אושרה<br />
           ועד ליום הראשון בעבודה
         </p>
 
@@ -134,7 +122,7 @@ export default function S23_DemoEntrance() {
           background: 'rgba(8,145,178,0.08)',
           border: '1px solid rgba(8,145,178,0.2)',
           backdropFilter: 'blur(16px)',
-          maxWidth: '600px', width: '100%',
+          maxWidth: '760px', width: '100%',
           textAlign: 'right',
           opacity: phase >= 2 ? 1 : 0,
           transform: phase >= 2 ? 'translateY(0)' : 'translateY(16px)',
@@ -142,22 +130,24 @@ export default function S23_DemoEntrance() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1cqw, 1rem)' }}>
             <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.6rem)', display: 'inline-flex', color: '#22D3EE' }}><Clapperboard size="1em" /></span>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 0.9cqw, 1rem)', fontWeight: 700, color: '#22D3EE', letterSpacing: '0.1em' }}>התרחיש</span>
+            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#67E8F9' }}>התרחיש</span>
           </div>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1rem, 1.7cqw, 1.5rem)',
             color: 'rgba(255,255,255,0.8)', margin: '0 0 0.5rem', lineHeight: 1.55,
-          }}>
-            <span style={{ color: 'white', fontWeight: 700 }}>יעל כהן</span> קיבלה הצעת עבודה כ-Product Manager.
-            {' '}יום ראשון שלה - <span style={{ color: '#F43F5E', fontWeight: 700 }}>15 ביולי</span>, בעוד שבועיים.
+            textWrap: 'pretty',
+          } as React.CSSProperties}>
+            <span style={{ color: 'white', fontWeight: 700 }}>יעל כהן</span> קיבלה הצעת עבודה <span style={{ whiteSpace: 'nowrap' }}>כ-<bdi>Product Manager</bdi>.</span>
+            {' '}יום ראשון שלה: <span style={{ color: '#FDA4AF', fontWeight: 700, whiteSpace: 'nowrap' }}>15 ביולי</span>, <span style={{ whiteSpace: 'nowrap' }}>בעוד שבועיים.</span>
           </p>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
-            fontSize: 'clamp(1rem, 1.3cqw, 1.15rem)',
-            color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6,
-          }}>
-            נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם, ומקבל אישור, בלי שמנהל HR יצטרך לתאם ידנית.
+            fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)',
+            color: 'rgba(255,255,255,0.68)', margin: 0, lineHeight: 1.55,
+            textWrap: 'pretty',
+          } as React.CSSProperties}>
+            נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם ומקבל אישור, בלי תיאום ידני של HR.
           </p>
         </div>
 
@@ -169,18 +159,18 @@ export default function S23_DemoEntrance() {
           opacity: phase >= 3 ? 1 : 0, transition: 'opacity 0.5s ease',
         }}>
           {DEMO_STEPS.map((step, i) => (
-            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5cqw, 1rem)' }}>
+            <div key={step.num} className={phase >= 3 ? 'mo-rise-sm' : undefined} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.5cqw, 1rem)', animationDelay: `${i * 0.045}s` }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '0.375rem',
-                padding: 'clamp(0.3rem, 0.5cqw, 1rem) clamp(0.625rem, 1cqw, 1rem)',
-                borderRadius: '8px',
-                background: step.color + '0E', border: `1px solid ${step.color}25`,
+                padding: 'clamp(0.35rem, 0.5cqw, 0.6rem) clamp(0.7rem, 1cqw, 1.1rem)',
+                borderRadius: '10px',
+                background: step.color + '14', border: `1px solid ${step.color}40`,
               }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', color: step.color + '80' }}>{step.num}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.65)' }}>{step.label}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', fontWeight: 700, color: textTint(step.color), fontVariantNumeric: 'tabular-nums' }}>{step.num}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(255,255,255,0.82)' }}>{step.label}</span>
               </div>
               {i < DEMO_STEPS.length - 1 && (
-                <ArrowLeft size={10} style={{ color: 'rgba(255,255,255,0.15)', flexShrink: 0 }} />
+                <ArrowLeft aria-hidden size={18} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
               )}
             </div>
           ))}

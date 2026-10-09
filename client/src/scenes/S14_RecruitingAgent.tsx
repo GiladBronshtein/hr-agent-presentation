@@ -8,7 +8,7 @@ export default function RecruitingAgent() {
       title="אייג׳נט לפתיחת משרה"
       icon={ClipboardList}
       color="#6366F1"
-      before="3-5 ימים ממנהל ל-HR"
+      before="3-5 ימים מבקשה ועד HR"
       after="2-4 שעות"
       value="הופך בקשה עמומה לבקשה שאפשר לבחון"
       warning="האייג׳נט אינו מחליט אם צריך לגייס"

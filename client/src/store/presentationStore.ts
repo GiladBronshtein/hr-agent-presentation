@@ -8,6 +8,8 @@ export type DemoState = 'idle' | 'trigger' | 'retrieving' | 'planning' | 'tools'
 export interface PresentationStore {
   // Navigation
   currentSceneIndex: number;
+  /** Scene index before the last navigation (direction-aware effects) */
+  previousSceneIndex: number;
   totalScenes: number;
   visitedScenes: Set<number>;
   isTransitioning: boolean;
@@ -114,6 +116,7 @@ export const usePresentationStore = create<PresentationStore>()(
   persist(
     (set, get) => ({
       currentSceneIndex: 0,
+      previousSceneIndex: -1,
       totalScenes: TOTAL_SCENES,
       visitedScenes: new Set(),
       isTransitioning: false,
@@ -125,7 +128,7 @@ export const usePresentationStore = create<PresentationStore>()(
       isFullscreen: false,
       isBlackout: false,
 
-      isSoundEnabled: false,
+      isSoundEnabled: true,
       isReducedMotion: typeof window !== 'undefined'
         ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
         : false,
@@ -144,11 +147,11 @@ export const usePresentationStore = create<PresentationStore>()(
       audienceSelections: [],
       pilotScores: {},
       agentCanvas: {
-        name: 'אייג׳נט קליטת עובד',
-        mainUser: 'HR ומנהלים',
+        name: 'אייג׳נט לקליטה',
+        mainUser: 'HR והנהלה',
         goal: 'להכין תוכנית קליטה מאושרת לפני היום הראשון',
         trigger: 'הצעת עבודה אושרה ונקבע תאריך התחלה',
-        sources: 'פרופיל תפקיד, מדריך עובד, תבניות קליטה',
+        sources: 'פרופיל תפקיד, מדריך קליטה, תבניות קליטה',
         tools: 'Google Docs, Calendar, Gmail, Slack, Jira',
         allowed: 'יצירת טיוטות, פתיחת משימות, קריאת לוחות שנה',
         forbidden: 'שינוי מידע HR, חשיפת שכר, שליחה ללא אישור',
@@ -173,7 +176,7 @@ export const usePresentationStore = create<PresentationStore>()(
         const clamped = Math.max(0, Math.min(index, totalScenes - 1));
         const newVisited = new Set(visitedScenes);
         newVisited.add(clamped);
-        set({ currentSceneIndex: clamped, visitedScenes: newVisited });
+        set((st) => ({ previousSceneIndex: st.currentSceneIndex, currentSceneIndex: clamped, visitedScenes: newVisited }));
       },
 
       goNext: () => {
@@ -242,6 +245,13 @@ export const usePresentationStore = create<PresentationStore>()(
     }),
     {
       name: 'hr-agent-presentation',
+      version: 1,
+      // v1: sound is now real (synthesized intro), so turn it on for existing browsers
+      migrate: (persisted, version) => {
+        const state = (persisted || {}) as Record<string, unknown>;
+        if (version < 1) state.isSoundEnabled = true;
+        return state as unknown as PresentationStore;
+      },
       partialize: (state) => ({
         currentSceneIndex: state.currentSceneIndex,
         audienceSelections: state.audienceSelections,

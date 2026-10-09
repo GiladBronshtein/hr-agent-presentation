@@ -1,9 +1,10 @@
-import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+import { SceneBase, ContentLayout, SceneTitle, SceneEyebrow } from '../components/presentation/SceneBase';
+import { CODE_FONT } from '../lib/typeTokens';
 
-const SYSTEM_PROMPT = `אתה אייג׳נט קליטת עובדים של [שם חברה].
+const SYSTEM_PROMPT = `אתה אייג׳נט קליטה של [שם חברה].
 
 ## מטרה
-לסייע ב-HR להכין תוכנית קליטה מלאה ומאושרת לפני יום ראשון של עובד חדש.
+לסייע ל-HR להכין תוכנית קליטה מלאה ומאושרת לפני יום העבודה הראשון.
 
 ## מה מותר לך
 - קריאת מסמכי מדיניות ותהליכים
@@ -29,18 +30,20 @@ export default function S46_AppendixSystemInstructions() {
       <ContentLayout>
         <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-6xl space-y-8">
           <div>
-            <p className="text-white/60 text-3xl uppercase tracking-widest mb-2">נספח א׳</p>
+            <SceneEyebrow>נספח א׳</SceneEyebrow>
             <SceneTitle size="md">System Prompt לדוגמה</SceneTitle>
           </div>
           <div className="terminal-window">
-            <div className="terminal-header">
+            {/* macOS title bar: red, amber, green from the left */}
+            <div className="terminal-header" dir="ltr">
               <div className="terminal-dot" style={{ background: '#F43F5E' }} />
               <div className="terminal-dot" style={{ background: '#F59E0B' }} />
               <div className="terminal-dot" style={{ background: '#10B981' }} />
-              <span className="text-white/65 text-3xl mr-2">system_prompt.txt</span>
+              <span className="ml-3" style={{ fontFamily: CODE_FONT, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: 'rgba(255,255,255,0.68)' }}>system_prompt.txt</span>
             </div>
             <div className="terminal-body">
-              <pre className="text-white/70 text-3xl leading-relaxed whitespace-pre-wrap">{SYSTEM_PROMPT}</pre>
+              {/* The prompt prints top to bottom, like a file opening */}
+              <pre className="text-white/80 whitespace-pre-wrap mo-wipe-down" style={{ animationDelay: '0.3s' }}>{SYSTEM_PROMPT}</pre>
             </div>
           </div>
         </div>

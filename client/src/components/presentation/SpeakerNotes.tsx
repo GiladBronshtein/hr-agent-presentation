@@ -28,7 +28,7 @@ export function SpeakerNotes() {
             {notes && (
               <div className="flex items-center gap-1 text-white/60 text-base shrink-0">
                 <Clock size={12} />
-                <span>{notes.estimatedMinutes} דקות</span>
+                <span>{notes.estimatedMinutes} דק׳</span>
               </div>
             )}
           </div>
@@ -90,7 +90,7 @@ export function SpeakerNotes() {
         <button
           onClick={togglePresenterNotes}
           className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors shrink-0"
-          aria-label="סגור הערות"
+          aria-label="סגירת הערות"
         >
           <X size={18} />
         </button>

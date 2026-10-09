@@ -357,8 +357,10 @@
 }
 
 /* ─── ANIMATIONS ──────────────────────────────────────────────────── */
+/* Legacy keyframes and utilities share the mo-* family (motion.css):
+   16px rise, 480ms, expo-out, 70ms stagger, no overshoot */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -368,17 +370,17 @@
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.94); }
+  from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(32px); }
+  from { opacity: 0; transform: translateX(20px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-32px); }
+  from { opacity: 0; transform: translateX(-20px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
@@ -441,34 +443,34 @@
 
 /* Animation utility classes */
 .animate-fade-in-up {
-  animation: fadeInUp 0.55s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: fadeInUp var(--mo-dur, 480ms) var(--mo-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 .animate-fade-in {
-  animation: fadeIn 0.5s ease both;
+  animation: fadeIn var(--mo-dur-sm, 400ms) var(--mo-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 .animate-scale-in {
-  animation: scaleIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: scaleIn var(--mo-dur, 480ms) var(--mo-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 .animate-slide-right {
-  animation: slideInRight 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: slideInRight var(--mo-dur, 480ms) var(--mo-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 .animate-slide-left {
-  animation: slideInLeft 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: slideInLeft var(--mo-dur, 480ms) var(--mo-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
 
-/* Stagger delays */
-.stagger-1  { animation-delay: 0.05s; }
-.stagger-2  { animation-delay: 0.12s; }
+/* Stagger delays: one 70ms cadence */
+.stagger-1  { animation-delay: 0.06s; }
+.stagger-2  { animation-delay: 0.13s; }
 .stagger-3  { animation-delay: 0.20s; }
-.stagger-4  { animation-delay: 0.30s; }
-.stagger-5  { animation-delay: 0.42s; }
-.stagger-6  { animation-delay: 0.55s; }
-.stagger-7  { animation-delay: 0.68s; }
-.stagger-8  { animation-delay: 0.82s; }
-.stagger-9  { animation-delay: 0.98s; }
+.stagger-4  { animation-delay: 0.27s; }
+.stagger-5  { animation-delay: 0.34s; }
+.stagger-6  { animation-delay: 0.41s; }
+.stagger-7  { animation-delay: 0.48s; }
+.stagger-8  { animation-delay: 0.55s; }
+.stagger-9  { animation-delay: 0.62s; }
 
 /* ─── PROGRESS BAR ────────────────────────────────────────────────── */
 .progress-bar-track {
@@ -628,8 +630,18 @@
 }
 .terminal-body {
   padding: 1.5rem 1.75rem;
-  overflow-y: auto;
-  max-height: 60cqh;
+}
+/* A long file printed in a terminal (appendix system prompt): two balanced
+   columns at a projector-safe size, so it fits the stage with no scrollbar.
+   Hebrew falls back to Heebo instead of a gappy system monospace. */
+.terminal-body > pre {
+  font-family: 'Space Grotesk', 'Heebo', ui-monospace, monospace;
+  font-size: clamp(1.15rem, 1.3cqw, 1.6rem);
+  line-height: 1.55;
+  columns: 2;
+  column-gap: 3rem;
+  column-rule: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0;
 }
 
 /* ─── MOBILE / TOUCH ──────────────────────────────────────────────── */
@@ -684,9 +696,9 @@
   outline-offset: 3px;
 }
 
+/* Smooth expo-out settle from 0.96, no overshoot */
 @keyframes popIn {
-  0%   { transform: scale(0.6); opacity: 0; }
-  70%  { transform: scale(1.06); opacity: 1; }
+  0%   { transform: scale(0.96); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 

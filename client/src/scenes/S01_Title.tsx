@@ -2,8 +2,11 @@
  * S01: Title Slide: מאוטומציה לאייג׳נט
  * CONFERENCE HALL EDITION: Cinematic hero, massive typography, star field
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { LectureTrailer } from '../components/presentation/LectureTrailer';
+import { usePresentationStore } from '../store/presentationStore';
+import '../components/presentation/titleIntro.css';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
 const CHAPTERS = [
@@ -44,6 +47,134 @@ export default function S01_Title() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { const t = setTimeout(() => setMounted(true), 100); return () => clearTimeout(t); }, []);
 
+  // The ~65s lecture trailer plays when arriving forward (or on load); coming
+  // back from later slides shows the finished title. Enter skips, I replays.
+  const [intro, setIntro] = useState(() => {
+    const { previousSceneIndex, isReducedMotion } = usePresentationStore.getState();
+    return !isReducedMotion && previousSceneIndex <= 1;
+  });
+  const [introKey, setIntroKey] = useState(0);
+  const [revealed, setRevealed] = useState(!intro);
+  const [played, setPlayed] = useState(intro);
+  const reveal = useCallback(() => setRevealed(true), []);
+  // the finished trailer is already invisible; tear its WebGL down in idle time,
+  // not while the title's entrance animations are running
+  const runRef = useRef(0);
+  const endIntro = useCallback(() => {
+    const run = runRef.current;
+    const end = () => { if (runRef.current === run) setIntro(false); };
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    if (ric) ric(end, { timeout: 1500 });
+    else setTimeout(end, 900);
+  }, []);
+  useEffect(() => {
+    const replay = () => {
+      if (usePresentationStore.getState().isReducedMotion) return;
+      runRef.current++;
+      setRevealed(false);
+      setPlayed(true);
+      setIntro(true);
+      setIntroKey((k) => k + 1);
+    };
+    window.addEventListener('replay-intro', replay);
+    return () => window.removeEventListener('replay-intro', replay);
+  }, []);
+
+  // measure: a hidden, unanimated copy laid out exactly like the real title,
+  // rendered during the trailer so the particle title can land on it.
+  const content = (measure: boolean) => (
+      <div dir="rtl" aria-hidden={measure || undefined} data-title-measure={measure || undefined} style={{
+        position: 'relative', zIndex: 10,
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: 'clamp(2rem, 4cqw, 4rem) clamp(2.5rem, 6cqw, 7rem) 6rem',
+        textAlign: 'center',
+        visibility: measure ? 'hidden' : undefined,
+      }}>
+
+        {/* Eyebrow badges */}
+        <div className={measure ? undefined : 'animate-fade-in-up stagger-1'} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: 'clamp(1.5rem, 3cqw, 3rem)', flexWrap: 'wrap' }}>
+          <div style={{
+            padding: '0.45rem 1.1rem', borderRadius: '100px',
+            background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)',
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+          }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
+            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
+              HR LEADERS SUMMIT 2026
+            </span>
+          </div>
+          <div style={{
+            padding: '0.45rem 1.1rem', borderRadius: '100px',
+            background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
+          }}>
+            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: '#22D3EE', fontFamily: "'Space Grotesk', sans-serif" }}>
+              גלעד ברונשטיין
+            </span>
+          </div>
+        </div>
+
+        {/* MASSIVE title - centered, no decorative line next to text */}
+        <div className={measure ? undefined : played ? 'intro-title-in' : 'animate-fade-in-up stagger-2'} style={{ marginBottom: 'clamp(0.25rem, 1cqw, 1rem)' }}>
+          <h1 style={{
+            fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+            fontSize: 'clamp(5rem, 12cqw, 11rem)',
+            fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
+            color: 'white', margin: 0,
+          }} data-title-line="0">מאוטומציה{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
+        </div>
+
+        <div className={measure ? undefined : played ? 'intro-title-in delay-1' : 'animate-fade-in-up stagger-3'} style={{ marginBottom: 'clamp(1.5rem, 3cqw, 3.5rem)' }}>
+          <h1 style={{
+            fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
+            fontSize: 'clamp(5rem, 12cqw, 11rem)',
+            fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
+            margin: 0,
+            background: 'linear-gradient(135deg, #818CF8 0%, #6366F1 35%, #22D3EE 70%, #06B6D4 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            filter: 'drop-shadow(0 0 40px rgba(99,102,241,0.5))',
+          }} data-title-line="1">לאייג׳נט{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
+          {/* Decorative line BELOW the title, not next to it */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75rem' }}>
+            <div style={{ height: '4px', width: 'clamp(4rem, 10cqw, 9rem)', background: 'linear-gradient(90deg, #6366F1, #22D3EE)', borderRadius: '3px' }} />
+          </div>
+        </div>
+
+        {/* Subtitle */}
+        <p className={measure ? undefined : 'animate-fade-in-up stagger-4'} style={{
+          fontFamily: "'Heebo', sans-serif",
+          fontSize: 'clamp(1.5rem, 2.8cqw, 2.5rem)',
+          fontWeight: 300, color: 'rgba(255,255,255,0.68)',
+          margin: '0 0 clamp(2rem, 4cqw, 4rem)', letterSpacing: '-0.01em',
+          maxWidth: '800px', textWrap: 'balance',
+        }}>
+          <bdi dir="ltr">AI Agents for HR</bdi>: מה זה, למה עכשיו, ואיך להתחיל
+        </p>
+
+        {/* Chapter pills */}
+        <div className={measure ? undefined : 'animate-fade-in-up stagger-5'} style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(0.625rem, 1.2cqw, 1rem)', flexWrap: 'wrap' }}>
+          {CHAPTERS.map((ch, i) => (
+            <div key={ch.label} style={{
+              padding: 'clamp(0.75rem, 1.2cqw, 1rem) clamp(1.25rem, 2cqw, 1.75rem)',
+              borderRadius: '14px',
+              background: ch.color + '0F', border: `1px solid ${ch.color}28`,
+              display: 'flex', alignItems: 'center', gap: '0.75rem',
+              opacity: measure || mounted ? 1 : 0,
+              transform: measure || mounted ? 'translateY(0)' : 'translateY(16px)',
+              transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s cubic-bezier(0.23,1,0.32,1) ${0.5 + i * 0.1}s`,
+            }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: ch.color, opacity: 0.6, letterSpacing: '0.05em' }}>{ch.num}</span>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: 'white' }}>{ch.label}</div>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.55)', marginTop: '1px' }}>{ch.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+  );
+
   return (
     <SceneBase>
       <StarField />
@@ -79,98 +210,15 @@ export default function S01_Title() {
         direction: 'ltr',
       }}>AI</div>
 
-      <div dir="rtl" style={{
-        position: 'relative', zIndex: 10,
-        width: '100%', height: '100%',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: 'clamp(2rem, 4cqw, 4rem) clamp(2.5rem, 6cqw, 7rem) 6rem',
-        textAlign: 'center',
-        opacity: mounted ? 1 : 0, transition: 'opacity 0.7s ease',
-      }}>
+      {intro && (
+        <LectureTrailer
+          key={introKey}
+          onImpact={reveal}
+          onDone={endIntro}
+        />
+      )}
 
-        {/* Eyebrow badges */}
-        <div className="animate-fade-in-up stagger-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: 'clamp(1.5rem, 3cqw, 3rem)', flexWrap: 'wrap' }}>
-          <div style={{
-            padding: '0.45rem 1.1rem', borderRadius: '100px',
-            background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)',
-            display: 'flex', alignItems: 'center', gap: '0.5rem',
-          }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              HR LEADERS SUMMIT 2026
-            </span>
-          </div>
-          <div style={{
-            padding: '0.45rem 1.1rem', borderRadius: '100px',
-            background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
-          }}>
-            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: '#22D3EE', fontFamily: "'Space Grotesk', sans-serif" }}>
-              גלעד ברונשטיין
-            </span>
-          </div>
-        </div>
-
-        {/* MASSIVE title - centered, no decorative line next to text */}
-        <div className="animate-fade-in-up stagger-2" style={{ marginBottom: 'clamp(0.25rem, 1cqw, 1rem)' }}>
-          <h1 style={{
-            fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-            fontSize: 'clamp(5rem, 12cqw, 11rem)',
-            fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            color: 'white', margin: 0,
-            textShadow: '0 0 80px rgba(255,255,255,0.06)',
-          }}>מאוטומציה</h1>
-        </div>
-
-        <div className="animate-fade-in-up stagger-3" style={{ marginBottom: 'clamp(1.5rem, 3cqw, 3.5rem)' }}>
-          <h1 style={{
-            fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
-            fontSize: 'clamp(5rem, 12cqw, 11rem)',
-            fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            margin: 0,
-            background: 'linear-gradient(135deg, #818CF8 0%, #6366F1 35%, #22D3EE 70%, #06B6D4 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            filter: 'drop-shadow(0 0 40px rgba(99,102,241,0.5))',
-          }}>לאייג׳נט</h1>
-          {/* Decorative line BELOW the title, not next to it */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75rem' }}>
-            <div style={{ height: '4px', width: 'clamp(4rem, 10cqw, 9rem)', background: 'linear-gradient(90deg, #6366F1, #22D3EE)', borderRadius: '3px' }} />
-          </div>
-        </div>
-
-        {/* Subtitle */}
-        <p className="animate-fade-in-up stagger-4" style={{
-          fontFamily: "'Heebo', sans-serif",
-          fontSize: 'clamp(1.5rem, 2.8cqw, 2.5rem)',
-          fontWeight: 300, color: 'rgba(255,255,255,0.68)',
-          margin: '0 0 clamp(2rem, 4cqw, 4rem)', letterSpacing: '-0.01em',
-          maxWidth: '800px', textWrap: 'balance',
-        }}>
-          <bdi dir="ltr">AI Agents for HR</bdi>: מה זה, למה עכשיו, ואיך מתחילים
-        </p>
-
-        {/* Chapter pills */}
-        <div className="animate-fade-in-up stagger-5" style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(0.625rem, 1.2cqw, 1rem)', flexWrap: 'wrap' }}>
-          {CHAPTERS.map((ch, i) => (
-            <div key={ch.label} style={{
-              padding: 'clamp(0.75rem, 1.2cqw, 1rem) clamp(1.25rem, 2cqw, 1.75rem)',
-              borderRadius: '14px',
-              background: ch.color + '0F', border: `1px solid ${ch.color}28`,
-              display: 'flex', alignItems: 'center', gap: '0.75rem',
-              backdropFilter: 'blur(8px)',
-              opacity: mounted ? 1 : 0,
-              transform: mounted ? 'translateY(0)' : 'translateY(16px)',
-              transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s cubic-bezier(0.23,1,0.32,1) ${0.5 + i * 0.1}s`,
-            }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: ch.color, opacity: 0.6, letterSpacing: '0.05em' }}>{ch.num}</span>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>{ch.label}</div>
-                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.55)', marginTop: '1px' }}>{ch.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {revealed ? content(false) : intro ? content(true) : null}
     </SceneBase>
   );
 }

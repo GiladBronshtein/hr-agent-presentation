@@ -1,0 +1,6 @@
+import{c as x,r as E,u as A}from"./index-DRDYgctF.js";/**
+ * @license lucide-react v0.453.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const q=x("Folder",[["path",{d:"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",key:"1kt360"}]]);function z(u,d=30){const l=E.useRef(null),{isReducedMotion:f,qualityLevel:m}=A();return E.useEffect(()=>{const e=l.current;if(!e)return;const n=e.getContext("2d");if(!n)return;const i=()=>{e.width=e.offsetWidth,e.height=e.offsetHeight};i(),window.addEventListener("resize",i);const v=u(e),F=f||m==="lightweight",y=1e3/d;let r=0,t=!1,h=0,s=0,o=0;const L=a=>{if(!t||(r=requestAnimationFrame(L),a-s<y))return;s=a;const c=(a-h)/1e3;v(n,e,{t:c,dt:Math.min(c-o,.1)}),o=c},g=()=>{t||F||(t=!0,h=performance.now()-o*1e3,s=0,r=requestAnimationFrame(L))},p=()=>{t=!1,cancelAnimationFrame(r)};v(n,e,{t:0,dt:0}),g();const w=()=>{document.hidden?p():g()};return document.addEventListener("visibilitychange",w),()=>{p(),window.removeEventListener("resize",i),document.removeEventListener("visibilitychange",w)}},[u,d,f,m]),l}export{q as F,z as u};

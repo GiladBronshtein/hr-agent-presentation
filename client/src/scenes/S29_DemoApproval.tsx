@@ -4,6 +4,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { CelebrationBurst } from '../components/presentation/CelebrationBurst';
 import { usePresentationStore } from '../store/presentationStore';
 import { UserCheck, CheckCircle, XCircle, AlertTriangle, Clock, FileText } from 'lucide-react';
@@ -29,60 +30,16 @@ export default function S29_DemoApproval() {
   return (
     <SceneBase>
       <CelebrationBurst active={demoApprovalState === 'approved'} />
-      <div
-        dir="rtl"
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2.5rem 3rem 5rem',
-          gap: '1.5rem',
-        }}
-      >
-        {/* Header */}
-        <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.3rem 0.875rem',
-              borderRadius: '100px',
-              background: 'rgba(245,158,11,0.1)',
-              border: '1px solid rgba(245,158,11,0.25)',
-              marginBottom: '0.875rem',
-            }}
-          >
-            <Clock size={12} style={{ color: '#F59E0B' }} />
-            <span style={{ fontSize: '1rem', fontWeight: 700, color: '#F59E0B', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              שלב 6 · HUMAN-IN-THE-LOOP
-            </span>
-          </div>
-          <h1
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.75rem, 3.5cqw, 2.75rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.03em',
-              color: 'white',
-              margin: 0,
-            }}
-          >
-            האייג׳נט מחכה לאישורך
-          </h1>
-        </div>
-
+      <DemoStepLayout step={6} tag="Human-in-the-loop" title="האייג׳נט מחכה לאישורך" gap="clamp(1rem, 2cqh, 1.5rem)">
         {/* Pending state */}
         {demoApprovalState === 'pending' && (
           <div
             className="animate-fade-in-up stagger-2"
             style={{
               width: '100%',
-              maxWidth: '640px',
-              padding: '1.75rem',
+              maxWidth: '860px',
+              alignSelf: 'center',
+              padding: 'clamp(1.25rem, 2.2cqh, 1.75rem) clamp(1.25rem, 1.8cqw, 2rem)',
               borderRadius: '20px',
               background: 'rgba(245,158,11,0.06)',
               border: '1px solid rgba(245,158,11,0.2)',
@@ -107,10 +64,10 @@ export default function S29_DemoApproval() {
                 <FileText size={20} style={{ color: '#F59E0B' }} />
               </div>
               <div>
-                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '1.7rem', color: 'white', margin: '0 0 0.25rem' }}>
+                <p style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.3rem, 1.56cqw, 1.875rem)', color: 'white', margin: '0 0 0.25rem' }}>
                   תוכנית קליטה, יעל כהן
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '1.15rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
                   האייג׳נט הכין תוכנית מלאה ומחכה לאישורך לפני שליחה
                 </p>
               </div>
@@ -127,15 +84,17 @@ export default function S29_DemoApproval() {
               }}
             >
               {[
-                'מייל ברוכים הבאים + קישור לפורטל',
-                'פגישת Onboarding עם מנהל: 16/07 10:00',
+                'מייל ברכה + קישור לפורטל',
+                'פגישת Onboarding עם דוד: 16/07 10:00',
                 'הגדרת חשבונות: Jira, Slack, GitHub',
-                'מסמך "30-60-90 ימים" ב-Google Drive',
+                'מסמך "30-60-90 יום" ב-Google Drive',
                 'פגישת היכרות עם הצוות: 17/07 14:00',
               ].map((item, i) => (
                 <div
                   key={i}
+                  className="mo-rise-sm"
                   style={{
+                    animationDelay: `${0.3 + i * 0.05}s`,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.625rem',
@@ -143,10 +102,10 @@ export default function S29_DemoApproval() {
                     borderBottom: i < 4 ? '1px solid rgba(255,255,255,0.05)' : 'none',
                   }}
                 >
-                  <span style={{ fontFamily: 'monospace', fontSize: '1rem', color: 'rgba(245,158,11,0.5)', flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#FCD34D', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif" }}>
+                  <span style={{ color: 'rgba(255,255,255,0.82)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif" }}>
                     {item}
                   </span>
                 </div>
@@ -155,13 +114,13 @@ export default function S29_DemoApproval() {
 
             {/* Comment field */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.06em', display: 'block', marginBottom: '0.5rem' }}>
+              <label style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", display: 'block', marginBottom: '0.5rem' }}>
                 הערות (אופציונלי)
               </label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="הוסיפו הערות לאייג׳נט לפני הביצוע..."
+                placeholder="הערות לאייג׳נט לפני הביצוע..."
                 rows={2}
                 style={{
                   width: '100%',
@@ -170,8 +129,8 @@ export default function S29_DemoApproval() {
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   color: 'rgba(255,255,255,0.8)',
-                  fontSize: '2.1rem',
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
+                  fontFamily: "'Heebo', sans-serif",
                   resize: 'none',
                   outline: 'none',
                   boxSizing: 'border-box',
@@ -198,9 +157,10 @@ export default function S29_DemoApproval() {
                   background: 'linear-gradient(135deg, #10B981, #059669)',
                   border: 'none',
                   color: 'white',
-                  fontSize: '1.65rem',
+                  fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
                   fontWeight: 700,
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Heebo', sans-serif",
+                  whiteSpace: 'nowrap',
                   cursor: 'pointer',
                   transition: 'all 200ms ease',
                   boxShadow: '0 4px 16px rgba(16,185,129,0.3)',
@@ -208,8 +168,8 @@ export default function S29_DemoApproval() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'; }}
               >
-                <CheckCircle size={16} />
-                אשר וצא לפועל
+                <CheckCircle size="1em" />
+                אישור וביצוע
               </button>
               <button
                 onClick={handleReject}
@@ -223,18 +183,19 @@ export default function S29_DemoApproval() {
                   borderRadius: '12px',
                   background: 'rgba(244,63,94,0.08)',
                   border: '1px solid rgba(244,63,94,0.25)',
-                  color: '#FB7185',
-                  fontSize: '1.65rem',
+                  color: '#FDA4AF',
+                  fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
                   fontWeight: 700,
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Heebo', sans-serif",
+                  whiteSpace: 'nowrap',
                   cursor: 'pointer',
                   transition: 'all 200ms ease',
                 }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,63,94,0.14)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,63,94,0.08)'; }}
               >
-                <XCircle size={16} />
-                דחה ושלח לתיקון
+                <XCircle size="1em" />
+                דחייה והחזרה לתיקון
               </button>
             </div>
           </div>
@@ -250,12 +211,15 @@ export default function S29_DemoApproval() {
               borderRadius: '20px',
               background: 'rgba(16,185,129,0.08)',
               border: '1px solid rgba(16,185,129,0.25)',
-              maxWidth: '440px',
+              maxWidth: '600px',
               width: '100%',
+              alignSelf: 'center',
             }}
           >
             <div
+              className="mo-pop"
               style={{
+                animationDelay: '0.15s',
                 width: '64px',
                 height: '64px',
                 borderRadius: '50%',
@@ -270,10 +234,10 @@ export default function S29_DemoApproval() {
             >
               <UserCheck size={28} style={{ color: '#34D399' }} />
             </div>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.375rem', fontWeight: 700, color: '#34D399', margin: '0 0 0.5rem' }}>
+            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#6EE7B7', margin: '0 0 0.5rem' }}>
               אושר!
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
               האייג׳נט מתחיל לבצע את התוכנית...
             </p>
           </div>
@@ -289,15 +253,16 @@ export default function S29_DemoApproval() {
               borderRadius: '20px',
               background: 'rgba(244,63,94,0.07)',
               border: '1px solid rgba(244,63,94,0.2)',
-              maxWidth: '440px',
+              maxWidth: '600px',
               width: '100%',
+              alignSelf: 'center',
             }}
           >
             <AlertTriangle size={36} style={{ color: '#F43F5E', margin: '0 auto 1rem', display: 'block' }} />
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '2.6rem', fontWeight: 700, color: '#F43F5E', margin: '0 0 0.5rem' }}>
+            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#FDA4AF', margin: '0 0 0.5rem', textWrap: 'balance' } as React.CSSProperties}>
               נדחה, האייג׳נט ישנה ויחזור
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '1.1rem', fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: '0 0 1.25rem' }}>
               זה בדיוק המנגנון: האדם שולט, האייג׳נט מתאים
             </p>
             <button
@@ -308,12 +273,12 @@ export default function S29_DemoApproval() {
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.12)',
                 color: 'rgba(255,255,255,0.6)',
-                fontSize: '1.1rem',
-                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
+                fontFamily: "'Heebo', sans-serif",
                 cursor: 'pointer',
               }}
             >
-              נסה שוב
+              ניסיון נוסף
             </button>
           </div>
         )}
@@ -329,15 +294,16 @@ export default function S29_DemoApproval() {
             borderRadius: '10px',
             background: 'rgba(99,102,241,0.07)',
             border: '1px solid rgba(99,102,241,0.18)',
-            maxWidth: '560px',
+            maxWidth: '860px',
+            alignSelf: 'center',
           }}
         >
-          <UserCheck size={14} style={{ color: '#818CF8', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: '1rem', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
-            Human-in-the-Loop הוא <span style={{ color: '#818CF8', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה, הוא מה שהופך אייג׳נט לאמין
+          <UserCheck size={22} style={{ color: '#A5B4FC', flexShrink: 0 }} />
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0, textWrap: 'balance' } as React.CSSProperties}>
+            <bdi>Human-in-the-loop</bdi> הוא <span style={{ color: '#A5B4FC', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה. הוא מה שהופך אייג׳נט <span style={{ whiteSpace: 'nowrap' }}>לאמין</span>
           </p>
         </div>
-      </div>
+      </DemoStepLayout>
     </SceneBase>
   );
 }

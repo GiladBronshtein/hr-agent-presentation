@@ -6,34 +6,37 @@
 import { useEffect, useState } from 'react';
 import { BarChart3, Handshake, Rocket, Target } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { textTint } from '../lib/typeTokens';
 
 const WORDS = [
-  { text: 'מבינים', color: '#818CF8' },
-  { text: 'רואים', color: '#22D3EE' },
-  { text: 'בונים', color: '#34D399' },
-  { text: 'מטמיעים', color: '#F59E0B' },
+  { text: 'נבין', color: '#818CF8' },
+  { text: 'נראה', color: '#22D3EE' },
+  { text: 'נבנה', color: '#34D399' },
+  { text: 'נטמיע', color: '#F59E0B' },
 ];
 
 const QUESTIONS = [
-  { q: 'מה תהליך אחד שתרצו לבדוק?', icon: Target, color: '#6366F1' },
+  { q: 'מהו תהליך אחד ששווה לבדוק?', icon: Target, color: '#6366F1' },
   { q: 'מי השותף הנכון ב-IT?', icon: Handshake, color: '#0891B2' },
-  { q: 'מה מדד ההצלחה שלכם?', icon: BarChart3, color: '#10B981' },
+  { q: 'מה מדד ההצלחה שלנו?', icon: BarChart3, color: '#10B981' },
   { q: 'מה הצעד הראשון השבוע?', icon: Rocket, color: '#F59E0B' },
 ];
 
 export default function S44_ClosingReflection() {
-  const [mounted, setMounted] = useState(false);
   const [wordIdx, setWordIdx] = useState(0);
+  const [wordSwaps, setWordSwaps] = useState(0);
   const [showQuestions, setShowQuestions] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setMounted(true), 100);
-    const t2 = setTimeout(() => setShowQuestions(true), 1200);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t2 = setTimeout(() => setShowQuestions(true), 900);
+    return () => { clearTimeout(t2); };
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setWordIdx((p) => (p + 1) % WORDS.length), 2200);
+    const interval = setInterval(() => {
+      setWordIdx((p) => (p + 1) % WORDS.length);
+      setWordSwaps((n) => n + 1);
+    }, 2200);
     return () => clearInterval(interval);
   }, []);
 
@@ -67,7 +70,6 @@ export default function S44_ClosingReflection() {
         alignItems: 'center', justifyContent: 'center',
         textAlign: 'center',
         padding: 'clamp(2rem, 4cqw, 5rem) clamp(2rem, 6cqw, 8rem) 6rem',
-        opacity: mounted ? 1 : 0, transition: 'opacity 0.6s ease',
       }}>
 
         {/* Main cycling headline */}
@@ -80,7 +82,8 @@ export default function S44_ClosingReflection() {
           }}>
             אנחנו
           </span>
-          <span style={{
+          {/* Re-keyed per word so each new verb rises into place instead of snapping */}
+          <span key={wordSwaps} className={wordSwaps > 0 ? 'mo-rise-sm' : undefined} style={{
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(4.5rem, 11cqw, 10rem)',
             fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.06em',
@@ -99,17 +102,18 @@ export default function S44_ClosingReflection() {
           fontSize: 'clamp(1rem, 1.9cqw, 1.7rem)',
           color: 'rgba(255,255,255,0.62)',
           margin: '0 0 clamp(2rem, 4cqw, 4rem)',
-          maxWidth: '680px', lineHeight: 1.6,
-        }}>
-          AI Agents אינם פרויקט IT, הם שינוי בדרך שעבודה מתבצעת.<br />
-          <span style={{ color: 'rgba(255,255,255,0.65)', fontWeight: 600 }}>HR הוא לא רק לקוח, הוא אחד המעצבים.</span>
+          maxWidth: '900px', lineHeight: 1.6,
+          textWrap: 'balance',
+        } as React.CSSProperties}>
+          AI Agents אינם פרויקט IT, הם שינוי בדרך שבה עבודה מתבצעת.<br />
+          <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>HR הוא לא רק לקוח, הוא אחד המעצבים.</span>
         </p>
 
         {/* Questions grid */}
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr 1fr',
           gap: 'clamp(0.75rem, 1.5cqw, 1.25rem)',
-          maxWidth: '700px', width: '100%',
+          maxWidth: '980px', width: '100%',
           opacity: showQuestions ? 1 : 0,
           transform: showQuestions ? 'translateY(0)' : 'translateY(20px)',
           transition: 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1)',
@@ -118,18 +122,19 @@ export default function S44_ClosingReflection() {
             <div key={i} style={{
               padding: 'clamp(1rem, 1.8cqw, 1.5rem)',
               borderRadius: '16px',
-              background: item.color + '08',
-              border: `1px solid ${item.color}18`,
+              background: item.color + '0D',
+              border: `1px solid ${item.color}30`,
+              display: 'flex', alignItems: 'center', gap: '0.85rem',
               textAlign: 'right',
               opacity: showQuestions ? 1 : 0,
               transform: showQuestions ? 'translateY(0)' : 'translateY(12px)',
               transition: `opacity 0.4s ease ${i * 0.1}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${i * 0.1}s`,
             }}>
-              <span style={{ fontSize: 'clamp(1.25rem, 2cqw, 1.75rem)', display: 'block', marginBottom: '0.5rem' }}><item.icon size="1em" /></span>
+              <span style={{ fontSize: 'clamp(1.5rem, 2cqw, 2.1rem)', display: 'inline-flex', flexShrink: 0, color: textTint(item.color) }}><item.icon size="1em" /></span>
               <p style={{
                 fontFamily: "'Heebo', sans-serif",
-                fontSize: 'clamp(1rem, 1.4cqw, 1.2rem)',
-                color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5,
+                fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', fontWeight: 600,
+                color: 'rgba(255,255,255,0.85)', margin: 0, lineHeight: 1.4,
               }}>{item.q}</p>
             </div>
           ))}
@@ -138,8 +143,8 @@ export default function S44_ClosingReflection() {
         {/* Word cycle dots */}
         <div style={{
           display: 'flex', gap: '0.5rem', marginTop: 'clamp(1.5rem, 3cqw, 3rem)',
-          opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease 0.8s',
-        }}>
+          animationDelay: '0.8s',
+        }} className="mo-fade">
           {WORDS.map((w, i) => (
             <div key={i} style={{
               width: i === wordIdx ? '24px' : '8px',

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SceneBase, ContentLayout, SceneTitle } from '../components/presentation/SceneBase';
+import { SceneBase } from '../components/presentation/SceneBase';
+import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { SlackWindow, SlackMessage, TypingIndicator } from '../components/presentation/SlackChat';
 import { usePresentationStore } from '../store/presentationStore';
 
@@ -27,13 +28,7 @@ export default function S24_DemoTrigger() {
 
   return (
     <SceneBase>
-      <ContentLayout>
-        <div className="w-full max-w-5xl" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.5rem, 3cqh, 2.5rem)' }}>
-          <div style={{ textAlign: 'center' }}>
-            <p className="text-white/60 uppercase tracking-widest mb-2" style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>שלב 1</p>
-            <SceneTitle size="md">הטריגר</SceneTitle>
-          </div>
-
+      <DemoStepLayout step={1} title="הטריגר">
           <SlackWindow channel="hr-onboarding">
             <SlackMessage initials="דל" name="דוד לוי" time="09:42" color="#7C3AED">
               <span style={{ color: '#818CF8', fontWeight: 700, direction: 'ltr', unicodeBidi: 'isolate' }}>@OnboardBot</span>{' '}
@@ -42,15 +37,16 @@ export default function S24_DemoTrigger() {
             </SlackMessage>
 
             {demoStep >= 1 ? (
-              <SlackMessage initials="OB" name="OnboardBot" time="09:42" color="#6366F1" isBot>
-                קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד <bdi dir="ltr">Product Manager</bdi>.
-              </SlackMessage>
+              <div className="mo-rise-sm">
+                <SlackMessage initials="OB" name="OnboardBot" time="09:42" color="#6366F1" isBot>
+                  קיבלתי. מתחיל לאסוף מידע על יעל כהן ועל תפקיד <bdi dir="ltr">Product Manager</bdi>.
+                </SlackMessage>
+              </div>
             ) : !typing && (
               <TypingIndicator name="OnboardBot" />
             )}
           </SlackWindow>
-        </div>
-      </ContentLayout>
+      </DemoStepLayout>
     </SceneBase>
   );
 }

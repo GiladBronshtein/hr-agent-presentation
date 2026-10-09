@@ -53,7 +53,7 @@ export function RotateHint() {
       }}
     >
       <RotateCcw size={15} style={{ flexShrink: 0 }} />
-      סובבו את המכשיר לרוחב לתצוגה מיטבית
+      כדאי לסובב את המכשיר לרוחב לתצוגה מיטבית
     </div>
   );
 }

@@ -101,12 +101,12 @@ export function ChapterMap() {
               מפת המצגת
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
-              {SCENES.length} סצנות · לחץ לניווט ישיר
+              {SCENES.length} סצנות · לחיצה לניווט ישיר
             </p>
           </div>
           <button
             onClick={toggleChapterMap}
-            aria-label="סגור"
+            aria-label="סגירה"
             style={{
               width: '36px',
               height: '36px',
@@ -216,7 +216,7 @@ export function ChapterMap() {
           }}
         >
           <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '1rem' }}>
-            לחץ על סצנה לניווט ישיר
+            לחיצה על סצנה לניווט ישיר
           </span>
           <kbd
             style={{

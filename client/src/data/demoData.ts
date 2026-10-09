@@ -69,9 +69,9 @@ export const DEMO_MISSING_INFO = [
   },
   {
     id: 'crm-approval',
-    question: 'מי מאשר הרשאת CRM?',
-    options: ['מנהל IT', 'CISO', 'מנהל Customer Success'],
-    defaultAnswer: 'מנהל IT',
+    question: 'ממי נדרש אישור להרשאת CRM?',
+    options: ['הנהלת IT', 'CISO', 'הנהלת Customer Success'],
+    defaultAnswer: 'הנהלת IT',
     field: 'crmApproval' as const,
   },
   {
@@ -99,7 +99,7 @@ export const DEMO_PLAN_DECISIONS = [
   {
     id: 'crm-permission',
     situation: 'חסרה הרשאת CRM',
-    decision: 'נוצרה בקשת אישור למנהל IT',
+    decision: 'נוצרה בקשת אישור להנהלת IT',
     type: 'escalated' as const,
   },
   {
@@ -171,7 +171,7 @@ export const DEMO_ONBOARDING_DOC = {
         'קבלת גישה ל-Google Workspace ו-Slack',
         'שליחת מייל ברכה ממנהלת ומ-buddy',
         'שיתוף מדריך צוות ומסמכי מוצר',
-        'בקשת הרשאת CRM ממנהל IT',
+        'בקשת הרשאת CRM מהנהלת IT',
         'הכנת תחנת עבודה',
       ],
     },
@@ -208,7 +208,7 @@ export const DEMO_ONBOARDING_DOC = {
       title: 'אנשים שכדאי להכיר',
       items: [
         'דנה כהן, מנהלת ישירה',
-        'יעל שמיר: buddy',
+        'יעל שמיר, buddy',
         'צוות Customer Success (6 אנשים)',
         'צוות Product (ממשק יומי)',
         'צוות Sales (העברת לקוחות)',
@@ -217,10 +217,10 @@ export const DEMO_ONBOARDING_DOC = {
     {
       title: 'מערכות והרשאות',
       items: [
-        '✅ Google Workspace, מאושר',
+        '✅ Google Workspace: מאושר',
         '✅ Slack: מאושר',
         '✅ Jira: מאושר',
-        '⏳ CRM, בקשת אישור נשלחה למנהל IT',
+        '⏳ CRM: בקשת אישור נשלחה להנהלת IT',
       ],
     },
     {
@@ -239,7 +239,7 @@ export const DEMO_ONBOARDING_DOC = {
 export const DEMO_CALENDAR_EVENTS = [
   { title: 'שיחת פתיחה עם דנה', time: '10:30', date: 'ראשון 2.8', attendees: ['דנה כהן', 'נועה לוי'], type: 'manager' },
   { title: 'היכרות עם הצוות', time: '12:00', date: 'ראשון 2.8', attendees: ['צוות CS', 'נועה לוי'], type: 'team' },
-  { title: 'הדרכת מוצר', time: '14:00', date: 'שני 3.8', attendees: ['מדריך מוצר', 'נועה לוי'], type: 'training' },
+  { title: 'הדרכת מוצר', time: '14:00', date: 'שני 3.8', attendees: ['צוות מוצר', 'נועה לוי'], type: 'training' },
   { title: 'שיחה עם buddy', time: '16:00', date: 'ראשון 2.8', attendees: ['יעל שמיר', 'נועה לוי'], type: 'buddy' },
   { title: 'פגישת HR', time: '10:00', date: 'שלישי 4.8', attendees: ['HR', 'נועה לוי'], type: 'hr' },
   { title: 'סיכום שבוע ראשון', time: '16:00', date: 'חמישי 6.8', attendees: ['דנה כהן', 'נועה לוי'], type: 'review' },
@@ -247,10 +247,10 @@ export const DEMO_CALENDAR_EVENTS = [
 
 export const DEMO_JIRA_TASKS = [
   { id: 'ONBOARD-001', title: 'הכנת מחשב ותחנת עבודה', assignee: 'IT', priority: 'high', status: 'open' },
-  { id: 'ONBOARD-002', title: 'הרשאת CRM', assignee: 'מנהל IT', priority: 'high', status: 'pending-approval' },
+  { id: 'ONBOARD-002', title: 'הרשאת CRM', assignee: 'הנהלת IT', priority: 'high', status: 'pending-approval' },
   { id: 'ONBOARD-003', title: 'הרשאת Slack וקבוצות', assignee: 'IT', priority: 'medium', status: 'open' },
   { id: 'ONBOARD-004', title: 'הוספה לקבוצות Google', assignee: 'IT', priority: 'medium', status: 'open' },
-  { id: 'ONBOARD-005', title: 'הכנת סביבת עבודה ב-Jira', assignee: 'מנהל CS', priority: 'medium', status: 'open' },
+  { id: 'ONBOARD-005', title: 'הכנת סביבת עבודה ב-Jira', assignee: 'הנהלת CS', priority: 'medium', status: 'open' },
   { id: 'ONBOARD-006', title: 'אישור תוכנית קליטה', assignee: 'דנה כהן', priority: 'high', status: 'awaiting-approval' },
 ];
 
@@ -278,9 +278,9 @@ export const DEMO_SLACK_MESSAGE = {
   from: 'דנה כהן',
   message: `@channel 🎉 שמחה לבשר שנועה לוי מצטרפת אלינו ביום ראשון כ-Customer Success Manager!
 
-נועה מגיעה עם ניסיון עשיר ב-SaaS ואנחנו בטוחים שתהיה תוספת מדהימה לצוות.
+נועה מגיעה עם ניסיון עשיר ב-SaaS ואין לנו ספק שתהיה תוספת מדהימה לצוות.
 
-בואו כולם לברך אותה ביום ראשון בשיחת ה-12:00 👋
+נשמח לברך אותה יחד ביום ראשון בשיחת ה-12:00 👋
 
 cc: @yael.shamir (buddy)`,
 };
@@ -295,7 +295,7 @@ export const DEMO_APPROVAL_SUMMARY = {
     { label: 'פרט עדיין חסר', value: 1, icon: '❓' },
   ],
   pendingApprovals: [
-    'הרשאת CRM, ממתין לאישור מנהל IT',
+    'הרשאת CRM, ממתין לאישור הנהלת IT',
     'שיתוף מסמך קליטה עם נועה',
   ],
   missingInfo: 'אישור הרשאת CRM עדיין לא התקבל',
@@ -332,7 +332,7 @@ export const DEMO_AUDIT_LOG = [
   {
     action: 'שאלת הבהרה: buddy',
     time: '14:23:15',
-    approver: 'מנהל HR',
+    approver: 'הנהלת HR',
     tool: 'ממשק משתמש',
     source: 'קלט ידני',
     result: 'יעל שמיר',
@@ -407,7 +407,7 @@ export const DEMO_EXECUTION_STATUS = {
     'המנהלת אישרה את תוכנית השבוע הראשון',
   ],
   pendingItems: [
-    'הרשאת CRM, ממתין לאישור מנהל IT',
+    'הרשאת CRM, ממתין לאישור הנהלת IT',
   ],
 };
 
@@ -429,9 +429,9 @@ export const DEMO_FEEDBACK = {
     ],
   },
   agentSuggestions: [
-    'הוסף שדה "לקוחות בחודש הראשון" לטופס הקליטה',
-    'הוסף הסבר על תהליך בקשת הרשאות לתוכנית',
-    'הוסף פגישת "היכרות עם מוצר" לתוכנית ברירת המחדל',
+    'להוסיף שדה "לקוחות בחודש הראשון" לטופס הקליטה',
+    'להוסיף הסבר על תהליך בקשת הרשאות לתוכנית',
+    'להוסיף פגישת "היכרות עם מוצר" לתוכנית ברירת המחדל',
   ],
 };
 
@@ -466,7 +466,7 @@ export const TOOL_MAP: ToolInfo[] = [
   { name: 'Asana', category: 'ניהול משימות', role: 'ניהול פרויקטים ומשימות', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: false },
   { name: 'Google Calendar', category: 'מערכות רשמיות', role: 'ניהול לוחות זמנים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
   { name: 'HeyGen', category: 'יצירת תוכן', role: 'יצירת סרטוני וידאו עם AI', storesOfficialData: false, executesActions: true, requiresEnterpriseApproval: false },
-  { name: 'Workday', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
-  { name: 'HiBob', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
-  { name: 'BambooHR', category: 'מערכות HR', role: 'HRIS: מידע רשמי על עובדים', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'Workday', category: 'מערכות HR', role: 'HRIS: מידע רשמי על כוח האדם', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'HiBob', category: 'מערכות HR', role: 'HRIS: מידע רשמי על כוח האדם', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
+  { name: 'BambooHR', category: 'מערכות HR', role: 'HRIS: מידע רשמי על כוח האדם', storesOfficialData: true, executesActions: true, requiresEnterpriseApproval: true },
 ];

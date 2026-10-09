@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { prefetchMediaAssets } from '../../lib/mediaAssets';
+import { sound } from '../../lib/sound';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useKeyboardControls } from '../../hooks/useKeyboardControls';
 import { useHashSync } from '../../hooks/useHashSync';
@@ -11,6 +12,7 @@ import { KeyboardHelp } from './KeyboardHelp';
 import { SceneRenderer } from './SceneRenderer';
 import { SceneStage } from './SceneStage';
 import { RotateHint } from './RotateHint';
+import { SoundArmHint } from './SoundArmHint';
 
 export function PresentationShell() {
   const {
@@ -21,6 +23,7 @@ export function PresentationShell() {
     isTransitioning,
     isBlackout,
     toggleBlackout,
+    isSoundEnabled,
     setTransitioning,
     goNext,
     goPrev,
@@ -32,14 +35,28 @@ export function PresentationShell() {
   // URL hash <-> scene index sync (deep links + refresh recovery)
   useHashSync();
 
+  // Audio needs a user gesture once; any key or click unlocks it
+  useEffect(() => {
+    const unlock = () => sound.unlock();
+    window.addEventListener('keydown', unlock, true);
+    window.addEventListener('pointerdown', unlock, true);
+    return () => {
+      window.removeEventListener('keydown', unlock, true);
+      window.removeEventListener('pointerdown', unlock, true);
+    };
+  }, []);
+  useEffect(() => { sound.setEnabled(isSoundEnabled); }, [isSoundEnabled]);
+
   // Sync state with the presenter-view window (BroadcastChannel)
   usePresenterBridge();
 
   // Warm caches during idle time: slide images + the heavy 3D closing scene
   useEffect(() => {
     prefetchMediaAssets();
+    // the slide 2 trailer: particle formations + offline-rendered score
+    const p = setTimeout(() => { import('./trailer/prepare').then((m) => m.prepareTrailer()); }, 600);
     const t = setTimeout(() => { import('../../scenes/S50_PersonalClosing'); }, 4000);
-    return () => clearTimeout(t);
+    return () => { clearTimeout(p); clearTimeout(t); };
   }, []);
 
   // Touch/swipe support
@@ -82,7 +99,12 @@ export function PresentationShell() {
     >
       {/* Main scene area - SceneStage scales it to fit small screens */}
       <SceneStage>
-        <SceneRenderer currentIndex={currentSceneIndex} />
+        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <SceneRenderer currentIndex={currentSceneIndex} />
+          {/* Audio not yet allowed in this window: sits in the title
+              trailer's bottom letterbox bar, in stage coordinates */}
+          <SoundArmHint />
+        </div>
       </SceneStage>
 
       {/* Controls */}

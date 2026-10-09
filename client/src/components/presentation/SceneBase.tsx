@@ -7,6 +7,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { CHAPTERS, getCurrentChapter } from '../../data/scenes';
+import { RevealText } from '../motion/RevealText';
+import { useReducedMotion } from '../motion/useReducedMotion';
+import '../motion/motion.css';
 
 const CHAPTER_COLORS: Record<string, string> = {
   'להבין': '#6366F1',
@@ -26,16 +29,12 @@ interface SceneBaseProps {
 }
 
 export function SceneBase({ children, className = '', variant = 'dark', chapterColor, noBg = false }: SceneBaseProps) {
-  const { currentSceneIndex, isReducedMotion } = usePresentationStore();
-  const [mounted, setMounted] = useState(false);
-
+  const { currentSceneIndex, isReducedMotion, qualityLevel } = usePresentationStore();
   const chapter = getCurrentChapter(currentSceneIndex);
   const color = chapterColor || CHAPTER_COLORS[chapter] || '#6366F1';
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
+  // Ambient aurora: only on the default dark backgrounds, never on light or
+  // scene-managed backgrounds, and off for lightweight quality / reduced motion
+  const showAmbient = !noBg && variant !== 'light' && !isReducedMotion && qualityLevel !== 'lightweight';
 
   const bgStyles: Record<string, React.CSSProperties> = {
     'dark': {
@@ -70,6 +69,18 @@ export function SceneBase({ children, className = '', variant = 'dark', chapterC
       style={noBg ? undefined : bgStyles[variant]}
       dir="rtl"
     >
+      {/* Ambient aurora: slow drifting light behind everything (transform only) */}
+      {showAmbient && (
+        <div
+          aria-hidden
+          className="mx-ambient"
+          style={{ '--mx-amb-a': color + '1A', '--mx-amb-b': 'rgba(34,211,238,0.07)' } as React.CSSProperties}
+        >
+          <div className="mx-ambient-a" />
+          <div className="mx-ambient-b" />
+        </div>
+      )}
+
       {/* Fine grid */}
       <div
         style={{
@@ -102,16 +113,14 @@ export function SceneBase({ children, className = '', variant = 'dark', chapterC
         }}
       />
 
-      {/* Content */}
+      {/* Content: no wrapper fade. The stage transition owns the slide-level
+          entrance, so per-element staggers play on a visible parent. */}
       <div
         style={{
           position: 'relative',
           zIndex: 10,
           width: '100%',
           height: '100%',
-          opacity: mounted ? 1 : 0,
-          transform: mounted || isReducedMotion ? 'none' : 'translateY(10px)',
-          transition: isReducedMotion ? 'none' : 'opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1)',
         }}
       >
         {children}
@@ -176,10 +185,13 @@ export function SceneTitle({
 }) {
   const sizes = {
     sm: 'clamp(1.5rem, 2.5cqw, 2rem)',
-    md: 'clamp(2rem, 3.5cqw, 2.75rem)',
+    // Content-slide title: 60px on the 1920 stage, clearly above 30px body copy
+    md: 'clamp(2.25rem, 3.1cqw, 3.75rem)',
     lg: 'clamp(2.5rem, 5cqw, 4rem)',
     xl: 'clamp(3rem, 7cqw, 6rem)',
   };
+
+  const isReducedMotion = useReducedMotion();
 
   const style: React.CSSProperties = {
     fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
@@ -188,21 +200,58 @@ export function SceneTitle({
     lineHeight: 1.15,
     letterSpacing: '-0.03em',
     margin: 0,
-  };
+    textWrap: 'balance',
+  } as React.CSSProperties;
 
-  if (gradient) {
-    style.background = gradient;
-    style.WebkitBackgroundClip = 'text';
-    style.WebkitTextFillColor = 'transparent';
-    style.backgroundClip = 'text';
-  } else {
-    style.color = color || 'white';
+  const gradientStyle: React.CSSProperties | undefined = gradient
+    ? { background: gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+    : undefined;
+
+  if (!gradient) style.color = color || 'white';
+
+  if (isReducedMotion) {
+    return (
+      <h1 className={className} style={{ ...style, ...gradientStyle }}>
+        {children}
+      </h1>
+    );
   }
 
+  // Word-by-word reveal. Gradient titles reveal as one unit with the gradient
+  // on the animated element, so the fill stays continuous.
   return (
     <h1 className={className} style={style}>
-      {children}
+      <RevealText whole={!!gradient} wholeStyle={gradientStyle}>{children}</RevealText>
     </h1>
+  );
+}
+
+// Deck type scale (1920 stage): eyebrow 22px, title 60px (SceneTitle md),
+// subtitle 28px, body 30px. Hebrew never gets tracking or uppercase.
+
+export function SceneEyebrow({
+  children,
+  color,
+  className = '',
+}: {
+  children: ReactNode;
+  color?: string;
+  className?: string;
+}) {
+  return (
+    <p
+      className={className}
+      style={{
+        color: color || 'rgba(255,255,255,0.62)',
+        fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
+        fontWeight: 600,
+        lineHeight: 1.3,
+        fontFamily: "'Heebo', 'DM Sans', sans-serif",
+        margin: '0 0 0.6rem',
+      }}
+    >
+      {children}
+    </p>
   );
 }
 
@@ -217,12 +266,13 @@ export function SceneSubtitle({
     <p
       className={className}
       style={{
-        color: 'rgba(255,255,255,0.68)',
-        fontSize: 'clamp(1rem, 1.5cqw, 1.125rem)',
-        lineHeight: 1.7,
-        fontFamily: "'DM Sans', 'Heebo', sans-serif",
-        margin: 0,
-      }}
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
+        lineHeight: 1.45,
+        fontFamily: "'Heebo', 'DM Sans', sans-serif",
+        margin: '0.6rem 0 0',
+        textWrap: 'balance',
+      } as React.CSSProperties}
     >
       {children}
     </p>
@@ -254,9 +304,9 @@ export function Takeaway({
         background: c + '12',
         border: `1px solid ${c}28`,
         color: c,
-        fontSize: '1.1rem',
+        fontSize: 'clamp(1.1rem, 1.2cqw, 1.45rem)',
         fontWeight: 600,
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Heebo', 'DM Sans', sans-serif",
       }}
     >
       <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: c, flexShrink: 0 }} />
@@ -330,12 +380,15 @@ export function AnimatedNumber({
   prefix = '',
   color,
   duration = 1400,
+  fontFamily = "'Space Grotesk', sans-serif",
 }: {
   value: number;
   suffix?: string;
   prefix?: string;
   color?: string;
   duration?: number;
+  /** Numbers set inside Hebrew text use Heebo figures */
+  fontFamily?: string;
 }) {
   const [displayed, setDisplayed] = useState(0);
 
@@ -352,7 +405,7 @@ export function AnimatedNumber({
   }, [value, duration]);
 
   return (
-    <span style={{ color: color || 'white', fontFamily: "'Space Grotesk', sans-serif", fontVariantNumeric: 'tabular-nums' }}>
+    <span style={{ color: color || 'white', fontFamily, fontVariantNumeric: 'tabular-nums' }}>
       {prefix}{displayed.toLocaleString('he-IL')}{suffix}
     </span>
   );
@@ -458,7 +511,7 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
     <div style={{
       position: 'absolute', bottom: 'clamp(1.25rem, 2.5cqh, 2rem)', left: 0, right: 0,
       display: 'flex', justifyContent: 'center', zIndex: 4, pointerEvents: 'none',
-      animation: 'fadeInUp 0.6s ease 0.9s both',
+      animation: 'fadeInUp 0.48s var(--mo-ease-out) 0.6s both',
     }}>
       <div style={{
         padding: 'clamp(0.5rem, 0.8cqw, 1rem) clamp(1.25rem, 2cqw, 2rem)',
@@ -468,7 +521,7 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
         boxShadow: `0 0 24px ${c}18`,
         backdropFilter: 'blur(12px)',
       }}>
-        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.2cqw, 1.15rem)', color: 'rgba(255,255,255,0.72)' }}>
+        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', color: 'rgba(255,255,255,0.78)' }}>
           {children}
         </span>
       </div>

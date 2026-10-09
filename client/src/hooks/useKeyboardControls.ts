@@ -14,6 +14,7 @@ export function useKeyboardControls() {
     toggleDiagnostics,
     toggleFullscreen,
     toggleBlackout,
+    toggleSound,
     toggleReducedMotion,
     resetDemo,
     isChapterMapOpen,
@@ -114,6 +115,18 @@ export function useKeyboardControls() {
           toggleBlackout();
           break;
 
+        case 'm':
+        case 'M':
+          e.preventDefault();
+          toggleSound();
+          break;
+
+        case 'i':
+        case 'I':
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent('replay-intro'));
+          break;
+
         case 'r':
         case 'R':
           e.preventDefault();
@@ -148,6 +161,7 @@ export function useKeyboardControls() {
     toggleDiagnostics,
     toggleFullscreen,
     toggleBlackout,
+    toggleSound,
     toggleReducedMotion,
     resetDemo,
     isChapterMapOpen,

@@ -13,7 +13,7 @@ const OPTIONS = [
   { id: 'data-entry', label: 'הזנת נתונים', icon: BarChart3, color: '#10B981' },
   { id: 'searching', label: 'חיפוש מידע', icon: Search, color: '#F59E0B' },
   { id: 'approvals', label: 'מעקב אחר אישורים', icon: CheckCircle2, color: '#A78BFA' },
-  { id: 'onboarding', label: 'קליטת עובדים', icon: UserPlus, color: '#F43F5E' },
+  { id: 'onboarding', label: 'קליטה לארגון', icon: UserPlus, color: '#F43F5E' },
   { id: 'reporting', label: 'הכנת דוחות', icon: TrendingUp, color: '#34D399' },
   { id: 'scheduling', label: 'תיאום פגישות', icon: Calendar, color: '#FCD34D' },
 ];
@@ -39,13 +39,11 @@ export default function S03_AudienceQuestion() {
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
           <p style={{
-            fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)',
-            fontWeight: 700,
-            color: 'rgba(255,255,255,0.55)',
-            letterSpacing: '0.12em',
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
+            fontWeight: 600,
+            color: 'rgba(255,255,255,0.62)',
+            fontFamily: "'Heebo', sans-serif",
             marginBottom: '0.75rem',
-            textTransform: 'uppercase',
           }}>
             שאלה לקהל
           </p>
@@ -58,7 +56,7 @@ export default function S03_AudienceQuestion() {
             margin: 0,
             lineHeight: 1.1,
           }}>
-            איפה הזמן שלכם נעלם?
+            איפה הזמן שלנו נעלם?
           </h1>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.875rem', marginTop: '0.875rem' }}>
             <p style={{
@@ -67,7 +65,7 @@ export default function S03_AudienceQuestion() {
               fontSize: 'clamp(1.2rem, 1.8cqw, 1.7rem)',
               fontFamily: "'Heebo', sans-serif",
             }}>
-              בחרו עד שלושה תחומים
+              אפשר לבחור עד שלושה תחומים
             </p>
             <div style={{ display: 'flex', gap: '0.4rem' }}>
               {[0, 1, 2].map((slot) => {
@@ -94,16 +92,17 @@ export default function S03_AudienceQuestion() {
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 'clamp(0.75rem, 1.2cqw, 1.25rem)',
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '1320px',
         }}>
-          {OPTIONS.map((opt) => {
+          {OPTIONS.map((opt, i) => {
             const isSelected = audienceSelections.includes(opt.id);
             return (
               <button
                 key={opt.id}
                 onClick={() => toggleAudienceSelection(opt.id)}
-                className="interactive-card"
+                className="interactive-card mo-rise"
                 style={{
+                  animationDelay: `${0.25 + i * 0.045}s`,
                   padding: 'clamp(1.5rem, 2.6cqh, 2.4rem) clamp(1.25rem, 2cqw, 2rem)',
                   borderRadius: '18px',
                   textAlign: 'center',
@@ -120,6 +119,7 @@ export default function S03_AudienceQuestion() {
                   margin: 0,
                   color: isSelected ? 'white' : 'rgba(255,255,255,0.75)',
                   lineHeight: 1.3,
+                  whiteSpace: 'nowrap',
                 }}>
                   {opt.label}
                 </p>
@@ -135,7 +135,7 @@ export default function S03_AudienceQuestion() {
             fontSize: 'clamp(1.1rem, 1.6cqw, 1.5rem)',
             fontFamily: "'Heebo', sans-serif",
           }}>
-            בחרתם {audienceSelections.length} מתוך 3
+            נבחרו {audienceSelections.length} מתוך 3
           </p>
         )}
         {audienceSelections.length === 3 && (

@@ -88,6 +88,8 @@ export function AgentGlobe({ style }: { style?: React.CSSProperties }) {
       camera={{ position: [0, 0, 3.4], fov: 42 }}
       gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
       dpr={[1, 1.5]}
+      // measure layout size, not the scaled bounding box: the stage is CSS-scaled
+      resize={{ offsetSize: true, scroll: false }}
       style={{ position: 'absolute', inset: 0, pointerEvents: 'none', ...style }}
     >
       <NetworkSphere />

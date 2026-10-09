@@ -1,0 +1,1 @@
+const F={"#6366F1":"#A5B4FC","#818CF8":"#A5B4FC","#0891B2":"#67E8F9","#22D3EE":"#67E8F9","#10B981":"#6EE7B7","#34D399":"#6EE7B7","#A78BFA":"#C4B5FD","#F59E0B":"#FCD34D","#F43F5E":"#FDA4AF","#64748B":"#CBD5E1"},E=o=>F[o.toUpperCase()]??o,B="ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace";export{B as C,E as t};

@@ -1,0 +1,150 @@
+/*
+ * motion.css: per-slide entrance choreography for the scenes.
+ *
+ * Every keyframe below animates opacity plus the INDIVIDUAL transform
+ * properties (translate, scale) or clip-path / stroke-dashoffset. It never
+ * animates `transform`, so it composes with an element's own transform
+ * (hover lift, selected-state scale) instead of overriding it.
+ * Elements positioned with transform (translate(-50%,-50%)) still get their
+ * animation on an inner wrapper, never on the positioned element itself.
+ *
+ * Usage: add the class, set the start time with an inline animation-delay.
+ * Everything here is entrance-only and finishes inside ~1.5s.
+ */
+
+:root {
+  /* One motion family for the whole deck (legacy .animate-* in index.css
+     maps to the same values): expo-out, 16px rise, 480ms, 70ms stagger */
+  --mo-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --mo-dur: 480ms;
+  --mo-dur-sm: 400ms;
+  --mo-dist: 16px;
+  --mo-dist-sm: 10px;
+  --mo-stagger: 70ms;
+}
+
+@keyframes mo-rise {
+  from { opacity: 0; translate: 0 var(--mo-dist); }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes mo-rise-sm {
+  from { opacity: 0; translate: 0 var(--mo-dist-sm); }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* RTL reading start is the right edge, so "in from start" comes from the right */
+@keyframes mo-in-start {
+  from { opacity: 0; translate: 20px 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* Smooth settle, no overshoot */
+@keyframes mo-pop {
+  from { opacity: 0; scale: 0.96; }
+  to   { opacity: 1; scale: 1; }
+}
+
+@keyframes mo-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Needs pathLength="1" on the SVG shape */
+@keyframes mo-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes mo-grow-x {
+  from { scale: 0 1; }
+  to   { scale: 1 1; }
+}
+
+@keyframes mo-grow-y {
+  from { scale: 1 0; }
+  to   { scale: 1 1; }
+}
+
+/* Reveal from the right edge toward the left (RTL flow) */
+@keyframes mo-wipe-rtl {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* Reveal from the top edge downward */
+@keyframes mo-wipe-down {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.mo-rise     { animation: mo-rise var(--mo-dur) var(--mo-ease-out) both; }
+.mo-rise-sm  { animation: mo-rise-sm var(--mo-dur-sm) var(--mo-ease-out) both; }
+.mo-in-start { animation: mo-in-start var(--mo-dur) var(--mo-ease-out) both; }
+.mo-pop      { animation: mo-pop var(--mo-dur) var(--mo-ease-out) both; }
+.mo-fade     { animation: mo-fade var(--mo-dur-sm) var(--mo-ease-out) both; }
+
+.mo-draw {
+  stroke-dasharray: 1;
+  animation: mo-draw 460ms var(--mo-ease-out) both;
+}
+
+.mo-grow-x {
+  transform-origin: right center;
+  animation: mo-grow-x 460ms var(--mo-ease-out) both;
+}
+.mo-grow-x-l {
+  transform-origin: left center;
+  animation: mo-grow-x 460ms var(--mo-ease-out) both;
+}
+.mo-grow-y {
+  transform-origin: center top;
+  animation: mo-grow-y 360ms var(--mo-ease-out) both;
+}
+
+.mo-wipe-rtl  { animation: mo-wipe-rtl 340ms var(--mo-ease-out) both; }
+.mo-wipe-down { animation: mo-wipe-down 600ms var(--mo-ease-out) both; }
+
+/*
+ * Drawn strike-through for an old value. Replaces text-decoration so the
+ * line can be drawn (right to left, the RTL reading direction).
+ * Start time comes from --mo-strike-delay set inline on the element.
+ */
+.mo-strike {
+  position: relative;
+  display: inline-block;
+}
+.mo-strike::after {
+  content: '';
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  top: 54%;
+  height: max(2px, 0.07em);
+  border-radius: 1px;
+  background: currentColor;
+  pointer-events: none;
+  transform-origin: right center;
+  animation: mo-grow-x 360ms var(--mo-ease-out) both;
+  animation-delay: var(--mo-strike-delay, 0ms);
+}
+
+/* ─── Reduced motion: everything lands in its final state ─── */
+@media (prefers-reduced-motion: reduce) {
+  .mo-rise, .mo-rise-sm, .mo-in-start, .mo-pop, .mo-fade,
+  .mo-draw, .mo-grow-x, .mo-grow-x-l, .mo-grow-y,
+  .mo-wipe-rtl, .mo-wipe-down, .mo-strike::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+[data-reduced-motion]:not([data-reduced-motion="false"]) :is(
+  .mo-rise, .mo-rise-sm, .mo-in-start, .mo-pop, .mo-fade,
+  .mo-draw, .mo-grow-x, .mo-grow-x-l, .mo-grow-y,
+  .mo-wipe-rtl, .mo-wipe-down
+),
+[data-reduced-motion]:not([data-reduced-motion="false"]) .mo-strike::after {
+  animation: none !important;
+  transition: none !important;
+}

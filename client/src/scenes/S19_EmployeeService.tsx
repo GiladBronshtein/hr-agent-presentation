@@ -5,7 +5,7 @@ export default function EmployeeService() {
   return (
     <AgentScene
       index={6}
-      title="אייג׳נט לשירות עובדים"
+      title="אייג׳נט לשירות HR"
       icon={MessageCircle}
       color="#22D3EE"
       before="שאלות חוזרות ל-HR"
