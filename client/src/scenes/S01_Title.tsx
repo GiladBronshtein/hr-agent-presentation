@@ -12,6 +12,7 @@ import { usePresentationStore } from '../store/presentationStore';
 import '../components/presentation/titleIntro.css';
 import { PALETTE, CHAPTER_COLORS, alpha } from '../lib/palette';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
+import { mark } from '../lib/diag';
 
 const P = PALETTE;
 /** Left to right, as the particle title's gradient (trailer/formations.ts). */
@@ -59,6 +60,7 @@ export default function S01_Title() {
     return !isReducedMotion && previousSceneIndex <= 1;
   });
   const [introKey, setIntroKey] = useState(0);
+  useEffect(() => { mark(`title mount intro=${intro}`); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [revealed, setRevealed] = useState(!intro);
   const [played, setPlayed] = useState(intro);
   const reveal = useCallback(() => setRevealed(true), []);

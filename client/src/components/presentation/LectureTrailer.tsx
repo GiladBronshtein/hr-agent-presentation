@@ -37,6 +37,7 @@ import { CH, CH_AT, CARD_HOLD, TRAILER_END, BEAT, FIN_AT, W } from './trailer/sc
 import { prepareTrailer, getFormation, setFormation, trailerAudio } from './trailer/prepare';
 import * as LP from './trailer/lines';
 import { NUM_LEAD, NUM_DUR } from './trailer/score';
+import { mark } from '../../lib/diag';
 
 // The tools an L&D team juggles around one learning program
 const SYSTEMS: { label: string; icon: LucideIcon }[] = [
@@ -267,6 +268,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
+    mark(`trailer mount lite=${LITE}`);
     // Formations are prepared ahead of time (trailer/prepare.ts); the title is
     // measured from the real DOM title once fonts are in.
     const get = (k: string) => getFormation(k);
@@ -287,6 +289,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
     let audioSettled = false;
     const clockNow = () => (playback ? playback.time() : (performance.now() - perfStart) / 1000);
     let audioWait = 0;
+    let lastMark = -1;
     let offSound: () => void = () => {};
 
     const ctx = gsap.context(() => {
@@ -642,6 +645,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       };
 
       function finish() {
+        mark('trailer finish');
         if (doneRef.current) return;
         doneRef.current = true;
         gsap.ticker.remove(tick);
@@ -659,19 +663,22 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       };
       const tick = () => {
         if (!started || doneRef.current || capturing) return;
-        tl.time(Math.min(clockNow(), tl.duration()));
+        const now = Math.min(clockNow(), tl.duration());
+        if (Math.floor(now / 2) !== lastMark) { lastMark = Math.floor(now / 2); mark(`t=${now.toFixed(1)}`); }
+        tl.time(now);
       };
       const begin = () => {
         if (started || doneRef.current || !canvasReady || !prepared || !audioSettled) return;
         started = true;
+        mark('trailer begin');
         perfStart = performance.now();
         tryAudio();
         gsap.ticker.add(tick);
       };
       startRef.current = () => { canvasReady = true; begin(); };
       if (api.current) canvasReady = true;
-      prepareTrailer().then(() => { buildTitle(); buildUnderline(); prepared = true; begin(); });
-      trailerAudio().then((b) => { audioBuf = b; audioSettled = true; begin(); tryAudio(); });
+      prepareTrailer().then(() => { mark('trailer prepared'); buildTitle(); buildUnderline(); prepared = true; begin(); });
+      trailerAudio().then((b) => { mark(`trailer audio ${b ? b.duration.toFixed(1) + 's' : 'none'}`); audioBuf = b; audioSettled = true; begin(); tryAudio(); });
       // never hold the picture hostage to the audio render
       audioWait = window.setTimeout(() => { audioSettled = true; begin(); }, 4000);
       offSound = sound.onChange(tryAudio);

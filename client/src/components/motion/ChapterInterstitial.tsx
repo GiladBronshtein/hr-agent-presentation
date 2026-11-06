@@ -13,6 +13,7 @@ import { gsap } from 'gsap';
 import { CHAPTERS } from '../../data/scenes';
 import { writeNumber, coverRadius, spline, pathFrom, type Pt } from './path';
 import { PALETTE, CHAPTER_COLORS, alpha } from '../../lib/palette';
+import { mark } from '../../lib/diag';
 
 export const CHAPTER_CARD_MS = 1950;
 
@@ -51,6 +52,7 @@ export function ChapterInterstitial({ chapterIndex, onDone }: { chapterIndex: nu
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
+    mark(`chapter card ${chapterIndex}`);
     const q = gsap.utils.selector(el);
     const entry: Pt = [1920, 300];
     const R0 = coverRadius(entry);

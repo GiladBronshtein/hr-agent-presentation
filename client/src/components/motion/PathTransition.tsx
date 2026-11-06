@@ -13,6 +13,7 @@ import { gsap } from 'gsap';
 import { route, coverRadius, type Pt } from './path';
 import { CHAPTERS } from '../../data/scenes';
 import { PALETTE, CHAPTER_COLORS } from '../../lib/palette';
+import { mark } from '../../lib/diag';
 
 export interface PathHandle {
   /** Start a transition. Returns ms until the stage is fully covered (swap time). */
@@ -71,6 +72,7 @@ export const PathTransition = forwardRef<PathHandle>(function PathTransition(_, 
     return {
       clear,
       cover: (dir, seed) => {
+        mark(`path cover ${seed}`);
         const wasCovered = state.current.covered;
         tl.current?.kill();
         const { node, a: dA, b: dB } = route(seed, dir);
@@ -119,6 +121,7 @@ export const PathTransition = forwardRef<PathHandle>(function PathTransition(_, 
         return COVER_MS;
       },
       reveal: () => {
+        mark('path reveal');
         const { R } = state.current;
         tl.current?.kill();
         state.current.covered = false;

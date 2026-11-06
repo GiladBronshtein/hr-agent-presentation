@@ -6,6 +6,7 @@ import { ChapterInterstitial } from '../motion/ChapterInterstitial';
 import { PathTransition, type PathHandle } from '../motion/PathTransition';
 import { sound } from '../../lib/sound';
 import { useReducedMotion } from '../motion/useReducedMotion';
+import { mark } from '../../lib/diag';
 
 // Scene chunk importers. Kept separate from lazy() so neighbours can be
 // preloaded: import() caches the module promise, so a later lazy render of a
@@ -280,6 +281,7 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
     };
 
     const navigate = (next: number) => {
+      mark(`go ${next}`);
       hideCard(); // any navigation removes a visible chapter card
       const el = stageRef.current;
       if (reducedRef.current || !el) { instant(next); return; }

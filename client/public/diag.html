@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck diagnostics</title>
+<style>
+  body { margin: 0; padding: 16px; background: #060918; color: #F6F2EA; font: 13px/1.5 ui-monospace, Menlo, monospace; }
+  h1 { font: 700 18px system-ui, sans-serif; margin: 0 0 12px; }
+  pre { white-space: pre-wrap; word-break: break-word; direction: ltr; text-align: left; background: #0B1030; padding: 12px; border-radius: 10px; }
+  button, a { font: 600 14px system-ui, sans-serif; margin: 0 0 12px 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid #9B6BFF; background: transparent; color: #F6F2EA; text-decoration: none; display: inline-block; }
+</style>
+</head>
+<body>
+<h1>יומן אבחון של המצגת</h1>
+<a href="./?diag#/scene/cold-open">פתיחת המצגת במצב אבחון</a>
+<button onclick="localStorage.removeItem('diag-log'); location.reload()">ניקוי היומן</button>
+<button onclick="localStorage.removeItem('diag-on'); localStorage.removeItem('diag-log'); location.reload()">כיבוי מצב אבחון</button>
+<pre id="log"></pre>
+<script>
+  var log = [];
+  try { log = JSON.parse(localStorage.getItem('diag-log') || '[]'); } catch (e) {}
+  document.getElementById('log').textContent = log.length ? log.slice(-60).join('\n') : '(empty)';
+</script>
+</body>
+</html>
