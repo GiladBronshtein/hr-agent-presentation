@@ -11,7 +11,7 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { PHOTO_URL, QR_URL } from '../lib/mediaAssets';
 import { usePresentationStore } from '../store/presentationStore';
 import { SmoothImage } from '../components/SmoothImage';
-import { PortraitFinale } from '../components/presentation/PortraitFinale';
+import { PortraitFinale, stopFinaleSound } from '../components/presentation/PortraitFinale';
 import { getSceneById } from '../data/scenes';
 import { accentFor } from '../components/presentation/SceneBase';
 import { PALETTE, alpha } from '../lib/palette';
@@ -53,6 +53,8 @@ export default function S50_PersonalClosing() {
     return !isReducedMotion && previousSceneIndex < (getSceneById('personal-closing')?.index ?? 0);
   });
   const [revealed, setRevealed] = useState(!finale);
+  // the closing music's outro stops when the slide is left
+  useEffect(() => () => stopFinaleSound(), []);
   useEffect(() => {
     if (!revealed) return;
     const timers = [

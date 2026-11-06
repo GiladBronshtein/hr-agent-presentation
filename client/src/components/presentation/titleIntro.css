@@ -26,3 +26,7 @@
 @media (prefers-reduced-motion: reduce) {
   .intro-glitch, .intro-title-in { animation: none; }
 }
+
+/* Phones and tablets: blur filters in the trailer each need an offscreen
+   buffer, and together they exhaust iOS memory. Turn them off there. */
+.trailer-lite, .trailer-lite * { filter: none !important; }

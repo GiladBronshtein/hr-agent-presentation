@@ -18,50 +18,70 @@ import { Universe, createUniverseCtl, type UniverseApi } from './trailer/Univers
 import * as F from './trailer/formations';
 import { PALETTE } from '../../lib/palette';
 
-// ── The audio cue (seconds from the start of the finale) ──
-const BURST = 0.45;
-const FORM = 2.3;
-const LAND = 4.45;
-const REVEAL = 5.0;
-const CUE_SECONDS = 10;
+// ── Timing (seconds from the start of the finale): unhurried, a long breath ──
+const BURST = 1.2;
+const FORM = 3.8;
+const LAND = 6.6;
+const REVEAL = 7.2;
+const CUE_SECONDS = 22;
 
+/**
+ * The closing music: slow and warm, like the last page of a book. A soft
+ * string swell, the deck's melody once more at a walking pace, the opening
+ * heartbeat (slow and steady) as the face forms, a wide felt-piano chord on
+ * the landing, and a quiet outro that rings under the thank-you.
+ */
 function cue(): ScoreEvent[] {
   const ev: ScoreEvent[] = [];
   const at = (t: number, play: ScoreEvent['play']) => ev.push({ at: t, play });
-  const A = { A2: 110, E3: 164.81, A3: 220, C4: 261.63, E4: 329.63, F3: 174.61, G3: 196, B4: 493.88, A4: 440, C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880, C6: 1046.5, E6: 1318.51, A6: 1760 };
-  // one point of light gathers energy...
-  at(0, (b, t) => { sound.riser(b, t, BURST, 0.22); sound.sub(b, t, 40, 70, 0.25, BURST); });
-  // ...and bursts into a galaxy
+  const A = { A1: 55, A2: 110, C3: 130.81, E3: 164.81, F2: 87.31, F3: 174.61, G3: 196, A3: 220, B3: 246.94, C4: 261.63, D4: 293.66, E4: 329.63, G4: 392, A4: 440, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880 };
+  // a slow breath of strings while the light gathers
+  at(0, (b, t) => {
+    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4], FORM + 0.4, 0.05, 1.6, 1400);
+    sound.swell(b, t + BURST - 0.9, 0.9, 0.04);
+  });
+  // the galaxy opens: a soft chord, rolled slowly
   at(BURST, (b, t) => {
-    sound.impact(b, t, 0.9);
-    sound.braam(b, t, 55, 0.3, 3.2);
-    sound.stab(b, t, [A.A4, A.C5, A.E5, A.B4 * 2], 0.08);
-    sound.shimmer(b, t + 0.06, [A.A5, A.C6, A.E6, A.A6], 0.06);
-    sound.whoosh(b, t, 1.2, 300, 6000, 0.22, -0.8, 0.8);
-    sound.strings(b, t, [A.A3, A.C4, A.E4, A.B4], FORM - BURST + 0.3, 0.06, 0.4, 2400);
+    [A.A3, A.E4, A.B4, A.C5, A.E5].forEach((f, k) => sound.felt(b, t + k * 0.11, f, 0.06, 4.5, (k / 4 - 0.5) * 0.7));
+    sound.felt(b, t, A.A2, 0.07, 5);
+    sound.shimmer(b, t + 0.5, [A.A5, A.E5 * 2], 0.018);
   });
-  // the deck's melody, once more, as a run of light around the galaxy
-  const MELODY = [A.A4, A.A4, A.C5, A.E5, A.D5, A.E5, A.C5, A.E5, A.G5, A.A5, A.G5, A.E5, A.D5, A.E5, A.C5, A.D5, A.E5, A.G5, A.E5, A.D5, A.C5, A.D5, A.E5, A.G5, A.E5, A.D5, A.C5, A.A4];
-  MELODY.forEach((f, k) => at(BURST + 0.25 + k * 0.058, (b, t) => sound.felt(b, t, f, 0.05, 1.4, Math.sin(k * 0.7) * 0.8)));
-  // the face forms on the heartbeat that opened the talk
+  // the deck's melody, once more, at a walking pace
+  [A.A4, A.C5, A.E5, A.D5, A.C5, A.E5, A.G5].forEach((f, k) => at(BURST + 0.7 + k * 0.36, (b, t) => sound.felt(b, t, f, 0.055, 2.6, Math.sin(k * 0.8) * 0.4)));
+  // the face forms on the heartbeat that opened the talk, slow and steady
   at(FORM, (b, t) => {
-    sound.strings(b, t, [A.F3, A.A3, A.C4, A.E4], LAND - FORM + 0.2, 0.07, LAND - FORM - 0.3, 3000);
-    sound.riser(b, t + 0.3, LAND - FORM - 0.3, 0.16);
+    sound.strings(b, t, [A.F2, A.F3, A.A3, A.C4, A.E4], LAND - FORM + 0.6, 0.055, 1.4, 1700);
+    sound.sub(b, t, A.F2 / 2, A.F2 / 2 * 0.99, 0.16, LAND - FORM);
   });
-  [FORM, FORM + 0.75, FORM + 1.35, FORM + 1.8, FORM + 2.1].forEach((t, k) => at(t, (b, tt) => sound.heartbeat(b, tt, 0.42 + k * 0.06)));
-  // the final chord
+  [0, 0.95, 1.9].forEach((d, k) => at(FORM + 0.2 + d, (b, t) => sound.heartbeat(b, t, 0.26 + k * 0.03)));
+  [A.E5, A.D5, A.C5, A.B4].forEach((f, k) => at(FORM + 0.5 + k * 0.6, (b, t) => sound.felt(b, t, f, 0.045, 2.4, 0.2)));
+  // the landing: one wide, warm chord that rings
   at(LAND, (b, t) => {
-    sound.braam(b, t, 55, 0.34, 4.2);
-    sound.sub(b, t, 62, 30, 0.55, 3.4);
-    [55, A.A2, A.E3, A.A3, A.E4, A.B4, A.C5, A.E5, A.A5].forEach((f, k) => sound.felt(b, t + k * 0.012, f, k < 2 ? 0.13 : 0.085, 6, (k / 8 - 0.5) * 0.9));
-    sound.strings(b, t, [A.A3, A.C4, A.E4, A.B4, A.E5], 4.6, 0.065, 0.25, 3000);
-    sound.shimmer(b, t + 0.08, [A.A5, A.C6, A.E6, A.A6], 0.05);
+    [A.A1, A.A2, A.E3, A.A3, A.C4, A.E4, A.B4, A.E5].forEach((f, k) => sound.felt(b, t + k * 0.05, f, k < 2 ? 0.09 : 0.06, 8, (k / 7 - 0.5) * 0.8));
+    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4, A.E4, A.B4], 7, 0.05, 1.2, 1900);
+    sound.sub(b, t, A.A1, A.A1 * 0.985, 0.2, 5);
   });
-  at(REVEAL + 0.3, (b, t) => { sound.felt(b, t, A.E5, 0.06, 3); sound.felt(b, t + 0.42, A.A5, 0.07, 4); });
+  // a quiet outro under the thank-you
+  at(REVEAL + 0.6, (b, t) => { sound.felt(b, t, A.E5, 0.045, 4); sound.felt(b, t + 0.7, A.A5, 0.04, 5); });
+  at(REVEAL + 4, (b, t) => {
+    sound.strings(b, t, [A.F3, A.A3, A.C4, A.E4], 4.5, 0.03, 2, 1300);
+    [A.C5, A.E5].forEach((f, k) => sound.felt(b, t + 0.3 + k * 0.8, f, 0.035, 4));
+  });
+  at(REVEAL + 8.5, (b, t) => {
+    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4], 5, 0.026, 2, 1200);
+    sound.felt(b, t + 0.4, A.A4, 0.035, 6);
+  });
   return ev;
 }
 
 let cueReady: Promise<AudioBuffer | null> | null = null;
+/** The playing cue (its outro rings on after the finale unmounts). */
+let active: BufferPlayback | null = null;
+/** Fade the closing music out, e.g. when leaving the closing slide. */
+export function stopFinaleSound(fade = 0.8) {
+  active?.stop(fade);
+  active = null;
+}
 /** Render the finale's sound ahead of time (idempotent, off the critical path). */
 export function prepareFinale(): Promise<AudioBuffer | null> {
   if (typeof OfflineAudioContext === 'undefined') return Promise.resolve(null);
@@ -133,31 +153,28 @@ export const PortraitFinale = memo(function PortraitFinale({ onReveal, onDone }:
       U.camZ = F.CAM_Z + 1.4;
       U.bloom = 2.4;
       // charge
-      tl.to(U, { pulse: 1.6, duration: BURST, ease: 'power2.in' }, 0)
-        .fromTo(U, { shake: 0 }, { shake: 0.006, duration: BURST, ease: 'power2.in', immediateRender: false }, 0)
+      tl.to(U, { pulse: 0.9, duration: BURST, ease: 'sine.inOut' }, 0)
         // burst into a galaxy
         .call(() => api.current?.morphTo(sphere, 0.45), [], BURST)
-        .fromTo(U, { morph: 0 }, { morph: 1, duration: 1.1, ease: 'expo.out', immediateRender: false }, BURST)
-        .set(U, { pulse: 0, shake: 0 }, BURST)
-        .fromTo(U, { aberration: 0.014 }, { aberration: 0, duration: 0.9, ease: 'expo.out', immediateRender: false }, BURST)
-        .fromTo(U, { warp: 0.9 }, { warp: 0, duration: 1.0, ease: 'power2.out', immediateRender: false }, BURST)
-        .fromTo(U, { bloom: 3.2 }, { bloom: 1.5, duration: 1.4, ease: 'power2.out', immediateRender: false }, BURST)
-        .fromTo(q('.pf-ring'), { scale: 0.05, autoAlpha: 0.95 }, { scale: 2.6, autoAlpha: 0, duration: 1.2, ease: 'expo.out', stagger: 0.09, immediateRender: false }, BURST)
-        .fromTo(q('.pf-flash'), { autoAlpha: 0.85 }, { autoAlpha: 0, duration: 0.8, ease: 'power2.out', immediateRender: false }, BURST)
-        // two full turns that come to rest facing the audience, as the face forms
-        .fromTo(U, { spin: 0 }, { spin: Math.PI * 4, duration: LAND - BURST, ease: 'power2.inOut', immediateRender: false }, BURST)
+        .fromTo(U, { morph: 0 }, { morph: 1, duration: 2.0, ease: 'power2.out', immediateRender: false }, BURST)
+        .to(U, { pulse: 0, duration: 1.0, ease: 'sine.out' }, BURST)
+        .fromTo(U, { bloom: 2.6 }, { bloom: 1.5, duration: 2.4, ease: 'sine.inOut', immediateRender: false }, BURST)
+        .fromTo(q('.pf-ring'), { scale: 0.1, autoAlpha: 0.7 }, { scale: 2.4, autoAlpha: 0, duration: 2.4, ease: 'power2.out', stagger: 0.25, immediateRender: false }, BURST)
+        .fromTo(q('.pf-flash'), { autoAlpha: 0.45 }, { autoAlpha: 0, duration: 1.6, ease: 'sine.out', immediateRender: false }, BURST)
+        // one slow turn that comes to rest facing the audience, as the face forms
+        .fromTo(U, { spin: 0 }, { spin: Math.PI * 2, duration: LAND - BURST, ease: 'sine.inOut', immediateRender: false }, BURST)
         .fromTo(U, { t: 0 }, { t: 12, duration: 12, ease: 'none', immediateRender: false }, 0)
         .call(() => { if (portrait) api.current?.morphTo(portrait, 0.55); }, [], FORM)
         .fromTo(U, { morph: 0 }, { morph: 1, duration: LAND - FORM, ease: 'power2.inOut', immediateRender: false }, FORM)
         .to(U, { camZ: F.CAM_Z, duration: LAND - BURST, ease: 'power2.inOut' }, BURST)
         // landing: a breath of light
-        .fromTo(U, { bloom: 2.2 }, { bloom: 1.1, duration: 1.2, ease: 'power2.out', immediateRender: false }, LAND)
-        .to(U, { pulse: 0.5, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out' }, LAND)
-        .fromTo(q('.pf-ring2'), { scale: 0.2, autoAlpha: 0.7 }, { scale: 2.2, autoAlpha: 0, duration: 1.4, ease: 'expo.out', immediateRender: false }, LAND)
+        .fromTo(U, { bloom: 1.9 }, { bloom: 1.1, duration: 2.0, ease: 'sine.inOut', immediateRender: false }, LAND)
+        .to(U, { pulse: 0.3, duration: 0.6, yoyo: true, repeat: 1, ease: 'sine.inOut' }, LAND)
+        .fromTo(q('.pf-ring2'), { scale: 0.3, autoAlpha: 0.5 }, { scale: 2.0, autoAlpha: 0, duration: 2.4, ease: 'power2.out', immediateRender: false }, LAND)
         // the slide appears around the face, and the particles become the photo
         .call(() => onReveal(), [], REVEAL)
-        .to(el, { autoAlpha: 0, duration: 1.5, ease: 'power2.inOut' }, REVEAL + 0.25)
-        .call(() => finish(), [], REVEAL + 1.8);
+        .to(el, { autoAlpha: 0, duration: 2.0, ease: 'sine.inOut' }, REVEAL + 0.25)
+        .call(() => finish(), [], REVEAL + 2.3);
 
       const finish = () => {
         if (done) return;
@@ -173,7 +190,7 @@ export const PortraitFinale = memo(function PortraitFinale({ onReveal, onDone }:
         if (started || done || !canvasReady || !portrait || audio === undefined) return;
         started = true;
         t0 = performance.now();
-        if (audio) playback = sound.playBuffer(audio, 0);
+        if (audio) { playback = sound.playBuffer(audio, 0); active = playback; }
         gsap.ticker.add(tick);
       };
       startRef.current = () => { canvasReady = true; begin(); };

@@ -10,7 +10,7 @@
  * timeline's own clock), so any frame can be reproduced exactly by seeking:
  * the same discipline that lets the trailer be scrubbed and exported to video.
  */
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
@@ -340,6 +340,16 @@ function Warp({ U }: { U: UniverseCtl }) {
   return <lineSegments ref={ref} geometry={geometry} material={material} frustumCulled={false} />;
 }
 
+/**
+ * Phones and tablets: the canvas sits in a 1920x1080 design box that CSS
+ * scales down, so rendering it at full size wastes most of the GPU memory
+ * (and iOS kills the page when it runs out). There we render at the size
+ * actually shown and skip the subtle passes; desktops keep everything.
+ */
+export const LITE = typeof window !== 'undefined'
+  && (navigator.maxTouchPoints > 0 || matchMedia('(pointer: coarse)').matches)
+  && Math.min(screen.width, screen.height) < 1100;
+
 function Effects({ U }: { U: UniverseCtl }) {
   // Effects are reached through the composer: the effect wrappers serialize
   // their props, so a ref prop (a circular object under React 19) would throw.
@@ -359,19 +369,35 @@ function Effects({ U }: { U: UniverseCtl }) {
   return (
     <EffectComposer ref={composerRef as never} multisampling={0}>
       <Bloom mipmapBlur intensity={U.bloom} luminanceThreshold={0.18} luminanceSmoothing={0.35} radius={0.78} />
-      <ChromaticAberration offset={offset} radialModulation={false} modulationOffset={0} />
-      <Noise premultiply opacity={0.18} />
+      {LITE ? <></> : <ChromaticAberration offset={offset} radialModulation={false} modulationOffset={0} />}
+      {LITE ? <></> : <Noise premultiply opacity={0.18} />}
       <Vignette offset={0.28} darkness={0.78} />
     </EffectComposer>
   );
 }
 
 export function Universe({ U, initial, apiRef }: { U: UniverseCtl; initial: Formation; apiRef: React.MutableRefObject<UniverseApi | null> }) {
+  // pixel ratio = how big the 1920x1080 box really is on screen (capped at 1)
+  const box = useRef<HTMLDivElement>(null);
+  // phones start small (a 1920 box shown about 1/3 size on a 3x screen) and refine on mount
+  const [dpr, setDpr] = useState(() => (LITE ? Math.min(1, (Math.min(screen.width, screen.height) * (window.devicePixelRatio || 1)) / 1080) : 1));
+  useEffect(() => {
+    const el = box.current;
+    if (!el || !LITE) return;
+    const fit = () => {
+      const shown = el.getBoundingClientRect().width / (el.offsetWidth || 1);
+      setDpr(Math.max(0.35, Math.min(1, shown * (window.devicePixelRatio || 1))));
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
   return (
+    <div ref={box} style={{ position: 'absolute', inset: 0 }}>
     <Canvas
       camera={{ position: [0, 0, CAM_Z + 3], fov: FOV, near: 0.1, far: 200 }}
       gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
-      dpr={1}
+      dpr={dpr}
       // measure layout size, not the scaled bounding box: the stage is CSS-scaled
       resize={{ offsetSize: true, scroll: false }}
       style={{ position: 'absolute', inset: 0 }}
@@ -381,5 +407,6 @@ export function Universe({ U, initial, apiRef }: { U: UniverseCtl; initial: Form
       <Warp U={U} />
       <Effects U={U} />
     </Canvas>
+    </div>
   );
 }

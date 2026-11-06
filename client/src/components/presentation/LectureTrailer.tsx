@@ -31,7 +31,7 @@ import { sound, type BufferPlayback } from '../../lib/sound';
 import { Volume2, VolumeX } from 'lucide-react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SlackWindow, SlackMessage } from './SlackChat';
-import { Universe, createUniverseCtl, type UniverseApi } from './trailer/Universe';
+import { Universe, createUniverseCtl, LITE, type UniverseApi } from './trailer/Universe';
 import * as F from './trailer/formations';
 import { CH, CH_AT, CARD_HOLD, TRAILER_END, BEAT, FIN_AT, W } from './trailer/score';
 import { prepareTrailer, getFormation, setFormation, trailerAudio } from './trailer/prepare';
@@ -702,7 +702,8 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
   return (
     // a fixed 1920x1080 design canvas (its own size container), scaled to the
     // stage: identical proportions on every screen, from 4K to a phone
-    <div ref={root} dir="rtl" style={{ position: 'absolute', left: 0, top: 0, width: '1920px', height: '1080px', transformOrigin: '0 0', containerType: 'size', zIndex: 60, overflow: 'hidden', background: '#060918' }}>
+    // phones: no CSS blur filters (each one is an offscreen buffer; iOS runs out of memory)
+    <div ref={root} dir="rtl" className={LITE ? 'trailer-lite' : undefined} style={{ position: 'absolute', left: 0, top: 0, width: '1920px', height: '1080px', transformOrigin: '0 0', containerType: 'size', zIndex: 60, overflow: 'hidden', background: '#060918' }}>
       <div className="u" style={{ position: 'absolute', inset: 0 }}>
         <Universe U={U} initial={initial} apiRef={api} />
       </div>
@@ -722,7 +723,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
           <div style={{ ...T.hero, fontWeight: 900, fontSize: 'clamp(3.6rem, 7.2cqw, 8rem)', marginTop: '1.6cqh', color: '#FF7A59', textShadow: '0 0 60px rgba(240,70,158,0.55)' }}>
             <span className="a0-hit" style={{ position: 'relative', display: 'inline-block' }}>
               {[0, 1].map((k) => (
-                <span key={k} className="a0-echo" aria-hidden style={{ position: 'absolute', inset: 0, opacity: 0, color: 'transparent', WebkitTextStroke: '2px #FF7A59', textShadow: 'none', willChange: 'transform, opacity' }}>ידנית.</span>
+                <span key={k} className="a0-echo" aria-hidden style={{ position: 'absolute', inset: 0, opacity: 0, color: 'transparent', WebkitTextStroke: '2px #FF7A59', textShadow: 'none' }}>ידנית.</span>
               ))}
               <span className="ri" style={{ display: 'inline-block', opacity: 0 }}>ידנית.</span>
             </span>
@@ -794,7 +795,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
                 <div key={k} className="cd-echo" aria-hidden style={{
                   position: 'absolute', inset: 0, opacity: 0, textAlign: 'center',
                   fontFamily: "'Heebo', sans-serif", fontWeight: 900, fontSize: 'clamp(6rem, 11cqw, 13rem)', lineHeight: 1.05, letterSpacing: '-0.025em', whiteSpace: 'nowrap',
-                  color: 'transparent', WebkitTextStroke: `2px ${c.color}`, padding: '0 0.08em', willChange: 'transform, opacity',
+                  color: 'transparent', WebkitTextStroke: `2px ${c.color}`, padding: '0 0.08em',
                 }}>{c.label}</div>
               ))}
               <div className="cd-word" style={{
@@ -802,7 +803,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
                 fontFamily: "'Heebo', sans-serif", fontWeight: 900, fontSize: 'clamp(6rem, 11cqw, 13rem)', lineHeight: 1.05, letterSpacing: '-0.025em', whiteSpace: 'nowrap',
                 backgroundImage: `linear-gradient(100deg, #FFFFFF 0%, #FFFFFF 38%, ${c.color} 50%, #FFFFFF 62%, #FFFFFF 100%)`,
                 backgroundSize: '250% 100%', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                padding: '0 0.08em', willChange: 'transform, opacity',
+                padding: '0 0.08em',
               }}>{c.label}</div>
             </div>
             <div className="cd-desc" style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 400, fontSize: 'clamp(1.3rem, 1.9cqw, 2.1rem)', color: 'rgba(226,232,240,0.78)', whiteSpace: 'nowrap' }}>{c.desc}</div>
