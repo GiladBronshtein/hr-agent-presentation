@@ -24,13 +24,13 @@ const BURST = 1.2;
 const FORM = 3.8;
 const LAND = 6.6;
 const REVEAL = 7.2;
-const CUE_SECONDS = 22;
+const CUE_SECONDS = 11;
 
 /**
  * The closing music: slow and warm, like the last page of a book. A soft
  * string swell, the deck's melody once more at a walking pace, the opening
  * heartbeat (slow and steady) as the face forms, a wide felt-piano chord on
- * the landing, and a quiet outro that rings under the thank-you.
+ * the landing, and it ends as the slide appears.
  */
 function cue(): ScoreEvent[] {
   const ev: ScoreEvent[] = [];
@@ -58,20 +58,12 @@ function cue(): ScoreEvent[] {
   [A.E5, A.D5, A.C5, A.B4].forEach((f, k) => at(FORM + 0.5 + k * 0.6, (b, t) => sound.felt(b, t, f, 0.045, 2.4, 0.2)));
   // the landing: one wide, warm chord that rings
   at(LAND, (b, t) => {
-    [A.A1, A.A2, A.E3, A.A3, A.C4, A.E4, A.B4, A.E5].forEach((f, k) => sound.felt(b, t + k * 0.05, f, k < 2 ? 0.09 : 0.06, 8, (k / 7 - 0.5) * 0.8));
-    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4, A.E4, A.B4], 7, 0.05, 1.2, 1900);
-    sound.sub(b, t, A.A1, A.A1 * 0.985, 0.2, 5);
+    [A.A1, A.A2, A.E3, A.A3, A.C4, A.E4, A.B4, A.E5].forEach((f, k) => sound.felt(b, t + k * 0.05, f, k < 2 ? 0.09 : 0.06, 4.2, (k / 7 - 0.5) * 0.8));
+    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4, A.E4, A.B4], 2.6, 0.045, 0.8, 1900);
+    sound.sub(b, t, A.A1, A.A1 * 0.985, 0.16, 3);
   });
-  // a quiet outro under the thank-you
-  at(REVEAL + 0.6, (b, t) => { sound.felt(b, t, A.E5, 0.045, 4); sound.felt(b, t + 0.7, A.A5, 0.04, 5); });
-  at(REVEAL + 4, (b, t) => {
-    sound.strings(b, t, [A.F3, A.A3, A.C4, A.E4], 4.5, 0.03, 2, 1300);
-    [A.C5, A.E5].forEach((f, k) => sound.felt(b, t + 0.3 + k * 0.8, f, 0.035, 4));
-  });
-  at(REVEAL + 8.5, (b, t) => {
-    sound.strings(b, t, [A.A2, A.E3, A.A3, A.C4], 5, 0.026, 2, 1200);
-    sound.felt(b, t + 0.4, A.A4, 0.035, 6);
-  });
+  // one last note as the slide appears, then silence
+  at(REVEAL + 0.6, (b, t) => sound.felt(b, t, A.A5, 0.035, 3));
   return ev;
 }
 

@@ -1,0 +1,1 @@
+import{t as F}from"./index-C_PFU1T2.js";const t={"#6366F1":"#A5B4FC","#818CF8":"#A5B4FC","#0891B2":"#67E8F9","#22D3EE":"#67E8F9","#10B981":"#6EE7B7","#34D399":"#6EE7B7","#A78BFA":"#C4B5FD","#F59E0B":"#FCD34D","#F43F5E":"#FDA4AF","#64748B":"#CBD5E1"},n=o=>t[o.toUpperCase()]??F(o),s="ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace";export{s as C,n as t};
