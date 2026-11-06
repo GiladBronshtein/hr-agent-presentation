@@ -14,6 +14,7 @@ import { usePresentationStore } from '../store/presentationStore';
 import { UserCheck, CheckCircle, XCircle, AlertTriangle, FileText, Pencil } from 'lucide-react';
 import { DEMO_APPROVAL_EDIT, DEMO_APPROVAL_ITEMS, DEMO_SCENARIO } from '../data/demoData';
 import { PALETTE, alpha } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** The human decision is amber throughout the deck (see the decision tree) */
 const ACC: string = PALETTE.amber;
@@ -57,18 +58,46 @@ export default function S29_DemoApproval() {
   const { demoApprovalState, setDemoApprovalState, goNext } = usePresentationStore();
   const [comment, setComment] = useState('');
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const typer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stops = useRef<(() => void)[]>([]);
 
   useEffect(() => {
-    return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current); };
+    // the plan items land one by one, each with a soft rising note
+    if (demoApprovalState === 'pending') {
+      DEMO_APPROVAL_ITEMS.forEach((_, i) => stops.current.push(sound.demo.land(i, 0.45 + i * 0.16)));
+    }
+    return () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+      if (typer.current) clearInterval(typer.current);
+      stops.current.forEach((f) => f());
+    };
   }, []);
 
+  /** Type the suggested edit into the box, as a person would, with soft keys. */
+  const typeEdit = () => {
+    if (typer.current) return;
+    const text = DEMO_APPROVAL_EDIT;
+    const ms = 38;
+    stops.current.push(sound.typing(text, ms));
+    const t0 = performance.now();
+    typer.current = setInterval(() => {
+      const n = Math.min(text.length, Math.floor((performance.now() - t0) / ms) + 1);
+      setComment(text.slice(0, n));
+      if (n >= text.length && typer.current) { clearInterval(typer.current); typer.current = null; }
+    }, 16);
+  };
+
   const handleApprove = () => {
+    if (typer.current) { clearInterval(typer.current); typer.current = null; }
     setDemoApprovalState('approved');
-    advanceTimer.current = setTimeout(() => goNext(), 1800);
+    stops.current.push(sound.demo.approve());
+    advanceTimer.current = setTimeout(() => goNext(), 2200);
   };
 
   const handleReject = () => {
+    if (typer.current) { clearInterval(typer.current); typer.current = null; }
     setDemoApprovalState('rejected');
+    stops.current.push(sound.demo.reject());
   };
 
   return (
@@ -130,7 +159,7 @@ export default function S29_DemoApproval() {
                   key={i}
                   className="mo-rise-sm"
                   style={{
-                    animationDelay: `${0.3 + i * 0.05}s`,
+                    animationDelay: `${0.45 + i * 0.16}s`,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.625rem',
@@ -157,7 +186,7 @@ export default function S29_DemoApproval() {
                 {!comment && (
                   <button
                     type="button"
-                    onClick={() => setComment(DEMO_APPROVAL_EDIT)}
+                    onClick={typeEdit}
                     style={{
                       display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                       padding: '0.2rem 0.75rem', borderRadius: '100px',
@@ -174,6 +203,7 @@ export default function S29_DemoApproval() {
                 id="demo-approval-edit"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onKeyDown={(e) => { if (e.key.length === 1 || e.key === 'Backspace') sound.ui((b, t) => sound.key(b, t, 0.028, e.key === ' '), 0.5); }}
                 placeholder="למשל: להוסיף דוגמה מהשטח ליחידה 3"
                 rows={1}
                 style={{
@@ -281,8 +311,12 @@ export default function S29_DemoApproval() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1.25rem',
+                position: 'relative',
+                color: ACC,
               }}
             >
+              <span aria-hidden className="fx-ring-once" style={{ animationDelay: '0.85s' }} />
+              <span aria-hidden className="fx-ring-once" style={{ animationDelay: '1.15s' }} />
               <DrawnCheck />
             </div>
             <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: ACC_T, margin: '0 0 0.5rem' }}>
@@ -317,7 +351,10 @@ export default function S29_DemoApproval() {
               זה בדיוק המנגנון: אדם מחליט, האייג׳נט מתאים
             </p>
             <button
-              onClick={() => setDemoApprovalState('pending')}
+              onClick={() => {
+                setDemoApprovalState('pending');
+                DEMO_APPROVAL_ITEMS.forEach((_, i) => stops.current.push(sound.demo.land(i, 0.45 + i * 0.16)));
+              }}
               style={{
                 padding: '0.5rem 1.25rem',
                 borderRadius: '8px',

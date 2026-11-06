@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckCircle2, Lightbulb } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { DEMO_FEEDBACK, DEMO_SCENARIO } from '../data/demoData';
 import { accentFor } from '../components/presentation/SceneBase';
 import { PALETTE, alpha, textOn } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** This slide's chapter accent (fills) and its text-safe tint */
 const { c: ACC, t: ACC_T } = accentFor('demo-feedback');
@@ -15,6 +16,11 @@ export default function S31_DemoFeedback() {
   const [ratings, setRatings] = useState(DEMO_FEEDBACK.ratings.map((q) => q.default));
   const [approved, setApproved] = useState(false);
 
+  useEffect(() => {
+    const stops = DEMO_FEEDBACK.stats.map((_, i) => sound.demo.land(i * 2, 0.25 + i * 0.2));
+    return () => stops.forEach((f) => f());
+  }, []);
+
   return (
     <SceneBase>
       <DemoStepLayout eyebrow="דמו מורחב" title="משוב ושיפור" subtitle="שבועיים אחרי: מה עבד, ומי צריך עוד עזרה" gap="clamp(0.6rem, 1.3cqh, 1.1rem)">
@@ -24,7 +30,7 @@ export default function S31_DemoFeedback() {
             <div key={s.label} className="rounded-xl mo-rise text-center fx-glass" style={{
               '--fx-c': STAT_COLORS[i],
               padding: 'clamp(0.6rem, 1.2cqh, 1rem) clamp(0.75rem, 1cqw, 1rem)',
-              animationDelay: `${0.15 + i * 0.07}s`,
+              animationDelay: `${0.15 + i * 0.2}s`,
             } as React.CSSProperties}>
               <div style={{ color: STAT_COLORS[i], textShadow: `0 0 18px ${alpha(STAT_COLORS[i], 0.5)}`, fontWeight: 800, fontSize: 'clamp(1.75rem, 2.4cqw, 2.75rem)', lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' }}>
                 <bdi>{s.value}</bdi>
@@ -41,7 +47,7 @@ export default function S31_DemoFeedback() {
               <p style={{ margin: 0, color: 'rgba(246,242,234,0.85)', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)' }}>{item.q}</p>
               <div className="flex gap-2 shrink-0" role="group" aria-label={item.q}>
                 {[1, 2, 3, 4, 5].map((r) => (
-                  <button key={r} onClick={() => setRatings((prev) => { const n = [...prev]; n[qi] = r; return n; })}
+                  <button key={r} onClick={() => { sound.demo.land(r - 1); setRatings((prev) => { const n = [...prev]; n[qi] = r; return n; }); }}
                     aria-pressed={ratings[qi] === r}
                     className="rounded-lg font-semibold transition-all"
                     style={{
@@ -83,7 +89,7 @@ export default function S31_DemoFeedback() {
           {!approved && (
             <button
               type="button"
-              onClick={() => setApproved(true)}
+              onClick={() => { setApproved(true); sound.demo.approve(); }}
               style={{
                 flexShrink: 0, whiteSpace: 'nowrap',
                 padding: '0.5rem 1.1rem', borderRadius: '10px',

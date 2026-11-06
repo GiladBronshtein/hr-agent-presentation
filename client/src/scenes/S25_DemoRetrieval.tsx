@@ -6,6 +6,7 @@ import { usePresentationStore } from '../store/presentationStore';
 import { DEMO_RETRIEVAL_INSIGHT, DEMO_SOURCES } from '../data/demoData';
 import { accentFor } from '../components/presentation/SceneBase';
 import { alpha } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** This slide's chapter accent (fills) and its text-safe tint */
 const { c: ACC, t: ACC_T } = accentFor('demo-retrieval');
@@ -24,11 +25,12 @@ export default function S25_DemoRetrieval() {
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
+    const stops: (() => void)[] = [];
     DEMO_SOURCES.forEach((_, i) => {
-      timers.push(setTimeout(() => setVisible(i + 1), 300 + i * 420));
+      timers.push(setTimeout(() => { setVisible(i + 1); stops.push(sound.demo.land(i)); }, 350 + i * 480));
     });
-    timers.push(setTimeout(() => setDemoStep(2), 300 + DEMO_SOURCES.length * 420 + 400));
-    return () => timers.forEach(clearTimeout);
+    timers.push(setTimeout(() => { setDemoStep(2); stops.push(sound.demo.glow()); }, 350 + DEMO_SOURCES.length * 480 + 300));
+    return () => { timers.forEach(clearTimeout); stops.forEach((f) => f()); };
   }, []);
 
   return (

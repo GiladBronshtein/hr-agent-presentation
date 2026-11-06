@@ -215,9 +215,9 @@ export default function S05_AutomationVsAgent() {
             fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", fontSize: 'clamp(1rem, 1cqw, 1.2rem)',
             color: 'rgba(246,242,234,0.86)', lineHeight: 1.6,
           }}>
-            <span style={{ color: ACC_T }}><bdi>GOAL:</bdi></span> כל הצוות מוכן לשיחת מכירה<br />
-            <span style={{ color: '#F6F2EA' }}><bdi>NOTICE:</bdi></span> מאיה טעתה פעמיים באותה שאלה<br />
-            <span style={{ color: ACC_T }}><bdi>ADAPT:</bdi></span> הסבר של 2 דקות ותרגול חדש
+            <span style={{ color: ACC_T }}><bdi>GOAL</bdi>:</span> כל הצוות מוכן לשיחת מכירה<br />
+            <span style={{ color: '#F6F2EA' }}><bdi>NOTICE</bdi>:</span> מאיה טעתה פעמיים באותה שאלה<br />
+            <span style={{ color: ACC_T }}><bdi>ADAPT</bdi>:</span> הסבר של 2 דקות ותרגול חדש
           </div>
         </div>
       </div>

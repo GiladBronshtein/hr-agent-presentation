@@ -6,6 +6,7 @@ import { DEMO_EXECUTION_STEPS } from '../data/demoData';
 import { usePresentationStore } from '../store/presentationStore';
 import { accentFor } from '../components/presentation/SceneBase';
 import { alpha } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** This slide's chapter accent (fills) and its text-safe tint */
 const { c: ACC, t: ACC_T } = accentFor('demo-execution');
@@ -19,10 +20,12 @@ export default function S30_DemoExecution() {
   const [visible, setVisible] = useState(0);
 
   useEffect(() => {
+    const stops: (() => void)[] = [];
     const timers = STEPS.map((_, i) =>
-      setTimeout(() => setVisible(i + 1), 300 + i * 380)
+      setTimeout(() => { setVisible(i + 1); stops.push(sound.demo.land(i)); }, 350 + i * 440)
     );
-    return () => timers.forEach(clearTimeout);
+    timers.push(setTimeout(() => stops.push(sound.demo.glow()), 350 + STEPS.length * 440 + 200));
+    return () => { timers.forEach(clearTimeout); stops.forEach((f) => f()); };
   }, []);
 
   return (

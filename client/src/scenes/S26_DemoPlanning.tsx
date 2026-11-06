@@ -6,6 +6,7 @@ import { usePresentationStore } from '../store/presentationStore';
 import { DEMO_PLAN } from '../data/demoData';
 import { accentFor } from '../components/presentation/SceneBase';
 import { PALETTE, SPECTRUM_STOPS, alpha, textOn } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** This slide's chapter accent (fills) and its text-safe tint */
 const { c: ACC } = accentFor('demo-planning');
@@ -28,11 +29,12 @@ export default function S26_DemoPlanning() {
   const [visible, setVisible] = useState(0);
 
   useEffect(() => {
+    const stops: (() => void)[] = [];
     const timers = DEMO_PLAN.map((_, i) =>
-      setTimeout(() => setVisible(i + 1), 250 + i * 420)
+      setTimeout(() => { setVisible(i + 1); stops.push(sound.demo.land(i)); }, 350 + i * 520)
     );
-    timers.push(setTimeout(() => setDemoStep(3), 250 + DEMO_PLAN.length * 420 + 400));
-    return () => timers.forEach(clearTimeout);
+    timers.push(setTimeout(() => { setDemoStep(3); stops.push(sound.demo.glow(0.15)); }, 350 + DEMO_PLAN.length * 520 + 300));
+    return () => { timers.forEach(clearTimeout); stops.forEach((f) => f()); };
   }, []);
 
   return (
@@ -96,7 +98,8 @@ export default function S26_DemoPlanning() {
                   {step.chips && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                       {step.chips.map((chip, ci) => (
-                        <span key={chip} style={{
+                        <span key={chip} className={i < visible ? 'mo-pop' : undefined} style={{
+                          animationDelay: `${0.15 + ci * 0.12}s`,
                           padding: '0.1rem 0.65rem', borderRadius: '8px',
                           background: alpha(accent, 0.14), color: '#F6F2EA',
                           border: `1px solid ${alpha(accent, 0.42)}`,

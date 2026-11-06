@@ -5,8 +5,10 @@
  * colors and sits on the stage like a lit screen: a hairline of chapter light
  * on its edge and a soft colored glow behind it.
  */
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Hash } from 'lucide-react';
+import { sound } from '../../lib/sound';
+import { usePresentationStore } from '../../store/presentationStore';
 
 export function SlackWindow({ channel, children }: { channel: string; children: ReactNode }) {
   return (
@@ -99,5 +101,47 @@ export function TypingIndicator({ name }: { name: string }) {
       </span>
       {name} בהקלדה...
     </div>
+  );
+}
+
+/**
+ * Text that types itself in, with soft key sounds. The full text is laid out
+ * from the start (the untyped rest is invisible), so nothing moves while it
+ * types. Driven by elapsed time, so the letters stay in step with the keys.
+ */
+export function Typewriter({
+  text, startMs = 0, msPerChar = 30, caret = false, vol, onDone,
+}: {
+  text: string; startMs?: number; msPerChar?: number; caret?: boolean; vol?: number; onDone?: () => void;
+}) {
+  const reduced = usePresentationStore((s) => s.isReducedMotion);
+  const [n, setN] = useState(reduced ? text.length : 0);
+  const done = useRef(onDone);
+  done.current = onDone;
+
+  useEffect(() => {
+    if (reduced) { setN(text.length); done.current?.(); return; }
+    const stopKeys = sound.typing(text, msPerChar, startMs, vol);
+    const t0 = performance.now() + startMs;
+    let finished = false;
+    const id = setInterval(() => {
+      const k = Math.max(0, Math.min(text.length, Math.floor((performance.now() - t0) / msPerChar) + 1));
+      setN(k);
+      if (k >= text.length && !finished) {
+        finished = true;
+        clearInterval(id);
+        done.current?.();
+      }
+    }, 16);
+    return () => { clearInterval(id); stopKeys(); };
+  }, [text, startMs, msPerChar, reduced]);
+
+  const typing = caret && n < text.length;
+  return (
+    <>
+      {text.slice(0, n)}
+      {typing && <span aria-hidden className="fx-caret" />}
+      <span aria-hidden style={{ opacity: 0 }}>{text.slice(n)}</span>
+    </>
   );
 }

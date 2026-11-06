@@ -35,6 +35,9 @@ export interface ScoreEvent { at: number; play: (bus: Bus, t: number) => void }
 /** A playing pre-rendered buffer; `time()` is the audible playhead in seconds. */
 export interface BufferPlayback { time: () => number; stop: (fade?: number) => void }
 
+/** A minor pentatonic, the deck's key, for the demo's soft UI notes */
+const DEMO_PENTA = [440, 523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66];
+
 const BPM = 96;
 const BEAT = 60 / BPM;
 
@@ -951,6 +954,109 @@ class SoundEngine {
     this.send(g, b, 0.12);
     lfo.start(t); lfo.stop(t + dur + 0.02);
   }
+
+  // ── The live demo: soft interface sounds ──
+
+  /** A soft laptop key: a muted tap with a little body. A space is lower and rounder. */
+  key(b: Bus, t: number, vol = 0.028, space = false) {
+    const ctx = b.ctx;
+    const n = this.noiseSrc(b, t, 0.05);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = (space ? 1100 : 1700) + Math.random() * 600;
+    bp.Q.value = 1.1;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 3600;
+    const g = ctx.createGain();
+    this.env(g, t, vol, 0.002, space ? 0.045 : 0.03);
+    const p = this.pan(b.fx, (Math.random() - 0.5) * 0.3);
+    n.connect(bp); bp.connect(lp); lp.connect(g); g.connect(p);
+    this.send(g, b, 0.05);
+    const o = ctx.createOscillator();
+    o.frequency.setValueAtTime(space ? 150 : 210 + Math.random() * 50, t);
+    o.frequency.exponentialRampToValueAtTime(space ? 85 : 130, t + 0.045);
+    const og = ctx.createGain();
+    this.env(og, t, vol * (space ? 0.9 : 0.5), 0.002, 0.045);
+    o.connect(og); og.connect(p);
+    o.start(t); o.stop(t + 0.07);
+  }
+
+  /** A soft round bubble: a sine that glides up a touch and fades. */
+  bubble(b: Bus, t: number, freq: number, vol = 0.03, panV = 0) {
+    const ctx = b.ctx;
+    const o = ctx.createOscillator();
+    o.frequency.setValueAtTime(freq * 0.82, t);
+    o.frequency.exponentialRampToValueAtTime(freq, t + 0.05);
+    const g = ctx.createGain();
+    this.env(g, t, vol, 0.008, 0.24);
+    o.connect(g); g.connect(this.pan(b.fx, panV));
+    this.send(g, b, 0.25, 0.05);
+    o.start(t); o.stop(t + 0.32);
+  }
+
+  /** Play a short gesture; `play` schedules from t. Returns a stop function. */
+  ui(play: (b: Bus, t: number) => void, life = 3) {
+    const sess = this.session();
+    if (!sess) return () => {};
+    play(sess.s, sess.t0);
+    const id = setTimeout(() => sess.s.stop(0.6), life * 1000);
+    return () => { clearTimeout(id); sess.s.stop(0.08); };
+  }
+
+  /**
+   * Typing for `text` revealed one character every `msPerChar`, starting in
+   * `delayMs`. Taps stay at least ~70ms apart so fast text never buzzes.
+   */
+  typing(text: string, msPerChar: number, delayMs = 0, vol = 0.028) {
+    return this.ui((b, t) => {
+      let last = -1;
+      for (let i = 0; i < text.length; i++) {
+        const at = (delayMs + i * msPerChar) / 1000;
+        const space = text[i] === ' ';
+        if (last >= 0 && at - last < (space ? 0.05 : 0.07)) continue;
+        last = at;
+        this.key(b, t + at + (Math.random() - 0.5) * 0.012, vol * (0.75 + Math.random() * 0.4), space);
+      }
+    }, (delayMs + text.length * msPerChar) / 1000 + 1.5);
+  }
+
+  /** Named gestures for the demo slides, all soft and short. */
+  readonly demo = {
+    /** A message leaves: a breath of air up and a low round note. */
+    sent: () => this.ui((b, t) => {
+      this.whoosh(b, t, 0.22, 700, 3200, 0.03, 0.2, -0.2);
+      this.bubble(b, t + 0.06, 523.25, 0.03);
+    }),
+    /** A message arrives: two round notes. */
+    arrive: () => this.ui((b, t) => {
+      this.bubble(b, t, 659.25, 0.032, -0.15);
+      this.bubble(b, t + 0.11, 880, 0.028, 0.15);
+    }),
+    /** The i-th item of a list lands: a rising note of A minor pentatonic. */
+    land: (i: number, delay = 0) => this.ui((b, t) => {
+      const f = DEMO_PENTA[i % DEMO_PENTA.length];
+      this.felt(b, t + delay, f, 0.032, 1.4, (i % 2 ? 0.2 : -0.2));
+      this.bubble(b, t + delay, f * 2, 0.01);
+    }, delay + 2),
+    /** Light settles on something important. */
+    glow: (delay = 0) => this.ui((b, t) => {
+      this.shimmer(b, t + delay, [1318.51, 1760, 2093], 0.012);
+      this.felt(b, t + delay, 659.25, 0.026, 1.8);
+    }, delay + 3),
+    /** Approved: the check is drawn, then a warm open chord. */
+    approve: () => this.ui((b, t) => {
+      this.pen(b, t + 0.2, 0.75, 0.03, 0.4, -0.4);
+      [261.63, 329.63, 392, 587.33].forEach((f, k) => this.felt(b, t + 0.9 + k * 0.06, f, 0.036, 2.6, (k / 3 - 0.5) * 0.6));
+      this.felt(b, t + 0.9, 130.81, 0.03, 2.8);
+      this.shimmer(b, t + 1.05, [1046.5, 1318.51, 1568, 2093], 0.012);
+    }, 4.5),
+    /** Sent back: two soft notes going down, no alarm. */
+    reject: () => this.ui((b, t) => {
+      this.felt(b, t, 329.63, 0.034, 1.4, 0.1);
+      this.felt(b, t + 0.16, 261.63, 0.03, 1.8, -0.1);
+    }),
+  };
 
   /**
    * One step through the deck: the pen draws the transition line, and the

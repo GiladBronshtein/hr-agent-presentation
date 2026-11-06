@@ -12,6 +12,7 @@ import { ArrowLeft, Clapperboard } from 'lucide-react';
 import { DEMO_SCENARIO } from '../data/demoData';
 import { accentFor } from '../components/presentation/SceneBase';
 import { PALETTE, alpha, textOn } from '../lib/palette';
+import { sound } from '../lib/sound';
 
 /** This slide's chapter accent (fills) and its text-safe tint */
 const { c: ACC, t: ACC_T } = accentFor('demo-entrance');
@@ -27,15 +28,20 @@ const DEMO_STEPS = [
 export default function S23_DemoEntrance() {
   const { resetDemo } = usePresentationStore();
   const [phase, setPhase] = useState(0);
+  // which step the light is on as it walks the four steps (0 = none yet)
+  const [lit, setLit] = useState(0);
 
   useEffect(() => {
     resetDemo();
+    const stops: (() => void)[] = [];
     const timers = [
       setTimeout(() => setPhase(1), 200),
       setTimeout(() => setPhase(2), 800),
       setTimeout(() => setPhase(3), 1100),
+      ...DEMO_STEPS.map((_, i) => setTimeout(() => { setLit(i + 1); stops.push(sound.demo.land(i)); }, 1500 + i * 420)),
+      setTimeout(() => setLit(DEMO_STEPS.length + 1), 1500 + DEMO_STEPS.length * 420 + 200),
     ];
-    return () => timers.forEach(clearTimeout);
+    return () => { timers.forEach(clearTimeout); stops.forEach((f) => f()); };
   }, []);
 
   return (
@@ -146,7 +152,9 @@ export default function S23_DemoEntrance() {
                 borderRadius: '10px',
                 background: `linear-gradient(160deg, ${alpha(step.color, 0.24)}, ${alpha(step.color, 0.08)}), rgba(12,17,50,0.7)`,
                 border: `1px solid ${alpha(step.color, 0.5)}`,
-                boxShadow: `0 0 22px -8px ${alpha(step.color, 0.9)}`,
+                boxShadow: lit === i + 1 ? `0 0 34px -4px ${step.color}, 0 0 0 1px ${alpha(step.color, 0.7)}` : `0 0 22px -8px ${alpha(step.color, 0.9)}`,
+                translate: lit === i + 1 ? '0 -4px' : '0 0',
+                transition: 'box-shadow 0.35s ease, translate 0.35s cubic-bezier(0.23,1,0.32,1)',
               }}>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', fontWeight: 700, color: textTint(step.color), fontVariantNumeric: 'tabular-nums' }}>{step.num}</span>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(246,242,234,0.82)' }}>{step.label}</span>
