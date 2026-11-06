@@ -68,14 +68,24 @@ const SCENE_IMPORTERS: Record<string, () => Promise<{ default: React.ComponentTy
 const LOADED: Record<string, React.ComponentType> = {};
 const LOADING: Record<string, Promise<void>> = {};
 
+/** Shown only if a slide's code could not be downloaded: a quiet, dark stage. */
+function MissingScene() {
+  return <div style={{ position: 'absolute', inset: 0, background: '#060918' }} />;
+}
+
 function loadScene(id: string): Promise<void> {
   if (LOADED[id]) return Promise.resolve();
   const load = SCENE_IMPORTERS[id];
   if (!load) return Promise.resolve();
   if (!LOADING[id]) {
-    LOADING[id] = load()
+    // a flaky network (or a page reloading after a crash) can fail a chunk:
+    // retry, and never hand React an undefined component
+    const attempt = (n: number): Promise<void> => load()
       .then((m) => { LOADED[id] = m.default; })
-      .catch(() => { delete LOADING[id]; });
+      .catch(() => (n > 0 ? new Promise<void>((r) => setTimeout(r, 600)).then(() => attempt(n - 1)) : undefined));
+    LOADING[id] = attempt(2).then(() => {
+      if (!LOADED[id]) { delete LOADING[id]; LOADED[id] = MissingScene; }
+    });
   }
   return LOADING[id];
 }

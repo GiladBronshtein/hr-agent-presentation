@@ -38,7 +38,7 @@ import { prepareTrailer, getFormation, setFormation, trailerAudio } from './trai
 import * as LP from './trailer/lines';
 import { NUM_LEAD, NUM_DUR } from './trailer/score';
 import { mark } from '../../lib/diag';
-import { MEDIA_AUDIO } from '../../lib/device';
+import { MEDIA_AUDIO, OFF } from '../../lib/device';
 
 // The tools an L&D team juggles around one learning program
 const SYSTEMS: { label: string; icon: LucideIcon }[] = [
@@ -134,6 +134,7 @@ function Pill({ icon: Icon, text, color = '#B9A2FF', cls, x, y }: { icon?: Lucid
 function TrailerMute() {
   const on = usePresentationStore((st) => st.isSoundEnabled);
   const toggle = usePresentationStore((st) => st.toggleSound);
+  if (OFF.has('mute')) return null;
   return (
     <button
       type="button"
@@ -179,6 +180,7 @@ function Tip({ color = '#FFFFFF' }: { color?: string }) {
 }
 /** A full-canvas SVG for one act's light strokes. */
 function LightLayer({ cls, children }: { cls?: string; children: React.ReactNode }) {
+  if (OFF.has('lp')) return null;
   return (
     <svg className={cls} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
       <defs>
@@ -193,6 +195,7 @@ function LightLayer({ cls, children }: { cls?: string; children: React.ReactNode
 
 /** Phones: the night sky without WebGL. Three layers of CSS stars and colored light, drifting slowly. */
 function LiteSky() {
+  if (OFF.has('sky')) return <div style={{ position: 'absolute', inset: 0, background: '#060918' }} />;
   const stars = (size: number, gap: number, a: number) => `radial-gradient(circle at 50% 50%, rgba(246,242,234,${a}) 0, rgba(246,242,234,${a}) ${size}px, transparent ${size + 0.6}px) 0 0 / ${gap}px ${gap}px`;
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: 'radial-gradient(ellipse 70% 55% at 50% 42%, rgba(155,107,255,0.18), transparent 65%), radial-gradient(ellipse 45% 40% at 18% 80%, rgba(45,212,191,0.10), transparent 60%), radial-gradient(ellipse 40% 38% at 84% 82%, rgba(255,194,75,0.08), transparent 58%), #060918' }}>
@@ -269,7 +272,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
-    mark(`trailer mount lite=${LITE}`);
+    mark(`trailer mount lite=${LITE} off=${Array.from(OFF).join('+') || '-'}`);
     // Formations are prepared ahead of time (trailer/prepare.ts); the title is
     // measured from the real DOM title once fonts are in.
     const get = (k: string) => getFormation(k);

@@ -21,6 +21,17 @@ export const IOS = typeof navigator !== 'undefined'
  */
 export const MEDIA_AUDIO = IOS || LITE;
 
+// ── Field test switches (query string): narrow down a crash on a real device ──
+const params = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
+/** Parts to leave out, e.g. `?off=lp,sky`: lp (lines of light), sky (phone night sky), mute (mute button). */
+export const OFF = new Set((params.get('off') || '').split(',').filter(Boolean));
+/**
+ * The opening trailer on phones and tablets. Off by default there until the
+ * iOS crash in its first seconds is found; `?trailer=1` forces it on.
+ */
+export const PHONE_TRAILER = params.get('trailer') === '1';
+export const SKIP_TRAILER = (IOS || LITE) && !PHONE_TRAILER;
+
 /** Apple's WebKit (Safari, every iOS browser): prefer AAC, which it decodes natively. */
 export const PREFERS_AAC = typeof navigator !== 'undefined'
   && (/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent) || /iPhone|iPad|iPod/.test(navigator.userAgent));

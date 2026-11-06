@@ -13,6 +13,7 @@ import '../components/presentation/titleIntro.css';
 import { PALETTE, CHAPTER_COLORS, alpha } from '../lib/palette';
 import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 import { mark } from '../lib/diag';
+import { SKIP_TRAILER } from '../lib/device';
 
 const P = PALETTE;
 /** Left to right, as the particle title's gradient (trailer/formations.ts). */
@@ -57,7 +58,8 @@ export default function S01_Title() {
   // back from later slides shows the finished title. Enter skips, I replays.
   const [intro, setIntro] = useState(() => {
     const { previousSceneIndex, isReducedMotion } = usePresentationStore.getState();
-    return !isReducedMotion && previousSceneIndex <= 1;
+    // phones and tablets open on the finished title for now (lib/device.ts)
+    return !isReducedMotion && !SKIP_TRAILER && previousSceneIndex <= 1;
   });
   const [introKey, setIntroKey] = useState(0);
   useEffect(() => { mark(`title mount intro=${intro}`); }, []); // eslint-disable-line react-hooks/exhaustive-deps
