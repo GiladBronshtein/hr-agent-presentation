@@ -17,6 +17,7 @@ import { sound, type ScoreEvent, type BufferPlayback } from '../../lib/sound';
 import { Universe, createUniverseCtl, type UniverseApi } from './trailer/Universe';
 import * as F from './trailer/formations';
 import { PALETTE } from '../../lib/palette';
+import { LITE, loadAudio } from '../../lib/device';
 
 // ── Timing (seconds from the start of the finale): unhurried, a long breath ──
 const BURST = 1.2;
@@ -82,11 +83,43 @@ export function stopFinaleSound(fade = 0.8) {
   active?.stop(fade);
   active = null;
 }
-/** Render the finale's sound ahead of time (idempotent, off the critical path). */
+/**
+ * The finale's sound, ahead of time (idempotent). It ships pre-rendered
+ * (client/public/audio/finale-score.flac and .m4a, rendered by this same
+ * cue); a live render is the desktop-only fallback. `?render-score` forces it.
+ */
 export function prepareFinale(): Promise<AudioBuffer | null> {
   if (typeof OfflineAudioContext === 'undefined') return Promise.resolve(null);
-  cueReady ??= sound.renderScore(cue(), CUE_SECONDS).catch(() => null);
+  cueReady ??= (async () => {
+    if (!location.search.includes('render-score')) {
+      const b = await loadAudio(`${import.meta.env.BASE_URL}audio/finale-score`);
+      if (b) return b;
+    }
+    if (LITE) return null;
+    return sound.renderScore(cue(), CUE_SECONDS).catch(() => null);
+  })();
   return cueReady;
+}
+
+/** Dev helper: the cue as a 16-bit WAV (for client/public/audio/finale-score.*). */
+export async function renderFinaleWav(): Promise<string> {
+  const buf = await sound.renderScore(cue(), CUE_SECONDS);
+  const L = buf.getChannelData(0);
+  const R = buf.getChannelData(1);
+  const data = new DataView(new ArrayBuffer(44 + buf.length * 4));
+  const str = (o: number, t: string) => { for (let i = 0; i < t.length; i++) data.setUint8(o + i, t.charCodeAt(i)); };
+  str(0, 'RIFF'); data.setUint32(4, 36 + buf.length * 4, true); str(8, 'WAVE'); str(12, 'fmt ');
+  data.setUint32(16, 16, true); data.setUint16(20, 1, true); data.setUint16(22, 2, true);
+  data.setUint32(24, buf.sampleRate, true); data.setUint32(28, buf.sampleRate * 4, true);
+  data.setUint16(32, 4, true); data.setUint16(34, 16, true); str(36, 'data'); data.setUint32(40, buf.length * 4, true);
+  for (let i = 0; i < buf.length; i++) {
+    data.setInt16(44 + i * 4, Math.max(-1, Math.min(1, L[i])) * 32767, true);
+    data.setInt16(46 + i * 4, Math.max(-1, Math.min(1, R[i])) * 32767, true);
+  }
+  const bytes = new Uint8Array(data.buffer);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + 0x8000)));
+  return btoa(bin);
 }
 
 /** Sample the photo as it is drawn on the slide (size, soft-edge mask). */

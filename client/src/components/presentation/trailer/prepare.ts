@@ -5,6 +5,7 @@
  * (on the first slide) and awaited by the trailer itself.
  */
 import { sound } from '../../../lib/sound';
+import { LITE, loadAudio } from '../../../lib/device';
 import * as F from './formations';
 import { buildScore, TRAILER_AUDIO_SECONDS } from './score';
 
@@ -47,11 +48,11 @@ export function trailerAudio(): Promise<AudioBuffer | null> {
   audioReady ??= (async () => {
     if (typeof OfflineAudioContext === 'undefined') return null;
     if (!location.search.includes('render-score')) {
-      try {
-        const res = await fetch(`${import.meta.env.BASE_URL}audio/trailer-score.flac`);
-        if (res.ok) return await new OfflineAudioContext(2, 1, 48000).decodeAudioData(await res.arrayBuffer());
-      } catch { /* fall through to a live render */ }
+      const b = await loadAudio(`${import.meta.env.BASE_URL}audio/trailer-score`);
+      if (b) return b;
     }
+    // a live render builds thousands of audio nodes: never on phones
+    if (LITE) return null;
     return sound.renderScore(buildScore(), TRAILER_AUDIO_SECONDS).catch(() => null);
   })();
   return audioReady;
@@ -61,6 +62,8 @@ export function prepareTrailer(): Promise<void> {
   formationsReady ??= (async () => {
     // text formations sample the webfont; wait for it
     try { await document.fonts.load('900 100px Heebo'); } catch { /* fall back to whatever is loaded */ }
+    // phones run the trailer without the particle universe
+    if (LITE) return;
     for (const key of ORDER) {
       if (!cache.has(key)) {
         await idle();

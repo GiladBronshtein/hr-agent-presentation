@@ -30,3 +30,8 @@
 /* Phones and tablets: blur filters in the trailer each need an offscreen
    buffer, and together they exhaust iOS memory. Turn them off there. */
 .trailer-lite, .trailer-lite * { filter: none !important; }
+
+/* Phones: the CSS night sky drifts slowly (transform only, compositor cheap) */
+.lite-stars { animation: liteDrift 60s linear infinite; }
+@keyframes liteDrift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-4%, 2%, 0); } }
+@media (prefers-reduced-motion: reduce) { .lite-stars { animation: none; } }

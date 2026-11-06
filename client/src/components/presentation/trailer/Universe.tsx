@@ -15,6 +15,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { N, CAM_Z, FOV, toWorld, GROUP_STARS, type Formation } from './formations';
+import { LITE } from '../../../lib/device';
+
+export { LITE };
 
 export interface GroupCtl { glow: number; red: number; shift: number }
 
@@ -339,16 +342,6 @@ function Warp({ U }: { U: UniverseCtl }) {
   });
   return <lineSegments ref={ref} geometry={geometry} material={material} frustumCulled={false} />;
 }
-
-/**
- * Phones and tablets: the canvas sits in a 1920x1080 design box that CSS
- * scales down, so rendering it at full size wastes most of the GPU memory
- * (and iOS kills the page when it runs out). There we render at the size
- * actually shown and skip the subtle passes; desktops keep everything.
- */
-export const LITE = typeof window !== 'undefined'
-  && (navigator.maxTouchPoints > 0 || matchMedia('(pointer: coarse)').matches)
-  && Math.min(screen.width, screen.height) < 1100;
 
 function Effects({ U }: { U: UniverseCtl }) {
   // Effects are reached through the composer: the effect wrappers serialize

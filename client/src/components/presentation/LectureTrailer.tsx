@@ -189,6 +189,16 @@ function LightLayer({ cls, children }: { cls?: string; children: React.ReactNode
   );
 }
 
+/** Phones: the night sky without WebGL. Three layers of CSS stars and colored light, drifting slowly. */
+function LiteSky() {
+  const stars = (size: number, gap: number, a: number) => `radial-gradient(circle at 50% 50%, rgba(246,242,234,${a}) 0, rgba(246,242,234,${a}) ${size}px, transparent ${size + 0.6}px) 0 0 / ${gap}px ${gap}px`;
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: 'radial-gradient(ellipse 70% 55% at 50% 42%, rgba(155,107,255,0.18), transparent 65%), radial-gradient(ellipse 45% 40% at 18% 80%, rgba(45,212,191,0.10), transparent 60%), radial-gradient(ellipse 40% 38% at 84% 82%, rgba(255,194,75,0.08), transparent 58%), #060918' }}>
+      <div className="lite-stars" style={{ position: 'absolute', inset: '-10%', background: `${stars(1.2, 97, 0.55)}, ${stars(0.9, 61, 0.35)}, ${stars(1.6, 173, 0.75)}`, backgroundPosition: '0 0, 31px 17px, 83px 59px' }} />
+    </div>
+  );
+}
+
 /** Measure the real title (rendered hidden by S01 during the trailer) so the
  *  particle title lands exactly on it, glyph for glyph. */
 function measureTitle(root: HTMLElement): F.TitleLine[] | undefined {
@@ -225,7 +235,7 @@ function measureTitle(root: HTMLElement): F.TitleLine[] | undefined {
 export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }: { onImpact: () => void; onDone: () => void }) {
   const root = useRef<HTMLDivElement>(null);
   const U = useMemo(() => createUniverseCtl(), []);
-  const initial = useMemo(() => F.fVoid(), []);
+  const initial = useMemo(() => (LITE ? null : F.fVoid()), []);
   const startRef = useRef<() => void>(() => {});
   // The timeline and score start only when the WebGL world reports ready, so a
   // cold load never skips the opening morphs or drifts out of sync with audio.
@@ -260,7 +270,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
     // Formations are prepared ahead of time (trailer/prepare.ts); the title is
     // measured from the real DOM title once fonts are in.
     const get = (k: string) => getFormation(k);
-    const buildTitle = () => setFormation('title', F.fTitle(measureTitle(el)));
+    const buildTitle = () => { if (!LITE) setFormation('title', F.fTitle(measureTitle(el))); };
 
     // Master clock: the pre-rendered score's playhead when audio plays,
     // otherwise the performance clock. Visuals follow it, so picture and
@@ -271,7 +281,8 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
     let started = false;
     let capturing = false;
     let naturalEnd = false;
-    let canvasReady = false;
+    // phones have no WebGL universe to wait for
+    let canvasReady = LITE;
     let prepared = false;
     let audioSettled = false;
     const clockNow = () => (playback ? playback.time() : (performance.now() - perfStart) / 1000);
@@ -570,6 +581,12 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
 
       // ── Finale ──
       morph('word', 59.4, 1.1, 0.45);
+      if (LITE) {
+        // phones: the word is type, not particles, and the title arrives with the impact
+        T.fromTo(q('.lite-word'), { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.9, ease: 'expo.out' }, 59.6);
+        T.to(q('.lite-word'), { autoAlpha: 0, scale: 0.92, duration: 0.5, ease: 'power2.in' }, 61.3);
+        T.call(() => onImpact(), [], 63.75);
+      }
       for (let k = 0; k < 6; k++) {
         T.to(U.g[0], { red: k % 2 ? 0 : 1, shift: k % 2 ? 0 : (k % 4 ? -0.18 : 0.22), duration: 0.05 }, 60.7 + k * 0.1);
         T.to(U, { aberration: k % 2 ? 0 : 0.012, duration: 0.05 }, 60.7 + k * 0.1);
@@ -705,8 +722,12 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
     // phones: no CSS blur filters (each one is an offscreen buffer; iOS runs out of memory)
     <div ref={root} dir="rtl" className={LITE ? 'trailer-lite' : undefined} style={{ position: 'absolute', left: 0, top: 0, width: '1920px', height: '1080px', transformOrigin: '0 0', containerType: 'size', zIndex: 60, overflow: 'hidden', background: '#060918' }}>
       <div className="u" style={{ position: 'absolute', inset: 0 }}>
-        <Universe U={U} initial={initial} apiRef={api} />
+        {LITE || !initial ? <LiteSky /> : <Universe U={U} initial={initial} apiRef={api} />}
       </div>
+
+      {LITE && (
+        <div className="lite-word c" style={{ ...pos(50, 48), visibility: 'hidden', fontFamily: "'Heebo', sans-serif", fontWeight: 900, fontSize: 230, lineHeight: 1, color: '#D6DCF0', whiteSpace: 'nowrap', textShadow: '0 0 40px rgba(155,107,255,0.6)' }}>אוטומציה</div>
+      )}
 
       {/* ── Act 0: the ECG trace ── */}
       <LightLayer cls="a0-lp">

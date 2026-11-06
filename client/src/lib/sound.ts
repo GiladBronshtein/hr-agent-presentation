@@ -18,6 +18,7 @@
  * Browsers only allow audio after a user gesture in the page: call
  * `sound.unlock()` from a keydown/pointerdown handler once.
  */
+import { getSceneById } from '../data/scenes';
 
 export interface Bus {
   ctx: BaseAudioContext;
@@ -906,6 +907,7 @@ class SoundEngine {
    * resolves on the closing slide; a chapter opens with a full chord.
    */
   step(index: number, dir: 1 | -1, chapter = false) {
+    const CLOSING_INDEX = getSceneById('personal-closing')?.index ?? -1;
     if (index === 1) return; // the title slide plays its own score
     const sess = this.session();
     if (!sess) return;
@@ -915,6 +917,18 @@ class SoundEngine {
     const MELODY = [A4, A4, C5, E5, D5, E5, C5, E5, G5, A5, G5, E5, D5, E5, C5, D5, E5, G5, E5, D5, C5, D5, E5, G5, E5, D5, C5, A4];
     const APPX = [E5, D5, C5, D5, E5, G5, E5, D5, C5, A4, C5, D5];
     const note = index < MELODY.length ? MELODY[index] : APPX[(index - MELODY.length) % APPX.length];
+    if (index === CLOSING_INDEX && dir === 1) {
+      // into the closing slide: a soft, rising breath of light, not a hit.
+      // The line draws, air rises, and a slow roll of felt piano opens in
+      // A minor, the key the closing music continues in.
+      this.pen(s, t, 0.5, 0.035, 0.6, -0.6);
+      this.swell(s, t + 0.05, 0.8, 0.045);
+      [220, 329.63, 440, 523.25, 659.25].forEach((f, k) => this.felt(s, t + 0.3 + k * 0.11, f, 0.05 - k * 0.004, 3.2, (k / 4 - 0.5) * 0.6));
+      this.felt(s, t + 0.3, 110, 0.05, 3.6);
+      this.shimmer(s, t + 0.75, [1318.51, 1760], 0.016);
+      setTimeout(() => s.stop(1.6), 4500);
+      return;
+    }
     if (chapter) {
       this.pen(s, t, 0.95, 0.05, 0.7, -0.7);
       const chords: Record<number, number[]> = {

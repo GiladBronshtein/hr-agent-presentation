@@ -13,6 +13,7 @@ import { usePresentationStore } from '../store/presentationStore';
 import { SmoothImage } from '../components/SmoothImage';
 import { PortraitFinale, stopFinaleSound } from '../components/presentation/PortraitFinale';
 import { getSceneById } from '../data/scenes';
+import { LITE } from '../lib/device';
 import { accentFor } from '../components/presentation/SceneBase';
 import { PALETTE, alpha } from '../lib/palette';
 
@@ -50,7 +51,8 @@ export default function S50_PersonalClosing() {
   // universe assembles into the photo, and the slide appears around it.
   const [finale, setFinale] = useState(() => {
     const { previousSceneIndex, isReducedMotion } = usePresentationStore.getState();
-    return !isReducedMotion && previousSceneIndex < (getSceneById('personal-closing')?.index ?? 0);
+    // phones skip it: no WebGL there (see lib/device.ts)
+    return !LITE && !isReducedMotion && previousSceneIndex < (getSceneById('personal-closing')?.index ?? 0);
   });
   const [revealed, setRevealed] = useState(!finale);
   // the closing music's outro stops when the slide is left
