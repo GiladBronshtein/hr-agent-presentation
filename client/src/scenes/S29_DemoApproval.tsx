@@ -1,13 +1,52 @@
 /**
  * S29: Demo Approval: Human-in-the-Loop
- * Design: AI-Native UI: trust moment, approval card with textarea, clear approve/reject CTAs
+ * The trust moment: nothing is published, enrolled or sent until a person
+ * from L&D edits (optional) and approves. Approval is marked by one amber
+ * stroke that draws a check mark, in the deck's path-line language.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { INK } from '../components/motion/path'; // also registers DrawSVGPlugin
+import { useReducedMotion } from '../components/motion/useReducedMotion';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
-import { CelebrationBurst } from '../components/presentation/CelebrationBurst';
 import { usePresentationStore } from '../store/presentationStore';
-import { UserCheck, CheckCircle, XCircle, AlertTriangle, Clock, FileText } from 'lucide-react';
+import { UserCheck, CheckCircle, XCircle, AlertTriangle, FileText, Pencil } from 'lucide-react';
+import { DEMO_APPROVAL_EDIT, DEMO_APPROVAL_ITEMS, DEMO_SCENARIO } from '../data/demoData';
+
+/** A check mark drawn by a single amber stroke once the plan is approved. */
+function DrawnCheck() {
+  const pathRef = useRef<SVGPathElement>(null);
+  const reduced = useReducedMotion();
+
+  useLayoutEffect(() => {
+    const el = pathRef.current;
+    if (!el) return;
+    if (reduced) {
+      gsap.set(el, { drawSVG: '0% 100%' });
+      return;
+    }
+    const tween = gsap.fromTo(el,
+      { drawSVG: '0% 0%' },
+      { drawSVG: '0% 100%', duration: 0.75, delay: 0.2, ease: 'power2.inOut' },
+    );
+    return () => { tween.kill(); };
+  }, [reduced]);
+
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden style={{ width: '60%', height: '60%', overflow: 'visible' }}>
+      <path
+        ref={pathRef}
+        d="M 13 34 L 26 47 L 52 18"
+        fill="none"
+        stroke={INK.amber}
+        strokeWidth={6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function S29_DemoApproval() {
   const { demoApprovalState, setDemoApprovalState, goNext } = usePresentationStore();
@@ -29,8 +68,7 @@ export default function S29_DemoApproval() {
 
   return (
     <SceneBase>
-      <CelebrationBurst active={demoApprovalState === 'approved'} />
-      <DemoStepLayout step={6} tag="Human-in-the-loop" title="האייג׳נט מחכה לאישורך" gap="clamp(1rem, 2cqh, 1.5rem)">
+      <DemoStepLayout step={4} title="אישור אנושי" gap="clamp(0.75rem, 1.6cqh, 1.25rem)">
         {/* Pending state */}
         {demoApprovalState === 'pending' && (
           <div
@@ -41,34 +79,33 @@ export default function S29_DemoApproval() {
               alignSelf: 'center',
               padding: 'clamp(1.25rem, 2.2cqh, 1.75rem) clamp(1.25rem, 1.8cqw, 2rem)',
               borderRadius: '20px',
-              background: 'rgba(245,158,11,0.06)',
-              border: '1px solid rgba(245,158,11,0.2)',
-              boxShadow: '0 0 40px rgba(245,158,11,0.08)',
+              background: 'rgba(242,169,59,0.06)',
+              border: '1px solid rgba(242,169,59,0.2)',
             }}
           >
             {/* Agent summary */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
               <div
                 style={{
                   width: '44px',
                   height: '44px',
                   borderRadius: '12px',
-                  background: 'rgba(245,158,11,0.12)',
-                  border: '1px solid rgba(245,158,11,0.25)',
+                  background: 'rgba(242,169,59,0.12)',
+                  border: '1px solid rgba(242,169,59,0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}
               >
-                <FileText size={20} style={{ color: '#F59E0B' }} />
+                <FileText size={20} style={{ color: '#F2A93B' }} />
               </div>
               <div>
-                <p style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.3rem, 1.56cqw, 1.875rem)', color: 'white', margin: '0 0 0.25rem' }}>
-                  תוכנית קליטה, יעל כהן
+                <p style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.3rem, 1.56cqw, 1.875rem)', color: '#F3EEE4', margin: '0 0 0.25rem' }}>
+                  מסלול Pro לצוות המכירות
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
-                  האייג׳נט הכין תוכנית מלאה ומחכה לאישורך לפני שליחה
+                <p style={{ color: 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
+                  {DEMO_SCENARIO.agent} מחכה לאישור. שום דבר לא מתפרסם, נרשם או נשלח לפני כן
                 </p>
               </div>
             </div>
@@ -79,17 +116,11 @@ export default function S29_DemoApproval() {
                 padding: '0.875rem 1rem',
                 borderRadius: '12px',
                 background: 'rgba(0,0,0,0.25)',
-                border: '1px solid rgba(255,255,255,0.07)',
-                marginBottom: '1.25rem',
+                border: '1px solid rgba(243,238,228,0.07)',
+                marginBottom: '1rem',
               }}
             >
-              {[
-                'מייל ברכה + קישור לפורטל',
-                'פגישת Onboarding עם דוד: 16/07 10:00',
-                'הגדרת חשבונות: Jira, Slack, GitHub',
-                'מסמך "30-60-90 יום" ב-Google Drive',
-                'פגישת היכרות עם הצוות: 17/07 14:00',
-              ].map((item, i) => (
+              {DEMO_APPROVAL_ITEMS.map((item, i) => (
                 <div
                   key={i}
                   className="mo-rise-sm"
@@ -99,13 +130,13 @@ export default function S29_DemoApproval() {
                     alignItems: 'center',
                     gap: '0.625rem',
                     padding: '0.35rem 0',
-                    borderBottom: i < 4 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                    borderBottom: i < DEMO_APPROVAL_ITEMS.length - 1 ? '1px solid rgba(243,238,228,0.05)' : 'none',
                   }}
                 >
-                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#FCD34D', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
+                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#F2A93B', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span style={{ color: 'rgba(255,255,255,0.82)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif" }}>
+                  <span style={{ color: 'rgba(243,238,228,0.82)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif" }}>
                     {item}
                   </span>
                 </div>
@@ -113,22 +144,40 @@ export default function S29_DemoApproval() {
             </div>
 
             {/* Comment field */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", display: 'block', marginBottom: '0.5rem' }}>
-                הערות (אופציונלי)
-              </label>
+            <div style={{ marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                <label htmlFor="demo-approval-edit" style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif" }}>
+                  עריכה לפני אישור (לא חובה)
+                </label>
+                {!comment && (
+                  <button
+                    type="button"
+                    onClick={() => setComment(DEMO_APPROVAL_EDIT)}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                      padding: '0.2rem 0.75rem', borderRadius: '100px',
+                      background: 'rgba(242,169,59,0.1)', border: '1px solid rgba(242,169,59,0.3)',
+                      color: '#F2A93B', cursor: 'pointer',
+                      fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', fontFamily: "'Heebo', sans-serif", fontWeight: 600,
+                    }}
+                  >
+                    <Pencil size="0.9em" /> להוסיף דוגמה מהשטח
+                  </button>
+                )}
+              </div>
               <textarea
+                id="demo-approval-edit"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="הערות לאייג׳נט לפני הביצוע..."
-                rows={2}
+                placeholder="למשל: להוסיף דוגמה מהשטח ליחידה 3"
+                rows={1}
                 style={{
                   width: '100%',
                   padding: '0.75rem 1rem',
                   borderRadius: '10px',
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: 'rgba(255,255,255,0.8)',
+                  background: 'rgba(243,238,228,0.04)',
+                  border: '1px solid rgba(243,238,228,0.1)',
+                  color: 'rgba(243,238,228,0.8)',
                   fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
                   fontFamily: "'Heebo', sans-serif",
                   resize: 'none',
@@ -137,8 +186,8 @@ export default function S29_DemoApproval() {
                   direction: 'rtl',
                   transition: 'border-color 200ms ease',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = 'rgba(245,158,11,0.35)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                onFocus={(e) => { e.target.style.borderColor = 'rgba(242,169,59,0.35)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(243,238,228,0.1)'; }}
               />
             </div>
 
@@ -154,16 +203,15 @@ export default function S29_DemoApproval() {
                   gap: '0.5rem',
                   padding: '0.75rem',
                   borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #10B981, #059669)',
+                  background: '#F2A93B',
                   border: 'none',
-                  color: 'white',
+                  color: '#070B17',
                   fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
                   fontWeight: 700,
                   fontFamily: "'Heebo', sans-serif",
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
                   transition: 'all 200ms ease',
-                  boxShadow: '0 4px 16px rgba(16,185,129,0.3)',
                 }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'; }}
@@ -181,9 +229,9 @@ export default function S29_DemoApproval() {
                   gap: '0.5rem',
                   padding: '0.75rem',
                   borderRadius: '12px',
-                  background: 'rgba(244,63,94,0.08)',
-                  border: '1px solid rgba(244,63,94,0.25)',
-                  color: '#FDA4AF',
+                  background: 'rgba(138,147,168,0.08)',
+                  border: '1px solid rgba(138,147,168,0.25)',
+                  color: '#8A93A8',
                   fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
                   fontWeight: 700,
                   fontFamily: "'Heebo', sans-serif",
@@ -191,11 +239,11 @@ export default function S29_DemoApproval() {
                   cursor: 'pointer',
                   transition: 'all 200ms ease',
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,63,94,0.14)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,63,94,0.08)'; }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(138,147,168,0.14)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(138,147,168,0.08)'; }}
               >
                 <XCircle size="1em" />
-                דחייה והחזרה לתיקון
+                החזרה לתיקון
               </button>
             </div>
           </div>
@@ -209,36 +257,32 @@ export default function S29_DemoApproval() {
               textAlign: 'center',
               padding: '2.5rem',
               borderRadius: '20px',
-              background: 'rgba(16,185,129,0.08)',
-              border: '1px solid rgba(16,185,129,0.25)',
+              background: '#0D1326',
+              border: '1px solid rgba(242,169,59,0.3)',
               maxWidth: '600px',
               width: '100%',
               alignSelf: 'center',
             }}
           >
             <div
-              className="mo-pop"
               style={{
-                animationDelay: '0.15s',
-                width: '64px',
-                height: '64px',
+                width: '88px',
+                height: '88px',
                 borderRadius: '50%',
-                background: 'rgba(16,185,129,0.15)',
-                border: '2px solid rgba(16,185,129,0.4)',
+                border: '1px solid rgba(243,238,228,0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1.25rem',
-                boxShadow: '0 0 32px rgba(16,185,129,0.25)',
               }}
             >
-              <UserCheck size={28} style={{ color: '#34D399' }} />
+              <DrawnCheck />
             </div>
-            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#6EE7B7', margin: '0 0 0.5rem' }}>
-              אושר!
+            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#F2A93B', margin: '0 0 0.5rem' }}>
+              אושר
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
-              האייג׳נט מתחיל לבצע את התוכנית...
+            <p style={{ color: 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0 }}>
+              {comment ? 'ההערה נוספה לתוכנית. ' : ''}{DEMO_SCENARIO.agent} מפרסם, רושם ושולח, וכל פעולה מתועדת
             </p>
           </div>
         )}
@@ -251,28 +295,28 @@ export default function S29_DemoApproval() {
               textAlign: 'center',
               padding: '2rem',
               borderRadius: '20px',
-              background: 'rgba(244,63,94,0.07)',
-              border: '1px solid rgba(244,63,94,0.2)',
+              background: 'rgba(138,147,168,0.07)',
+              border: '1px solid rgba(138,147,168,0.2)',
               maxWidth: '600px',
               width: '100%',
               alignSelf: 'center',
             }}
           >
-            <AlertTriangle size={36} style={{ color: '#F43F5E', margin: '0 auto 1rem', display: 'block' }} />
-            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#FDA4AF', margin: '0 0 0.5rem', textWrap: 'balance' } as React.CSSProperties}>
-              נדחה, האייג׳נט ישנה ויחזור
+            <AlertTriangle size={36} style={{ color: '#8A93A8', margin: '0 auto 1rem', display: 'block' }} />
+            <h3 style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.5rem, 1.9cqw, 2.25rem)', fontWeight: 700, color: '#8A93A8', margin: '0 0 0.5rem', textWrap: 'balance' } as React.CSSProperties}>
+              הוחזר לתיקון. {DEMO_SCENARIO.agent} יתקן ויחזור לאישור
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: '0 0 1.25rem' }}>
-              זה בדיוק המנגנון: האדם שולט, האייג׳נט מתאים
+            <p style={{ color: 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: '0 0 1.25rem' }}>
+              זה בדיוק המנגנון: אדם מחליט, האייג׳נט מתאים
             </p>
             <button
               onClick={() => setDemoApprovalState('pending')}
               style={{
                 padding: '0.5rem 1.25rem',
                 borderRadius: '8px',
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.6)',
+                background: 'rgba(243,238,228,0.06)',
+                border: '1px solid rgba(243,238,228,0.12)',
+                color: 'rgba(243,238,228,0.6)',
                 fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
                 fontFamily: "'Heebo', sans-serif",
                 cursor: 'pointer',
@@ -292,15 +336,15 @@ export default function S29_DemoApproval() {
             gap: '0.625rem',
             padding: '0.625rem 1rem',
             borderRadius: '10px',
-            background: 'rgba(99,102,241,0.07)',
-            border: '1px solid rgba(99,102,241,0.18)',
+            background: 'rgba(243,238,228,0.07)',
+            border: '1px solid rgba(243,238,228,0.18)',
             maxWidth: '860px',
             alignSelf: 'center',
           }}
         >
-          <UserCheck size={22} style={{ color: '#A5B4FC', flexShrink: 0 }} />
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0, textWrap: 'balance' } as React.CSSProperties}>
-            <bdi>Human-in-the-loop</bdi> הוא <span style={{ color: '#A5B4FC', fontWeight: 600 }}>עיצוב מכוון</span>, לא פשרה. הוא מה שהופך אייג׳נט <span style={{ whiteSpace: 'nowrap' }}>לאמין</span>
+          <UserCheck size={22} style={{ color: '#F2A93B', flexShrink: 0 }} />
+          <p style={{ color: 'rgba(243,238,228,0.75)', fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontFamily: "'Heebo', sans-serif", margin: 0, textWrap: 'balance' } as React.CSSProperties}>
+            אישור אנושי (<bdi>Human-in-the-loop</bdi>) הוא <span style={{ color: '#F2A93B', fontWeight: 600 }}>חלק מהתכנון</span>, לא פשרה. <span style={{ whiteSpace: 'nowrap' }}>ככה בונים אמון.</span>
           </p>
         </div>
       </DemoStepLayout>

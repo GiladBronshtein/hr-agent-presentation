@@ -13,11 +13,11 @@ import {
 } from 'lucide-react';
 
 const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#6366F1',
-  'לראות': '#0891B2',
-  'לבנות': '#10B981',
-  'להטמיע': '#F59E0B',
-  'נספח': '#64748B',
+  'להבין': '#F2A93B',
+  'לראות': '#8A93A8',
+  'לבנות': '#F2A93B',
+  'להטמיע': '#F2A93B',
+  'נספח': '#8A93A8',
 };
 
 function useClock() {
@@ -86,13 +86,13 @@ export function PresenterView() {
   const notes = scene ? SPEAKER_NOTES[scene.id] : undefined;
   const chapter = getCurrentChapter(index);
   const chapterInfo = CHAPTERS.find((c) => c.id === chapter);
-  const color = CHAPTER_COLORS[chapter] || '#6366F1';
+  const color = CHAPTER_COLORS[chapter] || '#F2A93B';
 
   const plannedMinutes = SCENES.slice(0, index).reduce((acc, s) => acc + s.estimatedMinutes, 0);
 
   return (
     <div dir="rtl" style={{
-      minHeight: '100vh', background: '#07070F', color: 'white',
+      minHeight: '100vh', background: '#07070F', color: '#F3EEE4',
       fontFamily: "'Heebo', 'DM Sans', sans-serif",
       display: 'flex', flexDirection: 'column',
       padding: '1.25rem 1.5rem',
@@ -108,10 +108,10 @@ export function PresenterView() {
           }}>
             {chapterInfo?.label || chapter}
           </span>
-          <span style={{ fontFamily: 'monospace', color: 'rgba(255,255,255,0.55)', fontSize: '1rem' }}>
+          <span style={{ fontFamily: 'monospace', color: 'rgba(243,238,228,0.55)', fontSize: '1rem' }}>
             {String(index + 1).padStart(2, '0')}/{String(SCENES.length).padStart(2, '0')}
           </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(255,255,255,0.45)', fontSize: '0.9rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(243,238,228,0.45)', fontSize: '0.9rem' }}>
             <Timer size={14} />
             מתוכנן עד כאן: {plannedMinutes} דק׳
           </span>
@@ -121,7 +121,7 @@ export function PresenterView() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{
               fontFamily: 'monospace', fontSize: '1.75rem', fontWeight: 700,
-              color: running ? '#22D3EE' : 'rgba(255,255,255,0.55)',
+              color: running ? '#F3EEE4' : 'rgba(243,238,228,0.55)',
             }}>
               {formatElapsed(elapsed)}
             </span>
@@ -132,7 +132,7 @@ export function PresenterView() {
               <RotateCcw size={15} />
             </button>
           </div>
-          <span style={{ fontFamily: 'monospace', fontSize: '1.25rem', color: 'rgba(255,255,255,0.55)' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: '1.25rem', color: 'rgba(243,238,228,0.55)' }}>
             {now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -150,30 +150,30 @@ export function PresenterView() {
           <div style={{ fontSize: '1.9rem', fontWeight: 800, lineHeight: 1.2 }}>
             {scene?.hebrewTitle}
           </div>
-          <div style={{ marginTop: '0.4rem', color: 'rgba(255,255,255,0.62)', fontSize: '1.05rem' }}>
+          <div style={{ marginTop: '0.4rem', color: 'rgba(243,238,228,0.62)', fontSize: '1.05rem' }}>
             {scene?.takeaway}
           </div>
         </div>
 
         <div style={{
           padding: '1.25rem 1.5rem', borderRadius: '16px',
-          background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+          background: 'rgba(243,238,228,0.04)', border: '1px solid rgba(243,238,228,0.09)',
         }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(243,238,228,0.45)', letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <ArrowLeft size={13} />
             הסצנה הבאה
           </div>
           {nextScene ? (
             <>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, lineHeight: 1.25, color: 'rgba(255,255,255,0.85)' }}>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, lineHeight: 1.25, color: 'rgba(243,238,228,0.85)' }}>
                 {nextScene.hebrewTitle}
               </div>
-              <div style={{ marginTop: '0.35rem', color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem' }}>
+              <div style={{ marginTop: '0.35rem', color: 'rgba(243,238,228,0.5)', fontSize: '0.95rem' }}>
                 {nextScene.takeaway}
               </div>
             </>
           ) : (
-            <div style={{ color: 'rgba(255,255,255,0.5)' }}>סוף המצגת</div>
+            <div style={{ color: 'rgba(243,238,228,0.5)' }}>סוף המצגת</div>
           )}
         </div>
       </div>
@@ -182,7 +182,7 @@ export function PresenterView() {
       <div style={{
         flex: 1, minHeight: 0, overflowY: 'auto',
         padding: '1.25rem 1.5rem', borderRadius: '16px',
-        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+        background: 'rgba(243,238,228,0.03)', border: '1px solid rgba(243,238,228,0.08)',
       }}>
         {notes ? (
           <div className="presenter-grid-notes">
@@ -190,17 +190,17 @@ export function PresenterView() {
             <NoteBlock label="הסבר">{notes.explanation}</NoteBlock>
             <NoteBlock label="דוגמה">{notes.example}</NoteBlock>
             {notes.audienceQuestion && (
-              <NoteBlock label="שאלה לקהל" icon={<MessageCircleQuestion size={13} />} color="#22D3EE">
+              <NoteBlock label="שאלה לקהל" icon={<MessageCircleQuestion size={13} />} color="#F3EEE4">
                 {notes.audienceQuestion}
               </NoteBlock>
             )}
-            <NoteBlock label="סיכון / מגבלה" icon={<AlertTriangle size={13} />} color="#F59E0B">
+            <NoteBlock label="סיכון / מגבלה" icon={<AlertTriangle size={13} />} color="#F2A93B">
               {notes.riskOrLimitation}
             </NoteBlock>
-            <NoteBlock label="מעבר לסצנה הבאה" color="#10B981">{notes.transition}</NoteBlock>
+            <NoteBlock label="מעבר לסצנה הבאה" color="#F2A93B">{notes.transition}</NoteBlock>
           </div>
         ) : (
-          <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.05rem' }}>אין הערות לסצנה זו</div>
+          <div style={{ color: 'rgba(243,238,228,0.45)', fontSize: '1.05rem' }}>אין הערות לסצנה זו</div>
         )}
       </div>
 
@@ -211,7 +211,7 @@ export function PresenterView() {
           קודם
         </button>
         {notes && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', padding: '0 1rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(243,238,228,0.45)', fontSize: '0.95rem', padding: '0 1rem' }}>
             <Clock size={14} />
             {notes.estimatedMinutes} דק׳ לסצנה
           </span>
@@ -228,15 +228,15 @@ export function PresenterView() {
 const btnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
   width: '32px', height: '32px', borderRadius: '8px',
-  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
-  color: 'rgba(255,255,255,0.7)', cursor: 'pointer',
+  background: 'rgba(243,238,228,0.06)', border: '1px solid rgba(243,238,228,0.12)',
+  color: 'rgba(243,238,228,0.7)', cursor: 'pointer',
 };
 
 const navBtnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
   padding: '0.7rem 1.5rem', borderRadius: '12px',
-  background: 'rgba(99,102,241,0.14)', border: '1px solid rgba(99,102,241,0.3)',
-  color: '#A5B4FC', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer',
+  background: 'rgba(243,238,228,0.14)', border: '1px solid rgba(243,238,228,0.3)',
+  color: '#F2A93B', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer',
   fontFamily: "'Heebo', sans-serif",
 };
 
@@ -248,7 +248,7 @@ function NoteBlock({ label, children, icon, color, strong }: {
       <div style={{
         display: 'flex', alignItems: 'center', gap: '0.3rem',
         fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.08em',
-        color: color || 'rgba(255,255,255,0.45)', marginBottom: '0.35rem',
+        color: color || 'rgba(243,238,228,0.45)', marginBottom: '0.35rem',
         fontFamily: "'Space Grotesk', sans-serif",
       }}>
         {icon}
@@ -257,7 +257,7 @@ function NoteBlock({ label, children, icon, color, strong }: {
       <p style={{
         margin: 0, lineHeight: 1.65,
         fontSize: strong ? '1.2rem' : '1.05rem',
-        color: strong ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.75)',
+        color: strong ? 'rgba(243,238,228,0.95)' : 'rgba(243,238,228,0.75)',
         fontWeight: strong ? 600 : 400,
       }}>
         {children}

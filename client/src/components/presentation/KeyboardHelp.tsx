@@ -52,9 +52,7 @@ export function KeyboardHelp() {
         justifyContent: 'center',
         padding: '1rem',
         boxSizing: 'border-box',
-        background: 'rgba(3, 3, 12, 0.82)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: 'rgba(7,11,23, 0.92)',
         animation: 'fadeIn 0.2s ease both',
       }}
       onClick={(e) => {
@@ -74,9 +72,8 @@ export function KeyboardHelp() {
           scrollbarWidth: 'none',
           boxSizing: 'border-box',
           borderRadius: '20px',
-          background: 'rgba(12, 12, 30, 0.97)',
-          border: '1px solid rgba(99,102,241,0.22)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)',
+          background: 'rgba(13,19,38, 0.97)',
+          border: '1px solid rgba(243,238,228,0.22)',
           padding: 'clamp(1.1rem, 3vh, 1.75rem) clamp(1.1rem, 4vw, 1.75rem)',
           animation: 'scaleIn 0.3s var(--mo-ease-out) both',
         }}
@@ -89,7 +86,7 @@ export function KeyboardHelp() {
         }}>
           <h2 style={{
             margin: 0, fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3,
-            color: 'white', fontFamily: "'Heebo', sans-serif",
+            color: '#F3EEE4', fontFamily: "'Heebo', sans-serif",
           }}>
             קיצורי מקלדת
           </h2>
@@ -98,21 +95,21 @@ export function KeyboardHelp() {
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               width: '30px', height: '30px', borderRadius: '8px',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.68)',
+              background: 'rgba(243,238,228,0.06)',
+              border: '1px solid rgba(243,238,228,0.1)',
+              color: 'rgba(243,238,228,0.68)',
               cursor: 'pointer',
               transition: 'all 180ms ease',
             }}
             onMouseEnter={(e) => {
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.background = 'rgba(255,255,255,0.14)';
-              btn.style.color = 'white';
+              btn.style.background = 'rgba(243,238,228,0.14)';
+              btn.style.color = '#F3EEE4';
             }}
             onMouseLeave={(e) => {
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.background = 'rgba(255,255,255,0.06)';
-              btn.style.color = 'rgba(255,255,255,0.68)';
+              btn.style.background = 'rgba(243,238,228,0.06)';
+              btn.style.color = 'rgba(243,238,228,0.68)';
             }}
             aria-label="סגירה"
           >
@@ -129,11 +126,11 @@ export function KeyboardHelp() {
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 gap: '1rem',
                 padding: 'clamp(0.3rem, 0.9vh, 0.55rem) 0',
-                borderBottom: i < SHORTCUTS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                borderBottom: i < SHORTCUTS.length - 1 ? '1px solid rgba(243,238,228,0.05)' : 'none',
               }}
             >
               <span style={{
-                color: 'rgba(255,255,255,0.78)', fontSize: '1.0625rem', lineHeight: 1.35,
+                color: 'rgba(243,238,228,0.78)', fontSize: '1.0625rem', lineHeight: 1.35,
                 fontFamily: "'Heebo', sans-serif", minWidth: 0, textWrap: 'balance',
               }}>
                 {shortcut.description}
@@ -150,9 +147,9 @@ export function KeyboardHelp() {
                       ...(key.length === 1 && /[←→]/.test(key)
                         ? { fontSize: '1.05rem', fontFamily: 'system-ui, sans-serif' }
                         : { fontSize: '0.875rem', fontFamily: "'Space Grotesk', monospace" }),
-                      fontWeight: 600, color: 'rgba(255,255,255,0.85)',
-                      background: 'rgba(255,255,255,0.07)',
-                      border: '1px solid rgba(255,255,255,0.12)',
+                      fontWeight: 600, color: 'rgba(243,238,228,0.85)',
+                      background: 'rgba(243,238,228,0.07)',
+                      border: '1px solid rgba(243,238,228,0.12)',
                     }}
                   >
                     {key}
@@ -164,7 +161,7 @@ export function KeyboardHelp() {
         </div>
 
         <p style={{
-          margin: 'clamp(0.5rem, 1.6vh, 1rem) 0 0', color: 'rgba(255,255,255,0.5)',
+          margin: 'clamp(0.5rem, 1.6vh, 1rem) 0 0', color: 'rgba(243,238,228,0.5)',
           fontSize: '0.875rem', lineHeight: 1.4, textAlign: 'center',
           fontFamily: "'Heebo', sans-serif",
         }}>

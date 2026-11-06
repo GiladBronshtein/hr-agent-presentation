@@ -1,27 +1,28 @@
 /**
- * S34: n8n Workflow - full-canvas node graph of the agent flow,
- * with a success branch (top) and a human-notify branch (bottom).
+ * S34: n8n Workflow - a learning-request intake flow as a node graph.
+ * Top branch: a fitting course already exists, so the requester gets a link.
+ * Bottom branch: nothing fits, so a draft path goes to the L&D team for approval.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Bell, Brain, Building2, Calendar, Mail, MessageCircle } from 'lucide-react';
+import { Brain, FileText, GraduationCap, MessageCircle, Send, UserCheck } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle, TakeawayBar } from '../components/presentation/SceneBase';
 import { textTint } from '../lib/typeTokens';
 
 const NODES = [
-  { id: 'trigger',  label: 'Slack Trigger', sub: 'בקשה חדשה',      icon: MessageCircle, color: '#6366F1', x: 10, y: 50 },
-  { id: 'ai',       label: 'AI Agent',      sub: 'תכנון והחלטה',   icon: Brain,         color: '#A78BFA', x: 32, y: 50 },
-  { id: 'calendar', label: 'Calendar',      sub: 'קביעת פגישות',   icon: Calendar,      color: '#10B981', x: 55, y: 26 },
-  { id: 'email',    label: 'Gmail',         sub: 'טיוטת מייל',     icon: Mail,          color: '#F59E0B', x: 55, y: 74 },
-  { id: 'hris',     label: 'HRIS',          sub: 'עדכון רשומה',    icon: Building2,     color: '#22D3EE', x: 80, y: 26 },
-  { id: 'notify',   label: 'Notify HR',     sub: 'אישור אנושי',    icon: Bell,          color: '#F43F5E', x: 80, y: 74 },
+  { id: 'trigger',  label: 'Slack Trigger',  sub: 'בקשת הדרכה חדשה',   icon: MessageCircle, color: '#F2A93B', x: 10, y: 50 },
+  { id: 'ai',       label: 'AI Agent',       sub: 'מה הבעיה בעבודה?',  icon: Brain,         color: '#F2A93B', x: 32, y: 50 },
+  { id: 'lms',      label: 'LMS Search',     sub: 'יש כבר קורס מתאים?', icon: GraduationCap, color: '#F2A93B', x: 55, y: 26 },
+  { id: 'draft',    label: 'Google Docs',    sub: 'טיוטת מסלול חדש',   icon: FileText,      color: '#F2A93B', x: 55, y: 74 },
+  { id: 'reply',    label: 'Slack Reply',    sub: 'קישור למבקש',       icon: Send,          color: '#F3EEE4', x: 80, y: 26 },
+  { id: 'approve',  label: 'Human Approval', sub: 'צוות L&D מאשר',     icon: UserCheck,     color: '#8A93A8', x: 80, y: 74 },
 ];
 
 const EDGES = [
   { from: 'trigger', to: 'ai' },
-  { from: 'ai', to: 'calendar' },
-  { from: 'ai', to: 'email' },
-  { from: 'calendar', to: 'hris' },
-  { from: 'email', to: 'notify' },
+  { from: 'ai', to: 'lms' },
+  { from: 'ai', to: 'draft' },
+  { from: 'lms', to: 'reply' },
+  { from: 'draft', to: 'approve' },
 ];
 
 const EDGE_GAP = 10; // px clearance between an edge's end and the node box
@@ -30,10 +31,10 @@ const EDGE_GAP = 10; // px clearance between an edge's end and the node box
 const NODE_DELAY = (i: number) => 0.1 + i * 0.06;
 const EDGE_DELAY: Record<string, number> = {
   'trigger-ai': 0.5,
-  'ai-calendar': 0.68,
-  'ai-email': 0.72,
-  'calendar-hris': 0.86,
-  'email-notify': 0.9,
+  'ai-lms': 0.68,
+  'ai-draft': 0.72,
+  'lms-reply': 0.86,
+  'draft-approve': 0.9,
 };
 
 export default function S34_N8nWorkflow() {
@@ -89,14 +90,14 @@ export default function S34_N8nWorkflow() {
         <div className="w-full max-w-7xl flex flex-col" style={{ height: '100%', paddingTop: 'clamp(1rem, 2cqh, 2rem)', paddingBottom: 'clamp(3.5rem, 6cqh, 5rem)', gap: 'clamp(1rem, 2cqh, 1.75rem)' }}>
           <div style={{ textAlign: 'center', flexShrink: 0 }}>
             <SceneTitle size="md">אייג׳נט פשוט ב-n8n</SceneTitle>
-            <SceneSubtitle>זרימה אמיתית: טריגר, תכנון, ביצוע ואישור אנושי בסוף</SceneSubtitle>
+            <SceneSubtitle>בקשת הדרכה נכנסת. יש קורס מתאים? קישור. אין? טיוטה לאישור</SceneSubtitle>
           </div>
 
           <div ref={canvasRef} className="relative rounded-3xl overflow-hidden" style={{
             flexGrow: 1, minHeight: 'clamp(320px, 46cqh, 520px)',
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(243,238,228,0.02)', border: '1px solid rgba(243,238,228,0.07)',
           }}>
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)', backgroundSize: '28px 28px', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(243,238,228,0.07) 1px, transparent 1px)', backgroundSize: '28px 28px', pointerEvents: 'none' }} />
             <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
               {EDGES.map((edge, i) => {
                 const ends = edgeEnds(edge.from, edge.to);
@@ -119,7 +120,7 @@ export default function S34_N8nWorkflow() {
                     <line
                       x1={x1} y1={y1}
                       x2={x2} y2={y2}
-                      stroke={on ? NODES.find(n => n.id === edge.to)!.color : 'rgba(255,255,255,0.14)'}
+                      stroke={on ? NODES.find(n => n.id === edge.to)!.color : 'rgba(243,238,228,0.14)'}
                       strokeWidth={on ? 2.5 : 1.5}
                       strokeDasharray="6 8"
                       strokeLinecap="round"
@@ -153,13 +154,12 @@ export default function S34_N8nWorkflow() {
                     fontSize: 'clamp(1.8rem, 2.4cqw, 2.8rem)', color: node.color,
                     background: on ? node.color + '2E' : node.color + '14',
                     border: on ? `2px solid ${node.color}80` : `1px solid ${node.color}35`,
-                    boxShadow: on ? `0 0 32px ${node.color}55` : `0 0 16px ${node.color}18`,
                     transition: 'all 0.25s ease',
                   }}>
                     <node.icon size="1em" />
                   </div>
                   <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.3cqw, 1.6rem)', fontWeight: 700, color: 'rgba(255,255,255,0.92)', whiteSpace: 'nowrap' }}>{node.label}</div>
+                    <div style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.3cqw, 1.6rem)', fontWeight: 700, color: 'rgba(243,238,228,0.92)', whiteSpace: 'nowrap' }}>{node.label}</div>
                     <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1.35rem)', color: textTint(node.color), whiteSpace: 'nowrap' }}>{node.sub}</div>
                   </div>
                   </div>
@@ -170,7 +170,7 @@ export default function S34_N8nWorkflow() {
         </div>
       </ContentLayout>
       <TakeawayBar>
-        n8n מאפשר בניית זרימות ויזואליות, <span style={{ color: '#10B981', fontWeight: 700 }}>ללא קוד</span>, עם כלים מוכנים לחיבור
+        לא כל בקשה צריכה קורס חדש. <span style={{ color: '#F2A93B', fontWeight: 700 }}>הזרימה בודקת קודם מה כבר קיים</span>
       </TakeawayBar>
     </SceneBase>
   );

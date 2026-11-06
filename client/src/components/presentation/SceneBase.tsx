@@ -1,22 +1,23 @@
 /**
  * SceneBase - Shared scene wrapper
- * Design: AI-Native UI + Glassmorphism + Dark Mode OLED
- * Colors: Deep Space #0A0A1A, Indigo #6366F1, Cyan #0891B2
- * Typography: Space Grotesk (headings), DM Sans (body)
+ * Design: editorial "learning-path line" direction. Flat navy page, paper
+ * white type, one amber accent, slate for secondary. No glow, no gradient
+ * text, no ambient light.
+ * Typography: Heebo
  */
 import { ReactNode, useEffect, useState } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
-import { CHAPTERS, getCurrentChapter } from '../../data/scenes';
+import { getCurrentChapter } from '../../data/scenes';
 import { RevealText } from '../motion/RevealText';
 import { useReducedMotion } from '../motion/useReducedMotion';
 import '../motion/motion.css';
 
 const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#6366F1',
-  'לראות': '#0891B2',
-  'לבנות': '#10B981',
-  'להטמיע': '#F59E0B',
-  'נספח': '#64748B',
+  'להבין': '#F2A93B',
+  'לראות': '#F2A93B',
+  'לבנות': '#F2A93B',
+  'להטמיע': '#F2A93B',
+  'נספח': '#8A93A8',
 };
 
 interface SceneBaseProps {
@@ -28,39 +29,12 @@ interface SceneBaseProps {
   noBg?: boolean;
 }
 
-export function SceneBase({ children, className = '', variant = 'dark', chapterColor, noBg = false }: SceneBaseProps) {
-  const { currentSceneIndex, isReducedMotion, qualityLevel } = usePresentationStore();
-  const chapter = getCurrentChapter(currentSceneIndex);
-  const color = chapterColor || CHAPTER_COLORS[chapter] || '#6366F1';
-  // Ambient aurora: only on the default dark backgrounds, never on light or
-  // scene-managed backgrounds, and off for lightweight quality / reduced motion
-  const showAmbient = !noBg && variant !== 'light' && !isReducedMotion && qualityLevel !== 'lightweight';
-
+export function SceneBase({ children, className = '', variant = 'dark', noBg = false }: SceneBaseProps) {
   const bgStyles: Record<string, React.CSSProperties> = {
-    'dark': {
-      background: `
-        radial-gradient(ellipse 70% 60% at 20% 30%, rgba(99,102,241,0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(8,145,178,0.06) 0%, transparent 60%),
-        #0A0A1A
-      `,
-    },
-    'deep-dark': {
-      background: `
-        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(244,63,94,0.07) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(99,102,241,0.07) 0%, transparent 55%),
-        #07071A
-      `,
-    },
-    'light': {
-      background: 'linear-gradient(135deg, #EEF2FF 0%, #E0F2FE 100%)',
-    },
-    'chapter-break': {
-      background: `
-        radial-gradient(ellipse 80% 70% at 50% 40%, ${color}12 0%, transparent 65%),
-        radial-gradient(ellipse 40% 40% at 85% 75%, rgba(8,145,178,0.06) 0%, transparent 60%),
-        #0A0A1A
-      `,
-    },
+    'dark': { background: '#070B17' },
+    'deep-dark': { background: '#070B17' },
+    'light': { background: '#F3EEE4' },
+    'chapter-break': { background: '#0D1326' },
   };
 
   return (
@@ -69,49 +43,8 @@ export function SceneBase({ children, className = '', variant = 'dark', chapterC
       style={noBg ? undefined : bgStyles[variant]}
       dir="rtl"
     >
-      {/* Ambient aurora: slow drifting light behind everything (transform only) */}
-      {showAmbient && (
-        <div
-          aria-hidden
-          className="mx-ambient"
-          style={{ '--mx-amb-a': color + '1A', '--mx-amb-b': 'rgba(34,211,238,0.07)' } as React.CSSProperties}
-        >
-          <div className="mx-ambient-a" />
-          <div className="mx-ambient-b" />
-        </div>
-      )}
-
-      {/* Fine grid */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '64px 64px',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Noise texture */}
+      {/* Paper grain */}
       <div className="noise-overlay" />
-
-      {/* Top accent line */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background: `linear-gradient(90deg, transparent 0%, ${color}40 30%, rgba(34,211,238,0.25) 70%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 3,
-        }}
-      />
 
       {/* Content: no wrapper fade. The stage transition owns the slide-level
           entrance, so per-element staggers play on a visible parent. */}
@@ -174,13 +107,11 @@ export function SceneTitle({
   children,
   size = 'lg',
   color,
-  gradient,
   className = '',
 }: {
   children: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   color?: string;
-  gradient?: string;
   className?: string;
 }) {
   const sizes = {
@@ -201,27 +132,21 @@ export function SceneTitle({
     letterSpacing: '-0.03em',
     margin: 0,
     textWrap: 'balance',
+    color: color || '#F3EEE4',
   } as React.CSSProperties;
-
-  const gradientStyle: React.CSSProperties | undefined = gradient
-    ? { background: gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
-    : undefined;
-
-  if (!gradient) style.color = color || 'white';
 
   if (isReducedMotion) {
     return (
-      <h1 className={className} style={{ ...style, ...gradientStyle }}>
+      <h1 className={className} style={style}>
         {children}
       </h1>
     );
   }
 
-  // Word-by-word reveal. Gradient titles reveal as one unit with the gradient
-  // on the animated element, so the fill stays continuous.
+  // Word-by-word reveal
   return (
     <h1 className={className} style={style}>
-      <RevealText whole={!!gradient} wholeStyle={gradientStyle}>{children}</RevealText>
+      <RevealText>{children}</RevealText>
     </h1>
   );
 }
@@ -242,7 +167,7 @@ export function SceneEyebrow({
     <p
       className={className}
       style={{
-        color: color || 'rgba(255,255,255,0.62)',
+        color: color || 'rgba(243,238,228,0.62)',
         fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
         fontWeight: 600,
         lineHeight: 1.3,
@@ -266,7 +191,7 @@ export function SceneSubtitle({
     <p
       className={className}
       style={{
-        color: 'rgba(255,255,255,0.7)',
+        color: 'rgba(243,238,228,0.7)',
         fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
         lineHeight: 1.45,
         fontFamily: "'Heebo', 'DM Sans', sans-serif",
@@ -290,7 +215,7 @@ export function Takeaway({
 }) {
   const { currentSceneIndex } = usePresentationStore();
   const chapter = getCurrentChapter(currentSceneIndex);
-  const c = color || CHAPTER_COLORS[chapter] || '#6366F1';
+  const c = color || CHAPTER_COLORS[chapter] || '#F2A93B';
 
   return (
     <div
@@ -332,10 +257,8 @@ export function GlassCard({
     <div
       className={className}
       style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: 'rgba(243,238,228,0.04)',
+        border: '1px solid rgba(243,238,228,0.08)',
         borderRadius: '16px',
         padding,
         ...style,
@@ -405,7 +328,7 @@ export function AnimatedNumber({
   }, [value, duration]);
 
   return (
-    <span style={{ color: color || 'white', fontFamily, fontVariantNumeric: 'tabular-nums' }}>
+    <span style={{ color: color || '#F3EEE4', fontFamily, fontVariantNumeric: 'tabular-nums' }}>
       {prefix}{displayed.toLocaleString('he-IL')}{suffix}
     </span>
   );
@@ -447,7 +370,7 @@ export function Metric({
   suffix = '',
   strike,
   sub,
-  color = '#6366F1',
+  color = '#F2A93B',
   size = 'lg',
 }: {
   /** Small caption above the value */
@@ -472,7 +395,7 @@ export function Metric({
   return (
     <div style={{ textAlign: 'center' }}>
       {label && (
-        <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: "'Heebo', sans-serif", letterSpacing: '0.04em', marginBottom: '0.35rem' }}>
+        <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: 'rgba(243,238,228,0.6)', fontFamily: "'Heebo', sans-serif", letterSpacing: '0.04em', marginBottom: '0.35rem' }}>
           {label}
         </div>
       )}
@@ -481,19 +404,18 @@ export function Metric({
           fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
           fontSize: sizes[size], fontWeight: 900, lineHeight: 1,
           letterSpacing: '-0.03em', color,
-          textShadow: `0 0 60px ${color}55`,
           fontVariantNumeric: 'tabular-nums',
         }}>
           {number !== undefined ? <AnimatedNumber value={number} suffix={suffix} color={color} /> : value}
         </span>
         {strike && (
-          <span style={{ fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)', fontWeight: 600, color: 'rgba(255,255,255,0.35)', textDecoration: 'line-through', fontFamily: "'Space Grotesk', 'Heebo', sans-serif" }}>
+          <span style={{ fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)', fontWeight: 600, color: 'rgba(243,238,228,0.35)', textDecoration: 'line-through', fontFamily: "'Space Grotesk', 'Heebo', sans-serif" }}>
             {strike}
           </span>
         )}
       </div>
       {sub && (
-        <div style={{ fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)', color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", marginTop: '0.45rem' }}>
+        <div style={{ fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)', color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif", marginTop: '0.45rem' }}>
           {sub}
         </div>
       )}
@@ -506,7 +428,7 @@ export function Metric({
 export function TakeawayBar({ children, color }: { children: ReactNode; color?: string }) {
   const { currentSceneIndex } = usePresentationStore();
   const chapter = getCurrentChapter(currentSceneIndex);
-  const c = color || CHAPTER_COLORS[chapter] || '#6366F1';
+  const c = color || CHAPTER_COLORS[chapter] || '#F2A93B';
   return (
     <div style={{
       position: 'absolute', bottom: 'clamp(1.25rem, 2.5cqh, 2rem)', left: 0, right: 0,
@@ -516,12 +438,10 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
       <div style={{
         padding: 'clamp(0.5rem, 0.8cqw, 1rem) clamp(1.25rem, 2cqw, 2rem)',
         borderRadius: '100px',
-        background: 'rgba(10,10,30,0.85)',
+        background: 'rgba(13,19,38,0.85)',
         border: `1px solid ${c}30`,
-        boxShadow: `0 0 24px ${c}18`,
-        backdropFilter: 'blur(12px)',
       }}>
-        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', color: 'rgba(255,255,255,0.78)' }}>
+        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', color: 'rgba(243,238,228,0.78)' }}>
           {children}
         </span>
       </div>
@@ -531,7 +451,7 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
 
 // ─── GhostWord - giant faded chapter motif ────────────────────
 
-export function GhostWord({ children, color = 'rgba(99,102,241,0.04)', side = 'left' }: {
+export function GhostWord({ children, color = 'rgba(243,238,228,0.04)', side = 'left' }: {
   children: ReactNode; color?: string; side?: 'left' | 'right';
 }) {
   return (

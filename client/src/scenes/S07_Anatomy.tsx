@@ -9,13 +9,13 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { Target, BookOpen, Brain, Wrench, Database, ShieldAlert, UserCheck, Bot } from 'lucide-react';
 
 const COMPONENTS = [
-  { id: 'goal', Icon: Target, label: 'מטרה', color: '#6366F1', detail: 'הגדרה ברורה של מה צריך להשיג. "עזור ל-HR" לא מספיק. "הכן תוכנית קליטה מאושרת לפני יום ראשון", זו מטרה.', required: true },
-  { id: 'context', Icon: BookOpen, label: 'הקשר', color: '#10B981', detail: 'מה האייג׳נט יודע: פרופיל תפקיד, מדריך צוות, זמינות ביומן, מדיניות ארגונית. הקשר טוב = תוצאה טובה.', required: true },
-  { id: 'model', Icon: Brain, label: 'מודל', color: '#A78BFA', detail: 'מנוע ההבנה והבחירה. Claude, GPT, Gemini, כל אחד עם חוזקות שונות. הבחירה תלויה במשימה.', required: true },
-  { id: 'tools', Icon: Wrench, label: 'כלים', color: '#F59E0B', detail: 'מה מותר לגעת בו: Google Docs, Calendar, Jira, Gmail. כל כלי מוגדר עם הרשאות ספציפיות.', required: true },
-  { id: 'memory', Icon: Database, label: 'זיכרון', color: '#22D3EE', detail: 'מה נשמר בין פעולות: מה כבר נעשה, מה עוד חסר, מה הוחלט. בלי זיכרון, האייג׳נט מתחיל מחדש בכל פעם.', required: false },
-  { id: 'limits', Icon: ShieldAlert, label: 'גבולות', color: '#F43F5E', detail: 'מה אסור: גישה לשכר, מידע רפואי, שליחה ללא אישור, שינוי נתוני HRIS. גבולות ברורים = מערכת אמינה.', required: true },
-  { id: 'approval', Icon: UserCheck, label: 'אישור', color: '#34D399', detail: 'מתי לעצור לאדם: לפני שליחת מייל, יצירת אירוע, מתן הרשאה. Human-in-the-loop הוא עיצוב, לא פשרה.', required: true },
+  { id: 'goal', Icon: Target, label: 'מטרה', color: '#F2A93B', detail: '"לבנות קורס" זו משימה. "צוות השירות עונה נכון על שאלות החזרה עד סוף החודש" זו מטרה שאפשר לבדוק.', required: true },
+  { id: 'context', Icon: BookOpen, label: 'הקשר', color: '#F2A93B', detail: 'מה האייג׳נט יודע: מסמך המוצר, תוצאות הסקר האחרון, מי כבר השלים מה ב-LMS. הקשר טוב, תוצר טוב.', required: true },
+  { id: 'model', Icon: Brain, label: 'מודל', color: '#F2A93B', detail: 'המנוע שמבין, כותב ומחליט: Claude, GPT או Gemini. לכל אחד חוזקות אחרות, והבחירה תלויה במשימה.', required: true },
+  { id: 'tools', Icon: Wrench, label: 'כלים', color: '#F2A93B', detail: 'מה מותר לו להפעיל: ה-LMS, היומן, Slack, כלי הסקרים. לכל כלי יש הרשאה מוגדרת מראש.', required: true },
+  { id: 'memory', Icon: Database, label: 'זיכרון', color: '#F3EEE4', detail: 'מה נשמר בדרך: מי כבר עשה את האבחון, מי נתקע ביחידה 2, מה הוחלט בשבוע שעבר.', required: false },
+  { id: 'limits', Icon: ShieldAlert, label: 'גבולות', color: '#8A93A8', detail: 'מה אסור: לפרסם תוכן שלא אושר, לראות ציונים אישיים בלי צורך, לשלוח הודעה לכל הארגון.', required: true },
+  { id: 'approval', Icon: UserCheck, label: 'אישור', color: '#F2A93B', detail: 'מתי עוצרים לאדם: לפני פרסום יחידה, רישום לקורס או הודעה לצוות. אישור אנושי הוא חלק מהעיצוב.', required: true },
 ];
 
 // Position each node on an ellipse around the center, starting at the top
@@ -73,15 +73,15 @@ export default function S07_Anatomy() {
       }}>
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center', flexShrink: 0 }}>
-          <p style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif", marginBottom: '0.6rem' }}>
-            7 רכיבים · לחיצה לפרטים
+          <p style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif", marginBottom: '0.6rem' }}>
+            שבעה רכיבים · לחיצה לפרטים
           </p>
           <h1 style={{
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(2.25rem, 3.1cqw, 3.75rem)',
-            fontWeight: 800, letterSpacing: '-0.03em', color: 'white', margin: 0, lineHeight: 1.15,
+            fontWeight: 800, letterSpacing: '-0.03em', color: '#F3EEE4', margin: 0, lineHeight: 1.15,
           }}>
-            אנטומיה של אייג׳נט
+            ממה בנוי אייג׳נט?
           </h1>
         </div>
 
@@ -120,7 +120,7 @@ export default function S07_Anatomy() {
                   <line
                     x1={x1} y1={y1}
                     x2={x2} y2={y2}
-                    stroke={on ? comp.color : 'rgba(255,255,255,0.1)'}
+                    stroke={on ? comp.color : 'rgba(243,238,228,0.1)'}
                     strokeWidth={on ? 2.5 : 1}
                     strokeDasharray={on ? '0' : '4 6'}
                     strokeLinecap="round"
@@ -137,13 +137,12 @@ export default function S07_Anatomy() {
             <div data-map-hub style={{
               width: 'clamp(84px, 8cqw, 120px)', height: 'clamp(84px, 8cqw, 120px)',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.1) 100%)',
-              border: '2px solid rgba(99,102,241,0.55)',
-              boxShadow: '0 0 48px rgba(99,102,241,0.45)',
+              background: '#0D1326',
+              border: '2px solid #F2A93B',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px',
             }}>
-              <span style={{ display: 'inline-flex', color: '#A5B4FC', fontSize: 'clamp(1.6rem, 2.4cqw, 2.2rem)' }}><Bot size="1em" /></span>
-              <span style={{ fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#C7D2FE', fontFamily: "'Heebo', sans-serif", fontWeight: 700 }}>אייג׳נט</span>
+              <span style={{ display: 'inline-flex', color: '#F2A93B', fontSize: 'clamp(1.6rem, 2.4cqw, 2.2rem)' }}><Bot size="1em" /></span>
+              <span style={{ fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#F3EEE4', fontFamily: "'Heebo', sans-serif", fontWeight: 700 }}>אייג׳נט</span>
             </div>
           </div>
 
@@ -170,15 +169,14 @@ export default function S07_Anatomy() {
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
                   padding: 'clamp(0.625rem, 1.1cqh, 0.9rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
                   borderRadius: '16px',
-                  background: isSelected ? comp.color + '1F' : 'rgba(255,255,255,0.04)',
-                  border: isSelected ? `1px solid ${comp.color}70` : '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: isSelected ? `0 0 32px ${comp.color}45` : 'none',
+                  background: isSelected ? comp.color + '1F' : 'rgba(243,238,228,0.04)',
+                  border: isSelected ? `1px solid ${comp.color}70` : '1px solid rgba(243,238,228,0.1)',
                   animation: `fadeInUp 0.45s ease ${0.15 + i * 0.06}s both`,
                 }}>
-                  <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
+                  <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
                     <comp.Icon size="1em" />
                   </span>
-                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 1.35cqw, 1.6rem)', color: isSelected ? 'white' : 'rgba(255,255,255,0.8)' }}>
+                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 1.35cqw, 1.6rem)', color: isSelected ? '#F3EEE4' : 'rgba(243,238,228,0.8)' }}>
                     {comp.label}
                   </span>
                 </div>
@@ -194,8 +192,8 @@ export default function S07_Anatomy() {
           overflow: 'hidden',
           padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.25rem, 2.2cqw, 2rem)',
           borderRadius: '18px',
-          background: selectedComp ? selectedComp.color + '10' : 'rgba(255,255,255,0.03)',
-          border: selectedComp ? `1px solid ${selectedComp.color}40` : '1px solid rgba(255,255,255,0.08)',
+          background: selectedComp ? selectedComp.color + '10' : 'rgba(243,238,228,0.03)',
+          border: selectedComp ? `1px solid ${selectedComp.color}40` : '1px solid rgba(243,238,228,0.08)',
           display: 'flex', alignItems: 'center', gap: '1rem',
           animation: 'fadeIn 0.3s ease both',
         }}>
@@ -208,14 +206,14 @@ export default function S07_Anatomy() {
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.2rem, 1.7cqw, 1.6rem)', color: selectedComp.color, marginLeft: '0.6rem' }}>
                   {selectedComp.label}:
                 </span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.55cqw, 1.45rem)', color: 'rgba(255,255,255,0.82)', lineHeight: 1.55 }}>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.55cqw, 1.45rem)', color: 'rgba(243,238,228,0.82)', lineHeight: 1.55 }}>
                   {selectedComp.detail}
                 </span>
               </div>
             </>
           ) : (
-            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.5)', margin: '0 auto' }}>
-              חסר רכיב אחד? המערכת לא שלמה. גבולות ואישור הם הכי חשובים.
+            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.5)', margin: '0 auto' }}>
+              חסר רכיב אחד? המערכת לא שלמה. גבולות ואישור הם החשובים ביותר.
             </span>
           )}
         </div>

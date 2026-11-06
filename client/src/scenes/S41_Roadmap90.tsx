@@ -1,8 +1,8 @@
 import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle } from '../components/presentation/SceneBase';
 import { textTint } from '../lib/typeTokens';
 
-/** Brand terms never break across lines */
-const KEEP_TOGETHER = /(System Prompt|Approval Gates|\(Calendar, Gmail\))/;
+/** Latin terms glued to a Hebrew prefix (ה-LMS) never break across lines */
+const KEEP_TOGETHER = /([֐-׿]*-?(?:LMS|AI|L&D))/;
 const Task = ({ text }: { text: string }) => (
   <>{text.split(KEEP_TOGETHER).map((part, i) => (KEEP_TOGETHER.test(part) ? <span key={i} style={{ whiteSpace: 'nowrap' }}>{part}</span> : part))}</>
 );
@@ -11,26 +11,26 @@ const PHASES = [
   {
     phase: 'שבועות 1-2',
     title: 'הגדרה',
-    color: '#6366F1',
-    tasks: ['בחירת תהליך אחד', 'מיפוי השלבים', 'הגדרת הצלחה', 'בניית System Prompt ראשון'],
+    color: '#F2A93B',
+    tasks: ['לבחור תהליך אחד, למשל טיוטות חידון', 'למדוד את המצב היום: זמן ואיכות', 'להגדיר מדד הצלחה', 'לבחור מקורות מאושרים'],
   },
   {
     phase: 'שבועות 3-4',
     title: 'בנייה',
-    color: '#10B981',
-    tasks: ['חיבור כלים (Calendar, Gmail)', 'הגדרת Approval Gates', 'בדיקה עם 5 מקרים', 'תיקון ושיפור'],
+    color: '#F2A93B',
+    tasks: ['לכתוב הוראות לאייג׳נט', 'לחבר עוזר AI וה-LMS', 'להגדיר מי מאשר מה', 'לנסות על חמישה קורסים קיימים'],
   },
   {
     phase: 'שבועות 5-8',
     title: 'פיילוט',
-    color: '#F59E0B',
-    tasks: ['הרצה עם קבוצה קטנה', 'מדידה לפני ואחרי', 'איסוף משוב', 'תיעוד לקחים'],
+    color: '#F2A93B',
+    tasks: ['צוות אחד ומומחה תוכן אחד', 'למדוד לפני ואחרי', 'משוב ממומחים וממי שלומד', 'לתעד מה עבד ומה לא'],
   },
   {
     phase: 'שבועות 9-12',
     title: 'הרחבה',
-    color: '#A78BFA',
-    tasks: ['הרחבה לכל הארגון', 'הוספת אייג׳נט שני', 'בניית תהליך ממשל', 'תכנון Q2'],
+    color: '#F2A93B',
+    tasks: ['להחליט: להרחיב, לשנות או לעצור', 'תהליך שני, למשל תזכורות', 'לכתוב נוהל עבודה קצר', 'דוח קצר להנהלה'],
   },
 ];
 
@@ -40,8 +40,8 @@ export default function S41_Roadmap90() {
       <ContentLayout>
         <div className="w-full space-y-8" style={{ maxWidth: '94rem', paddingTop: 'clamp(1.5rem,3cqw,3rem)' }}>
           <div>
-            <SceneTitle size="md">מפת דרכים 90 יום</SceneTitle>
-            <SceneSubtitle>מהרעיון לאייג׳נט פעיל, בשלושה חודשים</SceneSubtitle>
+            <SceneTitle size="md">מפת דרכים ל-90 יום</SceneTitle>
+            <SceneSubtitle>מרעיון לפיילוט שעובד, בשלושה חודשים</SceneSubtitle>
           </div>
           <div className="grid grid-cols-4 gap-6">
             {PHASES.map((phase, i) => (
@@ -54,7 +54,7 @@ export default function S41_Roadmap90() {
                 {/* Progress line: one continuous fill that runs phase to phase in RTL order */}
                 <span aria-hidden className="mo-grow-x" style={{
                   position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-                  background: phase.color + 'CC', boxShadow: `0 0 12px ${phase.color}70`,
+                  background: phase.color + 'CC', 
                   pointerEvents: 'none',
                   animationDelay: `${0.45 + i * 0.22}s`,
                   animationDuration: '0.22s',
@@ -74,7 +74,7 @@ export default function S41_Roadmap90() {
             ))}
           </div>
           <p className="text-center text-white/75 text-3xl mo-rise" style={{ animationDelay: '1.05s' }}>
-            90 יום: מספיק לראות ערך, מהיר מספיק לשמור על מומנטום
+            90 יום: מספיק כדי לראות ערך, קצר מספיק כדי לשמור על תנופה
           </p>
         </div>
       </ContentLayout>

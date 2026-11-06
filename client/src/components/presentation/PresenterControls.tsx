@@ -15,11 +15,11 @@ import {
 import { openPresenterWindow } from '../../lib/presenterChannel';
 
 const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#6366F1',
-  'לראות': '#0891B2',
-  'לבנות': '#10B981',
-  'להטמיע': '#F59E0B',
-  'נספח': '#64748B',
+  'להבין': '#F2A93B',
+  'לראות': '#8A93A8',
+  'לבנות': '#F2A93B',
+  'להטמיע': '#F2A93B',
+  'נספח': '#8A93A8',
 };
 
 const HIDE_DELAY = 3000;
@@ -54,7 +54,7 @@ export function PresenterControls() {
   const currentScene = SCENES[currentSceneIndex];
   const currentChapter = getCurrentChapter(currentSceneIndex);
   const chapterInfo = CHAPTERS.find((c) => c.id === currentChapter);
-  const chapterColor = CHAPTER_COLORS[currentChapter] || '#6366F1';
+  const chapterColor = CHAPTER_COLORS[currentChapter] || '#F2A93B';
   const progress = totalScenes > 1 ? (currentSceneIndex / (totalScenes - 1)) * 100 : 0;
 
   const scheduleHide = useCallback(() => {
@@ -98,7 +98,7 @@ export function PresenterControls() {
       {/* ── Top progress bar (always visible) ── */}
       <div
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ height: '2px', background: 'rgba(255,255,255,0.06)' }}
+        style={{ height: '2px', background: 'rgba(243,238,228,0.06)' }}
         role="progressbar"
         aria-valuenow={currentSceneIndex + 1}
         aria-valuemin={1}
@@ -109,8 +109,7 @@ export function PresenterControls() {
           style={{
             height: '100%',
             width: `${progress}%`,
-            background: `linear-gradient(90deg, ${chapterColor}, #22D3EE)`,
-            boxShadow: `0 0 8px ${chapterColor}80`,
+            background: chapterColor,
             transition: 'width 500ms cubic-bezier(0.23, 1, 0.32, 1)',
           }}
         />
@@ -140,7 +139,7 @@ export function PresenterControls() {
         </span>
         <span
           className="text-xs font-mono"
-          style={{ color: 'rgba(255,255,255,0.3)' }}
+          style={{ color: 'rgba(243,238,228,0.3)' }}
         >
           {String(currentSceneIndex + 1).padStart(2, '0')}/{String(totalScenes).padStart(2, '0')}
         </span>
@@ -163,11 +162,8 @@ export function PresenterControls() {
           dir="rtl"
           className="control-pill flex items-center gap-1 px-3 py-2 rounded-2xl"
           style={{
-            background: 'rgba(8, 8, 20, 0.88)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08)',
+            background: 'rgba(13,19,38, 0.96)',
+            border: '1px solid rgba(243,238,228,0.09)',
           }}
         >
           {/* Prev */}
@@ -184,7 +180,7 @@ export function PresenterControls() {
           <div
             className="px-3 max-w-[220px] truncate text-sm"
             style={{
-              color: 'rgba(255,255,255,0.55)',
+              color: 'rgba(243,238,228,0.55)',
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
@@ -238,7 +234,7 @@ export function PresenterControls() {
           <ControlBtn
             onClick={toggleSound}
             active={!isSoundEnabled}
-            activeColor="#F43F5E"
+            activeColor="#8A93A8"
             aria-label={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
             title={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
           >
@@ -249,7 +245,7 @@ export function PresenterControls() {
           <ControlBtn
             onClick={toggleReducedMotion}
             active={isReducedMotion}
-            activeColor="#F59E0B"
+            activeColor="#F2A93B"
             aria-label="תנועה מופחתת"
             title="תנועה מופחתת"
           >
@@ -264,7 +260,7 @@ export function PresenterControls() {
               setQualityLevel(levels[(idx + 1) % levels.length]);
             }}
             active={qualityLevel === 'lightweight'}
-            activeColor="#F43F5E"
+            activeColor="#8A93A8"
             aria-label={`איכות: ${qualityLevel}`}
             title={`איכות גרפיקה: ${qualityLevel}`}
           >
@@ -293,7 +289,7 @@ function Divider() {
       style={{
         width: '1px',
         height: '18px',
-        background: 'rgba(255,255,255,0.1)',
+        background: 'rgba(243,238,228,0.1)',
         margin: '0 2px',
         flexShrink: 0,
       }}
@@ -315,7 +311,7 @@ function ControlBtn({
   onClick,
   disabled = false,
   active = false,
-  activeColor = '#6366F1',
+  activeColor = '#F2A93B',
   children,
   'aria-label': ariaLabel,
   title,
@@ -325,19 +321,19 @@ function ControlBtn({
   const bg = active
     ? `${activeColor}22`
     : hovered
-    ? 'rgba(99,102,241,0.12)'
+    ? 'rgba(243,238,228,0.12)'
     : 'transparent';
 
   const color = active
     ? activeColor
     : hovered
-    ? '#818CF8'
-    : 'rgba(255,255,255,0.62)';
+    ? '#F2A93B'
+    : 'rgba(243,238,228,0.62)';
 
   const border = active
     ? `1px solid ${activeColor}35`
     : hovered
-    ? '1px solid rgba(99,102,241,0.25)'
+    ? '1px solid rgba(243,238,228,0.25)'
     : '1px solid transparent';
 
   return (

@@ -1,47 +1,93 @@
 import { useState } from 'react';
+import { CheckCircle2, Lightbulb } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
+import { DEMO_FEEDBACK, DEMO_SCENARIO } from '../data/demoData';
 
-const QUESTIONS = [
-  { q: 'האם תוכנית הקליטה מתאימה לתפקיד?', default: 4 },
-  { q: 'האם המייל מתאים לתרבות הארגון?', default: 5 },
-  { q: 'האם הגישות שהוזמנו נכונות?', default: 4 },
-];
+const STAT_COLORS = ['#F2A93B', '#F2A93B', '#F2A93B'];
 
 export default function S31_DemoFeedback() {
-  const [ratings, setRatings] = useState(QUESTIONS.map(q => q.default));
+  const [ratings, setRatings] = useState(DEMO_FEEDBACK.ratings.map((q) => q.default));
+  const [approved, setApproved] = useState(false);
 
   return (
     <SceneBase>
-      <DemoStepLayout step={8} title="משוב ולמידה" subtitle="כל משוב משפר את האייג׳נט לפעם הבאה">
-          <div className="space-y-4">
-            {QUESTIONS.map((item, qi) => (
-              <div key={qi} className="rounded-xl mo-rise flex items-center justify-between gap-6" style={{ padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.1rem, 1.6cqw, 1.6rem)', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', animationDelay: `${0.2 + qi * 0.07}s` }}>
-                <p className="text-white/85 text-3xl" style={{ margin: 0 }}>{item.q}</p>
-                <div className="flex gap-2 shrink-0">
-                  {[1, 2, 3, 4, 5].map((r) => (
-                    <button key={r} onClick={() => setRatings(prev => { const n = [...prev]; n[qi] = r; return n; })}
-                      className="rounded-lg font-semibold transition-all"
-                      style={{
-                        width: 'clamp(2.5rem, 2.8cqw, 3.25rem)', height: 'clamp(2.5rem, 2.8cqw, 3.25rem)',
-                        fontSize: 'clamp(1.1rem, 1.25cqw, 1.5rem)',
-                        background: ratings[qi] >= r ? 'rgba(99,102,241,0.22)' : 'rgba(255,255,255,0.05)',
-                        border: ratings[qi] >= r ? '1px solid rgba(129,140,248,0.55)' : '1px solid rgba(255,255,255,0.1)',
-                        color: ratings[qi] >= r ? '#C7D2FE' : 'rgba(255,255,255,0.5)',
-                      }}>
-                      {r}
-                    </button>
-                  ))}
-                </div>
+      <DemoStepLayout eyebrow="דמו מורחב" title="משוב ושיפור" subtitle="שבועיים אחרי: מה עבד, ומי צריך עוד עזרה" gap="clamp(0.6rem, 1.3cqh, 1.1rem)">
+        {/* Two weeks in: the numbers */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 'clamp(0.6rem, 1cqw, 1rem)' }}>
+          {DEMO_FEEDBACK.stats.map((s, i) => (
+            <div key={s.label} className="rounded-xl mo-rise text-center" style={{
+              padding: 'clamp(0.6rem, 1.2cqh, 1rem) clamp(0.75rem, 1cqw, 1rem)',
+              background: 'rgba(243,238,228,0.04)', border: '1px solid rgba(243,238,228,0.08)',
+              animationDelay: `${0.15 + i * 0.07}s`,
+            }}>
+              <div style={{ color: STAT_COLORS[i], fontWeight: 800, fontSize: 'clamp(1.75rem, 2.4cqw, 2.75rem)', lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' }}>
+                <bdi>{s.value}</bdi>
               </div>
-            ))}
-          </div>
-          <div className="rounded-xl mo-rise" style={{ padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.1rem, 1.6cqw, 1.6rem)', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', animationDelay: '0.45s' }}>
-            <p className="text-white/75 text-3xl" style={{ margin: 0 }}>
-              ממוצע: <strong style={{ color: '#A5B4FC' }}>{(ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)}/5</strong>
-              {' '}· המשוב נשמר לשיפור הבא
+              <div style={{ color: 'rgba(243,238,228,0.75)', fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', marginTop: '0.2rem' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* What the team said (1 to 5) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.4rem, 0.8cqh, 0.6rem)' }}>
+          {DEMO_FEEDBACK.ratings.map((item, qi) => (
+            <div key={item.q} className="rounded-xl mo-rise flex items-center justify-between gap-6" style={{ padding: 'clamp(0.5rem, 1cqh, 0.85rem) clamp(1.1rem, 1.6cqw, 1.6rem)', background: 'rgba(243,238,228,0.04)', border: '1px solid rgba(243,238,228,0.08)', animationDelay: `${0.35 + qi * 0.07}s` }}>
+              <p style={{ margin: 0, color: 'rgba(243,238,228,0.85)', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)' }}>{item.q}</p>
+              <div className="flex gap-2 shrink-0" role="group" aria-label={item.q}>
+                {[1, 2, 3, 4, 5].map((r) => (
+                  <button key={r} onClick={() => setRatings((prev) => { const n = [...prev]; n[qi] = r; return n; })}
+                    aria-pressed={ratings[qi] === r}
+                    className="rounded-lg font-semibold transition-all"
+                    style={{
+                      width: 'clamp(2.3rem, 2.6cqw, 3rem)', height: 'clamp(2.3rem, 2.6cqw, 3rem)',
+                      fontSize: 'clamp(1.1rem, 1.25cqw, 1.5rem)',
+                      background: ratings[qi] >= r ? 'rgba(243,238,228,0.22)' : 'rgba(243,238,228,0.05)',
+                      border: ratings[qi] >= r ? '1px solid rgba(243,238,228,0.55)' : '1px solid rgba(243,238,228,0.1)',
+                      color: ratings[qi] >= r ? '#F3EEE4' : 'rgba(243,238,228,0.5)',
+                    }}>
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* The agent proposes, a person approves */}
+        <div className="rounded-xl mo-rise" style={{
+          display: 'flex', alignItems: 'center', gap: 'clamp(0.75rem, 1.2cqw, 1.25rem)',
+          padding: 'clamp(0.7rem, 1.4cqh, 1.15rem) clamp(1.1rem, 1.6cqw, 1.6rem)',
+          background: approved ? 'rgba(242,169,59,0.08)' : 'rgba(243,238,228,0.08)',
+          border: approved ? '1px solid rgba(242,169,59,0.3)' : '1px solid rgba(243,238,228,0.25)',
+          animationDelay: '0.55s', transition: 'background 0.3s ease, border-color 0.3s ease',
+        }}>
+          <span style={{ display: 'inline-flex', color: approved ? '#F2A93B' : '#F2A93B', fontSize: 'clamp(1.5rem, 1.9cqw, 2.1rem)', flexShrink: 0 }}>
+            {approved ? <CheckCircle2 size="1em" /> : <Lightbulb size="1em" />}
+          </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ color: approved ? '#F2A93B' : '#F2A93B', fontWeight: 700, fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)' }}>
+              {approved ? 'אושר. נשלח רק לשניים שצריכים' : <>ההצעה של <bdi>{DEMO_SCENARIO.agent}</bdi></>}
+            </div>
+            <p style={{ margin: 0, color: 'rgba(243,238,228,0.88)', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', lineHeight: 1.35 }}>
+              {DEMO_FEEDBACK.suggestion}
             </p>
           </div>
+          {!approved && (
+            <button
+              type="button"
+              onClick={() => setApproved(true)}
+              style={{
+                flexShrink: 0, whiteSpace: 'nowrap',
+                padding: '0.5rem 1.1rem', borderRadius: '10px',
+                background: '#F2A93B', border: 'none', color: '#F3EEE4',
+                fontWeight: 700, fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', cursor: 'pointer',
+              }}
+            >
+              אישור ההצעה
+            </button>
+          )}
+        </div>
       </DemoStepLayout>
     </SceneBase>
   );

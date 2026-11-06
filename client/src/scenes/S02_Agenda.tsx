@@ -10,35 +10,35 @@ import { textTint } from '../lib/typeTokens';
 const QUESTIONS = [
   {
     num: '01',
-    q: 'מה ההבדל בין אוטומציה לאייג׳נט?',
+    q: 'מה זה אייג׳נט, ומה הוא נותן ל-L&D?',
     chapter: 'להבין',
-    color: '#6366F1',
+    color: '#F2A93B',
     Icon: BookOpen,
-    desc: 'הגדרות, אנטומיה וסולם הבגרות',
+    desc: 'ההבדל מאוטומציה, ממה הוא בנוי, ואיך התפקיד שלנו משתנה',
   },
   {
     num: '02',
-    q: 'איפה אייג׳נטים יכולים לעזור ב-HR?',
+    q: 'איך זה נראה בפועל?',
     chapter: 'לראות',
-    color: '#0891B2',
+    color: '#F2A93B',
     Icon: Layers,
-    desc: '9 שימושים מגיוס עד שימור',
+    desc: 'ארבעה אייג׳נטים לאורך מחזור הלמידה, ודמו חי',
   },
   {
     num: '03',
-    q: 'איך לבנות אייג׳נט אחראי?',
+    q: 'איך לבנות את זה באחריות?',
     chapter: 'לבנות',
-    color: '#10B981',
+    color: '#F2A93B',
     Icon: Wrench,
-    desc: 'דמו חי, ארכיטקטורה, ממשל',
+    desc: 'כלים שכבר יש בארגון, אמון וגבולות',
   },
   {
     num: '04',
     q: 'איך להתחיל בארגון שלנו?',
     chapter: 'להטמיע',
-    color: '#F59E0B',
+    color: '#F2A93B',
     Icon: Rocket,
-    desc: 'פיילוט 90 יום, מדידה, ROI',
+    desc: 'בחירת פיילוט ראשון ומפת דרכים ל-90 יום',
   },
 ];
 
@@ -64,7 +64,7 @@ export default function S02_Agenda() {
             style={{
               fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.62)',
+              color: 'rgba(243,238,228,0.62)',
               fontFamily: "'Heebo', sans-serif",
               marginBottom: '0.75rem',
             }}
@@ -77,7 +77,7 @@ export default function S02_Agenda() {
               fontSize: 'clamp(3rem, 6cqw, 5.5rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
-              color: 'white',
+              color: '#F3EEE4',
               margin: 0,
               lineHeight: 1.1,
             }}
@@ -122,7 +122,7 @@ export default function S02_Agenda() {
                   right: 0,
                   left: 0,
                   height: '2px',
-                  background: `linear-gradient(90deg, ${item.color}60, transparent)`,
+                  background: item.color + '80',
                   animationDelay: `${0.4 + i * 0.1}s`,
                 }}
               />
@@ -171,7 +171,7 @@ export default function S02_Agenda() {
                   {/* Question */}
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.9)',
+                      color: 'rgba(243,238,228,0.9)',
                       fontSize: 'clamp(1.5rem, 2.2cqw, 2.1rem)',
                       fontWeight: 700,
                       lineHeight: 1.4,
@@ -186,7 +186,7 @@ export default function S02_Agenda() {
                   {/* Description */}
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.62)',
+                      color: 'rgba(243,238,228,0.62)',
                       fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)',
                       lineHeight: 1.5,
                       fontFamily: "'DM Sans', 'Heebo', sans-serif",
@@ -205,14 +205,14 @@ export default function S02_Agenda() {
         <p
           className="animate-fade-in stagger-9"
           style={{
-            color: 'rgba(255,255,255,0.62)',
+            color: 'rgba(243,238,228,0.62)',
             fontSize: 'clamp(1.1rem, 1.6cqw, 1.5rem)',
             textWrap: 'balance',
             textAlign: 'center',
             fontFamily: "'DM Sans', 'Heebo', sans-serif",
           }}
         >
-          המטרה: לצאת עם רעיון אחד שאפשר להתחיל לבדוק כבר השבוע
+          המטרה: לצאת מכאן עם תהליך למידה אחד שאפשר לבדוק כבר השבוע
         </p>
       </div>
     </SceneBase>

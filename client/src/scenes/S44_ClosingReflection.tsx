@@ -9,17 +9,17 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { textTint } from '../lib/typeTokens';
 
 const WORDS = [
-  { text: 'נבין', color: '#818CF8' },
-  { text: 'נראה', color: '#22D3EE' },
-  { text: 'נבנה', color: '#34D399' },
-  { text: 'נטמיע', color: '#F59E0B' },
+  { text: 'נבין', color: '#F2A93B' },
+  { text: 'נראה', color: '#F3EEE4' },
+  { text: 'נבנה', color: '#F2A93B' },
+  { text: 'נטמיע', color: '#F2A93B' },
 ];
 
 const QUESTIONS = [
-  { q: 'מהו תהליך אחד ששווה לבדוק?', icon: Target, color: '#6366F1' },
-  { q: 'מי השותף הנכון ב-IT?', icon: Handshake, color: '#0891B2' },
-  { q: 'מה מדד ההצלחה שלנו?', icon: BarChart3, color: '#10B981' },
-  { q: 'מה הצעד הראשון השבוע?', icon: Rocket, color: '#F59E0B' },
+  { q: 'איזה תהליך למידה חוזר אצלנו כל שבוע?', icon: Target, color: '#F2A93B' },
+  { q: 'איזה מומחה תוכן יהיה שותף ראשון?', icon: Handshake, color: '#8A93A8' },
+  { q: 'איך נדע שהלמידה השתפרה, ולא רק שנחסך זמן?', icon: BarChart3, color: '#F2A93B' },
+  { q: 'מה הצעד הראשון השבוע?', icon: Rocket, color: '#F2A93B' },
 ];
 
 export default function S44_ClosingReflection() {
@@ -48,20 +48,10 @@ export default function S44_ClosingReflection() {
       <div style={{
         position: 'absolute', inset: 0, zIndex: 0,
         background: `
-          radial-gradient(ellipse 70% 60% at 50% 40%, rgba(99,102,241,0.15) 0%, transparent 60%),
-          radial-gradient(ellipse 40% 40% at 20% 80%, rgba(6,182,212,0.08) 0%, transparent 55%),
-          #03030A
+          #070B17
         `,
       }} />
-      <div className="grid-overlay" />
       <div className="noise-overlay" />
-
-      {/* Top accent */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '3px', zIndex: 5,
-        background: 'linear-gradient(90deg, transparent 0%, #6366F1 30%, #22D3EE 70%, transparent 100%)',
-        boxShadow: '0 0 20px rgba(99,102,241,0.5)',
-      }} />
 
       <div dir="rtl" style={{
         position: 'relative', zIndex: 10,
@@ -77,7 +67,7 @@ export default function S44_ClosingReflection() {
           <span style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(2rem, 5cqw, 4.5rem)',
-            fontWeight: 400, color: 'rgba(255,255,255,0.6)',
+            fontWeight: 400, color: 'rgba(243,238,228,0.6)',
             display: 'block', marginBottom: '0.15em',
           }}>
             אנחנו
@@ -89,7 +79,6 @@ export default function S44_ClosingReflection() {
             fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.06em',
             display: 'block',
             color: currentWord.color,
-            filter: `drop-shadow(0 0 40px ${currentWord.color}80)`,
             transition: 'color 0.4s ease, filter 0.4s ease',
           }}>
             {currentWord.text}
@@ -100,13 +89,14 @@ export default function S44_ClosingReflection() {
         <p className="animate-fade-in-up stagger-3" style={{
           fontFamily: "'Heebo', sans-serif",
           fontSize: 'clamp(1rem, 1.9cqw, 1.7rem)',
-          color: 'rgba(255,255,255,0.62)',
+          color: 'rgba(243,238,228,0.62)',
           margin: '0 0 clamp(2rem, 4cqw, 4rem)',
           maxWidth: '900px', lineHeight: 1.6,
           textWrap: 'balance',
         } as React.CSSProperties}>
-          AI Agents אינם פרויקט IT, הם שינוי בדרך שבה עבודה מתבצעת.<br />
-          <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>HR הוא לא רק לקוח, הוא אחד המעצבים.</span>
+          אייג׳נטים הם לא עוד מכונה לייצור תוכן.<br />
+          הם זמן שמתפנה למה שבאמת משנה למידה.<br />
+          <span style={{ color: 'rgba(243,238,228,0.85)', fontWeight: 600 }}>ל-L&D יש מקום בעיצוב הדרך, לא רק בשימוש בה.</span>
         </p>
 
         {/* Questions grid */}
@@ -134,7 +124,7 @@ export default function S44_ClosingReflection() {
               <p style={{
                 fontFamily: "'Heebo', sans-serif",
                 fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', fontWeight: 600,
-                color: 'rgba(255,255,255,0.85)', margin: 0, lineHeight: 1.4,
+                color: 'rgba(243,238,228,0.85)', margin: 0, lineHeight: 1.4,
               }}>{item.q}</p>
             </div>
           ))}
@@ -149,7 +139,7 @@ export default function S44_ClosingReflection() {
             <div key={i} style={{
               width: i === wordIdx ? '24px' : '8px',
               height: '8px', borderRadius: '4px',
-              background: i === wordIdx ? w.color : 'rgba(255,255,255,0.15)',
+              background: i === wordIdx ? w.color : 'rgba(243,238,228,0.15)',
               transition: 'all 0.4s ease',
             }} />
           ))}

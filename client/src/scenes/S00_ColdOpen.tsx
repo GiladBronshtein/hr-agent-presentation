@@ -1,71 +1,38 @@
 /**
- * S00: Cold Open: The Invisible Work
- * CONFERENCE HALL EDITION: Massive typography, particle system, cinematic reveal
+ * S00: Cold Open: one L&D week behind the scenes
+ * Editorial restyle: flat navy page, paper type, one amber accent
  * FIXED: Grid proportions adjusted so all content fits within viewport
  */
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { BarChart3, Building2, Calendar, Folder, Mail, MessageCircle, PartyPopper, Target, User } from 'lucide-react';
+import { BarChart3, Calendar, CheckCircle2, ClipboardList, GraduationCap, Mail, MessageCircle, User, Video } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
-import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
 
 const TOOLS = [
   { id: 'slack',    label: 'Slack',    icon: MessageCircle, color: '#E01E5A', x: 18, y: 22 },
   { id: 'gmail',    label: 'Gmail',    icon: Mail, color: '#EA4335', x: 78, y: 14 },
-  { id: 'jira',     label: 'Jira',     icon: Target, color: '#0052CC', x: 88, y: 58 },
+  { id: 'lms',      label: 'LMS',      icon: GraduationCap, color: '#F2A93B', x: 88, y: 58 },
   { id: 'excel',    label: 'Excel',    icon: BarChart3, color: '#217346', x: 72, y: 86 },
-  { id: 'hris',     label: 'HRIS',     icon: Building2, color: '#F59E0B', x: 28, y: 86 },
+  { id: 'forms',    label: 'Forms',    icon: ClipboardList, color: '#F2A93B', x: 28, y: 86 },
   { id: 'calendar', label: 'Calendar', icon: Calendar, color: '#4285F4', x: 12, y: 58 },
-  { id: 'drive',    label: 'Drive',    icon: Folder, color: '#34A853', x: 50, y: 8 },
+  { id: 'zoom',     label: 'Zoom',     icon: Video, color: '#F3EEE4', x: 50, y: 8 },
 ];
 
 const ACTIVITIES = [
-  { time: '08:00', text: 'הודעת ברכה נשלחה ל-Slack', color: '#E01E5A', icon: MessageCircle },
-  { time: '08:07', text: 'חשבון חדש נוצר ב-HRIS', color: '#F59E0B', icon: Building2 },
-  { time: '08:13', text: 'הזמנה נשלחה ל-Google Calendar', color: '#4285F4', icon: Calendar },
-  { time: '08:19', text: 'חוזה הועלה ל-Drive', color: '#34A853', icon: Folder },
-  { time: '08:26', text: 'Ticket נפתח ב-Jira', color: '#0052CC', icon: Target },
-  { time: '08:33', text: 'תיק אישי עודכן ב-Excel', color: '#217346', icon: BarChart3 },
-  { time: '08:40', text: 'פרטי גישה נשלחו ב-Gmail', color: '#EA4335', icon: Mail },
-  { time: '08:47', text: 'קליטה הושלמה בהצלחה ✓', color: '#10B981', icon: PartyPopper },
+  { time: 'א׳ 09:10', text: 'בקשת הדרכה הגיעה ב-Slack', color: '#E01E5A', icon: MessageCircle },
+  { time: 'א׳ 14:00', text: 'ראיון עם מומחית תוכן ב-Zoom', color: '#F3EEE4', icon: Video },
+  { time: 'ב׳ 10:30', text: 'הקורס הוקם ב-LMS, הצוות נרשם', color: '#F2A93B', icon: GraduationCap },
+  { time: 'ב׳ 15:20', text: 'הזמנות למפגש נשלחו ב-Calendar', color: '#4285F4', icon: Calendar },
+  { time: 'ג׳ 08:45', text: 'תזכורת שנייה למי שלא התחיל', color: '#EA4335', icon: Mail },
+  { time: 'ד׳ 11:00', text: 'רדיפה אחרי השלמות, שוב', color: '#E01E5A', icon: MessageCircle },
+  { time: 'ה׳ 13:30', text: 'טופס משוב נשלח לצוות', color: '#F2A93B', icon: ClipboardList },
+  { time: 'ה׳ 16:40', text: 'דוח השלמות נבנה ב-Excel', color: '#F2A93B', icon: CheckCircle2 },
 ];
 
 const STATS = [
-  { value: '47', unit: 'דק׳', label: 'זמן ממוצע לקליטה', color: '#F43F5E' },
-  { value: '12', unit: 'מערכות', label: 'נגיעות ידניות', color: '#F59E0B' },
-  { value: '3', unit: 'ימים', label: 'עד גישה מלאה', color: '#6366F1' },
+  { value: '9', unit: 'שעות', label: 'תיאום, הקמה ומעקב', color: '#8A93A8' },
+  { value: '7', unit: 'מערכות', label: 'שמחברים ידנית', color: '#F2A93B' },
+  { value: '3', unit: 'תזכורות', label: 'עד שרוב הצוות מסיים', color: '#F2A93B' },
 ];
-
-const setupParticleField = (canvas: HTMLCanvasElement) => {
-  const colors = ['#6366F1', '#06B6D4', '#F59E0B', '#10B981'];
-  const particles = Array.from({ length: 70 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.35,
-    vy: -Math.random() * 0.5 - 0.15,
-    size: Math.random() * 2.5 + 0.5,
-    opacity: Math.random() * 0.45 + 0.08,
-    color: colors[Math.floor(Math.random() * colors.length)],
-  }));
-  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { dt }: { dt: number }) => {
-    ctx.clearRect(0, 0, cnv.width, cnv.height);
-    const step = dt * 60; // velocities tuned for 60fps
-    particles.forEach((p) => {
-      p.x += p.vx * step; p.y += p.vy * step;
-      if (p.y < -10) { p.y = cnv.height + 10; p.x = Math.random() * cnv.width; }
-      if (p.x < -10) p.x = cnv.width + 10;
-      if (p.x > cnv.width + 10) p.x = -10;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, '0');
-      ctx.fill();
-    });
-  };
-};
-
-function ParticleField() {
-  const canvasRef = useDecorativeCanvas(setupParticleField);
-  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
-}
 
 /** Connection lines measured against the real hub/node rectangles so they
  * stop at each card's edge with a uniform gap, whatever the card's size. */
@@ -123,7 +90,7 @@ function ConnectionLines({ activeNodeIdx }: { activeNodeIdx: number }) {
           <line key={tool.id}
             x1={geo.hub.x + ux * startTrim} y1={geo.hub.y + uy * startTrim}
             x2={n.x - ux * endTrim} y2={n.y - uy * endTrim}
-            stroke={activeNodeIdx === i ? tool.color : 'rgba(255,255,255,0.06)'}
+            stroke={activeNodeIdx === i ? tool.color : 'rgba(243,238,228,0.06)'}
             strokeWidth={activeNodeIdx === i ? 2 : 1}
             strokeDasharray={activeNodeIdx === i ? '0' : '4 6'}
             strokeLinecap="round"
@@ -164,11 +131,8 @@ export default function S00_ColdOpen() {
 
   return (
     <SceneBase>
-      <ParticleField />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(99,102,241,0.14) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 15% 80%, rgba(6,182,212,0.08) 0%, transparent 55%), #06060F' }} />
-      <div className="grid-overlay" />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: '#070B17' }} />
       <div className="noise-overlay" />
-      <div className="accent-line-top" />
 
       <div dir="rtl" style={{
         position: 'relative', zIndex: 10, width: '100%', height: '100%',
@@ -185,12 +149,12 @@ export default function S00_ColdOpen() {
           <div className="animate-fade-in-up stagger-1" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
             padding: '0.3rem 0.75rem', borderRadius: '100px',
-            background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)',
+            background: 'rgba(242,169,59,0.1)', border: '1px solid rgba(242,169,59,0.25)',
             width: 'fit-content',
           }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B', display: 'inline-block', boxShadow: '0 0 8px #F59E0B' }} />
-            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#FCD34D', fontFamily: "'Heebo', sans-serif" }}>
-              יום ראשון, קליטה חדשה
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F2A93B', display: 'inline-block' }} />
+            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#F2A93B', fontFamily: "'Heebo', sans-serif" }}>
+              שבוע אחד, בקשת הדרכה אחת
             </span>
           </div>
 
@@ -199,23 +163,22 @@ export default function S00_ColdOpen() {
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
               fontSize: 'clamp(2.75rem, 5cqw, 5rem)',
               fontWeight: 800, lineHeight: 0.95, letterSpacing: '-0.04em',
-              color: 'white', margin: 0,
+              color: '#F3EEE4', margin: 0,
             }}>מה קורה</h1>
             <h1 style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
               fontSize: 'clamp(2.75rem, 5cqw, 5rem)',
               fontWeight: 800, lineHeight: 0.95, letterSpacing: '-0.04em',
               margin: '0.05em 0 0',
-              background: 'linear-gradient(135deg, #818CF8, #6366F1, #22D3EE)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              color: '#F2A93B',
             }}>מאחורי הקלעים?</h1>
           </div>
 
           <p className="animate-fade-in-up stagger-3" style={{
-            color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.5rem)',
+            color: 'rgba(243,238,228,0.68)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.5rem)',
             lineHeight: 1.5, fontFamily: "'Heebo', sans-serif", margin: 0,
           }}>
-            כל קליטה מפעילה שרשרת פעולות ידניות, חוצת מערכות, אנשים ושעות עבודה.
+            כל בקשת הדרכה מפעילה שרשרת של עבודה ידנית: מומחים, מערכות, תזכורות ודוחות.
           </p>
 
           {/* Stats - smaller numbers to fit */}
@@ -226,7 +189,7 @@ export default function S00_ColdOpen() {
                 background: stat.color + '0A', border: `1px solid ${stat.color}22`,
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
-                <span style={{ color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)', fontFamily: "'Heebo', sans-serif" }}>
+                <span style={{ color: 'rgba(243,238,228,0.68)', fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)', fontFamily: "'Heebo', sans-serif" }}>
                   {stat.label}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', direction: 'ltr', justifyContent: 'flex-end', minWidth: '9.5rem', flexShrink: 0 }}>
@@ -239,10 +202,10 @@ export default function S00_ColdOpen() {
 
           <div className="animate-fade-in stagger-7" style={{
             padding: '0.625rem 1rem', borderRadius: '12px',
-            background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.2)',
+            background: 'rgba(138,147,168,0.07)', border: '1px solid rgba(138,147,168,0.2)',
           }}>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.45rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
-              מה אם <span style={{ color: '#FB7185', fontWeight: 700 }}>כל זה היה קורה אוטומטית</span>, בלי מגע אנושי?
+            <p style={{ color: 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.05rem, 1.5cqw, 1.45rem)', fontFamily: "'Heebo', sans-serif", margin: 0, lineHeight: 1.5 }}>
+              מה אם <span style={{ color: '#8A93A8', fontWeight: 700 }}>כל זה היה קורה אוטומטית</span>, בלי מגע אנושי?
             </p>
           </div>
         </div>
@@ -251,24 +214,23 @@ export default function S00_ColdOpen() {
         <div className="animate-scale-in stagger-2" style={{ minHeight: 0, height: '100%', display: 'flex', flexDirection: 'column' }}>
           <div style={{
             width: '100%', flexGrow: 1, minHeight: '300px', borderRadius: '24px',
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+            background: 'rgba(243,238,228,0.02)', border: '1px solid rgba(243,238,228,0.06)',
             position: 'relative', overflow: 'hidden',
           }}>
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(243,238,228,0.07) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
             <ConnectionLines activeNodeIdx={activeNodeIdx} />
 
-            {/* HR Hub */}
+            {/* L&D Hub */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
               <div data-map-hub style={{
                 width: 'clamp(65px, 8cqw, 85px)', height: 'clamp(65px, 8cqw, 85px)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0.12) 100%)',
-                border: '2px solid rgba(99,102,241,0.55)',
-                boxShadow: '0 0 40px rgba(99,102,241,0.45), 0 0 80px rgba(99,102,241,0.15)',
+                background: '#0D1326',
+                border: '2px solid #F2A93B',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
               }}>
-                <span style={{ fontSize: 'clamp(1.3rem, 2.2cqw, 1.8rem)', display: 'inline-flex', color: '#A5B4FC' }}><User size="1em" /></span>
-                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: '#818CF8', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 700 }}>HR</span>
+                <span style={{ fontSize: 'clamp(1.3rem, 2.2cqw, 1.8rem)', display: 'inline-flex', color: '#F2A93B' }}><User size="1em" /></span>
+                <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: '#F2A93B', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 700 }}>{'L&D'}</span>
               </div>
             </div>
 
@@ -285,14 +247,13 @@ export default function S00_ColdOpen() {
                     minWidth: 'clamp(52px, 6.5cqw, 68px)', width: 'auto',
                     padding: 'clamp(0.4rem, 0.8cqh, 0.6rem) clamp(0.6rem, 1cqw, 0.9rem)',
                     borderRadius: '14px',
-                    background: isActive ? tool.color + '22' : 'rgba(255,255,255,0.04)',
-                    border: `1px solid ${isActive ? tool.color + '55' : 'rgba(255,255,255,0.08)'}`,
-                    boxShadow: isActive ? `0 0 24px ${tool.color}50` : 'none',
+                    background: isActive ? tool.color + '22' : 'rgba(243,238,228,0.04)',
+                    border: `1px solid ${isActive ? tool.color + '55' : 'rgba(243,238,228,0.08)'}`,
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px',
-                    transition: 'all 0.3s ease', backdropFilter: 'blur(8px)',
+                    transition: 'all 0.3s ease', 
                   }}>
-                    <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.5rem)', lineHeight: 1, display: 'inline-flex', color: isActive ? tool.color : 'rgba(255,255,255,0.7)', transition: 'color 0.3s ease' }}><tool.icon size="1em" /></span>
-                    <span style={{ fontSize: 'clamp(1rem, 1cqw, 0.95rem)', color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 600 }}>{tool.label}</span>
+                    <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.5rem)', lineHeight: 1, display: 'inline-flex', color: isActive ? tool.color : 'rgba(243,238,228,0.7)', transition: 'color 0.3s ease' }}><tool.icon size="1em" /></span>
+                    <span style={{ fontSize: 'clamp(1rem, 1cqw, 0.95rem)', color: isActive ? 'rgba(243,238,228,0.9)' : 'rgba(243,238,228,0.55)', fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontWeight: 600 }}>{tool.label}</span>
                   </div>
                 </div>
               );
@@ -303,8 +264,8 @@ export default function S00_ColdOpen() {
         {/* RIGHT: Activity Feed */}
         <div className="animate-fade-in stagger-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minHeight: 0, height: '100%', overflow: 'hidden', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem', flexShrink: 0 }}>
-            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981' }} />
-            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(255,255,255,0.62)', fontFamily: "'Heebo', sans-serif" }}>פעילות בזמן אמת</span>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F2A93B' }} />
+            <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif" }}>השבוע שלנו, צעד אחר צעד</span>
           </div>
 
           {ACTIVITIES.map((activity, i) => {
@@ -323,7 +284,7 @@ export default function S00_ColdOpen() {
                 <span style={{ fontSize: 'clamp(1rem, 1.1cqw, 1rem)', lineHeight: 1, flexShrink: 0, marginTop: '2px', display: 'inline-flex', color: activity.color }}><activity.icon size="1em" /></span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: activity.color, fontWeight: 600, marginBottom: '2px' }}>{activity.time}</div>
-                  <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)', color: 'rgba(255,255,255,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
+                  <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)', color: 'rgba(243,238,228,0.7)', fontFamily: "'Heebo', sans-serif", lineHeight: 1.35 }}>{activity.text}</div>
                 </div>
               </div>
             );

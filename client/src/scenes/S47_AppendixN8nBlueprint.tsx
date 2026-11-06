@@ -2,21 +2,21 @@ import { SceneBase, ContentLayout, SceneTitle, SceneEyebrow, SceneSubtitle } fro
 import { textTint } from '../lib/typeTokens';
 
 const BLUEPRINT = [
-  { step: 1, node: 'Slack Trigger', desc: 'מאזין לאזכור \u200E@OnboardBot', type: 'trigger' },
-  { step: 2, node: 'Extract Data', desc: 'מחלץ שם, תפקיד, תאריך', type: 'process' },
-  { step: 3, node: 'HRIS Lookup', desc: 'שולף פרטי העסקה', type: 'tool' },
-  { step: 4, node: 'AI Agent', desc: 'בונה תוכנית קליטה', type: 'ai' },
-  { step: 5, node: 'Approval Wait', desc: 'שולח לאישור HR', type: 'approval' },
-  { step: 6, node: 'Execute Actions', desc: 'Calendar + IT + Gmail', type: 'tool' },
-  { step: 7, node: 'Log & Notify', desc: 'מתעד ומעדכן', type: 'process' },
+  { step: 1, node: 'Slack Trigger', desc: 'מאזין לאזכור \u2066@LearnBot\u2069 בערוץ \u2066#learning-requests\u2069', type: 'trigger' },
+  { step: 2, node: 'Extract Request', desc: 'מחלץ צוות, נושא, תאריך יעד וגודל צוות', type: 'process' },
+  { step: 3, node: 'LMS Lookup', desc: 'בודק קורסים קיימים והשלמות קודמות', type: 'tool' },
+  { step: 4, node: 'AI Agent', desc: 'בונה מסלול: אבחון, יחידות, תרגול וחזרה', type: 'ai' },
+  { step: 5, node: 'Approval Wait', desc: 'שולח לצוות L&D, ומחכה לאישור', type: 'approval' },
+  { step: 6, node: 'Execute Actions', desc: 'רישום ב-LMS, הזמנות ביומן, תזכורות', type: 'tool' },
+  { step: 7, node: 'Log & Follow-up', desc: 'מתעד, ושולח חידון חזרה אחרי שבועיים', type: 'process' },
 ];
 
 const TYPE_COLORS: Record<string, string> = {
-  trigger: '#6366F1',
-  process: '#10B981',
-  tool: '#F59E0B',
-  ai: '#A78BFA',
-  approval: '#F43F5E',
+  trigger: '#F2A93B',
+  process: '#F2A93B',
+  tool: '#F2A93B',
+  ai: '#F2A93B',
+  approval: '#8A93A8',
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -36,9 +36,9 @@ export default function S47_AppendixN8nBlueprint() {
           {/* Header */}
           <div>
             <SceneEyebrow>נספח ב׳</SceneEyebrow>
-            {/* Hebrew first, so the colon never lands next to "n8n" in RTL */}
-            <SceneTitle size="md">אייג׳נט קליטה: n8n Blueprint</SceneTitle>
-            <SceneSubtitle>7 צמתים שמרכיבים את הזרימה המלאה</SceneSubtitle>
+            {/* Hebrew first, so the Latin runs never lead the RTL line */}
+            <SceneTitle size="md">תרשים LearnBot ב-n8n</SceneTitle>
+            <SceneSubtitle>שבעה צמתים, מהבקשה ב-Slack ועד חידון החזרה</SceneSubtitle>
           </div>
 
           {/* Flow nodes */}
@@ -66,14 +66,14 @@ export default function S47_AppendixN8nBlueprint() {
 
                   {/* Node name */}
                   <div style={{ flex: '0 0 auto', minWidth: 'clamp(11rem, 14cqw, 16rem)' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.92)', fontSize: 'clamp(1.15rem,1.46cqw,1.75rem)', fontWeight: 700, fontFamily: "'Space Grotesk', 'Heebo', sans-serif", whiteSpace: 'nowrap' }}>
+                    <span style={{ color: 'rgba(243,238,228,0.92)', fontSize: 'clamp(1.15rem,1.46cqw,1.75rem)', fontWeight: 700, fontFamily: "'Space Grotesk', 'Heebo', sans-serif", whiteSpace: 'nowrap' }}>
                       {node.node}
                     </span>
                   </div>
 
                   {/* Description */}
                   <div style={{ flex: 1 }}>
-                    <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(1.1rem,1.35cqw,1.6rem)' }}>
+                    <span style={{ color: 'rgba(243,238,228,0.75)', fontSize: 'clamp(1.1rem,1.35cqw,1.6rem)' }}>
                       {node.desc}
                     </span>
                   </div>
@@ -95,11 +95,11 @@ export default function S47_AppendixN8nBlueprint() {
           {/* Footer note */}
           <div style={{
             padding: '1rem 1.5rem', borderRadius: '12px',
-            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(243,238,228,0.03)', border: '1px solid rgba(243,238,228,0.07)',
             textAlign: 'center',
           }}>
-            <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)', margin: 0 }}>
-              Blueprint מלא זמין ב-GitHub · ייצוא ל-n8n JSON בלחיצה אחת
+            <p style={{ color: 'rgba(243,238,228,0.72)', fontSize: 'clamp(1.05rem,1.15cqw,1.375rem)', margin: 0 }}>
+              אותו היגיון מתאים גם ל-Make או ל-Power Automate. מחליפים כלי, לא תהליך.
             </p>
           </div>
         </div>

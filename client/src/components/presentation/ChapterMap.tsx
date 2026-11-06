@@ -50,9 +50,7 @@ export function ChapterMap() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(3, 3, 12, 0.75)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        background: 'rgba(7,11,23, 0.92)',
         animation: 'fadeIn 0.25s ease both',
       }}
       onClick={(e) => { if (e.target === e.currentTarget) toggleChapterMap(); }}
@@ -69,10 +67,9 @@ export function ChapterMap() {
           maxWidth: '1100px',
           maxHeight: '88vh',
           overflowY: 'auto',
-          background: 'rgba(10, 10, 26, 0.96)',
-          border: '1px solid rgba(255,255,255,0.1)',
+          background: 'rgba(13,19,38, 0.96)',
+          border: '1px solid rgba(243,238,228,0.1)',
           borderRadius: '20px',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.12)',
           outline: 'none',
           animation: 'scaleIn 0.3s cubic-bezier(0.23, 1, 0.32, 1) both',
         }}
@@ -84,7 +81,7 @@ export function ChapterMap() {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '1.5rem 2rem',
-            borderBottom: '1px solid rgba(255,255,255,0.07)',
+            borderBottom: '1px solid rgba(243,238,228,0.07)',
           }}
         >
           <div>
@@ -93,14 +90,14 @@ export function ChapterMap() {
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: '1.375rem',
                 fontWeight: 700,
-                color: 'white',
+                color: '#F3EEE4',
                 margin: 0,
                 letterSpacing: '-0.02em',
               }}
             >
               מפת המצגת
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
+            <p style={{ color: 'rgba(243,238,228,0.55)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
               {SCENES.length} סצנות · לחיצה לניווט ישיר
             </p>
           </div>
@@ -111,9 +108,9 @@ export function ChapterMap() {
               width: '36px',
               height: '36px',
               borderRadius: '10px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.68)',
+              background: 'rgba(243,238,228,0.05)',
+              border: '1px solid rgba(243,238,228,0.1)',
+              color: 'rgba(243,238,228,0.68)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -121,14 +118,14 @@ export function ChapterMap() {
               transition: 'all 180ms ease',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,63,94,0.15)';
-              (e.currentTarget as HTMLButtonElement).style.color = '#F43F5E';
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(244,63,94,0.3)';
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(138,147,168,0.15)';
+              (e.currentTarget as HTMLButtonElement).style.color = '#8A93A8';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(138,147,168,0.3)';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)';
-              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.68)';
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)';
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.05)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(243,238,228,0.68)';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(243,238,228,0.1)';
             }}
           >
             <X size={16} />
@@ -174,7 +171,7 @@ export function ChapterMap() {
                     {chapter.label}
                   </span>
                   <div style={{ flex: 1, height: '1px', background: chapter.color + '18' }} />
-                  <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace' }}>
+                  <span style={{ fontSize: '1rem', color: 'rgba(243,238,228,0.25)', fontFamily: 'monospace' }}>
                     {chapterScenes.length} סצנות
                   </span>
                 </div>
@@ -209,23 +206,23 @@ export function ChapterMap() {
         <div
           style={{
             padding: '1rem 2rem',
-            borderTop: '1px solid rgba(255,255,255,0.06)',
+            borderTop: '1px solid rgba(243,238,228,0.06)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '1rem' }}>
+          <span style={{ color: 'rgba(243,238,228,0.25)', fontSize: '1rem' }}>
             לחיצה על סצנה לניווט ישיר
           </span>
           <kbd
             style={{
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(243,238,228,0.06)',
+              border: '1px solid rgba(243,238,228,0.1)',
               borderRadius: '6px',
               padding: '0.2rem 0.5rem',
               fontSize: '1rem',
-              color: 'rgba(255,255,255,0.55)',
+              color: 'rgba(243,238,228,0.55)',
               fontFamily: 'monospace',
             }}
           >
@@ -257,10 +254,10 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
         borderRadius: '10px',
         border: isActive
           ? `1px solid ${chapterColor}50`
-          : '1px solid rgba(255,255,255,0.07)',
+          : '1px solid rgba(243,238,228,0.07)',
         background: isActive
           ? chapterColor + '14'
-          : 'rgba(255,255,255,0.03)',
+          : 'rgba(243,238,228,0.03)',
         cursor: 'pointer',
         transition: 'all 180ms cubic-bezier(0.23, 1, 0.32, 1)',
         display: 'flex',
@@ -271,15 +268,15 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       }}
       onMouseEnter={(e) => {
         if (!isActive) {
-          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.06)';
           (e.currentTarget as HTMLButtonElement).style.borderColor = chapterColor + '30';
           (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
         }
       }}
       onMouseLeave={(e) => {
         if (!isActive) {
-          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.07)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.03)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(243,238,228,0.07)';
           (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
         }
       }}
@@ -328,7 +325,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       <span
         style={{
           fontSize: '1rem',
-          color: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.68)',
+          color: isActive ? 'rgba(243,238,228,0.9)' : 'rgba(243,238,228,0.68)',
           lineHeight: 1.35,
           fontFamily: "'DM Sans', sans-serif",
         }}

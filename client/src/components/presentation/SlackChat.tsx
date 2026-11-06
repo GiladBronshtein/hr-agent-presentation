@@ -11,7 +11,7 @@ export function SlackWindow({ channel, children }: { channel: string; children: 
     <div style={{
       borderRadius: '18px', overflow: 'hidden',
       background: '#1A1D21',
-      border: '1px solid rgba(255,255,255,0.12)',
+      border: '1px solid rgba(243,238,228,0.12)',
       boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
       textAlign: 'right',
     }}>
@@ -19,13 +19,13 @@ export function SlackWindow({ channel, children }: { channel: string; children: 
       <div dir="rtl" style={{
         display: 'flex', alignItems: 'center', gap: '0.5rem',
         padding: 'clamp(0.7rem, 1.2cqh, 1rem) clamp(1rem, 1.6cqw, 1.4rem)',
-        borderBottom: '1px solid rgba(255,255,255,0.09)',
+        borderBottom: '1px solid rgba(243,238,228,0.09)',
         background: '#222529',
       }}>
-        <span style={{ display: 'inline-flex', color: 'rgba(255,255,255,0.55)', fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)' }}>
+        <span style={{ display: 'inline-flex', color: 'rgba(243,238,228,0.55)', fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)' }}>
           <Hash size="1em" />
         </span>
-        <span style={{ fontFamily: "'DM Sans', 'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.92)', direction: 'ltr' }}>
+        <span style={{ fontFamily: "'DM Sans', 'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.92)', direction: 'ltr' }}>
           {channel}
         </span>
         {/* macOS window dots: red, amber, green from the left (LTR inside the RTL bar) */}
@@ -55,24 +55,24 @@ export function SlackMessage({
         background: color,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontFamily: "'Heebo', sans-serif", fontWeight: 800,
-        fontSize: 'clamp(0.95rem, 1.3cqw, 1.2rem)', color: 'white',
+        fontSize: 'clamp(0.95rem, 1.3cqw, 1.2rem)', color: '#070B17',
       }}>
         {initials}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.2rem' }}>
-          <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(255,255,255,0.95)' }}>{name}</span>
+          <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.95)' }}>{name}</span>
           {isBot && (
             <span style={{
               fontSize: 'clamp(0.85rem, 0.9cqw, 1rem)', fontWeight: 700, letterSpacing: '0.04em',
               padding: '0.1rem 0.4rem', borderRadius: '4px',
-              background: 'rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.75)',
+              background: 'rgba(243,238,228,0.14)', color: 'rgba(243,238,228,0.75)',
               fontFamily: "'DM Sans', 'Heebo', sans-serif",
             }}>APP</span>
           )}
-          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.4)', fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", direction: 'ltr' }}>{time}</span>
+          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(243,238,228,0.4)', fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", direction: 'ltr' }}>{time}</span>
         </div>
-        <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', color: 'rgba(255,255,255,0.85)', lineHeight: 1.55, overflowWrap: 'break-word' }}>
+        <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', color: 'rgba(243,238,228,0.85)', lineHeight: 1.55, overflowWrap: 'break-word' }}>
           {children}
         </div>
       </div>
@@ -82,18 +82,18 @@ export function SlackMessage({
 
 export function TypingIndicator({ name }: { name: string }) {
   return (
-    <div dir="rtl" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(255,255,255,0.5)', fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem, 1.2cqw, 1.1rem)' }}>
+    <div dir="rtl" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(243,238,228,0.5)', fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem, 1.2cqw, 1.1rem)' }}>
       <span style={{ display: 'inline-flex', gap: '4px' }}>
         {[0, 1, 2].map((d) => (
           <span key={d} style={{
             width: 7, height: 7, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.55)',
+            background: 'rgba(243,238,228,0.55)',
             animation: `glowPulse 1.1s ease-in-out ${d * 0.18}s infinite`,
             display: 'inline-block',
           }} />
         ))}
       </span>
-      {name} מקליד...
+      {name} בהקלדה...
     </div>
   );
 }

@@ -34,10 +34,11 @@ export interface PresentationStore {
   // Demo state
   demoState: DemoState;
   demoApprovalPath: 'approve' | 'edit' | 'return' | null;
+  /** Live-demo inputs (LearnBot, the Pro package request from the sales team) */
   demoAnswers: {
-    buddy: string;
-    crmApproval: string;
-    firstMonthClients: string;
+    teamSize: string;
+    deadline: string;
+    approvalEdit: string;
   };
 
   // Scene 4 audience selections
@@ -139,28 +140,28 @@ export const usePresentationStore = create<PresentationStore>()(
       demoApprovalPath: null,
       demoApprovalState: 'pending' as 'pending' | 'approved' | 'rejected',
       demoAnswers: {
-        buddy: '',
-        crmApproval: '',
-        firstMonthClients: '',
+        teamSize: '',
+        deadline: '',
+        approvalEdit: '',
       },
 
       audienceSelections: [],
       pilotScores: {},
       agentCanvas: {
-        name: 'אייג׳נט לקליטה',
-        mainUser: 'HR והנהלה',
-        goal: 'להכין תוכנית קליטה מאושרת לפני היום הראשון',
-        trigger: 'הצעת עבודה אושרה ונקבע תאריך התחלה',
-        sources: 'פרופיל תפקיד, מדריך קליטה, תבניות קליטה',
-        tools: 'Google Docs, Calendar, Gmail, Slack, Jira',
-        allowed: 'יצירת טיוטות, פתיחת משימות, קריאת לוחות שנה',
-        forbidden: 'שינוי מידע HR, חשיפת שכר, שליחה ללא אישור',
-        approvals: 'לפני יצירת אירועים, שליחת הודעות, מתן הרשאות',
-        outputs: 'תוכנית קליטה, לוח יום ראשון, רשימות פעולות',
-        metrics: 'אחוז פעולות שהושלמו לפני יום ראשון',
-        owner: 'מנהל HR',
-        reviewFrequency: 'רבעוני',
-        dataPolicy: 'מחיקה אחרי 90 יום, ללא שמירת מידע אישי',
+        name: 'LearnBot',
+        mainUser: 'צוות L&D וראשי צוותים',
+        goal: 'להפוך בקשת הדרכה למסלול למידה מאושר תוך יום',
+        trigger: 'בקשה חדשה בערוץ בקשות הלמידה ב-Slack',
+        sources: 'מסמך המוצר, ספריית הקורסים ב-LMS, סקר הצוות',
+        tools: 'LMS, Slack, Google Docs, כלי חידונים',
+        allowed: 'קריאת חומרים מאושרים, כתיבת טיוטות, הצעת מסלול',
+        forbidden: 'לפרסם או לשלוח בלי אישור, להציג ציונים בשמות',
+        approvals: 'לפני פרסום יחידה, רישום לקורס ושליחת תזכורות',
+        outputs: 'מסלול למידה, שלוש יחידות מיקרו, חידון ותרגול',
+        metrics: 'אחוז הסגירה של Pro אחרי 30 יום',
+        owner: 'ראש צוות L&D',
+        reviewFrequency: 'כל רבעון',
+        dataPolicy: 'נתונים מצטברים בלבד, מחיקה אחרי 90 יום',
       },
 
       roiValues: {
@@ -226,7 +227,7 @@ export const usePresentationStore = create<PresentationStore>()(
       },
       setDemoApprovalState: (state) => set({ demoApprovalState: state }),
       setDemoAnswers: (answers) => set((s) => ({ demoAnswers: { ...s.demoAnswers, ...answers } })),
-      resetDemo: () => set({ demoState: 'idle', demoApprovalPath: null, demoApprovalState: 'pending', demoAnswers: { buddy: '', crmApproval: '', firstMonthClients: '' } }),
+      resetDemo: () => set({ demoState: 'idle', demoApprovalPath: null, demoApprovalState: 'pending', demoAnswers: { teamSize: '', deadline: '', approvalEdit: '' } }),
 
       toggleAudienceSelection: (item) => set((s) => {
         const current = s.audienceSelections;
@@ -245,11 +246,22 @@ export const usePresentationStore = create<PresentationStore>()(
     }),
     {
       name: 'hr-agent-presentation',
-      version: 1,
+      version: 2,
       // v1: sound is now real (synthesized intro), so turn it on for existing browsers
+      // v2: the deck is now for L&D. Drop saved HR-era answers:
+      //  - the canvas example is now LearnBot
+      //  - audience choices keep their ids but the options now mean L&D work,
+      //    so an HR-era selection would show the wrong labels on the closing slide
+      //  - pilot scores were keyed by HR pilots (onboarding, service, ...)
+      //  demoAnswers is not persisted, so its new L&D fields need no migration.
       migrate: (persisted, version) => {
         const state = (persisted || {}) as Record<string, unknown>;
         if (version < 1) state.isSoundEnabled = true;
+        if (version < 2) {
+          delete state.agentCanvas;
+          state.audienceSelections = [];
+          state.pilotScores = {};
+        }
         return state as unknown as PresentationStore;
       },
       partialize: (state) => ({

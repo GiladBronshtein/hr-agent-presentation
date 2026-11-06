@@ -1,60 +1,56 @@
 import { SceneBase, TakeawayBar } from '../components/presentation/SceneBase';
 import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
-import { CODE_FONT } from '../lib/typeTokens';
 import { SlackWindow, SlackMessage } from '../components/presentation/SlackChat';
-import { CheckCircle2, Clock, Mail } from 'lucide-react';
-
-const DONE_ITEMS = [
-  'פגישת 1:1 תואמה: 14/07 09:00',
-  'בקשת גישות IT נשלחה (Jira, Figma, Slack)',
-  'רישום לקורסים: PM-101, Product-Strategy',
-];
+import { Eye } from 'lucide-react';
+import { DEMO_SCENARIO, DEMO_WELCOME } from '../data/demoData';
 
 export default function S28_DemoPreview() {
   return (
     <SceneBase>
-      <DemoStepLayout step={5} title="תצוגה מקדימה">
-          <SlackWindow channel="hr-onboarding">
-            <SlackMessage initials="OB" name="OnboardBot" time="10:07" color="#6366F1" isBot>
-              <div style={{ fontWeight: 700, color: '#A5B4FC', marginBottom: '0.5rem' }}>סיכום לאישור:</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                {DONE_ITEMS.map((item, i) => (
-                  <div key={item} className="mo-rise-sm" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', animationDelay: `${0.35 + i * 0.06}s` }}>
-                    <span style={{ display: 'inline-flex', color: '#10B981', flexShrink: 0 }}><CheckCircle2 size="1em" /></span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-                <div className="mo-rise-sm" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', animationDelay: `${0.35 + DONE_ITEMS.length * 0.06}s` }}>
-                  <span style={{ display: 'inline-flex', color: '#F59E0B', flexShrink: 0 }}><Clock size="1em" /></span>
-                  <span>מייל ברכה: <strong style={{ color: 'white' }}>ממתין לאישורך</strong></span>
-                </div>
-              </div>
+      <DemoStepLayout step={3} title="תצוגה מקדימה" subtitle="בדיוק מה שהצוות יקבל, לפני שמשהו נשלח" gap="clamp(0.6rem, 1.2cqh, 1rem)">
+        <div className="mo-rise-sm" style={{
+          alignSelf: 'center', display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+          padding: '0.25rem 0.9rem', borderRadius: '100px',
+          background: 'rgba(242,169,59,0.1)', border: '1px solid rgba(242,169,59,0.3)',
+          color: '#F2A93B', fontWeight: 600, fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
+        }}>
+          <Eye size="1em" /> טיוטה, עוד לא נשלחה
+        </div>
+        <SlackWindow channel={DEMO_SCENARIO.teamChannel}>
+          <SlackMessage initials={DEMO_SCENARIO.agentInitials} name={DEMO_SCENARIO.agent} time="טיוטה" color="#F2A93B" isBot>
+            <div style={{ fontWeight: 700, color: '#F3EEE4' }}>{DEMO_WELCOME.greeting}</div>
+            {DEMO_WELCOME.lines.map((line) => (
+              <div key={line}>{line}</div>
+            ))}
 
-              {/* Attached email draft */}
-              <div className="mo-rise" style={{
-                animationDelay: '0.75s',
-                marginTop: '0.875rem', padding: 'clamp(0.875rem, 1.5cqh, 1.25rem)',
-                borderRadius: '12px', borderRight: '3px solid #F59E0B',
-                background: 'rgba(255,255,255,0.04)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#FCD34D', fontWeight: 700, fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', marginBottom: '0.45rem' }}>
-                  <Mail size="1em" /> טיוטת מייל
+            {/* The path outline, as each person will see it */}
+            <div className="mo-rise" style={{
+              animationDelay: '0.35s',
+              marginTop: '0.75rem',
+              borderRadius: '12px', borderRight: '3px solid #F2A93B',
+              background: 'rgba(243,238,228,0.04)',
+              padding: 'clamp(0.5rem, 1cqh, 0.8rem) clamp(0.875rem, 1.3cqw, 1.2rem)',
+            }}>
+              {DEMO_WELCOME.outline.map((row, i) => (
+                <div key={row.title} style={{
+                  display: 'flex', alignItems: 'baseline', gap: '0.75rem',
+                  padding: 'clamp(0.25rem, 0.55cqh, 0.45rem) 0',
+                  borderBottom: i < DEMO_WELCOME.outline.length - 1 ? '1px solid rgba(243,238,228,0.06)' : 'none',
+                  fontSize: 'clamp(1.1rem, 1.35cqw, 1.5rem)',
+                }}>
+                  <span style={{ color: '#F2A93B', fontWeight: 700, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ flex: 1, minWidth: 0, color: 'rgba(243,238,228,0.88)' }}>{row.title}</span>
+                  <span style={{ color: 'rgba(243,238,228,0.62)', whiteSpace: 'nowrap' }}>{row.minutes}</span>
+                  <span style={{ color: '#F2A93B', whiteSpace: 'nowrap', minWidth: '4.5em', textAlign: 'left' }}>{row.when}</span>
                 </div>
-                <div style={{ fontSize: 'clamp(1rem, 1.25cqw, 1.3rem)', color: 'rgba(255,255,255,0.68)' }}>
-                  אל: <bdi dir="ltr" style={{ fontFamily: CODE_FONT }}>yael.cohen@company.co.il</bdi>
-                </div>
-                <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', color: 'rgba(255,255,255,0.7)', marginTop: '0.3rem' }}>
-                  נושא: ברוכה הבאה! יום ראשון שלך: 15 ביולי
-                </div>
-                <div style={{ fontSize: 'clamp(1rem, 1.35cqw, 1.3rem)', color: 'rgba(255,255,255,0.78)', marginTop: '0.55rem', lineHeight: 1.55 }}>
-                  יעל שלום, שמחה גדולה שתצטרפי אלינו! הכנתי עבורך תוכנית קליטה מלאה...
-                </div>
-              </div>
-            </SlackMessage>
-          </SlackWindow>
+              ))}
+            </div>
+            <div style={{ marginTop: '0.6rem', color: 'rgba(243,238,228,0.78)' }}>{DEMO_WELCOME.total}</div>
+          </SlackMessage>
+        </SlackWindow>
       </DemoStepLayout>
-      <TakeawayBar color="#F59E0B">
-        שום דבר לא נשלח עדיין. <span style={{ color: '#FCD34D', fontWeight: 700 }}>הכול מחכה לאישור אנושי.</span>
+      <TakeawayBar color="#F2A93B">
+        שום דבר לא נשלח עדיין. <span style={{ color: '#F2A93B', fontWeight: 700 }}>הכול מחכה לאישור אנושי.</span>
       </TakeawayBar>
     </SceneBase>
   );

@@ -74,10 +74,11 @@ export function SceneStage({ children }: { children: ReactNode }) {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        background: '#03030A',
+        background: '#070B17',
       }}
     >
       <div
+        data-stage
         style={{
           width: stageW,
           height: stageH,

@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { usePresentationStore } from '../../store/presentationStore';
 import { CHAPTERS, SCENES } from '../../data/scenes';
 import { ChapterInterstitial } from '../motion/ChapterInterstitial';
+import { PathTransition, type PathHandle } from '../motion/PathTransition';
+import { sound } from '../../lib/sound';
 import { useReducedMotion } from '../motion/useReducedMotion';
 
 // Scene chunk importers. Kept separate from lazy() so neighbours can be
@@ -13,25 +15,25 @@ const SCENE_IMPORTERS: Record<string, () => Promise<{ default: React.ComponentTy
   'title': () => import('../../scenes/S01_Title'),
   'agenda': () => import('../../scenes/S02_Agenda'),
   'audience-question': () => import('../../scenes/S03_AudienceQuestion'),
-  'hr-workday': () => import('../../scenes/S04_HRWorkday'),
+  'ld-week': () => import('../../scenes/S04_LDWeek'),
   'automation-vs-agent': () => import('../../scenes/S05_AutomationVsAgent'),
   'definition': () => import('../../scenes/S06_Definition'),
   'anatomy': () => import('../../scenes/S07_Anatomy'),
   'maturity-ladder': () => import('../../scenes/S08_MaturityLadder'),
   'decision-tree': () => import('../../scenes/S09_DecisionTree'),
   'why-2026': () => import('../../scenes/S10_Why2026'),
-  'hr-role': () => import('../../scenes/S11_HRRole'),
-  'employee-journey': () => import('../../scenes/S12_EmployeeJourney'),
-  'use-case-constellation': () => import('../../scenes/S13_UseCaseConstellation'),
-  'recruiting-agent': () => import('../../scenes/S14_RecruitingAgent'),
-  'candidate-experience': () => import('../../scenes/S15_CandidateExperience'),
-  'onboarding-agent': () => import('../../scenes/S16_OnboardingAgent'),
-  'manager-prep': () => import('../../scenes/S17_ManagerPrep'),
-  'learning-agent': () => import('../../scenes/S18_LearningAgent'),
-  'employee-service': () => import('../../scenes/S19_EmployeeService'),
-  'skills-mobility': () => import('../../scenes/S20_SkillsMobility'),
-  'org-insights': () => import('../../scenes/S21_OrgInsights'),
-  'knowledge-preservation': () => import('../../scenes/S22_KnowledgePreservation'),
+  'ld-role': () => import('../../scenes/S11_LDRole'),
+  'learning-cycle': () => import('../../scenes/S12_LearningCycle'),
+  'agent-map': () => import('../../scenes/S13_AgentMap'),
+  'needs-analysis-agent': () => import('../../scenes/S14_NeedsAnalysisAgent'),
+  'content-agent': () => import('../../scenes/S15_ContentAgent'),
+  'learning-path-agent': () => import('../../scenes/S16_LearningPathAgent'),
+  'impact-agent': () => import('../../scenes/S17_ImpactAgent'),
+  'simulation-agent': () => import('../../scenes/S18_SimulationAgent'),
+  'flow-of-work-agent': () => import('../../scenes/S19_FlowOfWorkAgent'),
+  'skills-agent': () => import('../../scenes/S20_SkillsAgent'),
+  'onboarding-learning-agent': () => import('../../scenes/S21_OnboardingLearningAgent'),
+  'knowledge-agent': () => import('../../scenes/S22_KnowledgeAgent'),
   'demo-entrance': () => import('../../scenes/S23_DemoEntrance'),
   'demo-trigger': () => import('../../scenes/S24_DemoTrigger'),
   'demo-retrieval': () => import('../../scenes/S25_DemoRetrieval'),
@@ -101,12 +103,14 @@ interface SceneRendererProps {
 }
 
 // ─── Transition tuning ──────────────────────────────────────────
-// RTL deck: going forward the outgoing slide leaves to the right and the
-// incoming one arrives from the left; backward is mirrored.
-const X_SHIFT = 3.5;          // percent of the stage width
-const SCALE_AWAY = 0.985;
-const ENTER_MS = 360;         // ease-out-expo
-const EXIT_MS = 230;          // ease-in, about 64% of the enter
+// The learning-path line carries every transition (PathTransition): it
+// covers the slide out of its node, the swap happens underneath, and the
+// next slide opens out of the same node. Each step plays the next note of
+// the deck's melody. The plain fade below is only the lightweight fallback.
+const X_SHIFT = 1.2;          // fallback: percent of the stage width
+const SCALE_AWAY = 0.985;     // fallback
+const ENTER_MS = 360;         // fallback, ease-out-expo
+const EXIT_MS = 230;          // fallback, ease-in
 const CARD_SWAP_MS = 1000;    // with a chapter card the scene swaps just before the wash wipes away,
                               // so the slide's own entrance plays as the card reveals it
 const CARD_GUARD_MS = 1200;   // never show a chapter card right after app load (deep links)
@@ -160,8 +164,10 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
   const firstRunRef = useRef(true);
   const reducedRef = useRef(reduced);
   reducedRef.current = reduced;
-  const blurRef = useRef(8);
-  blurRef.current = qualityLevel === 'lightweight' ? 0 : qualityLevel === 'balanced' ? 6 : 8;
+  const pathRef = useRef<PathHandle>(null);
+  const pathOnRef = useRef(true);
+  pathOnRef.current = qualityLevel !== 'lightweight';
+  const viaPathRef = useRef(false);   // the current transition is carried by the line
 
   // The engine only touches refs and stable state setters, so it is created once.
   const engine = useMemo(() => {
@@ -173,8 +179,16 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
     const runEnter = () => {
       const el = stageRef.current;
       if (!el) { phaseRef.current = 'idle'; return; }
+      if (viaPathRef.current || cardOnRef.current) {
+        // the line (or the chapter card) reveals the slide: show it as is
+        viaPathRef.current = false;
+        clearMotion(el);
+        if (!cardOnRef.current) pathRef.current?.reveal();
+        phaseRef.current = 'idle';
+        preloadNeighbours(displayRef.current);
+        return;
+      }
       const dir = dirRef.current;
-      const blur = blurRef.current;
       gsap.killTweensOf(el);
       gsap.fromTo(
         el,
@@ -182,14 +196,12 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
           xPercent: -dir * X_SHIFT,
           scale: SCALE_AWAY,
           opacity: 0,
-          ...(blur ? { filter: `blur(${blur}px)` } : {}),
-          willChange: blur ? 'transform, opacity, filter' : 'transform, opacity',
+          willChange: 'transform, opacity',
         },
         {
           xPercent: 0,
           scale: 1,
           opacity: 1,
-          ...(blur ? { filter: 'blur(0px)' } : {}),
           duration: ENTER_MS / 1000,
           ease: 'expo.out',
           overwrite: true,
@@ -220,7 +232,7 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
         return;
       }
       phaseRef.current = 'enter';
-      if (el) {
+      if (el && !viaPathRef.current && !cardOnRef.current) {
         gsap.killTweensOf(el);
         gsap.set(el, { opacity: 0 });
       }
@@ -258,6 +270,8 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
       swapTokenRef.current++;
       const el = stageRef.current;
       if (el) clearMotion(el);
+      pathRef.current?.clear();
+      viaPathRef.current = false;
       phaseRef.current = 'idle';
       pendingEnterRef.current = false;
       targetRef.current = next;
@@ -284,30 +298,45 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
       const chapter = chapterStartingAt(next);
       const withCard = dir === 1 && chapter >= 1 && now - mountedAtRef.current > CARD_GUARD_MS;
 
+      // the deck's melody: one note per step, a chord when a chapter opens
+      sound.step(next, dir, withCard);
+
       if (phaseRef.current === 'exit') {
         // Already leaving: just retarget, the swap renders the latest target
-        if (withCard) showCard(chapter);
+        if (withCard) { pathRef.current?.clear(); viaPathRef.current = false; showCard(chapter); }
         scheduleSwap(withCard ? Math.max(exitEndsAtRef.current, now + CARD_SWAP_MS) : exitEndsAtRef.current);
         return;
       }
 
       // Idle or mid-enter: leave from wherever the stage is right now
       phaseRef.current = 'exit';
-      const blur = blurRef.current;
       gsap.killTweensOf(el);
+      if (withCard) {
+        pathRef.current?.clear();
+        viaPathRef.current = false;
+        exitEndsAtRef.current = now;
+        showCard(chapter);
+        scheduleSwap(now + CARD_SWAP_MS);
+        return;
+      }
+      if (pathOnRef.current && pathRef.current) {
+        viaPathRef.current = true;
+        const ms = pathRef.current.cover(dir, next);
+        exitEndsAtRef.current = now + ms;
+        scheduleSwap(exitEndsAtRef.current);
+        return;
+      }
       gsap.to(el, {
         xPercent: dir * X_SHIFT,
         scale: SCALE_AWAY,
         opacity: 0,
-        ...(blur ? { filter: `blur(${blur}px)` } : {}),
-        willChange: blur ? 'transform, opacity, filter' : 'transform, opacity',
+        willChange: 'transform, opacity',
         duration: EXIT_MS / 1000,
         ease: 'power2.in',
         overwrite: true,
       });
       exitEndsAtRef.current = now + EXIT_MS;
-      if (withCard) showCard(chapter);
-      scheduleSwap(withCard ? now + CARD_SWAP_MS : exitEndsAtRef.current);
+      scheduleSwap(exitEndsAtRef.current);
     };
 
     return { navigate, instant, hideCard, runEnter };
@@ -384,6 +413,7 @@ export function SceneRenderer({ currentIndex }: SceneRendererProps) {
           </Suspense>
         )}
       </div>
+      {!reduced && <PathTransition ref={pathRef} />}
       {card && <ChapterInterstitial key={card.id} chapterIndex={card.chapter} onDone={engine.hideCard} />}
     </div>
   );

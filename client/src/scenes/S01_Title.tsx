@@ -1,47 +1,22 @@
 /**
  * S01: Title Slide: מאוטומציה לאייג׳נט
- * CONFERENCE HALL EDITION: Cinematic hero, massive typography, star field
+ * Navy paper, plain editorial type, and one amber line: the underline the
+ * trailer's pen line lands on (data-title-underline is measured for that).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { LectureTrailer } from '../components/presentation/LectureTrailer';
 import { usePresentationStore } from '../store/presentationStore';
 import '../components/presentation/titleIntro.css';
-import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
+import { INK } from '../components/motion/path';
 
 const CHAPTERS = [
-  { label: 'להבין', color: '#6366F1', desc: 'מה הם ואיך עובדים', num: '01' },
-  { label: 'לראות', color: '#0891B2', desc: 'דמו חי של אייג׳נט', num: '02' },
-  { label: 'לבנות', color: '#10B981', desc: 'כלים ופלטפורמות', num: '03' },
-  { label: 'להטמיע', color: '#F59E0B', desc: 'פיילוט ב-90 יום', num: '04' },
+  { label: 'להבין', desc: 'מה הם ואיך עובדים', num: '01' },
+  { label: 'לראות', desc: 'דוגמאות ודמו חי', num: '02' },
+  { label: 'לבנות', desc: 'כלים, אמון וגבולות', num: '03' },
+  { label: 'להטמיע', desc: 'פיילוט ב-90 יום', num: '04' },
 ];
-
-const setupStarField = (canvas: HTMLCanvasElement) => {
-  const stars = Array.from({ length: 150 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    size: Math.random() * 2 + 0.3,
-    opacity: Math.random() * 0.7 + 0.1,
-    twinkleSpeed: Math.random() * 0.025 + 0.005,
-    twinkleOffset: Math.random() * Math.PI * 2,
-    color: Math.random() > 0.7 ? '#818CF8' : Math.random() > 0.5 ? '#22D3EE' : 'white',
-  }));
-  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { t }: { t: number }) => {
-    ctx.clearRect(0, 0, cnv.width, cnv.height);
-    stars.forEach((s) => {
-      const opacity = Math.max(0, s.opacity * (0.4 + 0.6 * Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset)));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-      ctx.fillStyle = s.color + Math.floor(opacity * 255).toString(16).padStart(2, '0');
-      ctx.fill();
-    });
-  };
-};
-
-function StarField() {
-  const canvasRef = useDecorativeCanvas(setupStarField);
-  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
-}
+const HAIR = 'rgba(243,238,228,0.18)';
 
 export default function S01_Title() {
   const [mounted, setMounted] = useState(false);
@@ -95,24 +70,15 @@ export default function S01_Title() {
 
         {/* Eyebrow badges */}
         <div className={measure ? undefined : 'animate-fade-in-up stagger-1'} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: 'clamp(1.5rem, 3cqw, 3rem)', flexWrap: 'wrap' }}>
-          <div style={{
-            padding: '0.45rem 1.1rem', borderRadius: '100px',
-            background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)',
-            display: 'flex', alignItems: 'center', gap: '0.5rem',
-          }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#818CF8', display: 'inline-block', animation: 'glowPulse 2s ease-in-out infinite' }} />
-            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 700, color: '#818CF8', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.1em' }}>
-              HR LEADERS SUMMIT 2026
-            </span>
-          </div>
-          <div style={{
-            padding: '0.45rem 1.1rem', borderRadius: '100px',
-            background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
-          }}>
-            <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: 600, color: '#22D3EE', fontFamily: "'Space Grotesk', sans-serif" }}>
-              גלעד ברונשטיין
-            </span>
-          </div>
+          {[
+            { text: 'HR IMPACT 26', color: INK.paper, font: "'Space Grotesk', sans-serif", ls: '0.1em', weight: 700 },
+            { text: 'כנס למידה בעידן ה-AI', color: INK.amber, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
+            { text: 'גלעד ברונשטיין', color: INK.paper, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
+          ].map((b) => (
+            <div key={b.text} style={{ padding: '0.45rem 1.1rem', borderRadius: '100px', border: `1px solid ${HAIR}` }}>
+              <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: b.weight, color: b.color, fontFamily: b.font, letterSpacing: b.ls }}>{b.text}</span>
+            </div>
+          ))}
         </div>
 
         {/* MASSIVE title - centered, no decorative line next to text */}
@@ -121,7 +87,7 @@ export default function S01_Title() {
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(5rem, 12cqw, 11rem)',
             fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            color: 'white', margin: 0,
+            color: INK.slate, margin: 0,
           }} data-title-line="0">מאוטומציה{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
         </div>
 
@@ -130,14 +96,11 @@ export default function S01_Title() {
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(5rem, 12cqw, 11rem)',
             fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            margin: 0,
-            background: 'linear-gradient(135deg, #818CF8 0%, #6366F1 35%, #22D3EE 70%, #06B6D4 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            filter: 'drop-shadow(0 0 40px rgba(99,102,241,0.5))',
+            margin: 0, color: INK.paper,
           }} data-title-line="1">לאייג׳נט{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
-          {/* Decorative line BELOW the title, not next to it */}
+          {/* The line below the title: where the trailer's pen line comes to rest */}
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75rem' }}>
-            <div style={{ height: '4px', width: 'clamp(4rem, 10cqw, 9rem)', background: 'linear-gradient(90deg, #6366F1, #22D3EE)', borderRadius: '3px' }} />
+            <div data-title-underline style={{ height: '5px', width: 'clamp(4rem, 10cqw, 9rem)', background: INK.amber, borderRadius: '3px' }} />
           </div>
         </div>
 
@@ -145,11 +108,11 @@ export default function S01_Title() {
         <p className={measure ? undefined : 'animate-fade-in-up stagger-4'} style={{
           fontFamily: "'Heebo', sans-serif",
           fontSize: 'clamp(1.5rem, 2.8cqw, 2.5rem)',
-          fontWeight: 300, color: 'rgba(255,255,255,0.68)',
+          fontWeight: 300, color: 'rgba(243,238,228,0.72)',
           margin: '0 0 clamp(2rem, 4cqw, 4rem)', letterSpacing: '-0.01em',
           maxWidth: '800px', textWrap: 'balance',
         }}>
-          <bdi dir="ltr">AI Agents for HR</bdi>: מה זה, למה עכשיו, ואיך להתחיל
+          <bdi dir="ltr">AI Agents</bdi> ללמידה ופיתוח:<br />מה זה, למה עכשיו, ואיך להתחיל
         </p>
 
         {/* Chapter pills */}
@@ -158,16 +121,16 @@ export default function S01_Title() {
             <div key={ch.label} style={{
               padding: 'clamp(0.75rem, 1.2cqw, 1rem) clamp(1.25rem, 2cqw, 1.75rem)',
               borderRadius: '14px',
-              background: ch.color + '0F', border: `1px solid ${ch.color}28`,
+              border: `1px solid ${HAIR}`,
               display: 'flex', alignItems: 'center', gap: '0.75rem',
               opacity: measure || mounted ? 1 : 0,
               transform: measure || mounted ? 'translateY(0)' : 'translateY(16px)',
               transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s cubic-bezier(0.23,1,0.32,1) ${0.5 + i * 0.1}s`,
             }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: ch.color, opacity: 0.6, letterSpacing: '0.05em' }}>{ch.num}</span>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: INK.amber, letterSpacing: '0.05em' }}>{ch.num}</span>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: 'white' }}>{ch.label}</div>
-                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: 'rgba(255,255,255,0.55)', marginTop: '1px' }}>{ch.desc}</div>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: INK.paper }}>{ch.label}</div>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: INK.slate, marginTop: '1px' }}>{ch.desc}</div>
               </div>
             </div>
           ))}
@@ -177,38 +140,14 @@ export default function S01_Title() {
 
   return (
     <SceneBase>
-      <StarField />
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0,
-        background: `
-          radial-gradient(ellipse 90% 70% at 50% 30%, rgba(99,102,241,0.2) 0%, transparent 60%),
-          radial-gradient(ellipse 50% 50% at 15% 75%, rgba(6,182,212,0.1) 0%, transparent 55%),
-          radial-gradient(ellipse 40% 40% at 85% 80%, rgba(245,158,11,0.07) 0%, transparent 50%),
-          #03030A
-        `,
-      }} />
+      {/* the same paper as the trailer, so its last frame and this slide are one image */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: INK.navy }} />
       <div style={{
         position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-        backgroundImage: 'linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px)',
-        backgroundSize: '100px 100px',
+        backgroundImage: 'radial-gradient(rgba(243,238,228,0.07) 1.2px, transparent 1.6px)',
+        backgroundSize: 'calc(48 * 100cqw / 1920) calc(48 * 100cqw / 1920)',
+        backgroundPosition: 'calc(24 * 100cqw / 1920) calc(24 * 100cqw / 1920)',
       }} />
-      <div className="noise-overlay" />
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '2px', zIndex: 5,
-        background: 'linear-gradient(90deg, transparent 0%, #6366F1 30%, #22D3EE 70%, transparent 100%)',
-        opacity: 0.8,
-      }} />
-
-      {/* Giant ghost text */}
-      <div style={{
-        position: 'absolute', left: '-2%', top: '50%', transform: 'translateY(-50%)',
-        fontFamily: "'Space Grotesk', sans-serif",
-        fontSize: 'clamp(20rem, 40cqw, 36rem)',
-        fontWeight: 900, lineHeight: 1, letterSpacing: '-0.08em',
-        color: 'rgba(99,102,241,0.035)',
-        userSelect: 'none', pointerEvents: 'none', zIndex: 2,
-        direction: 'ltr',
-      }}>AI</div>
 
       {intro && (
         <LectureTrailer

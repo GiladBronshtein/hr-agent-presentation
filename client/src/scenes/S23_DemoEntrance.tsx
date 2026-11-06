@@ -1,23 +1,20 @@
 /**
- * S23: Demo Entrance: Chapter 2 Break
- * Conference Hall Edition: Maximum cinematic impact
- * "לראות": The live demo chapter begins
+ * S23: Demo Entrance
+ * Sets up the live L&D demo in one breath: who asks, what, for whom, by when,
+ * and the four steps the main track walks through.
  */
 import { useEffect, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { usePresentationStore } from '../store/presentationStore';
 import { ArrowLeft, Clapperboard } from 'lucide-react';
 import { textTint } from '../lib/typeTokens';
+import { DEMO_SCENARIO } from '../data/demoData';
 
 const DEMO_STEPS = [
-  { num: '01', label: 'טריגר', color: '#6366F1' },
-  { num: '02', label: 'איסוף', color: '#0891B2' },
-  { num: '03', label: 'תכנון', color: '#0891B2' },
-  { num: '04', label: 'כלים', color: '#10B981' },
-  { num: '05', label: 'תצוגה', color: '#F59E0B' },
-  { num: '06', label: 'אישור', color: '#F59E0B' },
-  { num: '07', label: 'ביצוע', color: '#F43F5E' },
-  { num: '08', label: 'משוב', color: '#F43F5E' },
+  { num: '01', label: 'הבקשה', color: '#F2A93B' },
+  { num: '02', label: 'התוכנית', color: '#8A93A8' },
+  { num: '03', label: 'תצוגה מקדימה', color: '#F2A93B' },
+  { num: '04', label: 'אישור אנושי', color: '#F2A93B' },
 ];
 
 export default function S23_DemoEntrance() {
@@ -35,20 +32,14 @@ export default function S23_DemoEntrance() {
   }, []);
 
   return (
-    <SceneBase noBg variant="chapter-break" chapterColor="#0891B2">
+    <SceneBase noBg variant="chapter-break">
       {/* Background */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 0,
-        background: `
-          radial-gradient(ellipse 75% 65% at 50% 45%, rgba(8,145,178,0.2) 0%, transparent 65%),
-          radial-gradient(ellipse 40% 40% at 20% 80%, rgba(99,102,241,0.08) 0%, transparent 55%),
-          radial-gradient(ellipse 35% 35% at 80% 20%, rgba(16,185,129,0.06) 0%, transparent 55%),
-          #03030A
-        `,
+        background: '#070B17',
         opacity: phase >= 1 ? 1 : 0,
         transition: 'opacity 1.2s ease',
       }} />
-      <div className="grid-overlay" />
       <div className="noise-overlay" />
 
       {/* Slow ripple rings: the slide's single ambient loop, behind everything */}
@@ -58,18 +49,11 @@ export default function S23_DemoEntrance() {
           width: `${(i + 1) * 240}px`, height: `${(i + 1) * 240}px`,
           marginLeft: `${-(i + 1) * 120}px`, marginTop: `${-(i + 1) * 120}px`,
           borderRadius: '50%',
-          border: `1px solid rgba(8,145,178,${0.09 - i * 0.02})`,
+          border: `1px solid rgba(243,238,228,${0.09 - i * 0.02})`,
           animation: `ripple 6s ease-out ${i * 2}s infinite`,
           pointerEvents: 'none', zIndex: 1,
         }} />
       ))}
-
-      {/* Top accent */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '3px', zIndex: 5,
-        background: 'linear-gradient(90deg, transparent 0%, #0891B2 30%, #22D3EE 70%, transparent 100%)',
-        boxShadow: '0 0 20px rgba(8,145,178,0.5)',
-      }} />
 
       <div dir="rtl" style={{
         position: 'relative', zIndex: 10,
@@ -93,9 +77,7 @@ export default function S23_DemoEntrance() {
             fontSize: 'clamp(4.5rem, 12cqw, 12rem)',
             fontWeight: 900, lineHeight: 0.82, letterSpacing: '-0.07em',
             margin: 0,
-            background: 'linear-gradient(135deg, #22D3EE 0%, #0891B2 50%, #0E7490 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            filter: 'drop-shadow(0 0 60px rgba(8,145,178,0.6))',
+            color: '#F3EEE4',
           }}>
             דמו חי
           </h1>
@@ -105,23 +87,22 @@ export default function S23_DemoEntrance() {
         <p style={{
           fontFamily: "'Heebo', sans-serif",
           fontSize: 'clamp(1.1rem, 2.2cqw, 2rem)',
-          color: 'rgba(255,255,255,0.62)',
+          color: 'rgba(243,238,228,0.62)',
           margin: '0 0 clamp(2rem, 4cqw, 4rem)',
           maxWidth: '700px', lineHeight: 1.5,
           opacity: phase >= 1 ? 1 : 0,
           transition: 'opacity 0.6s ease 0.3s',
         }}>
-          אייג׳נט קליטה, מהרגע שהצעת העבודה אושרה<br />
-          ועד ליום הראשון בעבודה
+          אייג׳נט למידה, מבקשה אחת בצ׳אט<br />
+          ועד מסלול למידה מאושר
         </p>
 
         {/* Scenario card */}
         <div style={{
           padding: 'clamp(1.25rem, 2.5cqw, 2.5rem) clamp(1.5rem, 3cqw, 3.5rem)',
           borderRadius: '20px',
-          background: 'rgba(8,145,178,0.08)',
-          border: '1px solid rgba(8,145,178,0.2)',
-          backdropFilter: 'blur(16px)',
+          background: 'rgba(243,238,228,0.08)',
+          border: '1px solid rgba(243,238,228,0.2)',
           maxWidth: '760px', width: '100%',
           textAlign: 'right',
           opacity: phase >= 2 ? 1 : 0,
@@ -129,25 +110,26 @@ export default function S23_DemoEntrance() {
           transition: 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: 'clamp(0.5rem, 1cqw, 1rem)' }}>
-            <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.6rem)', display: 'inline-flex', color: '#22D3EE' }}><Clapperboard size="1em" /></span>
-            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#67E8F9' }}>התרחיש</span>
+            <span style={{ fontSize: 'clamp(1.1rem, 1.8cqw, 1.6rem)', display: 'inline-flex', color: '#F3EEE4' }}><Clapperboard size="1em" /></span>
+            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#F3EEE4' }}>התרחיש</span>
           </div>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1rem, 1.7cqw, 1.5rem)',
-            color: 'rgba(255,255,255,0.8)', margin: '0 0 0.5rem', lineHeight: 1.55,
+            color: 'rgba(243,238,228,0.8)', margin: '0 0 0.5rem', lineHeight: 1.55,
             textWrap: 'pretty',
           } as React.CSSProperties}>
-            <span style={{ color: 'white', fontWeight: 700 }}>יעל כהן</span> קיבלה הצעת עבודה <span style={{ whiteSpace: 'nowrap' }}>כ-<bdi>Product Manager</bdi>.</span>
-            {' '}יום ראשון שלה: <span style={{ color: '#FDA4AF', fontWeight: 700, whiteSpace: 'nowrap' }}>15 ביולי</span>, <span style={{ whiteSpace: 'nowrap' }}>בעוד שבועיים.</span>
+            בקשה חדשה מ<span style={{ color: '#F3EEE4', fontWeight: 700 }}>{DEMO_SCENARIO.requester}</span>, {DEMO_SCENARIO.requesterRole}:{' '}
+            צוות של <span style={{ color: '#F3EEE4', fontWeight: 700 }}>12 אנשים</span> צריך להכיר את חבילת <bdi>Pro</bdi> החדשה{' '}
+            <span style={{ color: '#F2A93B', fontWeight: 700, whiteSpace: 'nowrap' }}>עד ה-15 בחודש.</span>
           </p>
           <p style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)',
-            color: 'rgba(255,255,255,0.68)', margin: 0, lineHeight: 1.55,
+            color: 'rgba(243,238,228,0.68)', margin: 0, lineHeight: 1.55,
             textWrap: 'pretty',
           } as React.CSSProperties}>
-            נראה איך אייג׳נט קליטה מכין תוכנית מלאה, מתאם ומקבל אישור, בלי תיאום ידני של HR.
+            נראה איך האייג׳נט מבין את הצורך, בונה מסלול ומכין הכול, ומחכה לאישור שלנו לפני שמשהו יוצא.
           </p>
         </div>
 
@@ -167,10 +149,10 @@ export default function S23_DemoEntrance() {
                 background: step.color + '14', border: `1px solid ${step.color}40`,
               }}>
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', fontWeight: 700, color: textTint(step.color), fontVariantNumeric: 'tabular-nums' }}>{step.num}</span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(255,255,255,0.82)' }}>{step.label}</span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(243,238,228,0.82)' }}>{step.label}</span>
               </div>
               {i < DEMO_STEPS.length - 1 && (
-                <ArrowLeft aria-hidden size={18} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
+                <ArrowLeft aria-hidden size={18} style={{ color: 'rgba(243,238,228,0.45)', flexShrink: 0 }} />
               )}
             </div>
           ))}

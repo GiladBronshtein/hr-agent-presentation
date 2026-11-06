@@ -1,14 +1,18 @@
 /**
- * DemoStepLayout - one header style and one content column for the eight
- * live-demo step slides. The step eyebrow and title sit on the same top line
- * on every step, and the content column keeps one width, so stepping through
- * the demo never makes the header or the column jump.
+ * DemoStepLayout - one header style and one content column for every live-demo
+ * step slide: the four main-track steps (eyebrow "שלב 1" to "שלב 4") and the
+ * appendix steps of the extended demo (S25, S27, S30, S31), which pass their
+ * own `eyebrow` so the main track keeps its 1 to 4 numbering. The eyebrow and
+ * title sit on the same top line on every step, and the content column keeps
+ * one width, so stepping through the demo never makes the header or the
+ * column jump.
  */
 import { ReactNode } from 'react';
 import { SceneEyebrow, SceneSubtitle, SceneTitle } from './SceneBase';
 
 export function DemoStepLayout({
   step,
+  eyebrow,
   tag,
   title,
   subtitle,
@@ -16,7 +20,10 @@ export function DemoStepLayout({
   gap = 'clamp(1rem, 2cqh, 1.75rem)',
   align = 'start',
 }: {
-  step: number;
+  /** Main-track step number, shown as "שלב N" */
+  step?: number;
+  /** Replaces the "שלב N" eyebrow, e.g. "דמו מורחב" on the appendix steps */
+  eyebrow?: ReactNode;
   /** Optional qualifier shown after the step number, e.g. Human-in-the-loop */
   tag?: string;
   title: ReactNode;
@@ -38,8 +45,8 @@ export function DemoStepLayout({
       }}
     >
       <header style={{ textAlign: 'center', flexShrink: 0 }}>
-        <SceneEyebrow color="#67E8F9">
-          שלב {step}
+        <SceneEyebrow color="#F2A93B">
+          {eyebrow ?? <>שלב {step}</>}
           {tag && <> · <bdi>{tag}</bdi></>}
         </SceneEyebrow>
         <SceneTitle size="md">{title}</SceneTitle>

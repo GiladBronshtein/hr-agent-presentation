@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Quote, CornerDownLeft } from 'lucide-react';
 import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle, TakeawayBar } from '../components/presentation/SceneBase';
 
-/** A Hebrew prefix glued to a Latin term (מה-CISO, מ-AI) never breaks at the hyphen */
+/** A Hebrew prefix glued to a Latin term (ה-LMS, מ-AI) never breaks at the hyphen */
 const PREFIXED = /([\u0590-\u05FF]+-[A-Za-z0-9][\w.-]*[?.!]?)/;
 const NoBreak = ({ text }: { text: string }) => (
   <>{text.split(PREFIXED).map((part, i) => (PREFIXED.test(part) ? <span key={i} style={{ whiteSpace: 'nowrap' }}>{part}</span> : part))}</>
@@ -14,34 +14,34 @@ const NoBreak = ({ text }: { text: string }) => (
 
 const OBJECTIONS = [
   {
+    q: 'תוכן של AI הוא שטחי',
+    a: 'בלי הקשר, נכון. עם מטרות למידה, קהל ותרחיש אמיתי, הטיוטה טובה. העומק מגיע מהמומחה שעורך.',
+    color: '#F2A93B',
+  },
+  {
+    q: 'זה יחליף את מי שמעצב למידה',
+    a: 'זה מחליף את העבודה השחורה. האבחון, העיצוב והשיחה עם השטח נשארים אצלנו, וצריכים יותר מומחיות.',
+    color: '#F3EEE4',
+  },
+  {
+    q: 'ומה אם יש טעויות בתוכן?',
+    a: 'זה קורה. לכן רק מקורות מאושרים, מקור ליד כל טענה, ומומחה תוכן מאשר לפני פרסום.',
+    color: '#F2A93B',
+  },
+  {
+    q: 'מה עם הפרטיות של מי שלומד?',
+    a: 'נתונים מצטברים, בלי ציונים בשמות. ומסבירים מראש מה נאסף ולמה.',
+    color: '#F2A93B',
+  },
+  {
+    q: 'מומחי התוכן לא יסמכו על זה',
+    a: 'נתחיל איתם: הם בוחרים את המקורות ומאשרים כל יחידה. כשטיוטה חוסכת להם ראיון של שעתיים, האמון מגיע.',
+    color: '#8A93A8',
+  },
+  {
     q: 'אין לנו IT לזה',
-    a: 'n8n ו-Make מאפשרים בנייה ללא קוד. פיילוט ראשון: שבועיים עם שני אנשים.',
-    color: '#6366F1',
-  },
-  {
-    q: 'הצוות יפחד מ-AI',
-    a: 'שקיפות פותרת פחד. כשברור שהאייג׳נט עוזר ולא מחליף, נוצרת שותפות.',
-    color: '#22D3EE',
-  },
-  {
-    q: 'מה עם פרטיות?',
-    a: 'הרשאות מינימליות + Audit Log + אישור אנושי. יותר בטוח מאשר מייל ידני.',
-    color: '#10B981',
-  },
-  {
-    q: 'זה יקר',
-    a: 'פיילוט ראשון: ~$50 לחודש בכלים. ROI נמדד בשבועות.',
-    color: '#F59E0B',
-  },
-  {
-    q: 'מה אם האייג׳נט טועה?',
-    a: 'לכן יש Approval Gates. האייג׳נט מציע, האדם מחליט.',
-    color: '#F43F5E',
-  },
-  {
-    q: 'לא נקבל אישור מה-CISO',
-    a: 'להציג את ארכיטקטורת האמון: הרשאות מוגדרות, תיעוד מלא, ביקורת תקופתית.',
-    color: '#A78BFA',
+    a: 'פיילוט ראשון אפשר לעשות עם עוזר AI וכלי תהליכים קיים, בלי קוד. שבועיים, שני אנשים.',
+    color: '#F2A93B',
   },
 ];
 
@@ -54,7 +54,7 @@ export default function S43_Objections() {
         <div className="w-full max-w-7xl flex flex-col" style={{ gap: 'clamp(1.25rem, 2.6cqh, 2.25rem)', paddingBottom: 'clamp(3rem, 5cqh, 4rem)' }}>
           <div style={{ textAlign: 'center' }}>
             <SceneTitle size="md">השאלות הקשות</SceneTitle>
-            <SceneSubtitle>לחיצה על שאלה לתשובה ישירה</SceneSubtitle>
+            <SceneSubtitle>החששות ששומעים בכל צוות L&D. לחיצה על שאלה לתשובה כנה</SceneSubtitle>
           </div>
 
           <div style={{
@@ -75,9 +75,8 @@ export default function S43_Objections() {
                     textAlign: 'center',
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                     gap: '0.75rem',
-                    background: on ? obj.color + '1C' : 'rgba(255,255,255,0.035)',
-                    border: on ? `1px solid ${obj.color}60` : '1px solid rgba(255,255,255,0.09)',
-                    boxShadow: on ? `0 0 40px ${obj.color}30` : 'none',
+                    background: on ? obj.color + '1C' : 'rgba(243,238,228,0.035)',
+                    border: on ? `1px solid ${obj.color}60` : '1px solid rgba(243,238,228,0.09)',
                     animationDelay: `${0.1 + i * 0.06}s`,
                   }}
                 >
@@ -89,7 +88,7 @@ export default function S43_Objections() {
                       <p style={{
                         margin: 0, fontFamily: "'Heebo', sans-serif",
                         fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', fontWeight: 600,
-                        color: 'white', lineHeight: 1.5,
+                        color: '#F3EEE4', lineHeight: 1.5,
                         animation: 'fadeIn 0.35s ease 0.1s both',
                         textWrap: 'pretty',
                       } as React.CSSProperties}>
@@ -105,7 +104,7 @@ export default function S43_Objections() {
                       <p style={{
                         margin: 0, fontFamily: "'Heebo', sans-serif",
                         fontSize: 'clamp(1.35rem, 2.1cqw, 2rem)', fontWeight: 800,
-                        color: 'rgba(255,255,255,0.9)', lineHeight: 1.35,
+                        color: 'rgba(243,238,228,0.9)', lineHeight: 1.35,
                         textWrap: 'balance',
                       } as React.CSSProperties}>
                         "<NoBreak text={obj.q} />"
@@ -119,7 +118,7 @@ export default function S43_Objections() {
         </div>
       </ContentLayout>
       <TakeawayBar>
-        לכל חשש יש תשובה מעשית. <span style={{ color: '#F59E0B', fontWeight: 700 }}>הפחד הכי יקר הוא לא להתחיל.</span>
+        החששות האלה מוצדקים. <span style={{ color: '#F2A93B', fontWeight: 700 }}>התשובה היא לא לוותר, אלא להתחיל קטן ובשליטה.</span>
       </TakeawayBar>
     </SceneBase>
   );

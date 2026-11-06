@@ -790,6 +790,150 @@ class SoundEngine {
     setTimeout(() => sess.s.stop(1), 3000);
   }
 
+  // ── The deck's melody (slide transitions) ──
+
+  /** Felt piano: soft attack, warm decay, a little hammer. */
+  felt(b: Bus, t: number, freq: number, vol = 0.08, decay = 1.8, panV = 0) {
+    const ctx = b.ctx;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.Q.value = 0.4;
+    lp.frequency.setValueAtTime(Math.min(5200, freq * 6), t);
+    lp.frequency.exponentialRampToValueAtTime(Math.max(500, freq * 1.6), t + decay);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(vol * 0.35, t + 0.18);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+    lp.connect(g);
+    const p = this.pan(b.fx, panV);
+    g.connect(p);
+    this.send(g, b, 0.38, 0.1);
+    ([['sine', 1, 1, 0], ['sine', 2, 0.26, 0], ['triangle', 1, 0.34, 4], ['sine', 3, 0.07, -3]] as const).forEach(([type, mul, lvl, det]) => {
+      const o = ctx.createOscillator();
+      o.type = type;
+      o.frequency.value = freq * mul;
+      o.detune.value = det;
+      const og = ctx.createGain();
+      og.gain.value = lvl;
+      o.connect(og); og.connect(lp);
+      o.start(t); o.stop(t + decay + 0.05);
+    });
+    const n = this.noiseSrc(b, t, 0.03);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = Math.min(4000, freq * 4);
+    bp.Q.value = 1.2;
+    const ng = ctx.createGain();
+    this.env(ng, t, vol * 0.18, 0.001, 0.025);
+    n.connect(bp); bp.connect(ng); ng.connect(p);
+  }
+
+  /** Soft bowed strings: detuned saws, slow bow, gentle vibrato, dark filter. */
+  strings(b: Bus, t: number, freqs: number[], dur: number, vol = 0.04, attack = 0.8, bright = 1600) {
+    const ctx = b.ctx;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.Q.value = 0.5;
+    lp.frequency.setValueAtTime(bright * 0.55, t);
+    lp.frequency.linearRampToValueAtTime(bright, t + Math.min(dur, attack * 1.6));
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + attack);
+    g.gain.setValueAtTime(vol, t + Math.max(attack, dur - 0.05));
+    g.gain.linearRampToValueAtTime(0.0001, t + dur + 0.9);
+    lp.connect(g);
+    g.connect(b.music);
+    this.send(g, b, 0.55, 0.12);
+    const vib = ctx.createOscillator();
+    vib.frequency.value = 5.1;
+    const vg = ctx.createGain();
+    vg.gain.value = 7;
+    vib.connect(vg);
+    freqs.forEach((f, k) => {
+      [-6, 6].forEach((det, i) => {
+        const o = ctx.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.value = f;
+        o.detune.value = det;
+        vg.connect(o.detune);
+        o.connect(this.pan(lp, (i ? 0.45 : -0.45) * (k % 2 ? 1 : 0.6)));
+        o.start(t); o.stop(t + dur + 1);
+      });
+    });
+    vib.start(t); vib.stop(t + dur + 1);
+  }
+
+  /** A pen stroke on paper: filtered noise with a fine tremor, traveling across the stereo field. */
+  pen(b: Bus, t: number, dur = 0.4, vol = 0.05, panFrom = 0.6, panTo = -0.6) {
+    const ctx = b.ctx;
+    const n = this.noiseSrc(b, t, dur);
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1400;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 0.8;
+    bp.frequency.setValueAtTime(2600, t);
+    bp.frequency.linearRampToValueAtTime(3800, t + dur * 0.6);
+    bp.frequency.linearRampToValueAtTime(2900, t + dur);
+    const trem = ctx.createGain();
+    trem.gain.value = 0.6;
+    const lfo = ctx.createOscillator();
+    lfo.type = 'square';
+    lfo.frequency.setValueAtTime(19, t);
+    lfo.frequency.linearRampToValueAtTime(27, t + dur);
+    const lfoG = ctx.createGain();
+    lfoG.gain.value = 0.35;
+    lfo.connect(lfoG); lfoG.connect(trem.gain);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.04);
+    g.gain.setValueAtTime(vol, t + dur * 0.7);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    const p = ctx.createStereoPanner();
+    p.pan.setValueAtTime(panFrom, t);
+    p.pan.linearRampToValueAtTime(panTo, t + dur);
+    n.connect(hp); hp.connect(bp); bp.connect(trem); trem.connect(g); g.connect(p); p.connect(b.fx);
+    this.send(g, b, 0.12);
+    lfo.start(t); lfo.stop(t + dur + 0.02);
+  }
+
+  /**
+   * One step through the deck: the pen draws the transition line, and the
+   * note for the arriving slide sounds as the next slide opens. The notes
+   * form one melody across the lecture (A minor, the trailer's key) that
+   * resolves on the closing slide; a chapter opens with a full chord.
+   */
+  step(index: number, dir: 1 | -1, chapter = false) {
+    if (index === 1) return; // the title slide plays its own score
+    const sess = this.session();
+    if (!sess) return;
+    const { s, t0: t } = sess;
+    const A4 = 440, C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880, G4 = 392;
+    const MELODY = [A4, A4, C5, E5, D5, C5, E5, G5, A5, G5, E5, D5, E5, C5, D5, E5, G5, E5, D5, C5, D5, E5, D5, C5, A4];
+    const APPX = [E5, D5, C5, D5, E5, G5, E5, D5, C5, A4, C5, D5];
+    const note = index < MELODY.length ? MELODY[index] : APPX[(index - MELODY.length) % APPX.length];
+    if (chapter) {
+      this.pen(s, t, 0.95, 0.05, 0.7, -0.7);
+      const chords: Record<number, number[]> = {
+        8: [261.63, 329.63, 392, 587.33],   // C(add9): לראות
+        19: [174.61, 220, 261.63, 329.63],  // Fmaj7: לבנות
+        21: [196, 246.94, 293.66, 329.63],  // G6sus: להטמיע
+        25: [220, 261.63, 329.63, 493.88],  // Am(add9): נספח
+      };
+      const chord = chords[index] ?? [220, 261.63, 329.63, 493.88];
+      chord.forEach((f, i) => this.felt(s, t + 0.12 + i * 0.07, f, 0.05, 2.8, (i / 3 - 0.5) * 0.8));
+      this.felt(s, t + 0.1, chord[0] / 2, 0.06, 3.2);
+      this.felt(s, t + 0.62, note, 0.06, 2.4);
+      this.swell(s, t, 0.5, 0.05);
+    } else {
+      this.pen(s, t, 0.42, 0.045, dir === 1 ? 0.6 : -0.6, dir === 1 ? -0.6 : 0.6);
+      this.felt(s, t + 0.3, dir === 1 ? note : note / 2, 0.065, 2.0, 0);
+    }
+    setTimeout(() => s.stop(1.2), 4500);
+  }
+
   // ── Buffers ──
 
   private satCurve(amount: number) {

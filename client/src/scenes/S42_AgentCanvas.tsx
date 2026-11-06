@@ -1,26 +1,28 @@
-import { useState } from 'react';
 import { SceneBase, ContentLayout, SceneTitle, SceneSubtitle } from '../components/presentation/SceneBase';
 import { textTint } from '../lib/typeTokens';
+import { usePresentationStore } from '../store/presentationStore';
 
+/** `id` is the agentCanvas key in the store (prefilled with the LearnBot example) */
 const FIELDS = [
-  { id: 'goal', label: 'מטרה', placeholder: 'מה האייג׳נט צריך להשיג?', color: '#6366F1' },
-  { id: 'trigger', label: 'טריגר', placeholder: 'מה מפעיל אותו?', color: '#10B981' },
-  { id: 'tools', label: 'כלים', placeholder: 'אילו מערכות הוא ניגש אליהן?', color: '#F59E0B' },
-  { id: 'limits', label: 'גבולות', placeholder: 'מה אסור לו לעשות?', color: '#F43F5E' },
-  { id: 'approval', label: 'אישור', placeholder: 'מתי עוצר לאדם?', color: '#A78BFA' },
-  { id: 'success', label: 'הצלחה', placeholder: 'איך נדע שהצליח?', color: '#22D3EE' },
+  { id: 'goal', label: 'מטרה', placeholder: 'מה האייג׳נט צריך להשיג?', color: '#F2A93B' },
+  { id: 'trigger', label: 'טריגר', placeholder: 'מה מפעיל אותו?', color: '#F2A93B' },
+  { id: 'tools', label: 'כלים', placeholder: 'לאילו מערכות הוא ניגש?', color: '#F2A93B' },
+  { id: 'forbidden', label: 'גבולות', placeholder: 'מה אסור לו לעשות?', color: '#8A93A8' },
+  { id: 'approvals', label: 'אישור', placeholder: 'מתי הוא עוצר לאדם?', color: '#F2A93B' },
+  { id: 'metrics', label: 'הצלחה', placeholder: 'איך נדע שזה עבד?', color: '#F3EEE4' },
 ];
 
 export default function S42_AgentCanvas() {
-  const [values, setValues] = useState<Record<string, string>>({});
+  const { agentCanvas: values, setAgentCanvasField } = usePresentationStore();
+  const filled = FIELDS.filter((f) => (values[f.id] || '').trim()).length;
 
   return (
     <SceneBase>
       <ContentLayout>
         <div style={{ paddingTop: 'clamp(1.5rem,3cqw,3rem)' }} className="w-full max-w-7xl space-y-8">
           <div>
-            <SceneTitle size="md">Agent Canvas</SceneTitle>
-            <SceneSubtitle>מילוי הקנבס לאייג׳נט שלנו</SceneSubtitle>
+            <SceneTitle size="md">קנבס האייג׳נט</SceneTitle>
+            <SceneSubtitle>LearnBot, הכשרת מוצר לצוות המכירות. כל שדה פתוח לעריכה</SceneSubtitle>
           </div>
           <div className="grid grid-cols-3 gap-6">
             {FIELDS.map((field, i) => (
@@ -31,24 +33,24 @@ export default function S42_AgentCanvas() {
                 </label>
                 <textarea
                   value={values[field.id] || ''}
-                  onChange={e => setValues(prev => ({ ...prev, [field.id]: e.target.value }))}
+                  onChange={e => setAgentCanvasField(field.id, e.target.value)}
                   placeholder={field.placeholder}
                   rows={3}
                   className="w-full text-3xl resize-none rounded-lg p-2"
                   style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    color: 'rgba(255,255,255,0.7)',
+                    background: 'rgba(243,238,228,0.04)',
+                    border: '1px solid rgba(243,238,228,0.08)',
+                    color: 'rgba(243,238,228,0.7)',
                     outline: 'none',
                   }}
                 />
               </div>
             ))}
           </div>
-          <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(243,238,228,0.04)', border: '1px solid rgba(243,238,228,0.08)' }}>
             <p className="text-white/70 text-3xl">
-              {Object.values(values).filter(v => v.trim()).length}/6 שדות מולאו
-              {Object.values(values).filter(v => v.trim()).length === 6 && ', הקנבס מוכן! 🎉'}
+              {filled}/{FIELDS.length} שדות מולאו
+              {filled === FIELDS.length && '. הקנבס מוכן, ואפשר להתחיל לבנות'}
             </p>
           </div>
         </div>
