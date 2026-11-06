@@ -12,6 +12,7 @@ import { PHOTO_URL, QR_URL } from '../lib/mediaAssets';
 import { usePresentationStore } from '../store/presentationStore';
 import { SmoothImage } from '../components/SmoothImage';
 import { PortraitFinale, stopFinaleSound } from '../components/presentation/PortraitFinale';
+import { StarField } from '../components/presentation/StarField';
 import { getSceneById } from '../data/scenes';
 import { LITE } from '../lib/device';
 import { accentFor } from '../components/presentation/SceneBase';
@@ -69,6 +70,8 @@ export default function S50_PersonalClosing() {
 
   return (
     <SceneBase>
+      {/* the night sky the talk began in */}
+      <StarField zIndex={2} />
       {/* Slide-1 constellation, at rest */}
       <div aria-hidden style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none' }}>
         {CONSTELLATION.map((c, i) => (

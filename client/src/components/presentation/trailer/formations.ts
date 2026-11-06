@@ -188,9 +188,11 @@ class Builder {
       const z = near ? -2 + this.r() * 8 : rr * s * Math.sin(th) - 18;
       const tint = this.r();
       const base: RGB = tint < 0.6 ? [0.55, 0.6, 0.95] : tint < 0.85 ? [0.4, 0.8, 0.95] : [0.95, 0.85, 0.7];
-      const b = (0.25 + this.r() * 0.45) * dim * (near ? 0.6 : 1);
+      // brighter and bigger than they used to be, with a few that really shine
+      const bright = this.r() < 0.06;
+      const b = (0.45 + this.r() * 0.6) * dim * (near ? 0.7 : 1) * (bright ? 1.9 : 1);
       this.put([rr * s * Math.cos(th) * 1.6, rr * u * 0.9, z], [base[0] * b, base[1] * b, base[2] * b],
-        near ? 2.4 + this.r() * 2 : 0.8 + this.r() * 1.6, this.r() * delaySpread, GROUP_STARS);
+        near ? 2.6 + this.r() * 2.2 : (bright ? 2.6 + this.r() * 1.4 : 1.1 + this.r() * 1.9), this.r() * delaySpread, GROUP_STARS);
     }
     return this.f;
   }

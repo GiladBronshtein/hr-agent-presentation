@@ -28,7 +28,8 @@ import {
   CheckCircle2, Clock, MousePointer2, Monitor, Workflow, Shield, KeyRound,
 } from 'lucide-react';
 import { sound, type BufferPlayback } from '../../lib/sound';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, SkipForward } from 'lucide-react';
+import { trailerState } from '../../lib/trailerState';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SlackWindow, SlackMessage } from './SlackChat';
 import { Universe, createUniverseCtl, LITE, type UniverseApi } from './trailer/Universe';
@@ -130,6 +131,28 @@ function Pill({ icon: Icon, text, color = '#B9A2FF', cls, x, y }: { icon?: Lucid
   );
 }
 
+/** Skip straight to the title slide (also Enter, or any "next"). */
+function TrailerSkip({ onSkip }: { onSkip: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); sound.unlock(); onSkip(); }}
+      onPointerDown={(e) => e.stopPropagation()}
+      aria-label="דילוג לשקופית הפתיחה"
+      title="דילוג (Enter)"
+      style={{
+        position: 'absolute', right: 62, top: '50%', transform: 'translateY(-50%)',
+        display: 'inline-flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderRadius: 100,
+        background: 'rgba(246,242,234,0.06)', border: '1px solid rgba(246,242,234,0.22)', color: 'rgba(246,242,234,0.85)',
+        fontFamily: "'Heebo', sans-serif", fontSize: 18, fontWeight: 500, cursor: 'pointer', pointerEvents: 'auto',
+      }}
+    >
+      <span>דילוג</span>
+      <SkipForward size={20} style={{ transform: 'scaleX(-1)' }} />
+    </button>
+  );
+}
+
 /** Sound is on by default; this toggles it without touching the trailer's clock (also the M key). */
 function TrailerMute() {
   const on = usePresentationStore((st) => st.isSoundEnabled);
@@ -199,7 +222,7 @@ function LiteSky() {
   const stars = (size: number, gap: number, a: number) => `radial-gradient(circle at 50% 50%, rgba(246,242,234,${a}) 0, rgba(246,242,234,${a}) ${size}px, transparent ${size + 0.6}px) 0 0 / ${gap}px ${gap}px`;
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: 'radial-gradient(ellipse 70% 55% at 50% 42%, rgba(155,107,255,0.18), transparent 65%), radial-gradient(ellipse 45% 40% at 18% 80%, rgba(45,212,191,0.10), transparent 60%), radial-gradient(ellipse 40% 38% at 84% 82%, rgba(255,194,75,0.08), transparent 58%), #060918' }}>
-      <div className="lite-stars" style={{ position: 'absolute', inset: '-10%', background: `${stars(1.2, 97, 0.55)}, ${stars(0.9, 61, 0.35)}, ${stars(1.6, 173, 0.75)}`, backgroundPosition: '0 0, 31px 17px, 83px 59px' }} />
+      <div className="lite-stars" style={{ position: 'absolute', inset: '-10%', background: `${stars(1.7, 97, 0.85)}, ${stars(1.2, 61, 0.55)}, ${stars(2.4, 173, 1)}`, backgroundPosition: '0 0, 31px 17px, 83px 59px' }} />
     </div>
   );
 }
@@ -649,6 +672,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       };
 
       function finish() {
+        trailerState.active = false;
         mark('trailer finish');
         if (doneRef.current) return;
         doneRef.current = true;
@@ -688,6 +712,8 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       // never hold the picture hostage to the audio render
       audioWait = window.setTimeout(() => { audioSettled = true; begin(); }, 4000);
       offSound = sound.onChange(tryAudio);
+      trailerState.active = true;
+      trailerState.skip = () => skipRef.current();
       skipRef.current = () => {
         if (doneRef.current) return;
         playback?.stop(0.4);
@@ -718,6 +744,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       window.clearTimeout(audioWait);
       offSound();
       window.removeEventListener('keydown', onKey);
+      trailerState.active = false;
       startRef.current = () => {};
       // a natural ending lets the score's tail ring under the title slide
       if (!naturalEnd) playback?.stop(0.6);
@@ -1027,6 +1054,7 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
       </div>
       <div className="lb-bot" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: '11%', background: '#000', zIndex: 40, transformOrigin: 'bottom center' }}>
         <TrailerMute />
+        <TrailerSkip onSkip={() => skipRef.current()} />
       </div>
     </div>
   );

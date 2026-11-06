@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SCENES } from '../data/scenes';
+import { trailerState } from '../lib/trailerState';
 
 export type QualityLevel = 'high' | 'balanced' | 'lightweight';
 export type DemoState = 'idle' | 'trigger' | 'retrieving' | 'planning' | 'tools' | 'preview' | 'approval' | 'executing' | 'feedback' | 'result';
@@ -181,6 +182,8 @@ export const usePresentationStore = create<PresentationStore>()(
       },
 
       goNext: () => {
+        // during the opening trailer, 'next' lands on the finished title first
+        if (trailerState.active) { trailerState.skip(); return; }
         const { currentSceneIndex, totalScenes, isTransitioning } = get();
         if (isTransitioning) return;
         if (currentSceneIndex < totalScenes - 1) {

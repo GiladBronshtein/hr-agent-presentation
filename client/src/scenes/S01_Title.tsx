@@ -11,7 +11,7 @@ import { LectureTrailer } from '../components/presentation/LectureTrailer';
 import { usePresentationStore } from '../store/presentationStore';
 import '../components/presentation/titleIntro.css';
 import { PALETTE, CHAPTER_COLORS, alpha } from '../lib/palette';
-import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
+import { StarField } from '../components/presentation/StarField';
 import { mark } from '../lib/diag';
 import { SKIP_TRAILER } from '../lib/device';
 
@@ -19,28 +19,6 @@ const P = PALETTE;
 /** Left to right, as the particle title's gradient (trailer/formations.ts). */
 const TITLE_GRADIENT = `linear-gradient(90deg, ${P.amber}, ${P.coral}, ${P.magenta}, ${P.violet}, ${P.blue})`;
 
-const setupStars = (canvas: HTMLCanvasElement) => {
-  const tints = [P.paper, P.paper, P.violet, P.teal, P.amber, P.blue];
-  const stars = Array.from({ length: 170 }, (_, i) => ({
-    x: Math.random(), y: Math.random(), r: Math.random() * 1.6 + 0.3,
-    a: Math.random() * 0.6 + 0.15, s: Math.random() * 1.6 + 0.4, o: Math.random() * 6.28, c: tints[i % tints.length],
-  }));
-  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { t }: { t: number }) => {
-    ctx.clearRect(0, 0, cnv.width, cnv.height);
-    for (const st of stars) {
-      ctx.globalAlpha = Math.max(0, st.a * (0.55 + 0.45 * Math.sin(t * st.s + st.o)));
-      ctx.fillStyle = st.c;
-      ctx.beginPath();
-      ctx.arc(st.x * cnv.width, st.y * cnv.height, st.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  };
-};
-function Stars() {
-  const ref = useDecorativeCanvas(setupStars);
-  return <canvas ref={ref} aria-hidden style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
-}
 
 const CHAPTERS = [
   { label: 'להבין', desc: 'מה הם ואיך עובדים', num: '01' },
@@ -186,7 +164,7 @@ export default function S01_Title() {
           ${P.bg0}
         `,
       }} />
-      <Stars />
+      <StarField />
       <div className="noise-overlay" />
 
       {intro && (
