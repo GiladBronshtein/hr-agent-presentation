@@ -1,18 +1,18 @@
 /**
  * S02: Agenda: Four Questions
- * Design: AI-Native UI: bento grid layout, chapter color coding, glassmorphic cards
- * CONFERENCE HALL EDITION: All text sizes bumped for large screen readability
+ * Spectrum: one lit glass card per chapter, each in its own chapter color,
+ * so the four colors the audience will meet are introduced here.
  */
-import { SceneBase } from '../components/presentation/SceneBase';
+import { SceneBase, SceneEyebrow } from '../components/presentation/SceneBase';
 import { BookOpen, Layers, Wrench, Rocket } from 'lucide-react';
-import { textTint } from '../lib/typeTokens';
+import { CHAPTER_COLORS, alpha, textOn } from '../lib/palette';
 
 const QUESTIONS = [
   {
     num: '01',
     q: 'מה זה אייג׳נט, ומה הוא נותן ל-L&D?',
     chapter: 'להבין',
-    color: '#F2A93B',
+    color: CHAPTER_COLORS[0],
     Icon: BookOpen,
     desc: 'ההבדל מאוטומציה, ממה הוא בנוי, ואיך התפקיד שלנו משתנה',
   },
@@ -20,23 +20,23 @@ const QUESTIONS = [
     num: '02',
     q: 'איך זה נראה בפועל?',
     chapter: 'לראות',
-    color: '#F2A93B',
+    color: CHAPTER_COLORS[1],
     Icon: Layers,
-    desc: 'ארבעה אייג׳נטים לאורך מחזור הלמידה, ודמו חי',
+    desc: 'חמישה אייג׳נטים לאורך מחזור הלמידה, ודמו חי',
   },
   {
     num: '03',
     q: 'איך לבנות את זה באחריות?',
     chapter: 'לבנות',
-    color: '#F2A93B',
+    color: CHAPTER_COLORS[2],
     Icon: Wrench,
-    desc: 'כלים שכבר יש בארגון, אמון וגבולות',
+    desc: 'כלים שכבר יש, אמון ושאלות קשות',
   },
   {
     num: '04',
     q: 'איך להתחיל בארגון שלנו?',
     chapter: 'להטמיע',
-    color: '#F2A93B',
+    color: CHAPTER_COLORS[3],
     Icon: Rocket,
     desc: 'בחירת פיילוט ראשון ומפת דרכים ל-90 יום',
   },
@@ -60,24 +60,15 @@ export default function S02_Agenda() {
       >
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center' }}>
-          <p
-            style={{
-              fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
-              fontWeight: 600,
-              color: 'rgba(243,238,228,0.62)',
-              fontFamily: "'Heebo', sans-serif",
-              marginBottom: '0.75rem',
-            }}
-          >
-            ארבע שאלות שנענה עליהן
-          </p>
+          <SceneEyebrow>ארבע שאלות שנענה עליהן</SceneEyebrow>
           <h1
+            className="fx-glow-soft"
             style={{
               fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
               fontSize: 'clamp(3rem, 6cqw, 5.5rem)',
               fontWeight: 800,
               letterSpacing: '-0.03em',
-              color: '#F3EEE4',
+              color: '#F6F2EA',
               margin: 0,
               lineHeight: 1.1,
             }}
@@ -99,30 +90,29 @@ export default function S02_Agenda() {
           {QUESTIONS.map((item, i) => (
             <div
               key={i}
-              className="animate-fade-in-up"
+              className="fx-in fx-glass fx-sheen"
               style={{
-                animationDelay: `${0.1 + i * 0.1}s`,
-                animationFillMode: 'both',
-                opacity: 0,
+                '--fx-c': item.color,
+                '--i': i,
+                '--fx-delay': '120ms',
+                '--fx-sheen-delay': `${0.7 + i * 0.12}s`,
                 padding: 'clamp(1.5rem, 2.5cqw, 2.5rem)',
                 borderRadius: '20px',
-                background: item.color + '0A',
-                border: `1px solid ${item.color}22`,
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'all 200ms cubic-bezier(0.23, 1, 0.32, 1)',
-              }}
+                background: `radial-gradient(120% 90% at 100% 0%, ${alpha(item.color, 0.16)}, transparent 60%), rgba(12,17,50,0.62)`,
+              } as React.CSSProperties}
             >
               {/* Top accent: draws in once the card has landed */}
               <div
                 className="mo-grow-x-l"
                 style={{
                   position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  left: 0,
+                  top: -1,
+                  right: 24,
+                  left: 24,
                   height: '2px',
-                  background: item.color + '80',
+                  borderRadius: '2px',
+                  background: `linear-gradient(270deg, ${item.color}, ${alpha(item.color, 0)})`,
+                  boxShadow: `0 0 12px ${alpha(item.color, 0.8)}`,
                   animationDelay: `${0.4 + i * 0.1}s`,
                 }}
               />
@@ -134,15 +124,16 @@ export default function S02_Agenda() {
                     width: 'clamp(48px, 5cqw, 60px)',
                     height: 'clamp(48px, 5cqw, 60px)',
                     borderRadius: '14px',
-                    background: item.color + '15',
-                    border: `1px solid ${item.color}30`,
+                    background: `linear-gradient(160deg, ${alpha(item.color, 0.3)}, ${alpha(item.color, 0.08)})`,
+                    border: `1px solid ${alpha(item.color, 0.5)}`,
+                    boxShadow: `0 0 24px -4px ${alpha(item.color, 0.6)}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}
                 >
-                  <item.Icon size={24} style={{ color: item.color }} />
+                  <item.Icon size={24} style={{ color: textOn(item.color) }} />
                 </div>
 
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -154,11 +145,11 @@ export default function S02_Agenda() {
                       gap: '0.4rem',
                       padding: '0.25rem 0.75rem',
                       borderRadius: '6px',
-                      background: item.color + '15',
-                      border: `1px solid ${item.color}25`,
+                      background: alpha(item.color, 0.14),
+                      border: `1px solid ${alpha(item.color, 0.35)}`,
                       fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)',
                       fontWeight: 700,
-                      color: textTint(item.color),
+                      color: textOn(item.color),
                       fontFamily: "'Heebo', sans-serif",
                       marginBottom: '0.75rem',
                     }}
@@ -171,7 +162,7 @@ export default function S02_Agenda() {
                   {/* Question */}
                   <p
                     style={{
-                      color: 'rgba(243,238,228,0.9)',
+                      color: 'rgba(246,242,234,0.9)',
                       fontSize: 'clamp(1.5rem, 2.2cqw, 2.1rem)',
                       fontWeight: 700,
                       lineHeight: 1.4,
@@ -186,12 +177,13 @@ export default function S02_Agenda() {
                   {/* Description */}
                   <p
                     style={{
-                      color: 'rgba(243,238,228,0.62)',
+                      color: 'rgba(246,242,234,0.74)',
                       fontSize: 'clamp(1rem, 1.4cqw, 1.3rem)',
                       lineHeight: 1.5,
                       fontFamily: "'DM Sans', 'Heebo', sans-serif",
                       margin: 0,
-                    }}
+                      textWrap: 'balance',
+                    } as React.CSSProperties}
                   >
                     {item.desc}
                   </p>
@@ -205,7 +197,7 @@ export default function S02_Agenda() {
         <p
           className="animate-fade-in stagger-9"
           style={{
-            color: 'rgba(243,238,228,0.62)',
+            color: 'rgba(246,242,234,0.78)',
             fontSize: 'clamp(1.1rem, 1.6cqw, 1.5rem)',
             textWrap: 'balance',
             textAlign: 'center',

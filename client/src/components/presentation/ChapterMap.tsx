@@ -1,12 +1,14 @@
 /**
- * ChapterMap - AI-Native UI + Glassmorphism overlay
- * Design: Full-screen frosted glass overlay, bento-grid scene cards, chapter color coding
+ * ChapterMap - full deck map overlay
+ * Design: a dark glass panel over a dimmed stage, a spectrum hairline on top,
+ * every chapter lit in its own color, the current scene glowing.
  */
 import { useEffect, useRef } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { SCENES, CHAPTERS } from '../../data/scenes';
 import { X, BookOpen, Layers, Wrench, Rocket, FileText } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { PALETTE, SPECTRUM, textOn } from '../../lib/palette';
 
 const CHAPTER_ICONS: Record<string, LucideIcon> = {
   'להבין': BookOpen,
@@ -50,7 +52,7 @@ export function ChapterMap() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(7,11,23, 0.92)',
+        background: 'radial-gradient(80% 70% at 50% 40%, rgba(19,26,68,0.9), rgba(6,9,24,0.96))',
         animation: 'fadeIn 0.25s ease both',
       }}
       onClick={(e) => { if (e.target === e.currentTarget) toggleChapterMap(); }}
@@ -67,13 +69,18 @@ export function ChapterMap() {
           maxWidth: '1100px',
           maxHeight: '88vh',
           overflowY: 'auto',
-          background: 'rgba(13,19,38, 0.96)',
-          border: '1px solid rgba(243,238,228,0.1)',
+          background: 'linear-gradient(180deg, rgba(246,242,234,0.05), rgba(246,242,234,0.01) 30%), rgba(9,13,38,0.97)',
+          border: '1px solid rgba(246,242,234,0.12)',
           borderRadius: '20px',
+          boxShadow: '0 0 0 1px rgba(155,107,255,0.12), 0 40px 120px -40px rgba(155,107,255,0.45), 0 30px 80px rgba(0,0,0,0.6)',
           outline: 'none',
+          position: 'relative',
           animation: 'scaleIn 0.3s cubic-bezier(0.23, 1, 0.32, 1) both',
         }}
       >
+        {/* Spectrum hairline */}
+        <div aria-hidden style={{ position: 'sticky', top: 0, height: '2px', background: SPECTRUM, zIndex: 1, boxShadow: '0 0 16px rgba(240,70,158,0.5)' }} />
+
         {/* Header */}
         <div
           style={{
@@ -81,7 +88,7 @@ export function ChapterMap() {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '1.5rem 2rem',
-            borderBottom: '1px solid rgba(243,238,228,0.07)',
+            borderBottom: '1px solid rgba(246,242,234,0.08)',
           }}
         >
           <div>
@@ -90,14 +97,14 @@ export function ChapterMap() {
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: '1.375rem',
                 fontWeight: 700,
-                color: '#F3EEE4',
+                color: PALETTE.paper,
                 margin: 0,
                 letterSpacing: '-0.02em',
               }}
             >
               מפת המצגת
             </h2>
-            <p style={{ color: 'rgba(243,238,228,0.55)', fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
+            <p style={{ color: PALETTE.muted, fontSize: '1.15rem', margin: '0.25rem 0 0' }}>
               {SCENES.length} סצנות · לחיצה לניווט ישיר
             </p>
           </div>
@@ -108,9 +115,9 @@ export function ChapterMap() {
               width: '36px',
               height: '36px',
               borderRadius: '10px',
-              background: 'rgba(243,238,228,0.05)',
-              border: '1px solid rgba(243,238,228,0.1)',
-              color: 'rgba(243,238,228,0.68)',
+              background: 'rgba(246,242,234,0.05)',
+              border: '1px solid rgba(246,242,234,0.12)',
+              color: 'rgba(246,242,234,0.78)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -118,14 +125,14 @@ export function ChapterMap() {
               transition: 'all 180ms ease',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(138,147,168,0.15)';
-              (e.currentTarget as HTMLButtonElement).style.color = '#8A93A8';
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(138,147,168,0.3)';
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(246,242,234,0.12)';
+              (e.currentTarget as HTMLButtonElement).style.color = PALETTE.paper;
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(246,242,234,0.3)';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.05)';
-              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(243,238,228,0.68)';
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(243,238,228,0.1)';
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(246,242,234,0.05)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'rgba(246,242,234,0.78)';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(246,242,234,0.12)';
             }}
           >
             <X size={16} />
@@ -149,29 +156,31 @@ export function ChapterMap() {
                       width: '32px',
                       height: '32px',
                       borderRadius: '10px',
-                      background: chapter.color + '18',
-                      border: `1px solid ${chapter.color}35`,
+                      background: chapter.color + '22',
+                      border: `1px solid ${chapter.color}55`,
+                      boxShadow: `0 0 18px -4px ${chapter.color}AA`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}
                   >
-                    <Icon size={15} style={{ color: chapter.color }} />
+                    <Icon size={15} style={{ color: textOn(chapter.color) }} />
                   </div>
                   <span
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 700,
                       fontSize: '1.7rem',
-                      color: chapter.color,
+                      color: textOn(chapter.color),
                       letterSpacing: '-0.01em',
+                      textShadow: `0 0 18px ${chapter.color}66`,
                     }}
                   >
                     {chapter.label}
                   </span>
-                  <div style={{ flex: 1, height: '1px', background: chapter.color + '18' }} />
-                  <span style={{ fontSize: '1rem', color: 'rgba(243,238,228,0.25)', fontFamily: 'monospace' }}>
+                  <div style={{ flex: 1, height: '1px', background: `linear-gradient(270deg, ${chapter.color}66, transparent)` }} />
+                  <span style={{ fontSize: '1rem', color: PALETTE.muted, fontFamily: 'monospace' }}>
                     {chapterScenes.length} סצנות
                   </span>
                 </div>
@@ -206,23 +215,23 @@ export function ChapterMap() {
         <div
           style={{
             padding: '1rem 2rem',
-            borderTop: '1px solid rgba(243,238,228,0.06)',
+            borderTop: '1px solid rgba(246,242,234,0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ color: 'rgba(243,238,228,0.25)', fontSize: '1rem' }}>
+          <span style={{ color: PALETTE.muted, fontSize: '1rem' }}>
             לחיצה על סצנה לניווט ישיר
           </span>
           <kbd
             style={{
-              background: 'rgba(243,238,228,0.06)',
-              border: '1px solid rgba(243,238,228,0.1)',
+              background: 'rgba(246,242,234,0.07)',
+              border: '1px solid rgba(246,242,234,0.14)',
               borderRadius: '6px',
               padding: '0.2rem 0.5rem',
               fontSize: '1rem',
-              color: 'rgba(243,238,228,0.55)',
+              color: 'rgba(246,242,234,0.8)',
               fontFamily: 'monospace',
             }}
           >
@@ -253,11 +262,12 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
         padding: '0.625rem 0.75rem',
         borderRadius: '10px',
         border: isActive
-          ? `1px solid ${chapterColor}50`
-          : '1px solid rgba(243,238,228,0.07)',
+          ? `1px solid ${chapterColor}80`
+          : '1px solid rgba(246,242,234,0.08)',
         background: isActive
-          ? chapterColor + '14'
-          : 'rgba(243,238,228,0.03)',
+          ? `linear-gradient(160deg, ${chapterColor}2A, ${chapterColor}0C)`
+          : 'rgba(246,242,234,0.03)',
+        boxShadow: isActive ? `0 0 28px -8px ${chapterColor}CC` : 'none',
         cursor: 'pointer',
         transition: 'all 180ms cubic-bezier(0.23, 1, 0.32, 1)',
         display: 'flex',
@@ -268,15 +278,15 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       }}
       onMouseEnter={(e) => {
         if (!isActive) {
-          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.06)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = chapterColor + '30';
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(246,242,234,0.06)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = chapterColor + '66';
           (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
         }
       }}
       onMouseLeave={(e) => {
         if (!isActive) {
-          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(243,238,228,0.03)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(243,238,228,0.07)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(246,242,234,0.03)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(246,242,234,0.08)';
           (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
         }
       }}
@@ -299,7 +309,7 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
           style={{
             fontFamily: 'monospace',
             fontSize: '1rem',
-            color: isActive ? chapterColor : chapterColor + '55',
+            color: isActive ? textOn(chapterColor) : PALETTE.muted,
             flexShrink: 0,
           }}
         >
@@ -312,8 +322,8 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
               fontWeight: 600,
               padding: '0.1rem 0.35rem',
               borderRadius: '4px',
-              background: chapterColor + '20',
-              color: chapterColor,
+              background: chapterColor + '24',
+              color: textOn(chapterColor),
               fontFamily: "'Space Grotesk', sans-serif",
               letterSpacing: '0.04em',
             }}
@@ -325,9 +335,9 @@ function SceneCard({ scene, isActive, chapterColor, onClick }: SceneCardProps) {
       <span
         style={{
           fontSize: '1rem',
-          color: isActive ? 'rgba(243,238,228,0.9)' : 'rgba(243,238,228,0.68)',
+          color: isActive ? PALETTE.paper : 'rgba(246,242,234,0.78)',
           lineHeight: 1.35,
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Heebo', sans-serif",
         }}
       >
         {scene.hebrewTitle}

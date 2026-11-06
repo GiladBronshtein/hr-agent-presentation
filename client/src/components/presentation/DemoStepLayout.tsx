@@ -45,7 +45,7 @@ export function DemoStepLayout({
       }}
     >
       <header style={{ textAlign: 'center', flexShrink: 0 }}>
-        <SceneEyebrow color="#F2A93B">
+        <SceneEyebrow>
           {eyebrow ?? <>שלב {step}</>}
           {tag && <> · <bdi>{tag}</bdi></>}
         </SceneEyebrow>

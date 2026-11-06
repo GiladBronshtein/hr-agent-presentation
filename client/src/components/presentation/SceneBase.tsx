@@ -1,63 +1,190 @@
 /**
- * SceneBase - Shared scene wrapper
- * Design: editorial "learning-path line" direction. Flat navy page, paper
- * white type, one amber accent, slate for secondary. No glow, no gradient
- * text, no ambient light.
- * Typography: Heebo
+ * SceneBase - Shared scene wrapper and building blocks.
+ * Design: "Spectrum", a dark concert stage. Every slide stands on a deep
+ * midnight floor lit by slow drifting colored light in its chapter's color
+ * (lib/palette.ts CHAPTER_LIGHTS), with a key light above the title, a
+ * faint grid of light and film grain. Cards are lit glass with colored
+ * edges. Type: paper white Heebo / Space Grotesk.
+ * Motion: ambient loops move transform/opacity only and stop under reduced
+ * motion; the chapter color is fixed when a slide mounts, so the outgoing
+ * slide never changes color during a transition.
  */
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
-import { getCurrentChapter } from '../../data/scenes';
+import { CHAPTERS, SCENES, getCurrentChapter } from '../../data/scenes';
+import { CHAPTER_COLORS, CHAPTER_LIGHTS, PALETTE, fromLegacy, isLegacyAccent, textOn } from '../../lib/palette';
 import { RevealText } from '../motion/RevealText';
 import { useReducedMotion } from '../motion/useReducedMotion';
 import '../motion/motion.css';
 
-const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#F2A93B',
-  'לראות': '#F2A93B',
-  'לבנות': '#F2A93B',
-  'להטמיע': '#F2A93B',
-  'נספח': '#8A93A8',
-};
+// ─── Chapter light ────────────────────────────────────────────
+
+export interface SceneLight {
+  /** Scene index the light was taken from */
+  index: number;
+  /** 0..4, into CHAPTERS / CHAPTER_COLORS */
+  chapterIndex: number;
+  /** The chapter color */
+  color: string;
+  /** Text-safe tint of the chapter color */
+  text: string;
+  /** Chapter color plus two spectrum neighbours */
+  lights: readonly [string, string, string];
+}
+
+function lightFor(index: number): SceneLight {
+  const chapter = getCurrentChapter(index);
+  const ci = Math.max(0, CHAPTERS.findIndex((c) => c.id === chapter));
+  const color = CHAPTER_COLORS[ci] ?? PALETTE.violet;
+  return { index, chapterIndex: ci, color, text: textOn(color), lights: CHAPTER_LIGHTS[ci] ?? CHAPTER_LIGHTS[0] };
+}
+
+/**
+ * A scene file's own accent: its chapter color (`c`, for fills, borders and
+ * glows) and the text-safe tint of it (`t`, for type). Called once at module
+ * level with the scene id, so it never changes during a transition.
+ */
+export function accentFor(sceneId: string): { c: string; t: string; lights: readonly [string, string, string] } {
+  const scene = SCENES.find((x) => x.id === sceneId);
+  const l = lightFor(scene ? scene.index : 0);
+  return { c: l.color, t: l.text, lights: l.lights };
+}
+
+/** The scene being mounted: the URL hash wins (deep links paint before the store syncs). */
+function mountingSceneIndex(): number {
+  if (typeof window !== 'undefined') {
+    const m = window.location.hash.match(/^#\/scene\/([\w-]+)$/);
+    const s = m ? SCENES.find((x) => x.id === m[1]) : undefined;
+    if (s) return s.index;
+  }
+  return usePresentationStore.getState().currentSceneIndex;
+}
+
+const SceneLightContext = createContext<SceneLight | null>(null);
+
+/**
+ * The current slide's chapter light. Inside a SceneBase it is the light the
+ * slide mounted with; elsewhere it follows the store.
+ */
+export function useSceneLight(): SceneLight {
+  const ctx = useContext(SceneLightContext);
+  const live = usePresentationStore((s) => s.currentSceneIndex);
+  return ctx ?? lightFor(live);
+}
+
+/** Resolves a color prop: legacy amber becomes the chapter color, other legacy hexes map to Spectrum. */
+function resolveAccent(color: string | undefined, light: SceneLight): string {
+  if (!color || isLegacyAccent(color)) return light.color;
+  return fromLegacy(color);
+}
+
+// ─── Scene wrapper ────────────────────────────────────────────
 
 interface SceneBaseProps {
   children: ReactNode;
   className?: string;
   variant?: 'dark' | 'deep-dark' | 'light' | 'chapter-break';
+  /** Overrides the chapter color that lights the slide */
   chapterColor?: string;
   /** Skip the default background - scene manages its own */
   noBg?: boolean;
+  /** Faint grid of light behind the content (default on, off for deep-dark) */
+  grid?: boolean;
 }
 
-export function SceneBase({ children, className = '', variant = 'dark', noBg = false }: SceneBaseProps) {
-  const bgStyles: Record<string, React.CSSProperties> = {
-    'dark': { background: '#070B17' },
-    'deep-dark': { background: '#070B17' },
-    'light': { background: '#F3EEE4' },
-    'chapter-break': { background: '#0D1326' },
-  };
+const VARIANT_AMBIENCE: Record<NonNullable<SceneBaseProps['variant']>, number> = {
+  'dark': 1,
+  'deep-dark': 0.6,
+  'light': 0,
+  'chapter-break': 1.15,
+};
+
+/**
+ * Bright hues (amber, teal) light the floor far more than violet or blue at
+ * the same alpha, so the light is scaled by the color's luminance to keep
+ * every chapter at the same perceived level and body text at AA.
+ */
+function lightWeight(hex: string): number {
+  const ch = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  const lum = 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  return Math.max(0.55, Math.min(1, Math.sqrt(0.24 / Math.max(lum, 0.01))));
+}
+
+export function SceneBase({ children, className = '', variant = 'dark', chapterColor, noBg = false, grid }: SceneBaseProps) {
+  const reduced = useReducedMotion();
+  const [base] = useState(() => lightFor(mountingSceneIndex()));
+  const light: SceneLight = chapterColor
+    ? { ...base, color: fromLegacy(chapterColor), text: textOn(fromLegacy(chapterColor)), lights: [fromLegacy(chapterColor), base.lights[1], base.lights[2]] }
+    : base;
+  const [a, b, c] = light.lights;
+  const showGrid = grid ?? variant !== 'deep-dark';
+
+  const vars = {
+    '--ch': a,
+    '--ch-b': b,
+    '--ch-c': c,
+    '--ch-text': light.text,
+    '--fx-amb': +(VARIANT_AMBIENCE[variant] * lightWeight(a)).toFixed(3),
+  } as React.CSSProperties;
 
   return (
-    <div
-      className={`scene-base ${className}`}
-      style={noBg ? undefined : bgStyles[variant]}
-      dir="rtl"
-    >
-      {/* Paper grain */}
-      <div className="noise-overlay" />
-
-      {/* Content: no wrapper fade. The stage transition owns the slide-level
-          entrance, so per-element staggers play on a visible parent. */}
+    <SceneLightContext.Provider value={light}>
       <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          width: '100%',
-          height: '100%',
-        }}
+        className={`scene-base${reduced ? ' fx-rm mx-rm' : ''} ${className}`}
+        style={noBg ? vars : { ...vars, background: variant === 'light' ? PALETTE.paper : PALETTE.bg0 }}
+        dir="rtl"
       >
-        {children}
+        {!noBg && variant !== 'light' && (
+          <StageLight preset={light.index % 4} grid={showGrid} spots={variant === 'chapter-break'} />
+        )}
+
+        {/* Film grain: dithers the gradients and keeps the dark alive */}
+        <div className="noise-overlay" />
+
+        {/* Content: no wrapper fade. The stage transition owns the slide-level
+            entrance, so per-element staggers play on a visible parent. */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          {children}
+        </div>
       </div>
+    </SceneLightContext.Provider>
+  );
+}
+
+/**
+ * The living backdrop: base gradient, three drifting light pools in the
+ * chapter's colors, a floor light, a key light above the title, an optional
+ * grid of light and (chapter breaks) two stage spots. Pure CSS; every moving
+ * layer is a pre-rasterized gradient that only changes transform/opacity.
+ */
+function StageLight({ preset, grid, spots }: { preset: number; grid: boolean; spots: boolean }) {
+  return (
+    <div className={`fx-stage fx-p${preset}`} aria-hidden data-decorative>
+      <div className="fx-stage-base" />
+      <div className="fx-aurora">
+        <div className="fx-blob fx-blob-a" />
+        <div className="fx-blob fx-blob-b" />
+        <div className="fx-blob fx-blob-c" />
+      </div>
+      <div className="fx-scrim" />
+      <div className="fx-key" />
+      <div className="fx-floor" />
+      {spots && (
+        <>
+          <div className="fx-spot fx-spot-r" />
+          <div className="fx-spot fx-spot-l" />
+        </>
+      )}
+      {grid && <div className="fx-grid" />}
+      <div className="fx-vignette" />
     </div>
   );
 }
@@ -107,11 +234,20 @@ export function SceneTitle({
   children,
   size = 'lg',
   color,
+  variant = 'lit',
   className = '',
 }: {
   children: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   color?: string;
+  /**
+   * lit: paper type with a faint halo of chapter light (default)
+   * glow: a stronger colored glow, for a hero line
+   * gradient: paper flowing into the chapter color
+   * spectrum: the signature gradient, for one moment per chapter at most
+   * plain: no light at all
+   */
+  variant?: 'lit' | 'glow' | 'gradient' | 'spectrum' | 'plain';
   className?: string;
 }) {
   const sizes = {
@@ -122,7 +258,11 @@ export function SceneTitle({
     xl: 'clamp(3rem, 7cqw, 6rem)',
   };
 
+  const light = useSceneLight();
   const isReducedMotion = useReducedMotion();
+  const tone = color ? fromLegacy(color) : PALETTE.paper;
+  const filled = variant === 'gradient' || variant === 'spectrum';
+  const glowClass = variant === 'glow' ? 'fx-glow-text' : variant === 'lit' ? 'fx-glow-soft' : '';
 
   const style: React.CSSProperties = {
     fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
@@ -132,12 +272,25 @@ export function SceneTitle({
     letterSpacing: '-0.03em',
     margin: 0,
     textWrap: 'balance',
-    color: color || '#F3EEE4',
+    color: tone,
+    '--fx-c': color && !isLegacyAccent(color) ? tone : light.color,
   } as React.CSSProperties;
+
+  if (filled) {
+    // Gradient type is revealed as one unit (background-clip needs one box)
+    const fill = variant === 'spectrum' ? 'fx-spectrum-text' : 'fx-chapter-text';
+    return (
+      <h1 className={className} style={style}>
+        <RevealText whole>
+          <span className={`${fill} fx-shine-once`}>{children}</span>
+        </RevealText>
+      </h1>
+    );
+  }
 
   if (isReducedMotion) {
     return (
-      <h1 className={className} style={style}>
+      <h1 className={`${glowClass} ${className}`} style={style}>
         {children}
       </h1>
     );
@@ -145,7 +298,7 @@ export function SceneTitle({
 
   // Word-by-word reveal
   return (
-    <h1 className={className} style={style}>
+    <h1 className={`${glowClass} ${className}`} style={style}>
       <RevealText>{children}</RevealText>
     </h1>
   );
@@ -163,18 +316,24 @@ export function SceneEyebrow({
   color?: string;
   className?: string;
 }) {
+  const light = useSceneLight();
+  const accent = resolveAccent(color, light);
+  const isPaper = accent === PALETTE.paper;
+  const text = isPaper ? 'rgba(246,242,234,0.86)' : textOn(accent);
   return (
     <p
       className={className}
       style={{
-        color: color || 'rgba(243,238,228,0.62)',
+        color: text,
         fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)',
         fontWeight: 600,
         lineHeight: 1.3,
         fontFamily: "'Heebo', 'DM Sans', sans-serif",
         margin: '0 0 0.6rem',
-      }}
+        '--fx-c': accent,
+      } as React.CSSProperties}
     >
+      <span aria-hidden className="fx-eyebrow-mark" />
       {children}
     </p>
   );
@@ -191,7 +350,7 @@ export function SceneSubtitle({
     <p
       className={className}
       style={{
-        color: 'rgba(243,238,228,0.7)',
+        color: 'rgba(246,242,234,0.78)',
         fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)',
         lineHeight: 1.45,
         fontFamily: "'Heebo', 'DM Sans', sans-serif",
@@ -213,28 +372,26 @@ export function Takeaway({
   color?: string;
   className?: string;
 }) {
-  const { currentSceneIndex } = usePresentationStore();
-  const chapter = getCurrentChapter(currentSceneIndex);
-  const c = color || CHAPTER_COLORS[chapter] || '#F2A93B';
+  const light = useSceneLight();
+  const c = resolveAccent(color, light);
 
   return (
     <div
-      className={className}
+      className={`fx-chip ${className}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.625rem',
-        padding: '0.5rem 1rem',
-        borderRadius: '10px',
-        background: c + '12',
-        border: `1px solid ${c}28`,
-        color: c,
+        padding: '0.5rem 1.1rem',
+        borderRadius: '12px',
+        color: textOn(c),
         fontSize: 'clamp(1.1rem, 1.2cqw, 1.45rem)',
         fontWeight: 600,
         fontFamily: "'Heebo', 'DM Sans', sans-serif",
-      }}
+        '--fx-c': c,
+      } as React.CSSProperties}
     >
-      <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: c, flexShrink: 0 }} />
+      <span className="fx-beacon" style={{ width: '7px', height: '7px', color: c }} />
       {children}
     </div>
   );
@@ -255,11 +412,9 @@ export function GlassCard({
 }) {
   return (
     <div
-      className={className}
+      className={`fx-glass fx-sheen ${className}`}
       style={{
-        background: 'rgba(243,238,228,0.04)',
-        border: '1px solid rgba(243,238,228,0.08)',
-        borderRadius: '16px',
+        borderRadius: '18px',
         padding,
         ...style,
       }}
@@ -280,15 +435,16 @@ export function AccentCard({
   className?: string;
   padding?: string;
 }) {
+  const light = useSceneLight();
+  const c = resolveAccent(color, light);
   return (
     <div
-      className={className}
+      className={`fx-accent fx-sheen ${className}`}
       style={{
-        background: color + '0E',
-        border: `1px solid ${color}28`,
-        borderRadius: '16px',
+        borderRadius: '18px',
         padding,
-      }}
+        '--fx-c': c,
+      } as React.CSSProperties}
     >
       {children}
     </div>
@@ -313,22 +469,33 @@ export function AnimatedNumber({
   /** Numbers set inside Hebrew text use Heebo figures */
   fontFamily?: string;
 }) {
-  const [displayed, setDisplayed] = useState(0);
+  const reduced = useReducedMotion();
+  const [displayed, setDisplayed] = useState(reduced ? value : 0);
+  const [settled, setSettled] = useState(reduced);
 
   useEffect(() => {
+    if (reduced) { setDisplayed(value); setSettled(true); return; }
+    setSettled(false);
     const startTime = performance.now();
+    let raf = 0;
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplayed(Math.round(value * eased));
-      if (progress < 1) requestAnimationFrame(animate);
+      if (progress < 1) raf = requestAnimationFrame(animate);
+      else setSettled(true);
     };
-    requestAnimationFrame(animate);
-  }, [value, duration]);
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [value, duration, reduced]);
 
+  const c = color ? fromLegacy(color) : PALETTE.paper;
   return (
-    <span style={{ color: color || '#F3EEE4', fontFamily, fontVariantNumeric: 'tabular-nums' }}>
+    <span
+      className={settled ? 'fx-count-land' : undefined}
+      style={{ color: c, fontFamily, fontVariantNumeric: 'tabular-nums', '--fx-c': c } as React.CSSProperties}
+    >
       {prefix}{displayed.toLocaleString('he-IL')}{suffix}
     </span>
   );
@@ -337,25 +504,27 @@ export function AnimatedNumber({
 // ─── Chapter badge ─────────────────────────────────────────────
 
 export function ChapterBadge({ label, color }: { label: string; color: string }) {
+  const light = useSceneLight();
+  const c = resolveAccent(color, light);
   return (
     <div
+      className="fx-chip"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '0.375rem',
-        padding: '0.25rem 0.625rem',
-        borderRadius: '6px',
-        background: color + '12',
-        border: `1px solid ${color}25`,
+        gap: '0.5rem',
+        padding: '0.3rem 0.8rem',
+        borderRadius: '100px',
         fontSize: '1rem',
         fontWeight: 700,
-        color,
+        color: textOn(c),
         fontFamily: "'Space Grotesk', sans-serif",
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
-      }}
+        '--fx-c': c,
+      } as React.CSSProperties}
     >
-      <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: color, display: 'inline-block' }} />
+      <span className="fx-beacon" style={{ width: '6px', height: '6px', color: c }} />
       {label}
     </div>
   );
@@ -370,7 +539,7 @@ export function Metric({
   suffix = '',
   strike,
   sub,
-  color = '#F2A93B',
+  color,
   size = 'lg',
 }: {
   /** Small caption above the value */
@@ -387,6 +556,8 @@ export function Metric({
   color?: string;
   size?: 'md' | 'lg' | 'xl';
 }) {
+  const light = useSceneLight();
+  const c = resolveAccent(color, light);
   const sizes = {
     md: 'clamp(2.5rem, 4cqw, 4rem)',
     lg: 'clamp(3.5rem, 6cqw, 6rem)',
@@ -395,27 +566,28 @@ export function Metric({
   return (
     <div style={{ textAlign: 'center' }}>
       {label && (
-        <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: 'rgba(243,238,228,0.6)', fontFamily: "'Heebo', sans-serif", letterSpacing: '0.04em', marginBottom: '0.35rem' }}>
+        <div style={{ fontSize: 'clamp(1rem, 1.3cqw, 1.25rem)', fontWeight: 700, color: PALETTE.muted, fontFamily: "'Heebo', sans-serif", letterSpacing: '0.04em', marginBottom: '0.35rem' }}>
           {label}
         </div>
       )}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <span style={{
+        <span className="fx-glow-text" style={{
           fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
           fontSize: sizes[size], fontWeight: 900, lineHeight: 1,
-          letterSpacing: '-0.03em', color,
+          letterSpacing: '-0.03em', color: textOn(c),
           fontVariantNumeric: 'tabular-nums',
-        }}>
-          {number !== undefined ? <AnimatedNumber value={number} suffix={suffix} color={color} /> : value}
+          '--fx-c': c,
+        } as React.CSSProperties}>
+          {number !== undefined ? <AnimatedNumber value={number} suffix={suffix} color={textOn(c)} /> : value}
         </span>
         {strike && (
-          <span style={{ fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)', fontWeight: 600, color: 'rgba(243,238,228,0.35)', textDecoration: 'line-through', fontFamily: "'Space Grotesk', 'Heebo', sans-serif" }}>
+          <span style={{ fontSize: 'clamp(1.4rem, 2.2cqw, 2.2rem)', fontWeight: 600, color: PALETTE.dim, textDecoration: 'line-through', fontFamily: "'Space Grotesk', 'Heebo', sans-serif" }}>
             {strike}
           </span>
         )}
       </div>
       {sub && (
-        <div style={{ fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)', color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif", marginTop: '0.45rem' }}>
+        <div style={{ fontSize: 'clamp(1.05rem, 1.4cqw, 1.35rem)', color: PALETTE.muted, fontFamily: "'Heebo', sans-serif", marginTop: '0.45rem' }}>
           {sub}
         </div>
       )}
@@ -426,22 +598,22 @@ export function Metric({
 // ─── TakeawayBar - system-wide bottom takeaway pill ───────────
 
 export function TakeawayBar({ children, color }: { children: ReactNode; color?: string }) {
-  const { currentSceneIndex } = usePresentationStore();
-  const chapter = getCurrentChapter(currentSceneIndex);
-  const c = color || CHAPTER_COLORS[chapter] || '#F2A93B';
+  const light = useSceneLight();
+  const c = resolveAccent(color, light);
   return (
     <div style={{
       position: 'absolute', bottom: 'clamp(1.25rem, 2.5cqh, 2rem)', left: 0, right: 0,
       display: 'flex', justifyContent: 'center', zIndex: 4, pointerEvents: 'none',
-      animation: 'fadeInUp 0.48s var(--mo-ease-out) 0.6s both',
     }}>
-      <div style={{
-        padding: 'clamp(0.5rem, 0.8cqw, 1rem) clamp(1.25rem, 2cqw, 2rem)',
+      <div className="fx-takeaway fx-in" style={{
+        '--fx-delay': '600ms',
+        padding: 'clamp(0.55rem, 0.8cqw, 1rem) clamp(1.4rem, 2.2cqw, 2.2rem)',
         borderRadius: '100px',
-        background: 'rgba(13,19,38,0.85)',
-        border: `1px solid ${c}30`,
-      }}>
-        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', color: 'rgba(243,238,228,0.78)' }}>
+        display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
+        '--fx-c': c,
+      } as React.CSSProperties}>
+        <span className="fx-beacon" style={{ width: '8px', height: '8px', color: c }} />
+        <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', color: 'rgba(246,242,234,0.9)' }}>
           {children}
         </span>
       </div>
@@ -451,7 +623,7 @@ export function TakeawayBar({ children, color }: { children: ReactNode; color?: 
 
 // ─── GhostWord - giant faded chapter motif ────────────────────
 
-export function GhostWord({ children, color = 'rgba(243,238,228,0.04)', side = 'left' }: {
+export function GhostWord({ children, color, side = 'left' }: {
   children: ReactNode; color?: string; side?: 'left' | 'right';
 }) {
   return (
@@ -460,7 +632,8 @@ export function GhostWord({ children, color = 'rgba(243,238,228,0.04)', side = '
       fontFamily: "'Space Grotesk', sans-serif",
       fontSize: 'clamp(18rem, 34cqw, 30rem)',
       fontWeight: 900, lineHeight: 1, letterSpacing: '-0.06em',
-      color, userSelect: 'none', pointerEvents: 'none', zIndex: 2,
+      color: color ?? 'color-mix(in oklab, var(--ch) 9%, transparent)',
+      userSelect: 'none', pointerEvents: 'none', zIndex: 2,
       direction: 'ltr',
     }}>
       {children}

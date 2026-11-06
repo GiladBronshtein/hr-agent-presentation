@@ -60,7 +60,9 @@ export function useKeyboardControls() {
         return;
       }
 
-      switch (e.key) {
+      // letters by physical key, so shortcuts work with a Hebrew keyboard layout too
+      const key = e.code && e.code.startsWith('Key') ? e.code.slice(3).toLowerCase() : e.key;
+      switch (key) {
         case 'ArrowRight':
           e.preventDefault();
           goNext();

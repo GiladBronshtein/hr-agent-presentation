@@ -57,8 +57,8 @@ export function SoundArmHint() {
         position: 'absolute', bottom: '5.5%', left: '3.2%', transform: 'translateY(50%)', zIndex: 90,
         display: 'flex', alignItems: 'center', gap: '0.55rem',
         padding: '0.45rem 1rem', borderRadius: '100px',
-        background: 'rgba(243,238,228,0.03)', border: '1px solid rgba(242,169,59,0.32)',
-        color: 'rgba(242,169,59,0.9)', fontFamily: "'Heebo', sans-serif", fontSize: '1.1rem', fontWeight: 500,
+        background: 'rgba(246,242,234,0.03)', border: '1px solid rgba(255,194,75,0.32)',
+        color: 'rgba(255,194,75,0.95)', fontFamily: "'Heebo', sans-serif", fontSize: '1.1rem', fontWeight: 500,
         lineHeight: 1.2, whiteSpace: 'nowrap', cursor: 'pointer',
         animation: 'fadeIn 0.4s var(--mo-ease-out) both',
       }}

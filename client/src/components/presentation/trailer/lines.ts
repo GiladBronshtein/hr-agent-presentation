@@ -1,76 +1,106 @@
 /**
- * Geometry of the trailer, in the 1920x1080 design box. Everything the
- * trailer draws is one kind of mark: a pen line. Shared by the picture
- * (LectureTrailer) and the score (score.ts), which pans each sound to where
- * its line is drawn.
+ * The light pen: geometry of every line the trailer draws on top of the
+ * particle universe, in the 1920x1080 design box. Positions come from the
+ * particle formations (formations.ts, screen percentages), so each stroke
+ * lands exactly on the figure it belongs to.
  */
-import { pathFrom, rng, spline, type Pt } from '../../motion/path';
+import { pathFrom, rng, spline, writeNumber, type Pt } from '../../motion/path';
+import * as F from './formations';
 
-// ── Act 0: a heartbeat, then a hesitant line ──
-export const A0_DOT: Pt = [1560, 470];
-export const A0_PATH = [
-  pathFrom(A0_DOT, spline([[1560, 470], [1420, 462], [1290, 478], [1180, 470]])),
-  spline([[1180, 470], [1060, 465], [940, 477], [830, 470]]).join(' '),
-  'L 818 438 L 804 502 L 790 442 L 776 498 L 762 470',
-  spline([[762, 470], [640, 476], [500, 463], [360, 470]]).join(' '),
-].join(' ');
-/** Progress marks on A0_PATH (fractions of its length, approximate). */
-export const A0_STOPS = [0.3, 0.52, 0.64, 1];
+const px = (x: number, y: number): Pt => [x * 19.2, y * 10.8];
 
-// ── Act 1: one person running between nine tools ──
-export const HUB: Pt = [700, 520];
-export const TOOL_POS: Pt[] = Array.from({ length: 7 }, (_, i) => {
-  const a = -Math.PI / 2 + (i / 7) * Math.PI * 2;
-  return [HUB[0] + Math.cos(a) * 340, HUB[1] + Math.sin(a) * 250];
-});
-/** The tangled scribble: hub, a tool, back, another tool, with loops. */
-function scribble(seed: number, visits: number[], loop = 34): string {
-  const r = rng(seed);
-  const pts: Pt[] = [HUB];
-  visits.forEach((i) => {
-    const [x, y] = TOOL_POS[i];
-    const j = () => (r() - 0.5) * 70;
-    pts.push([(x + HUB[0]) / 2 + j() * 2, (y + HUB[1]) / 2 + j() * 2]);
-    pts.push([x + j() + loop, y + j()]);
-    pts.push([x + j(), y - loop + j()]);
-    pts.push([x - loop + j(), y + j()]);
-    pts.push([HUB[0] + j(), HUB[1] + j()]);
+// ── Act 0: an ECG trace through the heart; the big spike lands on "ידנית." ──
+export const ECG_Y = 432;
+/** Story time to x along the trace (right to left, the way Hebrew is read). */
+export const ECG_KEYS: [number, number][] = [[0.2, 2010], [0.6, 1700], [1.85, 1300], [3.4, 960], [4.75, 420], [4.95, 280]];
+const BEATS: [number, number][] = [[1700, 120], [1300, 150], [960, 330], [420, 70]];
+export const ECG_PATH = (() => {
+  const y = ECG_Y;
+  const d: string[] = [`M 2010 ${y}`];
+  BEATS.forEach(([x, A]) => {
+    d.push(`L ${x + 64} ${y}`, `L ${x + 52} ${y - A * 0.12}`, `L ${x + 40} ${y}`, `L ${x + 14} ${y}`, `L ${x + 7} ${y + A * 0.16}`,
+      `L ${x} ${y - A}`, `L ${x - 9} ${y + A * 0.34}`, `L ${x - 18} ${y}`, `L ${x - 50} ${y}`, `L ${x - 64} ${y - A * 0.22}`, `L ${x - 82} ${y}`);
   });
-  return pathFrom(HUB, spline(pts));
-}
-export const SCRIBBLE_A = scribble(7, [0, 3, 1, 5, 2, 6, 4]);
-export const SCRIBBLE_B = scribble(23, [2, 5, 0, 6, 3, 1, 4, 0, 5, 2], 22);
-export const SCRIBBLE_A_VISITS = 7;
+  d.push(`L 280 ${y}`);
+  return d.join(' ');
+})();
 
-// ── Act 2: a rigid route against a goal ──
-export const AUTO_SEGS = ['M 1900 600 H 1700 V 480', 'M 1700 480 H 1540 V 600', 'M 1540 600 H 1360'];
-export const AUTO_BLOCK: Pt = [1300, 600];
-export const AGENT_BLOCK: Pt = [500, 600];
-export const GOAL: Pt = [150, 600];
-export const AGENT_PATH = pathFrom([880, 600], spline([[880, 600], [740, 602], [630, 540], [500, 452], [372, 532], [262, 598], [GOAL[0] + 16, GOAL[1]]]));
-/** Where along the agent's path each of its seven components appears. */
-export const COMP_AT = [0.07, 0.2, 0.33, 0.46, 0.59, 0.72, 0.85];
+// ── Act 1: one person running between the tools, then a tangle ──
+export const HUB = px(F.HUB.x, F.HUB.y);
+export const TOOLS = F.SYSTEM_POS.map((p) => px(p.x, p.y));
+export const VISITS = [0, 3, 1, 5, 2, 6, 4];
+/** One trip: hub, out to a tool, a loop around it, back to the hub. */
+export const LEGS = VISITS.map((ti, k) => {
+  const r = rng(31 + k * 7);
+  const [x, y] = TOOLS[ti];
+  const [hx, hy] = HUB;
+  const j = () => (r() - 0.5) * 60;
+  const pts: Pt[] = [[hx, hy], [(x + hx) / 2 + j(), (y + hy) / 2 + j()], [x + 34, y + j() * 0.5], [x, y - 34], [x - 34, y], [x + j() * 0.4, y + 30], [(x + hx) / 2 + j(), (y + hy) / 2 + j()], [hx, hy]];
+  return pathFrom(pts[0], spline(pts));
+});
+/** The overload: one frantic stroke through everything. */
+export const TANGLE = (() => {
+  const r = rng(77);
+  const pts: Pt[] = [HUB];
+  for (let k = 0; k < 16; k++) {
+    const t = TOOLS[(k * 3) % 7];
+    pts.push([t[0] + (r() - 0.5) * 140, t[1] + (r() - 0.5) * 140]);
+    pts.push([HUB[0] + (r() - 0.5) * 220, HUB[1] + (r() - 0.5) * 220]);
+  }
+  return pathFrom(pts[0], spline(pts));
+})();
 
-// ── Act 3: the learning cycle ──
-export const RING_C: Pt = [960, 470];
-export const RING_R = 240;
-export const RING_PATH = `M ${RING_C[0]} ${RING_C[1] - RING_R} A ${RING_R} ${RING_R} 0 1 1 ${RING_C[0]} ${RING_C[1] + RING_R} A ${RING_R} ${RING_R} 0 1 1 ${RING_C[0]} ${RING_C[1] - RING_R}`;
-/** Agent nodes on the ring, clockwise from the top (the reading side first). */
-export const RING_NODES: Pt[] = Array.from({ length: 9 }, (_, i) => {
-  const a = -Math.PI / 2 + (i / 9) * Math.PI * 2;
-  return [RING_C[0] + Math.cos(a) * RING_R, RING_C[1] + Math.sin(a) * RING_R];
+// ── Chapter numbers, written in light above the chapter word ──
+export const NUM_C: Pt = [960, 280];
+export const chapterNumber = (num: string) => writeNumber(num, NUM_C[0], NUM_C[1], 0.72);
+
+// ── Act 2: the rigid route, and the agent's loop through its parts ──
+export const RAIL_Y = 56 * 10.8;
+export const RAIL_STEPS = [[1766, 1530], [1530, 1300], [1300, 1110]].map(([a, b]) => `M ${a} ${RAIL_Y} L ${b} ${RAIL_Y}`);
+export const AGENT_LOOP = (() => {
+  const pts = F.COMPONENT_POS.map((p) => px(p.x, p.y));
+  return pathFrom(pts[0], spline([...pts, pts[0], pts[1]]).slice(0, pts.length));
+})();
+
+// ── Act 3: the nine agents, joined in reading order ──
+export const AGENT_CHAIN = (() => {
+  const pts = F.AGENT_GRID.map((p) => px(p.x, p.y - 2.2));
+  return pathFrom(pts[0], spline(pts));
+})();
+/** Light rays for the approval moment: fanning out to both sides of the
+ *  button (coordinates relative to its center), never over the window. */
+export const RAYS = Array.from({ length: 18 }, (_, i) => {
+  const side = i % 2 ? 1 : -1;
+  const k = Math.floor(i / 2) / 8;
+  const a = (k - 0.5) * 0.9;
+  const r0 = 190 + (i % 3) * 14;
+  const r1 = 360 + ((i * 37) % 5) * 55;
+  const p = (r: number) => `${(side * Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r * 0.55).toFixed(1)}`;
+  return `M ${p(r0)} L ${p(r1)}`;
 });
 
-// ── Act 4: trust in layers ──
-export const LAYER_Y = [330, 410, 490, 570, 650];
-export const LAYER_X: [number, number] = [1260, 660];
-export const FENCE = 'M 1292 280 H 628 Q 600 280 600 308 V 672 Q 600 700 628 700 H 1292 Q 1320 700 1320 672 V 308 Q 1320 280 1292 280';
-export const FENCE_TIES = ['M 1320 490 H 1520', 'M 600 490 H 400'];
+// ── Act 4: the trust shield, drawn from its crown down both flanks ──
+const shieldSide = (side: 1 | -1) => {
+  const pts: Pt[] = [];
+  for (let n = 0; n <= 40; n++) {
+    const u = n / 40;
+    let x: number;
+    let y: number;
+    if (u < 0.3) { const k = u / 0.3; x = 50 + side * k * 24; y = 16 + k * 2.5; }
+    else if (u < 0.62) { const k = (u - 0.3) / 0.32; x = 50 + side * (24 - k * 4); y = 18.5 + k * 41.5; }
+    else { const v = (u - 0.62) / 0.38; x = 50 + side * 20 * (1 - v ** 1.6); y = 60 + 19 * v; }
+    pts.push(px(x, y));
+  }
+  return `M ${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L ')}`;
+};
+export const SHIELD = [shieldSide(1), shieldSide(-1)];
 
-// ── Act 5: the 90-day road ──
-export const ROAD_X = [1536, 1152, 768, 384];
-export const ROAD_Y = 470;
-export const ROAD_PATH = pathFrom([2010, 430], spline([[2010, 430], [1760, 492], ...ROAD_X.flatMap((x, i): Pt[] => [[x, ROAD_Y], [x - 192, ROAD_Y + (i % 2 ? -26 : 26)]]).slice(0, -1), [150, 446], [-90, 470]]));
-
-/** Pan position (-1..1) of an x coordinate in the design box. */
-export const panAt = (x: number) => (x / 960 - 1) * 0.8;
+// ── Act 5: the 90-day road, on the particle road ──
+export const ROAD = (() => {
+  const pts: Pt[] = [];
+  for (let n = 0; n <= 60; n++) {
+    const t = n / 60;
+    pts.push(px(90 - t * 80, F.ROAD_Y + Math.sin(t * Math.PI * 2) * 1.2));
+  }
+  return `M ${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L ')}`;
+})();

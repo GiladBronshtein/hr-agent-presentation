@@ -5,6 +5,11 @@ import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { DEMO_SCENARIO, DEMO_TOOL_CALLS } from '../data/demoData';
 import { CODE_FONT } from '../lib/typeTokens';
 import { usePresentationStore } from '../store/presentationStore';
+import { accentFor } from '../components/presentation/SceneBase';
+import { PALETTE, textOn } from '../lib/palette';
+
+/** This slide's chapter accent (fills) and its text-safe tint */
+const { c: ACC, t: ACC_T } = accentFor('demo-tools');
 
 const TOOL_CALLS = DEMO_TOOL_CALLS;
 
@@ -27,7 +32,7 @@ export default function S27_DemoTools() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  const statusText = { success: '#F2A93B', pending: '#F2A93B', error: '#8A93A8' };
+  const statusText = { success: PALETTE.teal, pending: PALETTE.amber, error: textOn(PALETTE.coral) };
   const StatusIcons = { success: CheckCircle2, pending: Loader2, error: XCircle };
 
   return (
@@ -38,20 +43,20 @@ export default function S27_DemoTools() {
               from the left like a real macOS window */}
           <div className="terminal-window" dir="ltr" style={{ flexShrink: 0 }}>
             <div className="terminal-header">
-              <div className="terminal-dot" style={{ background: '#8A93A8' }} />
-              <div className="terminal-dot" style={{ background: '#F2A93B' }} />
-              <div className="terminal-dot" style={{ background: '#F2A93B' }} />
-              <span className="ml-3" style={{ fontFamily: CODE_FONT, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: 'rgba(243,238,228,0.68)' }}>{DEMO_SCENARIO.agent}: tool calls</span>
+              <div className="terminal-dot" style={{ background: PALETTE.coral }} />
+              <div className="terminal-dot" style={{ background: PALETTE.amber }} />
+              <div className="terminal-dot" style={{ background: PALETTE.teal }} />
+              <span className="ml-3" style={{ fontFamily: CODE_FONT, fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: 'rgba(246,242,234,0.68)' }}>{DEMO_SCENARIO.agent}: tool calls</span>
             </div>
             <div className="terminal-body space-y-2" style={{ textAlign: 'left', fontFamily: CODE_FONT, fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)', lineHeight: 1.5 }}>
               {TOOL_CALLS.map((call, i) => (
                 <div key={i} className="transition-all duration-500"
                   style={{ opacity: i < visible ? 1 : 0 }}>
                   <div className="terminal-line" style={{ display: 'flex', gap: '0.6em', alignItems: 'baseline' }}>
-                    <span style={{ color: 'rgba(243,238,228,0.45)', flexShrink: 0 }}>→</span>
+                    <span style={{ color: ACC_T, flexShrink: 0 }}>→</span>
                     <span style={{ overflowWrap: 'anywhere' }}>
-                      <span style={{ color: '#F3EEE4', fontWeight: 600 }}>{call.tool}</span>{' '}
-                      <span style={{ color: 'rgba(243,238,228,0.72)' }}><Json text={call.args} /></span>
+                      <span style={{ color: '#F6F2EA', fontWeight: 600 }}>{call.tool}</span>{' '}
+                      <span style={{ color: 'rgba(246,242,234,0.8)' }}><Json text={call.args} /></span>
                     </span>
                   </div>
                   {i < visible && (
@@ -65,8 +70,8 @@ export default function S27_DemoTools() {
               ))}
             </div>
           </div>
-          <p className="text-center" style={{ margin: 0, color: 'rgba(243,238,228,0.72)', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)' }}>
-            טיוטות נוצרות מיד. <span style={{ color: '#F2A93B', fontWeight: 600 }}>רישום ושליחה מחכים לאישור.</span> כל פעולה מתועדת.
+          <p className="text-center" style={{ margin: 0, color: 'rgba(246,242,234,0.72)', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)' }}>
+            טיוטות נוצרות מיד. <span style={{ color: ACC_T, fontWeight: 600 }}>רישום ושליחה מחכים לאישור.</span> כל פעולה מתועדת.
           </p>
       </DemoStepLayout>
     </SceneBase>

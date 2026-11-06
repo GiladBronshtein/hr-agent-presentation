@@ -1,10 +1,18 @@
 /**
  * S05: Automation vs Agent
- * Conference Hall Edition: a reminder rule vs an agent that sees why learning stalled.
+ * A reminder rule vs an agent that sees why learning stalled. Two lights:
+ * the automation side sits in a cold, flat wash; the agent side is lit in
+ * the chapter color, with gradient type and a pulse on the divider.
  */
 import { useEffect, useState } from 'react';
 import { Brain, CheckCircle2, ClipboardList, Hammer, Lock, MessageCircle, RefreshCw, Wrench, XCircle, Zap } from 'lucide-react';
 import { SceneBase } from '../components/presentation/SceneBase';
+import { SourceChip } from '../components/presentation/SourceChip';
+import { accentFor } from '../components/presentation/SceneBase';
+import { PALETTE, alpha } from '../lib/palette';
+
+/** This slide's chapter accent (fills) and its text-safe tint */
+const { c: ACC, t: ACC_T } = accentFor('automation-vs-agent');
 
 const AUTOMATION_TRAITS = [
   { icon: ClipboardList, text: 'אותו רצף צעדים, בכל פעם' },
@@ -33,15 +41,16 @@ export default function S05_AutomationVsAgent() {
   }, []);
 
   return (
-    <SceneBase noBg>
-      {/* Background */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: '#070B17' }} />
-      <div className="noise-overlay" />
+    <SceneBase variant="deep-dark" grid>
+      {/* Two lights: cold and flat on the automation half (right), the chapter
+          color on the agent half (left) */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: `radial-gradient(55% 70% at 78% 50%, ${alpha(PALETTE.muted, 0.08)}, transparent 70%), radial-gradient(60% 75% at 24% 48%, ${alpha(ACC, 0.24)}, transparent 70%)` }} />
 
       {/* Center divider */}
       <div style={{
         position: 'absolute', top: '6%', bottom: '6%', left: '50%', width: '1px', zIndex: 5,
-        background: 'rgba(243,238,228,0.14)',
+        background: `linear-gradient(180deg, transparent, ${alpha(ACC, 0.6)} 30%, ${alpha(PALETTE.muted, 0.35)} 70%, transparent)`,
         transform: showDivider ? 'scaleY(1)' : 'scaleY(0)',
         transformOrigin: 'top',
         transition: 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
@@ -59,14 +68,15 @@ export default function S05_AutomationVsAgent() {
         <div className="mo-pop" style={{
           animationDelay: '0.95s',
           width: 'clamp(44px, 5cqw, 58px)', height: 'clamp(44px, 5cqw, 58px)',
-          borderRadius: '50%', background: '#070B17',
-          border: '1px solid rgba(243,238,228,0.1)',
+          borderRadius: '50%', background: 'radial-gradient(circle at 50% 35%, #1A2258, #0B1030 70%)',
+          border: `1px solid ${alpha(ACC, 0.5)}`,
+          boxShadow: `0 0 24px ${alpha(ACC, 0.45)}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
           fontSize: 'clamp(1rem, 1.1cqw, 1rem)',
-          fontWeight: 800, color: 'rgba(243,238,228,0.55)',
-          letterSpacing: '0.05em',
-        }}>VS</div>
+          fontWeight: 800, color: 'rgba(246,242,234,0.85)',
+          letterSpacing: '0.05em', position: 'relative',
+        }}><span aria-hidden className="fx-ring" style={{ color: ACC }} />VS</div>
       </div>
 
       <div dir="rtl" style={{
@@ -86,10 +96,10 @@ export default function S05_AutomationVsAgent() {
           <div className="animate-fade-in-up stagger-1" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
             padding: '0.4rem 1rem', borderRadius: '100px', width: 'fit-content',
-            background: 'rgba(138,147,168,0.1)', border: '1px solid rgba(138,147,168,0.2)',
+            background: 'rgba(163,171,207,0.1)', border: '1px solid rgba(163,171,207,0.28)',
             marginBottom: 'clamp(0.75rem, 1.5cqw, 1.5rem)',
           }}>
-            <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#CBD5E1' }}>
+            <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#D5DAEE' }}>
               AUTOMATION, אוטומציה
             </span>
           </div>
@@ -98,7 +108,7 @@ export default function S05_AutomationVsAgent() {
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(3rem, 8.5cqh, 5.75rem)',
             fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.015em',
-            color: '#8A93A8', margin: '0 0 clamp(0.75rem, 1.5cqw, 1.5rem)',
+            color: '#A3ABCF', margin: '0 0 clamp(0.75rem, 1.5cqw, 1.5rem)',
           }}>
             IF<br />THEN
           </h2>
@@ -106,7 +116,7 @@ export default function S05_AutomationVsAgent() {
           <p className="animate-fade-in-up stagger-3" style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1rem, 1.7cqw, 1.5rem)',
-            color: 'rgba(243,238,228,0.58)', margin: '0 0 clamp(0.75rem, 2.2cqh, 1.75rem)', lineHeight: 1.5,
+            color: 'rgba(246,242,234,0.7)', margin: '0 0 clamp(0.75rem, 2.2cqh, 1.75rem)', lineHeight: 1.5,
           }}>
             כשקורה X, עושים Y.<br />תמיד אותו דבר, בלי לשאול למה.
           </p>
@@ -117,14 +127,14 @@ export default function S05_AutomationVsAgent() {
                 display: 'flex', alignItems: 'center', gap: '0.625rem',
                 padding: 'clamp(0.4rem, 1.1cqh, 0.9rem) clamp(0.75rem, 1.2cqw, 1.1rem)',
                 borderRadius: '10px',
-                background: 'rgba(138,147,168,0.05)',
-                border: '1px solid rgba(138,147,168,0.09)',
+                background: 'rgba(11,16,48,0.55)',
+                border: '1px solid rgba(163,171,207,0.14)',
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateX(0)' : 'translateX(-20px)',
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
-                <span style={{ fontSize: 'clamp(1.5rem, 2.1cqw, 2rem)', flexShrink: 0 }}><t.icon size="1em" /></span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(243,238,228,0.62)' }}>{t.text}</span>
+                <span style={{ fontSize: 'clamp(1.5rem, 2.1cqw, 2rem)', flexShrink: 0, display: 'inline-flex', color: PALETTE.muted }}><t.icon size="1em" /></span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(246,242,234,0.72)' }}>{t.text}</span>
               </div>
             ))}
           </div>
@@ -133,13 +143,13 @@ export default function S05_AutomationVsAgent() {
             marginTop: 'clamp(0.6rem, 1.6cqh, 1.25rem)',
             padding: 'clamp(0.625rem, 1cqw, 1rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
             borderRadius: '12px',
-            background: 'rgba(138,147,168,0.04)', border: '1px solid rgba(138,147,168,0.1)',
+            background: 'rgba(11,16,48,0.6)', border: '1px solid rgba(163,171,207,0.16)',
             fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", fontSize: 'clamp(1rem, 1cqw, 1.2rem)',
-            color: 'rgba(243,238,228,0.6)', lineHeight: 1.6,
+            color: 'rgba(246,242,234,0.72)', lineHeight: 1.6,
           }}>
-            <span style={{ color: '#8A93A8' }}>IF</span> הקורס לא הושלם תוך 7 ימים<br />
-            <span style={{ color: '#8A93A8' }}>THEN</span> נשלחת תזכורת<br />
-            <span style={{ color: 'rgba(243,238,228,0.45)' }}>// ושוב בעוד 7 ימים</span>
+            <span style={{ color: '#A3ABCF' }}>IF</span> הקורס לא הושלם תוך 7 ימים<br />
+            <span style={{ color: '#A3ABCF' }}>THEN</span> נשלחת תזכורת<br />
+            <span style={{ color: PALETTE.dim }}>// ושוב בעוד 7 ימים</span>
           </div>
         </div>
 
@@ -148,14 +158,13 @@ export default function S05_AutomationVsAgent() {
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           padding: 'clamp(1.5rem, 3cqw, 4rem) clamp(1.5rem, 3cqw, 4rem) clamp(1.5rem, 3cqw, 4rem) clamp(2rem, 5cqw, 6rem)',
         }}>
-          <div className="animate-fade-in-up stagger-1" style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+          <div className="animate-fade-in-up stagger-1 fx-chip" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
             padding: '0.4rem 1rem', borderRadius: '100px', width: 'fit-content',
-            background: 'rgba(243,238,228,0.12)', border: '1px solid rgba(243,238,228,0.25)',
             marginBottom: 'clamp(0.75rem, 1.5cqw, 1.5rem)',
           }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#F2A93B', display: 'inline-block' }} />
-            <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: '#F2A93B' }}>
+            <span className="fx-beacon" style={{ width: '7px', height: '7px', color: ACC }} />
+            <span style={{ fontFamily: "'Space Grotesk', 'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: ACC_T }}>
               AI AGENT, אייג׳נט
             </span>
           </div>
@@ -165,15 +174,15 @@ export default function S05_AutomationVsAgent() {
             fontSize: 'clamp(3rem, 8.5cqh, 5.75rem)',
             fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.015em',
             margin: '0 0 clamp(0.75rem, 1.5cqw, 1.5rem)',
-            color: '#F2A93B',
+            color: ACC_T,
           }}>
-            THINK<br />ACT
+            <span className="fx-spectrum-text fx-shine-once">THINK</span><br /><span className="fx-spectrum-text fx-shine-once">ACT</span>
           </h2>
 
           <p className="animate-fade-in-up stagger-3" style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1rem, 1.7cqw, 1.5rem)',
-            color: 'rgba(243,238,228,0.7)', margin: '0 0 clamp(0.75rem, 2.2cqh, 1.75rem)', lineHeight: 1.5,
+            color: 'rgba(246,242,234,0.84)', margin: '0 0 clamp(0.75rem, 2.2cqh, 1.75rem)', lineHeight: 1.5,
           }}>
             מקבל מטרה ומחפש את הדרך אליה.<br />מבין, מתאים, פועל.
           </p>
@@ -184,14 +193,15 @@ export default function S05_AutomationVsAgent() {
                 display: 'flex', alignItems: 'center', gap: '0.625rem',
                 padding: 'clamp(0.4rem, 1.1cqh, 0.9rem) clamp(0.75rem, 1.2cqw, 1.1rem)',
                 borderRadius: '10px',
-                background: 'rgba(243,238,228,0.07)',
-                border: '1px solid rgba(243,238,228,0.14)',
+                background: `linear-gradient(90deg, ${alpha(ACC, 0.05)}, ${alpha(ACC, 0.16)}), rgba(12,17,50,0.6)`,
+                border: `1px solid ${alpha(ACC, 0.32)}`,
+                boxShadow: `0 0 26px -14px ${alpha(ACC, 0.9)}`,
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateX(0)' : 'translateX(20px)',
                 transition: `opacity 0.4s ease ${0.3 + i * 0.07}s, transform 0.4s cubic-bezier(0.23,1,0.32,1) ${0.3 + i * 0.07}s`,
               }}>
-                <span style={{ fontSize: 'clamp(1.5rem, 2.1cqw, 2rem)', flexShrink: 0 }}><t.icon size="1em" /></span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(243,238,228,0.8)' }}>{t.text}</span>
+                <span style={{ fontSize: 'clamp(1.5rem, 2.1cqw, 2rem)', flexShrink: 0, display: 'inline-flex', color: ACC_T, filter: `drop-shadow(0 0 8px ${alpha(ACC, 0.7)})` }}><t.icon size="1em" /></span>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', color: 'rgba(246,242,234,0.9)' }}>{t.text}</span>
               </div>
             ))}
           </div>
@@ -200,13 +210,14 @@ export default function S05_AutomationVsAgent() {
             marginTop: 'clamp(0.6rem, 1.6cqh, 1.25rem)',
             padding: 'clamp(0.625rem, 1cqw, 1rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
             borderRadius: '12px',
-            background: 'rgba(243,238,228,0.07)', border: '1px solid rgba(243,238,228,0.18)',
+            background: `linear-gradient(160deg, ${alpha(ACC, 0.14)}, ${alpha(ACC, 0.04)}), rgba(12,17,50,0.7)`, border: `1px solid ${alpha(ACC, 0.4)}`,
+            boxShadow: `0 0 40px -18px ${alpha(ACC, 0.9)}`,
             fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", fontSize: 'clamp(1rem, 1cqw, 1.2rem)',
-            color: 'rgba(243,238,228,0.75)', lineHeight: 1.6,
+            color: 'rgba(246,242,234,0.86)', lineHeight: 1.6,
           }}>
-            <span style={{ color: '#F2A93B' }}><bdi>GOAL:</bdi></span> כל הצוות מוכן לשיחת מכירה<br />
-            <span style={{ color: '#F3EEE4' }}><bdi>NOTICE:</bdi></span> מאיה טעתה פעמיים באותה שאלה<br />
-            <span style={{ color: '#F2A93B' }}><bdi>ADAPT:</bdi></span> הסבר של 2 דקות ותרגול חדש
+            <span style={{ color: ACC_T }}><bdi>GOAL:</bdi></span> כל הצוות מוכן לשיחת מכירה<br />
+            <span style={{ color: '#F6F2EA' }}><bdi>NOTICE:</bdi></span> מאיה טעתה פעמיים באותה שאלה<br />
+            <span style={{ color: ACC_T }}><bdi>ADAPT:</bdi></span> הסבר של 2 דקות ותרגול חדש
           </div>
         </div>
       </div>
@@ -220,20 +231,19 @@ export default function S05_AutomationVsAgent() {
         pointerEvents: 'none',
             animationDelay: '0.9s',
       }} className="mo-fade">
-        <div style={{
+        <div className="fx-takeaway" style={{
           padding: 'clamp(0.5rem, 0.8cqw, 1rem) clamp(1.25rem, 2cqw, 2rem)',
           borderRadius: '100px',
-          background: 'rgba(13,19,38,0.85)',
-          border: '1px solid rgba(243,238,228,0.18)',
         }}>
           <span style={{
             fontFamily: "'Heebo', sans-serif",
             fontSize: 'clamp(1.05rem, 1.2cqw, 1.45rem)',
-            color: 'rgba(243,238,228,0.72)',
+            color: 'rgba(246,242,234,0.84)',
           }}>
             אוטומציה מבצעת מסלול.{' '}
-            <span style={{ color: '#F2A93B', fontWeight: 700 }}>אייג׳נט מנהל מטרה.</span>
+            <span style={{ color: ACC_T, fontWeight: 700 }}>אייג׳נט מנהל מטרה.</span>
           </span>
+          <SourceChip id="anthropic-effective-agents" style={{ marginInlineStart: '0.75em', verticalAlign: 'middle', pointerEvents: 'auto' }} />
         </div>
       </div>
     </SceneBase>

@@ -1,14 +1,42 @@
 /**
  * Ahead-of-time preparation for the trailer, so nothing heavy runs while it
- * plays: the webfont is loaded (the finale writes the title in it) and the
- * whole score is decoded (or rendered offline) into one AudioBuffer.
- * Idempotent; started early (on the first slide) and awaited by the trailer.
+ * plays: every particle formation is built in idle slices, and the whole
+ * score is rendered offline into one AudioBuffer. Idempotent; started early
+ * (on the first slide) and awaited by the trailer itself.
  */
 import { sound } from '../../../lib/sound';
+import * as F from './formations';
 import { buildScore, TRAILER_AUDIO_SECONDS } from './score';
 
-let fontsReady: Promise<void> | null = null;
+const BUILDERS: Record<string, () => F.Formation> = {
+  void: F.fVoid, heart: F.fHeart, chaos: F.fChaos, aa: F.fAutomationAgent, agents: F.fAgents,
+  demo: F.fDemo, stack: F.fStack, road: F.fRoad, sphere: F.fSphere, core: F.fCore, word: F.fWord,
+};
+const ORDER = ['void', 'heart', 'chaos', 'aa', 'agents', 'demo', 'stack', 'road', 'word', 'sphere', 'core'];
+
+const cache = new Map<string, F.Formation>();
+let formationsReady: Promise<void> | null = null;
 let audioReady: Promise<AudioBuffer | null> | null = null;
+
+const idle = () => new Promise<void>((resolve) => {
+  const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
+  if (ric) ric(() => resolve(), { timeout: 120 });
+  else setTimeout(resolve, 16);
+});
+
+/** A formation by key; built synchronously if preparation has not reached it yet. */
+export function getFormation(key: string): F.Formation {
+  let f = cache.get(key);
+  if (!f) {
+    f = (BUILDERS[key] ?? F.fVoid)();
+    cache.set(key, f);
+  }
+  return f;
+}
+
+export function setFormation(key: string, f: F.Formation) {
+  cache.set(key, f);
+}
 
 /**
  * The score as one buffer. It ships pre-rendered (lossless FLAC, rendered by
@@ -30,13 +58,18 @@ export function trailerAudio(): Promise<AudioBuffer | null> {
 }
 
 export function prepareTrailer(): Promise<void> {
-  fontsReady ??= (async () => {
-    try {
-      await Promise.all([document.fonts.load('900 100px Heebo'), document.fonts.load('900 100px "Space Grotesk"')]);
-    } catch { /* fall back to whatever is loaded */ }
+  formationsReady ??= (async () => {
+    // text formations sample the webfont; wait for it
+    try { await document.fonts.load('900 100px Heebo'); } catch { /* fall back to whatever is loaded */ }
+    for (const key of ORDER) {
+      if (!cache.has(key)) {
+        await idle();
+        getFormation(key);
+      }
+    }
   })();
   void trailerAudio();
-  return fontsReady;
+  return formationsReady;
 }
 
 // Dev helper: render the score and download it as a 16-bit WAV (see score.ts).

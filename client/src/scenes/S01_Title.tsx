@@ -1,14 +1,44 @@
 /**
  * S01: Title Slide: מאוטומציה לאייג׳נט
- * Navy paper, plain editorial type, and one amber line: the underline the
- * trailer's pen line lands on (data-title-underline is measured for that).
+ * The trailer's particle title lands on this title glyph for glyph, and its
+ * comet of light lands on the underline (data-title-line, the baseline
+ * markers and data-title-underline are measured for that). The second line
+ * and the underline share the Spectrum gradient with the particle title.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SceneBase } from '../components/presentation/SceneBase';
 import { LectureTrailer } from '../components/presentation/LectureTrailer';
 import { usePresentationStore } from '../store/presentationStore';
 import '../components/presentation/titleIntro.css';
-import { INK } from '../components/motion/path';
+import { PALETTE, CHAPTER_COLORS, alpha } from '../lib/palette';
+import { useDecorativeCanvas } from '../hooks/useDecorativeCanvas';
+
+const P = PALETTE;
+/** Left to right, as the particle title's gradient (trailer/formations.ts). */
+const TITLE_GRADIENT = `linear-gradient(90deg, ${P.amber}, ${P.coral}, ${P.magenta}, ${P.violet}, ${P.blue})`;
+
+const setupStars = (canvas: HTMLCanvasElement) => {
+  const tints = [P.paper, P.paper, P.violet, P.teal, P.amber, P.blue];
+  const stars = Array.from({ length: 170 }, (_, i) => ({
+    x: Math.random(), y: Math.random(), r: Math.random() * 1.6 + 0.3,
+    a: Math.random() * 0.6 + 0.15, s: Math.random() * 1.6 + 0.4, o: Math.random() * 6.28, c: tints[i % tints.length],
+  }));
+  return (ctx: CanvasRenderingContext2D, cnv: HTMLCanvasElement, { t }: { t: number }) => {
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    for (const st of stars) {
+      ctx.globalAlpha = Math.max(0, st.a * (0.55 + 0.45 * Math.sin(t * st.s + st.o)));
+      ctx.fillStyle = st.c;
+      ctx.beginPath();
+      ctx.arc(st.x * cnv.width, st.y * cnv.height, st.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+};
+function Stars() {
+  const ref = useDecorativeCanvas(setupStars);
+  return <canvas ref={ref} aria-hidden style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />;
+}
 
 const CHAPTERS = [
   { label: 'להבין', desc: 'מה הם ואיך עובדים', num: '01' },
@@ -16,7 +46,7 @@ const CHAPTERS = [
   { label: 'לבנות', desc: 'כלים, אמון וגבולות', num: '03' },
   { label: 'להטמיע', desc: 'פיילוט ב-90 יום', num: '04' },
 ];
-const HAIR = 'rgba(243,238,228,0.18)';
+const HAIR = 'rgba(246,242,234,0.16)';
 
 export default function S01_Title() {
   const [mounted, setMounted] = useState(false);
@@ -71,11 +101,11 @@ export default function S01_Title() {
         {/* Eyebrow badges */}
         <div className={measure ? undefined : 'animate-fade-in-up stagger-1'} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: 'clamp(1.5rem, 3cqw, 3rem)', flexWrap: 'wrap' }}>
           {[
-            { text: 'HR IMPACT 26', color: INK.paper, font: "'Space Grotesk', sans-serif", ls: '0.1em', weight: 700 },
-            { text: 'כנס למידה בעידן ה-AI', color: INK.amber, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
-            { text: 'גלעד ברונשטיין', color: INK.paper, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
+            { text: 'HR IMPACT 26', color: P.violet, font: "'Space Grotesk', sans-serif", ls: '0.1em', weight: 700 },
+            { text: 'כנס למידה בעידן ה-AI', color: P.amber, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
+            { text: 'גלעד ברונשטיין', color: P.teal, font: "'Heebo', sans-serif", ls: 0, weight: 600 },
           ].map((b) => (
-            <div key={b.text} style={{ padding: '0.45rem 1.1rem', borderRadius: '100px', border: `1px solid ${HAIR}` }}>
+            <div key={b.text} style={{ padding: '0.45rem 1.1rem', borderRadius: '100px', background: alpha(b.color, 0.1), border: `1px solid ${alpha(b.color, 0.35)}`, boxShadow: `0 0 24px ${alpha(b.color, 0.18)}` }}>
               <span style={{ fontSize: 'clamp(1rem, 1.2cqw, 1.1rem)', fontWeight: b.weight, color: b.color, fontFamily: b.font, letterSpacing: b.ls }}>{b.text}</span>
             </div>
           ))}
@@ -87,7 +117,7 @@ export default function S01_Title() {
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(5rem, 12cqw, 11rem)',
             fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            color: INK.slate, margin: 0,
+            color: P.paper, margin: 0,
           }} data-title-line="0">מאוטומציה{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
         </div>
 
@@ -96,11 +126,12 @@ export default function S01_Title() {
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(5rem, 12cqw, 11rem)',
             fontWeight: 900, lineHeight: 0.88, letterSpacing: '-0.05em',
-            margin: 0, color: INK.paper,
+            margin: 0,
+            background: TITLE_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent',
           }} data-title-line="1">לאייג׳נט{measure && <span data-baseline style={{ display: 'inline-block', width: 0, height: 0 }} />}</h1>
           {/* The line below the title: where the trailer's pen line comes to rest */}
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75rem' }}>
-            <div data-title-underline style={{ height: '5px', width: 'clamp(4rem, 10cqw, 9rem)', background: INK.amber, borderRadius: '3px' }} />
+            <div data-title-underline style={{ height: '5px', width: 'clamp(4rem, 10cqw, 9rem)', background: TITLE_GRADIENT, borderRadius: '3px', boxShadow: `0 0 14px ${alpha(P.magenta, 0.55)}, 0 0 36px ${alpha(P.violet, 0.35)}` }} />
           </div>
         </div>
 
@@ -108,7 +139,7 @@ export default function S01_Title() {
         <p className={measure ? undefined : 'animate-fade-in-up stagger-4'} style={{
           fontFamily: "'Heebo', sans-serif",
           fontSize: 'clamp(1.5rem, 2.8cqw, 2.5rem)',
-          fontWeight: 300, color: 'rgba(243,238,228,0.72)',
+          fontWeight: 300, color: alpha(P.paper, 0.78),
           margin: '0 0 clamp(2rem, 4cqw, 4rem)', letterSpacing: '-0.01em',
           maxWidth: '800px', textWrap: 'balance',
         }}>
@@ -121,16 +152,16 @@ export default function S01_Title() {
             <div key={ch.label} style={{
               padding: 'clamp(0.75rem, 1.2cqw, 1rem) clamp(1.25rem, 2cqw, 1.75rem)',
               borderRadius: '14px',
-              border: `1px solid ${HAIR}`,
+              background: alpha(CHAPTER_COLORS[i], 0.07), border: `1px solid ${alpha(CHAPTER_COLORS[i], 0.3)}`,
               display: 'flex', alignItems: 'center', gap: '0.75rem',
               opacity: measure || mounted ? 1 : 0,
               transform: measure || mounted ? 'translateY(0)' : 'translateY(16px)',
               transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s cubic-bezier(0.23,1,0.32,1) ${0.5 + i * 0.1}s`,
             }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: INK.amber, letterSpacing: '0.05em' }}>{ch.num}</span>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(1.1rem, 1.5cqw, 1.4rem)', fontWeight: 800, color: CHAPTER_COLORS[i], letterSpacing: '0.05em', textShadow: `0 0 18px ${alpha(CHAPTER_COLORS[i], 0.6)}` }}>{ch.num}</span>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: INK.paper }}>{ch.label}</div>
-                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: INK.slate, marginTop: '1px' }}>{ch.desc}</div>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.6cqw, 1.4rem)', fontWeight: 700, color: P.paper }}>{ch.label}</div>
+                <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1rem, 1.1cqw, 1rem)', color: P.muted, marginTop: '1px' }}>{ch.desc}</div>
               </div>
             </div>
           ))}
@@ -140,14 +171,19 @@ export default function S01_Title() {
 
   return (
     <SceneBase>
-      {/* the same paper as the trailer, so its last frame and this slide are one image */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: INK.navy }} />
+      {/* the trailer's universe, at rest: midnight, colored light, stars */}
       <div style={{
-        position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-        backgroundImage: 'radial-gradient(rgba(243,238,228,0.07) 1.2px, transparent 1.6px)',
-        backgroundSize: 'calc(48 * 100cqw / 1920) calc(48 * 100cqw / 1920)',
-        backgroundPosition: 'calc(24 * 100cqw / 1920) calc(24 * 100cqw / 1920)',
+        position: 'absolute', inset: 0, zIndex: 0,
+        background: `
+          radial-gradient(ellipse 70% 55% at 50% 38%, ${alpha(P.violet, 0.2)} 0%, transparent 62%),
+          radial-gradient(ellipse 45% 40% at 18% 78%, ${alpha(P.teal, 0.12)} 0%, transparent 60%),
+          radial-gradient(ellipse 40% 38% at 84% 82%, ${alpha(P.amber, 0.1)} 0%, transparent 58%),
+          radial-gradient(ellipse 35% 30% at 86% 14%, ${alpha(P.magenta, 0.1)} 0%, transparent 60%),
+          ${P.bg0}
+        `,
       }} />
+      <Stars />
+      <div className="noise-overlay" />
 
       {intro && (
         <LectureTrailer

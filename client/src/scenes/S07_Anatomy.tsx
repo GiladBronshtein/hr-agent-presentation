@@ -2,20 +2,26 @@
  * S07: Anatomy of an Agent - radial diagram.
  * Seven components orbit a central Agent core (visually bookending the
  * cold-open system map). Clicking a component lights its spoke and opens
- * the detail card below.
+ * the detail card below. Each component owns one spectrum color; the core
+ * glows in the chapter color with a slow orbit ring and radiating pulses.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
-import { SceneBase } from '../components/presentation/SceneBase';
+import { SceneBase, SceneEyebrow } from '../components/presentation/SceneBase';
+import { PALETTE, alpha, textOn } from '../lib/palette';
 import { Target, BookOpen, Brain, Wrench, Database, ShieldAlert, UserCheck, Bot } from 'lucide-react';
+import { accentFor } from '../components/presentation/SceneBase';
+
+/** This slide's chapter accent (fills) and its text-safe tint */
+const { c: ACC, t: ACC_T } = accentFor('anatomy');
 
 const COMPONENTS = [
-  { id: 'goal', Icon: Target, label: 'מטרה', color: '#F2A93B', detail: '"לבנות קורס" זו משימה. "צוות השירות עונה נכון על שאלות החזרה עד סוף החודש" זו מטרה שאפשר לבדוק.', required: true },
-  { id: 'context', Icon: BookOpen, label: 'הקשר', color: '#F2A93B', detail: 'מה האייג׳נט יודע: מסמך המוצר, תוצאות הסקר האחרון, מי כבר השלים מה ב-LMS. הקשר טוב, תוצר טוב.', required: true },
-  { id: 'model', Icon: Brain, label: 'מודל', color: '#F2A93B', detail: 'המנוע שמבין, כותב ומחליט: Claude, GPT או Gemini. לכל אחד חוזקות אחרות, והבחירה תלויה במשימה.', required: true },
-  { id: 'tools', Icon: Wrench, label: 'כלים', color: '#F2A93B', detail: 'מה מותר לו להפעיל: ה-LMS, היומן, Slack, כלי הסקרים. לכל כלי יש הרשאה מוגדרת מראש.', required: true },
-  { id: 'memory', Icon: Database, label: 'זיכרון', color: '#F3EEE4', detail: 'מה נשמר בדרך: מי כבר עשה את האבחון, מי נתקע ביחידה 2, מה הוחלט בשבוע שעבר.', required: false },
-  { id: 'limits', Icon: ShieldAlert, label: 'גבולות', color: '#8A93A8', detail: 'מה אסור: לפרסם תוכן שלא אושר, לראות ציונים אישיים בלי צורך, לשלוח הודעה לכל הארגון.', required: true },
-  { id: 'approval', Icon: UserCheck, label: 'אישור', color: '#F2A93B', detail: 'מתי עוצרים לאדם: לפני פרסום יחידה, רישום לקורס או הודעה לצוות. אישור אנושי הוא חלק מהעיצוב.', required: true },
+  { id: 'goal', Icon: Target, label: 'מטרה', color: PALETTE.amber, detail: '"לבנות קורס" זו משימה. "צוות השירות עונה נכון על שאלות החזרה עד סוף החודש" זו מטרה שאפשר לבדוק.', required: true },
+  { id: 'context', Icon: BookOpen, label: 'הקשר', color: textOn(PALETTE.blue), detail: 'מה האייג׳נט יודע: מסמך המוצר, תוצאות הסקר האחרון, מי כבר השלים מה ב-LMS. הקשר טוב, תוצר טוב.', required: true },
+  { id: 'model', Icon: Brain, label: 'מודל', color: textOn(PALETTE.violet), detail: 'המנוע שמבין, כותב ומחליט: Claude, GPT או Gemini. לכל אחד חוזקות אחרות, והבחירה תלויה במשימה.', required: true },
+  { id: 'tools', Icon: Wrench, label: 'כלים', color: textOn(PALETTE.coral), detail: 'מה מותר לו להפעיל: ה-LMS, היומן, Slack, כלי הסקרים. לכל כלי יש הרשאה מוגדרת מראש.', required: true },
+  { id: 'memory', Icon: Database, label: 'זיכרון', color: PALETTE.teal, detail: 'מה נשמר בדרך: מי כבר עשה את האבחון, מי נתקע ביחידה 2, מה הוחלט בשבוע שעבר.', required: false },
+  { id: 'limits', Icon: ShieldAlert, label: 'גבולות', color: textOn(PALETTE.magenta), detail: 'מה אסור: לפרסם תוכן שלא אושר, לראות ציונים אישיים בלי צורך, לשלוח הודעה לכל הארגון.', required: true },
+  { id: 'approval', Icon: UserCheck, label: 'אישור', color: PALETTE.paper, detail: 'מתי עוצרים לאדם: לפני פרסום יחידה, רישום לקורס או הודעה לצוות. אישור אנושי הוא חלק מהעיצוב.', required: true },
 ];
 
 // Position each node on an ellipse around the center, starting at the top
@@ -73,13 +79,11 @@ export default function S07_Anatomy() {
       }}>
         {/* Header */}
         <div className="animate-fade-in-up stagger-1" style={{ textAlign: 'center', flexShrink: 0 }}>
-          <p style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(243,238,228,0.62)', fontFamily: "'Heebo', sans-serif", marginBottom: '0.6rem' }}>
-            שבעה רכיבים · לחיצה לפרטים
-          </p>
-          <h1 style={{
+          <SceneEyebrow>שבעה רכיבים · לחיצה לפרטים</SceneEyebrow>
+          <h1 className="fx-glow-soft" style={{
             fontFamily: "'Space Grotesk', 'Heebo', sans-serif",
             fontSize: 'clamp(2.25rem, 3.1cqw, 3.75rem)',
-            fontWeight: 800, letterSpacing: '-0.03em', color: '#F3EEE4', margin: 0, lineHeight: 1.15,
+            fontWeight: 800, letterSpacing: '-0.03em', color: '#F6F2EA', margin: 0, lineHeight: 1.15,
           }}>
             ממה בנוי אייג׳נט?
           </h1>
@@ -120,12 +124,13 @@ export default function S07_Anatomy() {
                   <line
                     x1={x1} y1={y1}
                     x2={x2} y2={y2}
-                    stroke={on ? comp.color : 'rgba(243,238,228,0.1)'}
+                    stroke={on ? comp.color : 'rgba(246,242,234,0.14)'}
                     strokeWidth={on ? 2.5 : 1}
-                    strokeDasharray={on ? '0' : '4 6'}
+                    strokeDasharray={on ? '8 6' : '4 6'}
                     strokeLinecap="round"
                     mask={`url(#${maskId})`}
-                    style={{ transition: 'stroke 0.3s ease, stroke-width 0.3s ease' }}
+                    className={on ? 'fx-flow' : undefined}
+                    style={{ transition: 'stroke 0.3s ease, stroke-width 0.3s ease', filter: on ? `drop-shadow(0 0 6px ${comp.color})` : undefined }}
                   />
                 </g>
               );
@@ -133,16 +138,25 @@ export default function S07_Anatomy() {
           </svg>
 
           {/* Center core */}
+          <div aria-hidden style={{ position: 'absolute', left: '50%', top: '50%', width: '46%', height: '62%', transform: 'translate(-50%, -50%)', borderRadius: '50%', background: `radial-gradient(closest-side, ${alpha(ACC, 0.3)}, transparent)`, pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 5 }}>
+            <svg aria-hidden className="fx-orbit" viewBox="0 0 100 100" style={{ position: 'absolute', left: '50%', top: '50%', width: '170%', height: '170%', marginLeft: '-85%', marginTop: '-85%', pointerEvents: 'none', overflow: 'visible' }}>
+              <circle cx="50" cy="50" r="48" fill="none" stroke={alpha(ACC, 0.55)} strokeWidth="0.8" strokeDasharray="2 5" strokeLinecap="round" />
+              <circle cx="50" cy="2" r="1.8" fill={ACC_T} style={{ filter: `drop-shadow(0 0 3px ${ACC})` }} />
+            </svg>
             <div data-map-hub style={{
               width: 'clamp(84px, 8cqw, 120px)', height: 'clamp(84px, 8cqw, 120px)',
               borderRadius: '50%',
-              background: '#0D1326',
-              border: '2px solid #F2A93B',
+              background: 'radial-gradient(circle at 50% 35%, #1D2560, #0B1030 70%)',
+              border: `2px solid ${ACC}`,
+              boxShadow: `0 0 36px ${alpha(ACC, 0.55)}, inset 0 0 22px ${alpha(ACC, 0.3)}`,
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px',
+              position: 'relative', color: ACC,
             }}>
-              <span style={{ display: 'inline-flex', color: '#F2A93B', fontSize: 'clamp(1.6rem, 2.4cqw, 2.2rem)' }}><Bot size="1em" /></span>
-              <span style={{ fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#F3EEE4', fontFamily: "'Heebo', sans-serif", fontWeight: 700 }}>אייג׳נט</span>
+              <span aria-hidden className="fx-ring" />
+              <span aria-hidden className="fx-ring fx-ring-2" />
+              <span style={{ display: 'inline-flex', color: ACC_T, fontSize: 'clamp(1.6rem, 2.4cqw, 2.2rem)' }}><Bot size="1em" /></span>
+              <span style={{ fontSize: 'clamp(1rem, 1.05cqw, 1.25rem)', color: '#F6F2EA', fontFamily: "'Heebo', sans-serif", fontWeight: 700 }}>אייג׳נט</span>
             </div>
           </div>
 
@@ -169,14 +183,16 @@ export default function S07_Anatomy() {
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
                   padding: 'clamp(0.625rem, 1.1cqh, 0.9rem) clamp(0.875rem, 1.4cqw, 1.25rem)',
                   borderRadius: '16px',
-                  background: isSelected ? comp.color + '1F' : 'rgba(243,238,228,0.04)',
-                  border: isSelected ? `1px solid ${comp.color}70` : '1px solid rgba(243,238,228,0.1)',
+                  background: isSelected ? `linear-gradient(160deg, ${alpha(comp.color, 0.26)}, ${alpha(comp.color, 0.08)}), #0B1030` : 'rgba(12,17,50,0.72)',
+                  border: isSelected ? `1px solid ${alpha(comp.color, 0.7)}` : `1px solid ${alpha(comp.color, 0.22)}`,
+                  boxShadow: isSelected ? `0 0 30px -6px ${alpha(comp.color, 0.75)}` : '0 10px 24px -14px rgba(0,0,0,0.8)',
+                  transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                   animation: `fadeInUp 0.45s ease ${0.15 + i * 0.06}s both`,
                 }}>
-                  <span style={{ display: 'inline-flex', color: isSelected ? comp.color : 'rgba(243,238,228,0.7)', fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
+                  <span style={{ display: 'inline-flex', color: isSelected ? comp.color : alpha(comp.color, 0.8), fontSize: 'clamp(1.3rem, 1.9cqw, 1.8rem)', transition: 'color 0.25s ease' }}>
                     <comp.Icon size="1em" />
                   </span>
-                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 1.35cqw, 1.6rem)', color: isSelected ? '#F3EEE4' : 'rgba(243,238,228,0.8)' }}>
+                  <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 1.35cqw, 1.6rem)', color: isSelected ? '#F6F2EA' : 'rgba(246,242,234,0.8)' }}>
                     {comp.label}
                   </span>
                 </div>
@@ -192,8 +208,9 @@ export default function S07_Anatomy() {
           overflow: 'hidden',
           padding: 'clamp(0.875rem, 1.6cqh, 1.4rem) clamp(1.25rem, 2.2cqw, 2rem)',
           borderRadius: '18px',
-          background: selectedComp ? selectedComp.color + '10' : 'rgba(243,238,228,0.03)',
-          border: selectedComp ? `1px solid ${selectedComp.color}40` : '1px solid rgba(243,238,228,0.08)',
+          background: selectedComp ? `linear-gradient(160deg, ${alpha(selectedComp.color, 0.14)}, ${alpha(selectedComp.color, 0.04)}), rgba(12,17,50,0.7)` : 'rgba(12,17,50,0.6)',
+          border: selectedComp ? `1px solid ${alpha(selectedComp.color, 0.42)}` : '1px solid rgba(246,242,234,0.1)',
+          boxShadow: selectedComp ? `0 0 50px -24px ${selectedComp.color}` : 'none',
           display: 'flex', alignItems: 'center', gap: '1rem',
           animation: 'fadeIn 0.3s ease both',
         }}>
@@ -206,13 +223,13 @@ export default function S07_Anatomy() {
                 <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.2rem, 1.7cqw, 1.6rem)', color: selectedComp.color, marginLeft: '0.6rem' }}>
                   {selectedComp.label}:
                 </span>
-                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.55cqw, 1.45rem)', color: 'rgba(243,238,228,0.82)', lineHeight: 1.55 }}>
+                <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.1rem, 1.55cqw, 1.45rem)', color: 'rgba(246,242,234,0.82)', lineHeight: 1.55 }}>
                   {selectedComp.detail}
                 </span>
               </div>
             </>
           ) : (
-            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.5)', margin: '0 auto' }}>
+            <span style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(246,242,234,0.74)', margin: '0 auto' }}>
               חסר רכיב אחד? המערכת לא שלמה. גבולות ואישור הם החשובים ביותר.
             </span>
           )}

@@ -11,14 +11,7 @@ import {
   ChevronRight, ChevronLeft, Clock, Play, Pause, RotateCcw,
   AlertTriangle, MessageCircleQuestion, ArrowLeft, Timer,
 } from 'lucide-react';
-
-const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#F2A93B',
-  'לראות': '#8A93A8',
-  'לבנות': '#F2A93B',
-  'להטמיע': '#F2A93B',
-  'נספח': '#8A93A8',
-};
+import { PALETTE, SPECTRUM, textOn } from '../../lib/palette';
 
 function useClock() {
   const [now, setNow] = useState(() => new Date());
@@ -86,13 +79,17 @@ export function PresenterView() {
   const notes = scene ? SPEAKER_NOTES[scene.id] : undefined;
   const chapter = getCurrentChapter(index);
   const chapterInfo = CHAPTERS.find((c) => c.id === chapter);
-  const color = CHAPTER_COLORS[chapter] || '#F2A93B';
+  const color = chapterInfo?.color ?? PALETTE.violet;
+  const tint = textOn(color);
 
   const plannedMinutes = SCENES.slice(0, index).reduce((acc, s) => acc + s.estimatedMinutes, 0);
 
   return (
     <div dir="rtl" style={{
-      minHeight: '100vh', background: '#07070F', color: '#F3EEE4',
+      minHeight: '100vh', color: PALETTE.paper,
+      background: `radial-gradient(70% 50% at 85% -10%, ${color}26, transparent 70%), radial-gradient(60% 50% at 0% 110%, ${PALETTE.blue}1A, transparent 70%), ${PALETTE.bg0}`,
+      borderTop: '2px solid transparent',
+      borderImage: `${SPECTRUM} 1`,
       fontFamily: "'Heebo', 'DM Sans', sans-serif",
       display: 'flex', flexDirection: 'column',
       padding: '1.25rem 1.5rem',
@@ -103,15 +100,15 @@ export function PresenterView() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <span style={{
             padding: '0.25rem 0.75rem', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
-            background: color + '1A', color, border: `1px solid ${color}35`,
+            background: color + '22', color: tint, border: `1px solid ${color}55`, boxShadow: `0 0 18px -6px ${color}`,
             fontFamily: "'Space Grotesk', sans-serif",
           }}>
             {chapterInfo?.label || chapter}
           </span>
-          <span style={{ fontFamily: 'monospace', color: 'rgba(243,238,228,0.55)', fontSize: '1rem' }}>
+          <span style={{ fontFamily: 'monospace', color: PALETTE.muted, fontSize: '1rem' }}>
             {String(index + 1).padStart(2, '0')}/{String(SCENES.length).padStart(2, '0')}
           </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(243,238,228,0.45)', fontSize: '0.9rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: PALETTE.muted, fontSize: '0.95rem' }}>
             <Timer size={14} />
             מתוכנן עד כאן: {plannedMinutes} דק׳
           </span>
@@ -121,7 +118,7 @@ export function PresenterView() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{
               fontFamily: 'monospace', fontSize: '1.75rem', fontWeight: 700,
-              color: running ? '#F3EEE4' : 'rgba(243,238,228,0.55)',
+              color: running ? PALETTE.paper : PALETTE.muted,
             }}>
               {formatElapsed(elapsed)}
             </span>
@@ -132,7 +129,7 @@ export function PresenterView() {
               <RotateCcw size={15} />
             </button>
           </div>
-          <span style={{ fontFamily: 'monospace', fontSize: '1.25rem', color: 'rgba(243,238,228,0.55)' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: '1.25rem', color: PALETTE.muted }}>
             {now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -142,38 +139,39 @@ export function PresenterView() {
       <div className="presenter-grid-hero">
         <div style={{
           padding: '1.25rem 1.5rem', borderRadius: '16px',
-          background: color + '10', border: `1px solid ${color}30`,
+          background: `linear-gradient(160deg, ${color}24, ${color}08)`, border: `1px solid ${color}55`,
+          boxShadow: `0 0 50px -20px ${color}`,
         }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color, letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: tint, letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif" }}>
             סצנה נוכחית
           </div>
           <div style={{ fontSize: '1.9rem', fontWeight: 800, lineHeight: 1.2 }}>
             {scene?.hebrewTitle}
           </div>
-          <div style={{ marginTop: '0.4rem', color: 'rgba(243,238,228,0.62)', fontSize: '1.05rem' }}>
+          <div style={{ marginTop: '0.4rem', color: 'rgba(246,242,234,0.8)', fontSize: '1.05rem' }}>
             {scene?.takeaway}
           </div>
         </div>
 
         <div style={{
           padding: '1.25rem 1.5rem', borderRadius: '16px',
-          background: 'rgba(243,238,228,0.04)', border: '1px solid rgba(243,238,228,0.09)',
+          background: 'rgba(246,242,234,0.04)', border: '1px solid rgba(246,242,234,0.1)',
         }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(243,238,228,0.45)', letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: PALETTE.muted, letterSpacing: '0.1em', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <ArrowLeft size={13} />
             הסצנה הבאה
           </div>
           {nextScene ? (
             <>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, lineHeight: 1.25, color: 'rgba(243,238,228,0.85)' }}>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, lineHeight: 1.25, color: 'rgba(246,242,234,0.9)' }}>
                 {nextScene.hebrewTitle}
               </div>
-              <div style={{ marginTop: '0.35rem', color: 'rgba(243,238,228,0.5)', fontSize: '0.95rem' }}>
+              <div style={{ marginTop: '0.35rem', color: PALETTE.muted, fontSize: '0.95rem' }}>
                 {nextScene.takeaway}
               </div>
             </>
           ) : (
-            <div style={{ color: 'rgba(243,238,228,0.5)' }}>סוף המצגת</div>
+            <div style={{ color: PALETTE.muted }}>סוף המצגת</div>
           )}
         </div>
       </div>
@@ -182,7 +180,7 @@ export function PresenterView() {
       <div style={{
         flex: 1, minHeight: 0, overflowY: 'auto',
         padding: '1.25rem 1.5rem', borderRadius: '16px',
-        background: 'rgba(243,238,228,0.03)', border: '1px solid rgba(243,238,228,0.08)',
+        background: 'rgba(246,242,234,0.03)', border: '1px solid rgba(246,242,234,0.09)',
       }}>
         {notes ? (
           <div className="presenter-grid-notes">
@@ -190,17 +188,17 @@ export function PresenterView() {
             <NoteBlock label="הסבר">{notes.explanation}</NoteBlock>
             <NoteBlock label="דוגמה">{notes.example}</NoteBlock>
             {notes.audienceQuestion && (
-              <NoteBlock label="שאלה לקהל" icon={<MessageCircleQuestion size={13} />} color="#F3EEE4">
+              <NoteBlock label="שאלה לקהל" icon={<MessageCircleQuestion size={13} />} color={PALETTE.teal}>
                 {notes.audienceQuestion}
               </NoteBlock>
             )}
-            <NoteBlock label="סיכון / מגבלה" icon={<AlertTriangle size={13} />} color="#F2A93B">
+            <NoteBlock label="סיכון / מגבלה" icon={<AlertTriangle size={13} />} color={PALETTE.amber}>
               {notes.riskOrLimitation}
             </NoteBlock>
-            <NoteBlock label="מעבר לסצנה הבאה" color="#F2A93B">{notes.transition}</NoteBlock>
+            <NoteBlock label="מעבר לסצנה הבאה" color={tint}>{notes.transition}</NoteBlock>
           </div>
         ) : (
-          <div style={{ color: 'rgba(243,238,228,0.45)', fontSize: '1.05rem' }}>אין הערות לסצנה זו</div>
+          <div style={{ color: PALETTE.muted, fontSize: '1.05rem' }}>אין הערות לסצנה זו</div>
         )}
       </div>
 
@@ -211,7 +209,7 @@ export function PresenterView() {
           קודם
         </button>
         {notes && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(243,238,228,0.45)', fontSize: '0.95rem', padding: '0 1rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: PALETTE.muted, fontSize: '0.95rem', padding: '0 1rem' }}>
             <Clock size={14} />
             {notes.estimatedMinutes} דק׳ לסצנה
           </span>
@@ -228,15 +226,16 @@ export function PresenterView() {
 const btnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
   width: '32px', height: '32px', borderRadius: '8px',
-  background: 'rgba(243,238,228,0.06)', border: '1px solid rgba(243,238,228,0.12)',
-  color: 'rgba(243,238,228,0.7)', cursor: 'pointer',
+  background: 'rgba(246,242,234,0.06)', border: '1px solid rgba(246,242,234,0.14)',
+  color: 'rgba(246,242,234,0.8)', cursor: 'pointer',
 };
 
 const navBtnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
   padding: '0.7rem 1.5rem', borderRadius: '12px',
-  background: 'rgba(243,238,228,0.14)', border: '1px solid rgba(243,238,228,0.3)',
-  color: '#F2A93B', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer',
+  background: 'linear-gradient(180deg, rgba(246,242,234,0.12), rgba(246,242,234,0.05))', border: '1px solid rgba(187,162,255,0.45)',
+  boxShadow: '0 0 24px -10px rgba(155,107,255,0.9)',
+  color: PALETTE.paper, fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer',
   fontFamily: "'Heebo', sans-serif",
 };
 
@@ -247,8 +246,8 @@ function NoteBlock({ label, children, icon, color, strong }: {
     <div>
       <div style={{
         display: 'flex', alignItems: 'center', gap: '0.3rem',
-        fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.08em',
-        color: color || 'rgba(243,238,228,0.45)', marginBottom: '0.35rem',
+        fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.08em',
+        color: color || PALETTE.muted, marginBottom: '0.35rem',
         fontFamily: "'Space Grotesk', sans-serif",
       }}>
         {icon}
@@ -257,7 +256,7 @@ function NoteBlock({ label, children, icon, color, strong }: {
       <p style={{
         margin: 0, lineHeight: 1.65,
         fontSize: strong ? '1.2rem' : '1.05rem',
-        color: strong ? 'rgba(243,238,228,0.95)' : 'rgba(243,238,228,0.75)',
+        color: strong ? 'rgba(246,242,234,0.96)' : 'rgba(246,242,234,0.8)',
         fontWeight: strong ? 600 : 400,
       }}>
         {children}

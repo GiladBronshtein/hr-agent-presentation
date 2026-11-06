@@ -1,3 +1,5 @@
+import { textOn } from './palette';
+
 /**
  * Shared text tokens for scenes.
  *
@@ -18,7 +20,7 @@ export const TEXT_TINT: Record<string, string> = {
   '#64748B': '#CBD5E1',
 };
 
-export const textTint = (c: string) => TEXT_TINT[c.toUpperCase()] ?? c;
+export const textTint = (c: string) => TEXT_TINT[c.toUpperCase()] ?? textOn(c);
 
 /** Code-style text: a Latin monospace, with Hebrew falling back to Heebo
  * instead of a gappy system monospace. */

@@ -74,7 +74,7 @@ export function SceneStage({ children }: { children: ReactNode }) {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        background: '#070B17',
+        background: '#060918',
       }}
     >
       <div

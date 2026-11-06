@@ -1,6 +1,7 @@
 /**
- * PresenterControls - AI-Native UI + Glassmorphism
- * Design: Floating glassmorphic pill, indigo/cyan accents, smooth 200ms transitions
+ * PresenterControls - floating presenter chrome
+ * Design: a dark glass pill lit in the chapter color, a spectrum progress
+ * line with a glowing head, smooth 200ms transitions
  * Auto-hide: shown only on real pointer movement or touch, never on key or
  * clicker presses (navigation must not flash chrome over the audience view).
  * Hides after 3s of inactivity and immediately on a slide change.
@@ -13,14 +14,7 @@ import {
   ChevronRight, ChevronLeft, Accessibility, Zap, ZapOff,
 } from 'lucide-react';
 import { openPresenterWindow } from '../../lib/presenterChannel';
-
-const CHAPTER_COLORS: Record<string, string> = {
-  'להבין': '#F2A93B',
-  'לראות': '#8A93A8',
-  'לבנות': '#F2A93B',
-  'להטמיע': '#F2A93B',
-  'נספח': '#8A93A8',
-};
+import { PALETTE, textOn } from '../../lib/palette';
 
 const HIDE_DELAY = 3000;
 const MOVE_THRESHOLD = 6; // px: ignore jitter and synthetic mousemove after layout changes
@@ -54,7 +48,8 @@ export function PresenterControls() {
   const currentScene = SCENES[currentSceneIndex];
   const currentChapter = getCurrentChapter(currentSceneIndex);
   const chapterInfo = CHAPTERS.find((c) => c.id === currentChapter);
-  const chapterColor = CHAPTER_COLORS[currentChapter] || '#F2A93B';
+  const chapterColor = chapterInfo?.color ?? PALETTE.violet;
+  const chapterText = textOn(chapterColor);
   const progress = totalScenes > 1 ? (currentSceneIndex / (totalScenes - 1)) * 100 : 0;
 
   const scheduleHide = useCallback(() => {
@@ -98,7 +93,7 @@ export function PresenterControls() {
       {/* ── Top progress bar (always visible) ── */}
       <div
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ height: '2px', background: 'rgba(243,238,228,0.06)' }}
+        style={{ height: '3px', background: 'rgba(246,242,234,0.06)' }}
         role="progressbar"
         aria-valuenow={currentSceneIndex + 1}
         aria-valuemin={1}
@@ -107,12 +102,28 @@ export function PresenterControls() {
       >
         <div
           style={{
+            position: 'relative',
             height: '100%',
             width: `${progress}%`,
-            background: chapterColor,
-            transition: 'width 500ms cubic-bezier(0.23, 1, 0.32, 1)',
+            // RTL deck: the line grows from the right, so the spectrum runs right to left
+            backgroundImage: `linear-gradient(270deg, ${PALETTE.blue}, ${PALETTE.violet}, ${PALETTE.magenta}, ${PALETTE.coral}, ${PALETTE.amber})`,
+            backgroundSize: `${progress > 0 ? 10000 / progress : 100}% 100%`,
+            backgroundPosition: 'right center',
+            boxShadow: `0 0 12px ${chapterColor}99`,
+            transition: 'width 500ms cubic-bezier(0.23, 1, 0.32, 1), background-size 500ms cubic-bezier(0.23, 1, 0.32, 1)',
           }}
-        />
+        >
+          {/* glowing head */}
+          <span
+            aria-hidden
+            style={{
+              position: 'absolute', left: -3, top: '50%', width: 7, height: 7, borderRadius: '50%',
+              transform: 'translateY(-50%)', background: PALETTE.paper,
+              boxShadow: `0 0 10px 2px ${chapterColor}, 0 0 22px 4px ${chapterColor}88`,
+              opacity: progress > 0 ? 1 : 0,
+            }}
+          />
+        </div>
       </div>
 
       {/* ── Chapter + scene counter (top right, auto-hides) ── */}
@@ -128,9 +139,10 @@ export function PresenterControls() {
         <span
           className="text-xs font-semibold px-2.5 py-1 rounded-full"
           style={{
-            background: chapterColor + '18',
-            color: chapterColor,
-            border: `1px solid ${chapterColor}30`,
+            background: chapterColor + '1F',
+            color: chapterText,
+            border: `1px solid ${chapterColor}55`,
+            boxShadow: `0 0 18px -6px ${chapterColor}`,
             fontFamily: "'Space Grotesk', sans-serif",
             letterSpacing: '0.04em',
           }}
@@ -139,7 +151,7 @@ export function PresenterControls() {
         </span>
         <span
           className="text-xs font-mono"
-          style={{ color: 'rgba(243,238,228,0.3)' }}
+          style={{ color: PALETTE.muted }}
         >
           {String(currentSceneIndex + 1).padStart(2, '0')}/{String(totalScenes).padStart(2, '0')}
         </span>
@@ -162,8 +174,9 @@ export function PresenterControls() {
           dir="rtl"
           className="control-pill flex items-center gap-1 px-3 py-2 rounded-2xl"
           style={{
-            background: 'rgba(13,19,38, 0.96)',
-            border: '1px solid rgba(243,238,228,0.09)',
+            background: 'linear-gradient(180deg, rgba(246,242,234,0.06), rgba(246,242,234,0.015)), rgba(10,14,40,0.94)',
+            border: `1px solid ${chapterColor}38`,
+            boxShadow: `0 0 40px -14px ${chapterColor}AA, 0 18px 40px -16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(246,242,234,0.07)`,
           }}
         >
           {/* Prev */}
@@ -180,8 +193,8 @@ export function PresenterControls() {
           <div
             className="px-3 max-w-[220px] truncate text-sm"
             style={{
-              color: 'rgba(243,238,228,0.55)',
-              fontFamily: "'DM Sans', sans-serif",
+              color: 'rgba(246,242,234,0.78)',
+              fontFamily: "'Heebo', sans-serif",
             }}
           >
             {currentScene?.hebrewTitle || ''}
@@ -234,7 +247,8 @@ export function PresenterControls() {
           <ControlBtn
             onClick={toggleSound}
             active={!isSoundEnabled}
-            activeColor="#8A93A8"
+            activeColor={PALETTE.muted}
+            hoverColor={chapterText}
             aria-label={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
             title={isSoundEnabled ? 'השתקה (M)' : 'הפעלת צליל (M)'}
           >
@@ -245,7 +259,8 @@ export function PresenterControls() {
           <ControlBtn
             onClick={toggleReducedMotion}
             active={isReducedMotion}
-            activeColor="#F2A93B"
+            activeColor={PALETTE.amber}
+            hoverColor={chapterText}
             aria-label="תנועה מופחתת"
             title="תנועה מופחתת"
           >
@@ -260,7 +275,8 @@ export function PresenterControls() {
               setQualityLevel(levels[(idx + 1) % levels.length]);
             }}
             active={qualityLevel === 'lightweight'}
-            activeColor="#8A93A8"
+            activeColor={PALETTE.muted}
+            hoverColor={chapterText}
             aria-label={`איכות: ${qualityLevel}`}
             title={`איכות גרפיקה: ${qualityLevel}`}
           >
@@ -283,13 +299,19 @@ export function PresenterControls() {
 
 // ── Sub-components ──────────────────────────────────────────────
 
+function useChapterText() {
+  const index = usePresentationStore((st) => st.currentSceneIndex);
+  const info = CHAPTERS.find((c) => c.id === getCurrentChapter(index));
+  return textOn(info?.color ?? PALETTE.violet);
+}
+
 function Divider() {
   return (
     <div
       style={{
         width: '1px',
         height: '18px',
-        background: 'rgba(243,238,228,0.1)',
+        background: 'rgba(246,242,234,0.12)',
         margin: '0 2px',
         flexShrink: 0,
       }}
@@ -302,6 +324,7 @@ interface ControlBtnProps {
   disabled?: boolean;
   active?: boolean;
   activeColor?: string;
+  hoverColor?: string;
   children: React.ReactNode;
   'aria-label'?: string;
   title?: string;
@@ -311,29 +334,33 @@ function ControlBtn({
   onClick,
   disabled = false,
   active = false,
-  activeColor = '#F2A93B',
+  activeColor,
+  hoverColor,
   children,
   'aria-label': ariaLabel,
   title,
 }: ControlBtnProps) {
   const [hovered, setHovered] = useState(false);
+  const chapterText = useChapterText();
+  const lit = activeColor ?? chapterText;
+  const hoverC = hoverColor ?? chapterText;
 
   const bg = active
-    ? `${activeColor}22`
+    ? `${lit}24`
     : hovered
-    ? 'rgba(243,238,228,0.12)'
+    ? 'rgba(246,242,234,0.1)'
     : 'transparent';
 
   const color = active
-    ? activeColor
+    ? lit
     : hovered
-    ? '#F2A93B'
-    : 'rgba(243,238,228,0.62)';
+    ? hoverC
+    : 'rgba(246,242,234,0.72)';
 
   const border = active
-    ? `1px solid ${activeColor}35`
+    ? `1px solid ${lit}50`
     : hovered
-    ? '1px solid rgba(243,238,228,0.25)'
+    ? `1px solid ${hoverC}55`
     : '1px solid transparent';
 
   return (

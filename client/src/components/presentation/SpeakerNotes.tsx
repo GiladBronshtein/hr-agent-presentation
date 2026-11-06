@@ -19,7 +19,7 @@ export function SpeakerNotes() {
         <div className="flex-1 min-w-0">
           {/* Scene title */}
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-white/60 text-base font-mono">
+            <span className="text-base font-mono" style={{ color: 'var(--c-violet-text)' }}>
               {String(currentSceneIndex + 1).padStart(2, '0')}
             </span>
             <h3 className="text-white font-bold text-xl truncate">
@@ -56,19 +56,19 @@ export function SpeakerNotes() {
               {/* Risk/Limitation */}
               {notes.riskOrLimitation && (
                 <div>
-                  <div className="flex items-center gap-1 text-base text-yellow-400/70 uppercase tracking-wide mb-1">
+                  <div className="flex items-center gap-1 text-base text-spectrum-amber uppercase tracking-wide mb-1">
                     <AlertTriangle size={10} />
                     <span>סיכון / מגבלה</span>
                   </div>
-                  <p className="text-white/60 leading-relaxed">{notes.riskOrLimitation}</p>
+                  <p className="text-white/75 leading-relaxed">{notes.riskOrLimitation}</p>
                 </div>
               )}
 
               {/* Audience question */}
               {notes.audienceQuestion && (
                 <div>
-                  <div className="text-base text-blue-400/70 uppercase tracking-wide mb-1">שאלה לקהל</div>
-                  <p className="text-blue-300/80 leading-relaxed italic">"{notes.audienceQuestion}"</p>
+                  <div className="text-base text-spectrum-teal uppercase tracking-wide mb-1">שאלה לקהל</div>
+                  <p className="text-paper/85 leading-relaxed italic">"{notes.audienceQuestion}"</p>
                 </div>
               )}
 

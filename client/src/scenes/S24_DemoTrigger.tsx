@@ -5,8 +5,11 @@ import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { SlackWindow, SlackMessage, TypingIndicator } from '../components/presentation/SlackChat';
 import { usePresentationStore } from '../store/presentationStore';
 import { DEMO_SCENARIO } from '../data/demoData';
+import { PALETTE, alpha } from '../lib/palette';
 
-const AGENT_COLOR = '#F2A93B';
+/** LearnBot's identity color, the same on every demo slide */
+const AGENT_COLOR = PALETTE.teal;
+const ACC_T = PALETTE.teal;
 
 export default function S24_DemoTrigger() {
   const { setDemoStep } = usePresentationStore();
@@ -36,10 +39,10 @@ export default function S24_DemoTrigger() {
     <SceneBase>
       <DemoStepLayout step={1} title="הבקשה" subtitle="בקשה רגילה בצ׳אט, כמו שמגיעה כל שבוע">
         <SlackWindow channel={DEMO_SCENARIO.channel}>
-          <SlackMessage initials={DEMO_SCENARIO.requesterInitials} name={DEMO_SCENARIO.requester} time={DEMO_SCENARIO.requestTime} color="#8A93A8">
-            <span style={{ color: '#F2A93B', fontWeight: 700, direction: 'ltr', unicodeBidi: 'isolate' }}>@{DEMO_SCENARIO.agent}</span>{' '}
+          <SlackMessage initials={DEMO_SCENARIO.requesterInitials} name={DEMO_SCENARIO.requester} time={DEMO_SCENARIO.requestTime} color="#FF9A80">
+            <span style={{ color: ACC_T, fontWeight: 700, direction: 'ltr', unicodeBidi: 'isolate' }}>@{DEMO_SCENARIO.agent}</span>{' '}
             {text}
-            {typing && <span className="animate-pulse" style={{ color: '#F2A93B' }}>|</span>}
+            {typing && <span className="animate-pulse" style={{ color: ACC_T }}>|</span>}
           </SlackMessage>
 
           {phase === 1 && <TypingIndicator name={DEMO_SCENARIO.agent} />}
@@ -53,13 +56,14 @@ export default function S24_DemoTrigger() {
                   margin: '0.55rem 0',
                   padding: 'clamp(0.55rem, 1cqh, 0.8rem) clamp(0.85rem, 1.2cqw, 1.1rem)',
                   borderRadius: '10px', borderRight: `3px solid ${AGENT_COLOR}`,
-                  background: 'rgba(243,238,228,0.12)',
-                  color: '#F3EEE4', fontWeight: 700,
+                  background: `linear-gradient(270deg, ${alpha(AGENT_COLOR, 0.2)}, ${alpha(AGENT_COLOR, 0.05)})`,
+                  boxShadow: `0 0 30px -14px ${AGENT_COLOR}`,
+                  color: '#F6F2EA', fontWeight: 700,
                 }}>
-                  <span style={{ display: 'inline-flex', color: '#F2A93B', flexShrink: 0 }}><Target size="1em" /></span>
+                  <span style={{ display: 'inline-flex', color: ACC_T, flexShrink: 0 }}><Target size="1em" /></span>
                   <span>{DEMO_SCENARIO.goal}</span>
                 </div>
-                <div style={{ color: 'rgba(243,238,228,0.78)' }}>
+                <div style={{ color: 'rgba(246,242,234,0.78)' }}>
                   לפני שאבנה משהו, אבדוק מה הצוות כבר יודע ואיפה הקושי, כדי לא ללמד את מה שכבר ידוע.
                 </div>
               </SlackMessage>

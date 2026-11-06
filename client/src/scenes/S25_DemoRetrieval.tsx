@@ -4,6 +4,11 @@ import { SceneBase } from '../components/presentation/SceneBase';
 import { DemoStepLayout } from '../components/presentation/DemoStepLayout';
 import { usePresentationStore } from '../store/presentationStore';
 import { DEMO_RETRIEVAL_INSIGHT, DEMO_SOURCES } from '../data/demoData';
+import { accentFor } from '../components/presentation/SceneBase';
+import { alpha } from '../lib/palette';
+
+/** This slide's chapter accent (fills) and its text-safe tint */
+const { c: ACC, t: ACC_T } = accentFor('demo-retrieval');
 
 const ICONS: Record<string, typeof FileText> = {
   'product-doc': FileText,
@@ -40,22 +45,23 @@ export default function S25_DemoRetrieval() {
                   padding: 'clamp(0.55rem, 1cqh, 0.85rem) clamp(1rem, 1.4cqw, 1.5rem)',
                   opacity: i < visible ? 1 : 0,
                   transform: i < visible ? 'none' : 'translateX(20px)',
-                  background: key ? 'rgba(242,169,59,0.07)' : 'rgba(243,238,228,0.03)',
-                  border: key ? '1px solid rgba(242,169,59,0.28)' : '1px solid rgba(243,238,228,0.06)',
+                  background: key ? `linear-gradient(270deg, ${alpha(ACC, 0.2)}, ${alpha(ACC, 0.05)}), rgba(12,17,50,0.7)` : 'rgba(12,17,50,0.6)',
+                  border: key ? `1px solid ${alpha(ACC, 0.55)}` : '1px solid rgba(246,242,234,0.1)',
+                  boxShadow: key ? `0 0 36px -14px ${ACC}` : 'none',
                 }}>
-                <span style={{ display: 'inline-flex', color: key ? '#F2A93B' : '#F3EEE4', fontSize: 'clamp(1.5rem, 1.9cqw, 2.1rem)', flexShrink: 0 }}><Icon size="1em" /></span>
+                <span style={{ display: 'inline-flex', color: key ? ACC_T : 'rgba(246,242,234,0.85)', filter: key ? `drop-shadow(0 0 8px ${ACC})` : 'none', fontSize: 'clamp(1.5rem, 1.9cqw, 2.1rem)', flexShrink: 0 }}><Icon size="1em" /></span>
                 <div className="flex-1" style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', minWidth: 0 }}>
-                  <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(243,238,228,0.62)', lineHeight: 1.2 }}><bdi>{r.source}</bdi></span>
-                  <p style={{ fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', lineHeight: 1.3, margin: 0, color: key ? '#F3EEE4' : 'rgba(243,238,228,0.85)', fontWeight: key ? 600 : 400 }}>{r.finding}</p>
+                  <span style={{ fontSize: 'clamp(1.05rem, 1.15cqw, 1.375rem)', fontWeight: 600, color: 'rgba(246,242,234,0.76)', lineHeight: 1.2 }}><bdi>{r.source}</bdi></span>
+                  <p style={{ fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', lineHeight: 1.3, margin: 0, color: key ? '#F6F2EA' : 'rgba(246,242,234,0.85)', fontWeight: key ? 600 : 400 }}>{r.finding}</p>
                 </div>
-                {i < visible && <span style={{ color: '#F2A93B', animationDelay: '0.18s', fontSize: 'clamp(1.5rem, 1.9cqw, 2.1rem)' }} className="mo-pop">✓</span>}
+                {i < visible && <span style={{ color: ACC_T, textShadow: `0 0 12px ${ACC}`, animationDelay: '0.18s', fontSize: 'clamp(1.5rem, 1.9cqw, 2.1rem)' }} className="mo-pop">✓</span>}
               </div>
             );
           })}
         </div>
         {visible >= DEMO_SOURCES.length && (
-          <div className="rounded-xl mo-rise text-center" style={{ padding: 'clamp(0.6rem, 1.2cqh, 1rem) 1.25rem', background: 'rgba(242,169,59,0.08)', border: '1px solid rgba(242,169,59,0.25)' }}>
-            <p style={{ margin: 0, color: '#F2A93B', fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', fontWeight: 600 }}>
+          <div className="rounded-xl mo-rise text-center fx-accent fx-sheen" style={{ padding: 'clamp(0.6rem, 1.2cqh, 1rem) 1.25rem' }}>
+            <p style={{ margin: 0, color: ACC_T, fontSize: 'clamp(1.2rem, 1.46cqw, 1.75rem)', fontWeight: 600 }}>
               המסקנה: {DEMO_RETRIEVAL_INSIGHT}
             </p>
           </div>

@@ -910,26 +910,33 @@ class SoundEngine {
     const sess = this.session();
     if (!sess) return;
     const { s, t0: t } = sess;
-    const A4 = 440, C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880, G4 = 392;
-    const MELODY = [A4, A4, C5, E5, D5, C5, E5, G5, A5, G5, E5, D5, E5, C5, D5, E5, G5, E5, D5, C5, D5, E5, D5, C5, A4];
+    const A4 = 440, C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880;
+    // 28 notes, one per main-track slide (chapters open on 9, 21, 24)
+    const MELODY = [A4, A4, C5, E5, D5, E5, C5, E5, G5, A5, G5, E5, D5, E5, C5, D5, E5, G5, E5, D5, C5, D5, E5, G5, E5, D5, C5, A4];
     const APPX = [E5, D5, C5, D5, E5, G5, E5, D5, C5, A4, C5, D5];
     const note = index < MELODY.length ? MELODY[index] : APPX[(index - MELODY.length) % APPX.length];
     if (chapter) {
       this.pen(s, t, 0.95, 0.05, 0.7, -0.7);
       const chords: Record<number, number[]> = {
-        8: [261.63, 329.63, 392, 587.33],   // C(add9): לראות
-        19: [174.61, 220, 261.63, 329.63],  // Fmaj7: לבנות
-        21: [196, 246.94, 293.66, 329.63],  // G6sus: להטמיע
-        25: [220, 261.63, 329.63, 493.88],  // Am(add9): נספח
+        9: [261.63, 329.63, 392, 587.33],   // C(add9): לראות
+        21: [174.61, 220, 261.63, 329.63],  // Fmaj7: לבנות
+        24: [196, 246.94, 293.66, 329.63],  // G6sus: להטמיע
+        28: [220, 261.63, 329.63, 493.88],  // Am(add9): נספח
       };
       const chord = chords[index] ?? [220, 261.63, 329.63, 493.88];
       chord.forEach((f, i) => this.felt(s, t + 0.12 + i * 0.07, f, 0.05, 2.8, (i / 3 - 0.5) * 0.8));
       this.felt(s, t + 0.1, chord[0] / 2, 0.06, 3.2);
       this.felt(s, t + 0.62, note, 0.06, 2.4);
       this.swell(s, t, 0.5, 0.05);
+      // the burst of rays out of the written number, and a warm low thump
+      this.shimmer(s, t + 0.98, [note * 2, note * 3, note * 4], 0.03);
+      this.sub(s, t + 0.5, 70, 38, 0.22, 1.2);
     } else {
       this.pen(s, t, 0.42, 0.045, dir === 1 ? 0.6 : -0.6, dir === 1 ? -0.6 : 0.6);
       this.felt(s, t + 0.3, dir === 1 ? note : note / 2, 0.065, 2.0, 0);
+      // the burst at the node: a breath of air and a few sparks
+      this.whoosh(s, t + 0.2, 0.35, 900, 5200, 0.05, dir === 1 ? 0.3 : -0.3, dir === 1 ? -0.3 : 0.3);
+      this.glass(s, t + 0.3, note * 2, 0.018, 0, 0.9);
     }
     setTimeout(() => s.stop(1.2), 4500);
   }

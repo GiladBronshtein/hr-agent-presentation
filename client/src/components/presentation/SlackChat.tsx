@@ -1,31 +1,34 @@
 /**
  * SlackChat - realistic Slack-style chat window for the live demo slides.
  * The audience instantly recognizes the tool, which sells the "this is real"
- * moment better than an abstract terminal.
+ * moment better than an abstract terminal. The window keeps Slack's own
+ * colors and sits on the stage like a lit screen: a hairline of chapter light
+ * on its edge and a soft colored glow behind it.
  */
 import { ReactNode } from 'react';
 import { Hash } from 'lucide-react';
 
 export function SlackWindow({ channel, children }: { channel: string; children: ReactNode }) {
   return (
-    <div style={{
-      borderRadius: '18px', overflow: 'hidden',
+    <div className="fx-hairline" style={{
+      borderRadius: '18px',
       background: '#1A1D21',
-      border: '1px solid rgba(243,238,228,0.12)',
-      boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+      border: '1px solid rgba(246,242,234,0.1)',
+      boxShadow: '0 0 0 1px color-mix(in oklab, var(--ch) 18%, transparent), 0 0 90px -30px color-mix(in oklab, var(--ch) 75%, transparent), 0 30px 70px -20px rgba(0,0,0,0.65)',
       textAlign: 'right',
     }}>
       {/* Channel header */}
       <div dir="rtl" style={{
         display: 'flex', alignItems: 'center', gap: '0.5rem',
         padding: 'clamp(0.7rem, 1.2cqh, 1rem) clamp(1rem, 1.6cqw, 1.4rem)',
-        borderBottom: '1px solid rgba(243,238,228,0.09)',
+        borderBottom: '1px solid rgba(246,242,234,0.09)',
         background: '#222529',
+        borderRadius: '18px 18px 0 0',
       }}>
-        <span style={{ display: 'inline-flex', color: 'rgba(243,238,228,0.55)', fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)' }}>
+        <span style={{ display: 'inline-flex', color: 'rgba(246,242,234,0.62)', fontSize: 'clamp(1rem, 1.3cqw, 1.2rem)' }}>
           <Hash size="1em" />
         </span>
-        <span style={{ fontFamily: "'DM Sans', 'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.92)', direction: 'ltr' }}>
+        <span style={{ fontFamily: "'DM Sans', 'Heebo', sans-serif", fontWeight: 700, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(246,242,234,0.94)', direction: 'ltr' }}>
           {channel}
         </span>
         {/* macOS window dots: red, amber, green from the left (LTR inside the RTL bar) */}
@@ -55,24 +58,25 @@ export function SlackMessage({
         background: color,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontFamily: "'Heebo', sans-serif", fontWeight: 800,
-        fontSize: 'clamp(0.95rem, 1.3cqw, 1.2rem)', color: '#070B17',
+        fontSize: 'clamp(0.95rem, 1.3cqw, 1.2rem)', color: '#060918',
+        boxShadow: isBot ? `0 0 18px -2px ${color}` : undefined,
       }}>
         {initials}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.2rem' }}>
-          <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(243,238,228,0.95)' }}>{name}</span>
+          <span style={{ fontFamily: "'Heebo', sans-serif", fontWeight: 800, fontSize: 'clamp(1.05rem, 1.4cqw, 1.3rem)', color: 'rgba(246,242,234,0.96)' }}>{name}</span>
           {isBot && (
             <span style={{
               fontSize: 'clamp(0.85rem, 0.9cqw, 1rem)', fontWeight: 700, letterSpacing: '0.04em',
               padding: '0.1rem 0.4rem', borderRadius: '4px',
-              background: 'rgba(243,238,228,0.14)', color: 'rgba(243,238,228,0.75)',
+              background: 'rgba(246,242,234,0.14)', color: 'rgba(246,242,234,0.82)',
               fontFamily: "'DM Sans', 'Heebo', sans-serif",
             }}>APP</span>
           )}
-          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(243,238,228,0.4)', fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", direction: 'ltr' }}>{time}</span>
+          <span style={{ fontSize: 'clamp(0.85rem, 1.1cqw, 1rem)', color: 'rgba(246,242,234,0.6)', fontFamily: "ui-monospace, 'SF Mono', Monaco, Consolas, 'Heebo', Menlo, monospace", direction: 'ltr' }}>{time}</span>
         </div>
-        <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', color: 'rgba(243,238,228,0.85)', lineHeight: 1.55, overflowWrap: 'break-word' }}>
+        <div style={{ fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(1.15rem, 1.7cqw, 1.6rem)', color: 'rgba(246,242,234,0.88)', lineHeight: 1.55, overflowWrap: 'break-word' }}>
           {children}
         </div>
       </div>
@@ -82,13 +86,13 @@ export function SlackMessage({
 
 export function TypingIndicator({ name }: { name: string }) {
   return (
-    <div dir="rtl" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(243,238,228,0.5)', fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem, 1.2cqw, 1.1rem)' }}>
+    <div dir="rtl" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(246,242,234,0.66)', fontFamily: "'Heebo', sans-serif", fontSize: 'clamp(0.95rem, 1.2cqw, 1.1rem)' }}>
       <span style={{ display: 'inline-flex', gap: '4px' }}>
         {[0, 1, 2].map((d) => (
-          <span key={d} style={{
+          <span key={d} className="fx-typing-dot" style={{
             width: 7, height: 7, borderRadius: '50%',
-            background: 'rgba(243,238,228,0.55)',
-            animation: `glowPulse 1.1s ease-in-out ${d * 0.18}s infinite`,
+            background: 'var(--ch-text, #A3ABCF)',
+            animationDelay: `${d * 0.16}s`,
             display: 'inline-block',
           }} />
         ))}

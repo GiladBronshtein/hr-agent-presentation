@@ -56,7 +56,9 @@ export function PresentationShell() {
     // the slide 2 trailer: particle formations + offline-rendered score
     const p = setTimeout(() => { import('./trailer/prepare').then((m) => m.prepareTrailer()); }, 600);
     const t = setTimeout(() => { import('../../scenes/S50_PersonalClosing'); }, 4000);
-    return () => { clearTimeout(p); clearTimeout(t); };
+    // the closing finale's sound, rendered offline long before it is needed
+    const f = setTimeout(() => { import('./PortraitFinale').then((m) => m.prepareFinale()); }, 20000);
+    return () => { clearTimeout(p); clearTimeout(t); clearTimeout(f); };
   }, []);
 
   // Touch/swipe support
