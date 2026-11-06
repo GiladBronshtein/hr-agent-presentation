@@ -5,7 +5,7 @@
  * (on the first slide) and awaited by the trailer itself.
  */
 import { sound } from '../../../lib/sound';
-import { LITE, loadAudio } from '../../../lib/device';
+import { LITE, MEDIA_AUDIO, loadAudio } from '../../../lib/device';
 import * as F from './formations';
 import { buildScore, TRAILER_AUDIO_SECONDS } from './score';
 
@@ -47,6 +47,8 @@ export function setFormation(key: string, f: F.Formation) {
 export function trailerAudio(): Promise<AudioBuffer | null> {
   audioReady ??= (async () => {
     if (typeof OfflineAudioContext === 'undefined') return null;
+    // iOS streams it instead (sound.playMedia): decoding it there kills the page
+    if (MEDIA_AUDIO) return null;
     if (!location.search.includes('render-score')) {
       const b = await loadAudio(`${import.meta.env.BASE_URL}audio/trailer-score`);
       if (b) return b;

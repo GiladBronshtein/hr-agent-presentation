@@ -13,6 +13,7 @@ import { SceneRenderer } from './SceneRenderer';
 import { SceneStage } from './SceneStage';
 import { RotateHint } from './RotateHint';
 import { SoundArmHint } from './SoundArmHint';
+import { MEDIA_AUDIO } from '../../lib/device';
 
 export function PresentationShell() {
   const {
@@ -35,6 +36,8 @@ export function PresentationShell() {
   // URL hash <-> scene index sync (deep links + refresh recovery)
   useHashSync();
 
+  // iOS streams the trailer soundtrack (lib/device.ts): register it before the first gesture
+  if (MEDIA_AUDIO && !sound.mediaUrl) sound.mediaUrl = `${import.meta.env.BASE_URL}audio/trailer-score.m4a`;
   // Audio needs a user gesture once; any key or click unlocks it
   useEffect(() => {
     const unlock = () => sound.unlock();

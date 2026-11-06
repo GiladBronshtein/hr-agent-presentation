@@ -17,7 +17,7 @@ import { sound, type ScoreEvent, type BufferPlayback } from '../../lib/sound';
 import { Universe, createUniverseCtl, type UniverseApi } from './trailer/Universe';
 import * as F from './trailer/formations';
 import { PALETTE } from '../../lib/palette';
-import { LITE, loadAudio } from '../../lib/device';
+import { LITE, MEDIA_AUDIO, loadAudio } from '../../lib/device';
 
 // ── Timing (seconds from the start of the finale): unhurried, a long breath ──
 const BURST = 1.2;
@@ -89,7 +89,8 @@ export function stopFinaleSound(fade = 0.8) {
  * cue); a live render is the desktop-only fallback. `?render-score` forces it.
  */
 export function prepareFinale(): Promise<AudioBuffer | null> {
-  if (typeof OfflineAudioContext === 'undefined') return Promise.resolve(null);
+  // iOS: never decode (see lib/device.ts); the finale is desktop-only anyway
+  if (typeof OfflineAudioContext === 'undefined' || MEDIA_AUDIO) return Promise.resolve(null);
   cueReady ??= (async () => {
     if (!location.search.includes('render-score')) {
       const b = await loadAudio(`${import.meta.env.BASE_URL}audio/finale-score`);

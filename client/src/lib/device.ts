@@ -10,6 +10,17 @@ const small = typeof window !== 'undefined' && Math.min(screen.width, screen.hei
 
 export const LITE = !!(touch && small);
 
+/** iPhone, iPad (also iPadOS reporting a Mac), iPod: every browser there is WebKit. */
+export const IOS = typeof navigator !== 'undefined'
+  && (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+
+/**
+ * Stream long soundtracks through a media element instead of decoding them
+ * into memory: iOS 18 kills the page while decodeAudioData runs on them
+ * (seen in field diagnostics). Desktops keep the decoded, sample-exact path.
+ */
+export const MEDIA_AUDIO = IOS || LITE;
+
 /** Apple's WebKit (Safari, every iOS browser): prefer AAC, which it decodes natively. */
 export const PREFERS_AAC = typeof navigator !== 'undefined'
   && (/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent) || /iPhone|iPad|iPod/.test(navigator.userAgent));

@@ -86,6 +86,12 @@ class SoundEngine {
   private chain: Chain | null = null;
   private enabled = true;
   private listeners = new Set<() => void>();
+  // Streamed soundtrack (see lib/device.ts MEDIA_AUDIO): a media element that
+  // is primed inside the first user gesture, then played and seeked later.
+  private media: HTMLAudioElement | null = null;
+  private mediaPrimed = false;
+  /** The soundtrack to stream on devices that must not decode it. Set at startup. */
+  mediaUrl: string | null = null;
 
   get armed() {
     return !!this.ctx && this.ctx.state === 'running';
@@ -113,11 +119,57 @@ class SoundEngine {
     }
     if (this.ctx.state === 'suspended') this.ctx.resume().then(() => this.emit()).catch(() => {});
     else this.emit();
+    this.primeMedia();
+  }
+
+  /** iOS lets a media element play later only if it first played inside a gesture. */
+  private primeMedia() {
+    if (!this.mediaUrl || this.media) return;
+    const a = new Audio();
+    a.preload = 'auto';
+    a.setAttribute('playsinline', '');
+    a.muted = true;
+    a.src = this.mediaUrl;
+    this.media = a;
+    a.play().then(() => {
+      a.pause();
+      a.currentTime = 0;
+      a.muted = !this.enabled;
+      this.mediaPrimed = true;
+      this.emit();
+    }).catch(() => { this.media = null; });
+  }
+
+  /** Play the streamed soundtrack from `offset` seconds. Same contract as playBuffer. */
+  playMedia(offset = 0): BufferPlayback | null {
+    const a = this.media;
+    if (!a || !this.mediaPrimed) return null;
+    a.muted = !this.enabled;
+    try { a.currentTime = Math.max(0, offset); } catch { /* not seekable yet */ }
+    void a.play().catch(() => {});
+    let lastCt = -1;
+    let lastAt = 0;
+    let stopped = false;
+    return {
+      // currentTime advances in coarse steps on some devices: interpolate between them
+      time: () => {
+        const ct = a.currentTime;
+        const now = performance.now();
+        if (ct !== lastCt) { lastCt = ct; lastAt = now; }
+        return a.paused ? ct : ct + Math.min(0.5, (now - lastAt) / 1000);
+      },
+      stop: () => {
+        if (stopped) return;
+        stopped = true;
+        a.pause();
+      },
+    };
   }
 
   setEnabled(on: boolean) {
     this.enabled = on;
     if (this.out && this.ctx) this.out.gain.setTargetAtTime(on ? 1 : 0, this.ctx.currentTime, 0.05);
+    if (this.media && this.mediaPrimed) this.media.muted = !on;
     this.emit();
   }
 

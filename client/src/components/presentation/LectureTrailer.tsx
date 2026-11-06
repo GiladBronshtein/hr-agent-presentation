@@ -38,6 +38,7 @@ import { prepareTrailer, getFormation, setFormation, trailerAudio } from './trai
 import * as LP from './trailer/lines';
 import { NUM_LEAD, NUM_DUR } from './trailer/score';
 import { mark } from '../../lib/diag';
+import { MEDIA_AUDIO } from '../../lib/device';
 
 // The tools an L&D team juggles around one learning program
 const SYSTEMS: { label: string; icon: LucideIcon }[] = [
@@ -656,10 +657,12 @@ export const LectureTrailer = memo(function LectureTrailer({ onImpact, onDone }:
         onDone();
       }
       const tryAudio = () => {
-        if (playback || capturing || !audioBuf || !started || doneRef.current) return;
+        if (playback || capturing || !started || doneRef.current) return;
+        if (!MEDIA_AUDIO && !audioBuf) return;
         const at = clockNow();
         if (at > W(63)) return;
-        playback = sound.playBuffer(audioBuf, at);
+        playback = MEDIA_AUDIO ? sound.playMedia(at) : sound.playBuffer(audioBuf!, at);
+        if (playback) mark(`trailer sound ${MEDIA_AUDIO ? 'stream' : 'buffer'} @${at.toFixed(1)}`);
       };
       const tick = () => {
         if (!started || doneRef.current || capturing) return;
