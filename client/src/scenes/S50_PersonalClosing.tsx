@@ -190,7 +190,7 @@ export default function S50_PersonalClosing() {
               fontSize: 'clamp(1rem,1.4cqw,1.25rem)',
               color: 'rgba(246,242,234,0.65)', margin: '0.35rem 0 0', lineHeight: 1.5,
             }}>
-              שני תארים בטכנולוגיות למידה. מחבר בין אנשים, דאטה ו-AI, והופך מורכבות לתוצאות ברורות.
+              מחבר בין אנשים, דאטה ו-AI, והופך מורכבות לתוצאות ברורות.
             </p>
           </div>
 
